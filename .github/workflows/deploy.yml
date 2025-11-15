@@ -54,13 +54,33 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       
       - name: 安装依赖
-        run: pnpm install --frozen-lockfile
+        run: |
+          echo "📦 Installing dependencies..."
+          pnpm install --frozen-lockfile
+          echo "✅ Dependencies installed"
+      
+      - name: 验证 Hexo 安装
+        run: |
+          echo "🔍 Verifying Hexo installation..."
+          npx hexo version
+          echo "📁 Current directory:"
+          pwd
+          echo "📂 Directory contents:"
+          ls -la
       
       - name: 清理缓存
-        run: pnpm hexo clean
+        run: |
+          echo "🧹 Cleaning cache..."
+          npx hexo clean
+          echo "✅ Cache cleaned"
       
       - name: 生成静态文件
-        run: pnpm hexo generate
+        run: |
+          echo "🏗️ Generating static files..."
+          npx hexo generate
+          echo "✅ Static files generated"
+          echo "📂 Public directory contents:"
+          ls -la public/
       
       - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
