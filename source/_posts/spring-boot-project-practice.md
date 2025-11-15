@@ -1,6 +1,7 @@
 ---
 title: Spring Boot项目实战：构建RESTful API
 date: 2025-11-13 15:30:00
+updated: 2025-11-15 13:20:00
 categories:
   - 项目实践
 tags:
@@ -8,6 +9,10 @@ tags:
   - RESTful API
   - Java
   - 后端开发
+description: 使用Spring Boot 3.x从零构建RESTful API项目，涵盖用户管理、数据验证、异常处理等核心功能，适合后端开发入门学习。
+keywords: Spring Boot, RESTful API, Spring Data JPA, 后端开发, Java Web, API开发, Spring Boot实战
+top: false
+cover: /img/default.png
 ---
 
 ## 项目背景

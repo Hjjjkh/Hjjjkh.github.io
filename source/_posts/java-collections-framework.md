@@ -1,12 +1,17 @@
 ---
 title: Java集合框架深入解析
 date: 2025-11-15 12:00:00
+updated: 2025-11-15 13:20:00
 categories:
   - Java
 tags:
   - Java
   - 集合框架
   - 数据结构
+description: 深入解析Java集合框架的核心接口和实现类，包括List、Set、Map的使用场景和性能对比，帮助你选择最合适的集合类型。
+keywords: Java集合框架, ArrayList, LinkedList, HashMap, HashSet, TreeMap, 集合性能对比, Java数据结构
+top: false
+cover: /img/default.png
 ---
 
 ## 前言

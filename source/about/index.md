@@ -6,7 +6,7 @@ layout: about
 
 ## 👋 你好！
 
-欢迎来到我的技术博客！我是一名热爱编程的开发者，专注于Java后端开发和算法学习。
+欢迎来到我的技术博客！我是李国强，一名热爱编程软件工程大二学生。
 
 ## 💻 技术栈
 
@@ -28,8 +28,8 @@ layout: about
 
 ## 📫 联系方式
 
-- GitHub: [your-github]
-- Email: your-email@example.com
+- GitHub: [Hjjjkh](https://github.com/Hjjjkh)
+- Email: 3480218956@qq.com
 
 ## 🌟 座右铭
 
