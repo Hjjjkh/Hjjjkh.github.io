@@ -178,11 +178,11 @@
       
       <tag>最短路径</tag>
       
-      <tag>动态规划</tag>
-      
       <tag>Bellman-Ford算法</tag>
       
       <tag>Floyd-Warshall算法</tag>
+      
+      <tag>动态规划</tag>
       
       <tag>负权环</tag>
       
@@ -217,11 +217,11 @@
       
       <tag>最短路径</tag>
       
+      <tag>动态规划</tag>
+      
       <tag>Dijkstra算法</tag>
       
       <tag>SPFA算法</tag>
-      
-      <tag>动态规划</tag>
       
     </tags>
     
@@ -552,11 +552,11 @@
       
       <tag>算法进阶</tag>
       
+      <tag>分治算法</tag>
+      
       <tag>FFT</tag>
       
       <tag>快速傅里叶变换</tag>
-      
-      <tag>分治算法</tag>
       
       <tag>多项式</tag>
       
@@ -1653,13 +1653,13 @@
     
     <tags>
       
-      <tag>复杂度分析</tag>
-      
-      <tag>Big O</tag>
+      <tag>空间复杂度</tag>
       
       <tag>算法基础</tag>
       
-      <tag>空间复杂度</tag>
+      <tag>复杂度分析</tag>
+      
+      <tag>Big O</tag>
       
       <tag>原地算法</tag>
       
@@ -1727,11 +1727,11 @@
       
       <tag>时间复杂度</tag>
       
+      <tag>算法基础</tag>
+      
       <tag>复杂度分析</tag>
       
       <tag>Big O</tag>
-      
-      <tag>算法基础</tag>
       
       <tag>主定理</tag>
       
@@ -1762,13 +1762,13 @@
       
       <tag>算法</tag>
       
-      <tag>时间复杂度</tag>
-      
-      <tag>算法基础</tag>
-      
       <tag>复杂度</tag>
       
+      <tag>时间复杂度</tag>
+      
       <tag>空间复杂度</tag>
+      
+      <tag>算法基础</tag>
       
     </tags>
     
