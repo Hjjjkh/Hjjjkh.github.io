@@ -80,11 +80,6 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
 
 
   
@@ -372,7 +367,7 @@
 <li><strong>互动式学习</strong>：你可以追问细节，形成一个对话式的学习过程。</li>
 </ul>
 <p><strong>案例</strong>：</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs 1c">你：什么是贪心算法？<br>AI：贪心算法是一种在每一步都做出局部最优选择的算法，期望最终达到全局最优。<br>你：能举个例子吗？<br>AI：当然。比如找零钱问题……<br>你：贪心算法一定能得到最优解吗？<br>AI：不一定。贪心算法只有在问题具有<span class="hljs-string">&quot;贪心选择性质&quot;</span>时才能保证最优解……<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">你：什么是贪心算法？</span><br><span class="line">AI：贪心算法是一种在每一步都做出局部最优选择的算法，期望最终达到全局最优。</span><br><span class="line">你：能举个例子吗？</span><br><span class="line">AI：当然。比如找零钱问题……</span><br><span class="line">你：贪心算法一定能得到最优解吗？</span><br><span class="line">AI：不一定。贪心算法只有在问题具有&quot;贪心选择性质&quot;时才能保证最优解……</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-代码生成与调试"><a href="#2-代码生成与调试" class="headerlink" title="2. 代码生成与调试"></a>2. 代码生成与调试</h3><p><strong>传统方式</strong>：你需要自己从头写代码，遇到 Bug 要花时间调试。</p>
 <p><strong>LLM 方式</strong>：</p>
@@ -393,7 +388,7 @@
 </ul>
 <h3 id="3-算法可视化与解释"><a href="#3-算法可视化与解释" class="headerlink" title="3. 算法可视化与解释"></a>3. 算法可视化与解释</h3><p><strong>LLM 方式</strong>：要求 AI 用伪代码、步骤分解或文字描述来解释一个算法的执行过程。</p>
 <p><strong>案例</strong>：</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">你：用 <span class="hljs-keyword">Dijkstra </span>算法求最短路径的步骤是什么？<br>AI：<span class="hljs-number">1</span>. 初始化距离数组……<span class="hljs-number">2</span>. 选择未访问节点中距离最小的……<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你：用 Dijkstra 算法求最短路径的步骤是什么？</span><br><span class="line">AI：1. 初始化距离数组……2. 选择未访问节点中距离最小的……</span><br></pre></td></tr></table></figure>
 
 <h3 id="4-生成测试用例"><a href="#4-生成测试用例" class="headerlink" title="4. 生成测试用例"></a>4. 生成测试用例</h3><p><strong>LLM 方式</strong>：”为这个函数生成 5 个测试用例，包括边界情况。”</p>
 <p><strong>优势</strong>：帮助你更全面地测试代码，发现潜在的 Bug。</p>
@@ -668,9 +663,6 @@
 
 
 
-
-
-  
 
 
 

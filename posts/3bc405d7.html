@@ -36,8 +36,8 @@
 <meta property="article:tag" content="二叉树">
 <meta property="article:tag" content="递归">
 <meta property="article:tag" content="数据结构">
-<meta property="article:tag" content="树的遍历">
 <meta property="article:tag" content="树">
+<meta property="article:tag" content="树的遍历">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -78,11 +78,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -419,9 +414,9 @@
 <li><strong>B 树 &#x2F; B+ 树</strong>：多路搜索树，常用于数据库和文件系统的索引。</li>
 </ul>
 <h2 id="3-树的存储方式"><a href="#3-树的存储方式" class="headerlink" title="3. 树的存储方式"></a>3. 树的存储方式</h2><h3 id="3-1-链式存储法"><a href="#3-1-链式存储法" class="headerlink" title="3.1 链式存储法"></a>3.1 链式存储法</h3><p>这是最直观、最常用的存储方式。每个节点是一个对象，包含数据域和指向其子节点的指针。</p>
-<h4 id="伪代码：二叉树节点"><a href="#伪代码：二叉树节点" class="headerlink" title="伪代码：二叉树节点"></a>伪代码：二叉树节点</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">class TreeNode:<br>  data // 节点存储的数据<br>  leftChild // 指向左子节点的指针<br>  rightChild // 指向右子节点的指针<br></code></pre></td></tr></table></figure>
+<h4 id="伪代码：二叉树节点"><a href="#伪代码：二叉树节点" class="headerlink" title="伪代码：二叉树节点"></a>伪代码：二叉树节点</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class TreeNode:</span><br><span class="line">  data // 节点存储的数据</span><br><span class="line">  leftChild // 指向左子节点的指针</span><br><span class="line">  rightChild // 指向右子节点的指针</span><br></pre></td></tr></table></figure>
 
-<h4 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, value</span>):<br>        <span class="hljs-variable language_">self</span>.value = value<br>        <span class="hljs-variable language_">self</span>.left = <span class="hljs-literal">None</span><br>        <span class="hljs-variable language_">self</span>.right = <span class="hljs-literal">None</span><br><br><span class="hljs-comment"># 手动构建一棵树</span><br><span class="hljs-comment">#      1</span><br><span class="hljs-comment">#     / \</span><br><span class="hljs-comment">#    2   3</span><br><span class="hljs-comment">#   /   / \</span><br><span class="hljs-comment">#  4   5   6</span><br><br>root = TreeNode(<span class="hljs-number">1</span>)<br>root.left = TreeNode(<span class="hljs-number">2</span>)<br>root.right = TreeNode(<span class="hljs-number">3</span>)<br>root.left.left = TreeNode(<span class="hljs-number">4</span>)<br>root.right.left = TreeNode(<span class="hljs-number">5</span>)<br>root.right.right = TreeNode(<span class="hljs-number">6</span>)<br></code></pre></td></tr></table></figure>
+<h4 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>.value = value</span><br><span class="line">        <span class="variable language_">self</span>.left = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 手动构建一棵树</span></span><br><span class="line"><span class="comment">#      1</span></span><br><span class="line"><span class="comment">#     / \</span></span><br><span class="line"><span class="comment">#    2   3</span></span><br><span class="line"><span class="comment">#   /   / \</span></span><br><span class="line"><span class="comment">#  4   5   6</span></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">1</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left.left = TreeNode(<span class="number">4</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">5</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
 
 <p><strong>优点</strong>：空间利用率高，增删节点灵活。<br><strong>缺点</strong>：无法快速访问特定节点，需要遍历。</p>
 <h3 id="3-2-数组（顺序）存储法"><a href="#3-2-数组（顺序）存储法" class="headerlink" title="3.2 数组（顺序）存储法"></a>3.2 数组（顺序）存储法</h3><p>这种方法通常只适用于<strong>完全二叉树</strong>，因为它能完美地利用数组索引的数学关系，不浪费空间。</p>
@@ -523,9 +518,9 @@
       
         <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
       
-        <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/" class="print-no-link">#树的遍历</a>
-      
         <a href="/tags/%E6%A0%91/" class="print-no-link">#树</a>
+      
+        <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/" class="print-no-link">#树的遍历</a>
       
     </div>
   
@@ -670,9 +665,6 @@
 
 
 
-
-
-  
 
 
 
