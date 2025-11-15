@@ -552,11 +552,11 @@
       
       <tag>算法进阶</tag>
       
-      <tag>分治算法</tag>
-      
       <tag>FFT</tag>
       
       <tag>快速傅里叶变换</tag>
+      
+      <tag>分治算法</tag>
       
       <tag>多项式</tag>
       
@@ -772,11 +772,11 @@
       
       <tag>归并排序</tag>
       
+      <tag>算法思想</tag>
+      
       <tag>分治算法</tag>
       
       <tag>Divide and Conquer</tag>
-      
-      <tag>算法思想</tag>
       
     </tags>
     
@@ -1480,11 +1480,11 @@
       
       <tag>贪心算法</tag>
       
-      <tag>算法思想</tag>
-      
       <tag>Greedy Algorithm</tag>
       
       <tag>算法设计</tag>
+      
+      <tag>算法思想</tag>
       
       <tag>面试算法</tag>
       
@@ -1653,13 +1653,13 @@
     
     <tags>
       
-      <tag>空间复杂度</tag>
-      
-      <tag>算法基础</tag>
-      
       <tag>复杂度分析</tag>
       
       <tag>Big O</tag>
+      
+      <tag>算法基础</tag>
+      
+      <tag>空间复杂度</tag>
       
       <tag>原地算法</tag>
       
@@ -1727,11 +1727,11 @@
       
       <tag>时间复杂度</tag>
       
-      <tag>算法基础</tag>
-      
       <tag>复杂度分析</tag>
       
       <tag>Big O</tag>
+      
+      <tag>算法基础</tag>
       
       <tag>主定理</tag>
       
@@ -1762,13 +1762,13 @@
       
       <tag>算法</tag>
       
-      <tag>复杂度</tag>
-      
       <tag>时间复杂度</tag>
       
-      <tag>空间复杂度</tag>
-      
       <tag>算法基础</tag>
+      
+      <tag>复杂度</tag>
+      
+      <tag>空间复杂度</tag>
       
     </tags>
     
