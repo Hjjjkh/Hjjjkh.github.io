@@ -1,14 +1,15 @@
 ---
-title: Hexo 博客终极 SEO 优化指南
+title: Hexo 博客 SEO 优化实践指南
 date: 2025-11-15 14:00:00
 categories:
-  - Hexo 优化
+  - 博客搭建
+  - Hexo SEO
 tags:
   - Hexo
   - SEO
   - 优化
   - Fluid
-description: 一份全面的 Hexo 博客 SEO 优化指南，涵盖 Sitemap、robots.txt、关键词、链接优化、CDN 加速等方面，帮助你的博客在搜索引擎中获得更好的排名。
+description: 一份实用的 Hexo 博客 SEO 优化指南，涵盖 Sitemap、robots.txt、关键词、链接优化、CDN 加速等方面，帮助你的博客在搜索引擎中获得更好的排名。
 keywords: Hexo SEO, Hexo 优化, Fluid 主题, Sitemap, robots.txt, 搜索引擎优化, 博客优化
 cover: /img/default.png
 ---

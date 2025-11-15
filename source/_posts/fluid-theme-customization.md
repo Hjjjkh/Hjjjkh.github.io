@@ -1,14 +1,15 @@
 ---
-title: Fluid 主题深度美化与增强：打造独一无二的 Hexo 博客
+title: Fluid 主题配置与美化实践
 date: 2025-11-15 15:00:00
 categories:
-  - Hexo 优化
+  - 博客搭建
+  - 主题定制
 tags:
   - Hexo
   - Fluid
   - 主题美化
   - 个性化
-description: 深度解析 Fluid 主题的配置与美化技巧，包括首页布局、导航栏定制、评论系统、统计分析、自定义样式等，帮助你打造一个独一无二的 Hexo 博客。
+description: Fluid 主题的配置与美化技巧，包括首页布局、导航栏定制、评论系统、统计分析、自定义样式等实用功能的配置方法。
 keywords: Fluid 主题, Hexo 美化, 主题定制, 评论系统, 统计分析, 自定义样式
 cover: /img/default.png
 ---

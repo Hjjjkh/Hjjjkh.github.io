@@ -3,7 +3,8 @@ title: Spring Boot项目实战：构建RESTful API
 date: 2025-11-13 15:30:00
 updated: 2025-11-15 13:20:00
 categories:
-  - 项目实践
+  - 后端开发
+  - Spring Boot
 tags:
   - Spring Boot
   - RESTful API

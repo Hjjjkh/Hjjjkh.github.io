@@ -7,7 +7,9 @@ tags:
   - CI/CD
   - Git
 categories:
-  - Hexo 优化
+  - 博客搭建
+  - Hexo 部署
+sticky: 100
 ---
 
 ## 前言

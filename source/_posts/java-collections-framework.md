@@ -3,7 +3,8 @@ title: Java集合框架深入解析
 date: 2025-11-15 12:00:00
 updated: 2025-11-15 13:20:00
 categories:
-  - Java
+  - 后端开发
+  - Java 基础
 tags:
   - Java
   - 集合框架
