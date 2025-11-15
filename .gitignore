@@ -12,5 +12,4 @@ _multiconfig.yml
 *.swo
 *~
 .deploy_git/
-.cache/
-
+.c
