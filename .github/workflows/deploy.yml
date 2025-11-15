@@ -3,7 +3,7 @@ name: Deploy Hexo Blog to GitHub Pages
 on:
   push:
     branches:
-      - main  # 当推送到 main 分支时触发
+      - source  # 当推送到 source 分支时触发
 
   # 允许手动触发工作流
   workflow_dispatch:
@@ -67,8 +67,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          publish_branch: gh-pages  # 部署到 gh-pages 分支
-          force_orphan: true  # 强制使用孤立分支
+          publish_branch: main  # 部署到 main 分支
+          force_orphan: false  # 不使用孤立分支，保留历史记录
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Deploy: ${{ github.event.head_commit.message }}'
