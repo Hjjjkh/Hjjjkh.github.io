@@ -20,6 +20,15 @@
   </url>
   
   <url>
+    <loc>https://hjjjkh.github.io/about/</loc>
+    
+    <lastmod>2025-11-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://hjjjkh.github.io/posts/undefined</loc>
     
     <lastmod>2025-11-15</lastmod>
@@ -29,7 +38,25 @@
   </url>
   
   <url>
-    <loc>https://hjjjkh.github.io/about/</loc>
+    <loc>https://hjjjkh.github.io/posts/undefined</loc>
+    
+    <lastmod>2025-11-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/posts/undefined</loc>
+    
+    <lastmod>2025-11-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/posts/undefined</loc>
     
     <lastmod>2025-11-15</lastmod>
     
@@ -84,6 +111,48 @@
   </url>
   
   <url>
+    <loc>https://hjjjkh.github.io/tags/Hexo/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/tags/Fluid/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/tags/%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/tags/%E4%B8%AA%E6%80%A7%E5%8C%96/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/tags/SEO/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/tags/%E4%BC%98%E5%8C%96/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://hjjjkh.github.io/tags/Java/</loc>
     <lastmod>2025-11-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -125,10 +194,38 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://hjjjkh.github.io/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/tags/CDN/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/tags/%E5%8E%8B%E7%BC%A9/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
     <loc>https://hjjjkh.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjjjkh.github.io/categories/Hexo-%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2025-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
