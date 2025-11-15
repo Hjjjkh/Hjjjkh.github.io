@@ -1,0 +1,104 @@
+<%
+var layout = page.layout
+page.title = page.title || __(`${ layout }.title`)
+page.subtitle = page.subtitle || page.title || __(`${ layout }.subtitle`)
+page.banner_img = page.banner_img || theme.page.banner_img
+page.banner_img_height = page.banner_img_height || theme.page.banner_img_height
+page.banner_mask_alpha = page.banner_mask_alpha || theme.page.banner_mask_alpha
+%>
+
+<article class="page-content">
+  <%- page.content %>
+  
+  <% 
+    // 1. 初始化一个对象来按 Part 分组
+    const seriesParts = {};
+
+    // 2. 遍历所有文章
+    site.posts.sort('title', 1).each(function(post) {
+      if (post.categories && post.categories.length > 1) {
+        const mainCategory = post.categories.data[0].name;
+        const subCategory = post.categories.data[1].name;
+
+        // 3. 只筛选属于“大学算法全体系”的文章
+        if (mainCategory === '大学算法全体系') {
+          if (!seriesParts[subCategory]) {
+            seriesParts[subCategory] = [];
+          }
+          // 4. 将文章添加到对应的 Part 组中
+          seriesParts[subCategory].push(post);
+        }
+      }
+    });
+
+    // 5. 对 Part 进行排序 (按 Part 1, Part 2...)
+    const sortedParts = Object.keys(seriesParts).sort((a, b) => {
+      const numA = parseInt(a.match(/\d+/)[0]);
+      const numB = parseInt(b.match(/\d+/)[0]);
+      return numA - numB;
+    });
+  %>
+
+  <div class="series-container">
+    <% for (const partName of sortedParts) { %>
+      <div class="series-part">
+        <h2 class="series-part-title"><%- partName %></h2>
+        <ul class="series-list">
+          <% seriesParts[partName].forEach(function(post) { %>
+            <li class="series-item">
+              <a href="<%- url_for(post.path) %>" class="series-item-link">
+                <span class="series-item-title"><%- post.title %></span>
+              </a>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+  </div>
+
+</article>
+
+<style>
+  .series-container {
+    margin-top: 2rem;
+  }
+  .series-part {
+    margin-bottom: 2.5rem;
+    border-left: 3px solid #42a5f5;
+    padding-left: 1.5rem;
+  }
+  .series-part-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: #333;
+  }
+  .dark-mode .series-part-title {
+    color: #eee;
+  }
+  .series-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  .series-item {
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+  }
+  .series-item-link {
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.2s ease-in-out;
+    display: block;
+    padding: 0.5rem 0;
+  }
+  .series-item-link:hover {
+    color: var(--link-hover-color);
+    background-color: rgba(0,0,0,0.02);
+  }
+  .dark-mode .series-item-link:hover {
+    background-color: rgba(255,255,255,0.05);
+  }
+  .series-item-title {
+    font-weight: 500;
+  }
+</style>

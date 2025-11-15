@@ -1,6 +1,5 @@
 ---
 title: Hexo 博客性能优化实践：加载速度提升指南
-date: 2025-11-15 14:30:00
 categories:
   - 博客搭建
   - Hexo 性能优化
@@ -11,8 +10,10 @@ tags:
   - 压缩
   - Fluid
 description: 详细记录 Hexo 博客的性能优化实战过程，包括 DNS 预解析、资源压缩、CDN 加速、图片懒加载等技术，有效提升博客加载速度。
-keywords: Hexo 性能优化, 网站加速, DNS 预解析, 资源压缩, CDN, 图片懒加载, hexo-neat
+keywords: 'Hexo 性能优化, 网站加速, DNS 预解析, 资源压缩, CDN, 图片懒加载, hexo-neat'
 cover: /img/default.png
+abbrlink: b5c66293
+date: 2025-11-15 14:30:00
 ---
 
 ## 前言

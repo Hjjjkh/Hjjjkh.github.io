@@ -14,6 +14,7 @@
   "dependencies": {
     "@adobe/css-tools": "^4.4.4",
     "hexo": "^7.0.0",
+    "hexo-abbrlink": "^2.2.1",
     "hexo-cli": "^4.3.2",
     "hexo-deployer-git": "^4.0.0",
     "hexo-generator-archive": "^2.0.0",
@@ -32,6 +33,7 @@
     "hexo-theme-fluid": "^1.9.8",
     "hexo-theme-landscape": "^1.0.0",
     "hexo-util": "^4.0.0",
-    "moment": "^2.30.1"
+    "moment": "^2.30.1",
+    "nunjucks": "^3.2.4"
   }
 }

@@ -1,6 +1,5 @@
 ---
 title: Fluid 主题配置与美化实践
-date: 2025-11-15 15:00:00
 categories:
   - 博客搭建
   - 主题定制
@@ -10,8 +9,10 @@ tags:
   - 主题美化
   - 个性化
 description: Fluid 主题的配置与美化技巧，包括首页布局、导航栏定制、评论系统、统计分析、自定义样式等实用功能的配置方法。
-keywords: Fluid 主题, Hexo 美化, 主题定制, 评论系统, 统计分析, 自定义样式
+keywords: 'Fluid 主题, Hexo 美化, 主题定制, 评论系统, 统计分析, 自定义样式'
 cover: /img/default.png
+abbrlink: c6983b5
+date: 2025-11-15 15:00:00
 ---
 
 ## 前言

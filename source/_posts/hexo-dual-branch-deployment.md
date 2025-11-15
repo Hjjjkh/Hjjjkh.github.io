@@ -1,6 +1,5 @@
 ---
 title: Hexo 博客双分支部署实战：源码与部署分离的最佳实践
-date: 2025-11-15 14:20:23
 tags:
   - Hexo
   - GitHub Pages
@@ -10,6 +9,8 @@ categories:
   - 博客搭建
   - Hexo 部署
 sticky: 100
+abbrlink: 47e32e1a
+date: 2025-11-15 14:20:23
 ---
 
 ## 前言

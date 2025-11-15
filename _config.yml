@@ -5,7 +5,7 @@
 # Site
 title: 李国强的技术博客
 subtitle: '分享Java、数据结构与算法的学习之旅'
-description: '记录编程学习、项目实践和技术成长，专注于Java后端开发、数据结构与算法、Spring Boot等技术分享'
+description: '记录编程学习、项目实践和技术成长、专注于Java后端开发、数据结构与算法、Spring Boot等技术分享'
 keywords: Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强
 author: 李国强
 language: zh-CN
@@ -35,6 +35,7 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+  - README.md
 
 # Writing
 new_post_name: :title.md # File name of new posts
