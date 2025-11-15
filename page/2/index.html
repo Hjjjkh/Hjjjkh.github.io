@@ -272,15 +272,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/posts/d47b8b79" target="_self">
-          Part 5.5：树形 DP
+        <a href="/posts/96dd7304" target="_self">
+          Part 6.8：后缀数组 (Suffix Array)——子串问题的强大工具
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/d47b8b79" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/96dd7304" target="_self">
         <div>
-          树形 DP 是动态规划在树形结构上的巧妙应用。本文将以经典的“没有上司的舞会”（树的最大独立集）问题为例，为你剖析树形 DP 的核心思想——自底向上的状态转移，并通过 DFS（后序遍历）手把手带你实现状态定义、推导状态转移方程，助你攻克这一 DP 分支。
+          后缀数组（Suffix Array）是处理字符串子串问题的瑞士军刀。它通过对字符串的所有后缀进行排序，将许多看似复杂的子串问题转化为简单的数组操作。配合 LCP（最长公共前缀）数组，后缀数组能够高效解决最长重复子串、不同子串计数、字符串匹配等一系列经典问题。本文将从后缀数组的定义出发，详细讲解倍增算法的构建过程，并通过 Python 代码和实际案例，带你掌握这一强大的字符串工具。
         </div>
       </a>
 
@@ -288,8 +288,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 22:00" pubdate>
-              2025-11-15
+            <time datetime="2025-11-20 01:00" pubdate>
+              2025-11-20
             </time>
           </div>
         
@@ -309,7 +309,475 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-5%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="category-chain-item">Part 5：动态规划</a>
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E8%BF%9B%E9%98%B6/">#算法进阶</a>
+            
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
+            
+              <a href="/tags/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84/">#后缀数组</a>
+            
+              <a href="/tags/Suffix-Array/">#Suffix Array</a>
+            
+              <a href="/tags/LCP/">#LCP</a>
+            
+              <a href="/tags/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%89%8D%E7%BC%80/">#最长公共前缀</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/3c748222" target="_self">
+          Part 8.1：工程算法优化——从理论到实践的最后一公里
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/3c748222" target="_self">
+        <div>
+          掌握了算法理论，并不意味着你能写出高效的生产代码。从理论到实践，存在一条巨大的鸿沟。本文将带你跨越这最后一公里，深入探讨工程中的算法优化：如何利用缓存局部性、如何选择合适的数据结构、如何权衡时间与空间、如何并行化算法，以及那些教科书上不会告诉你的、但在真实世界中至关重要的优化技巧。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-20 01:00" pubdate>
+              2025-11-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-8%EF%BC%9A%E5%B7%A5%E7%A8%8B%E4%B8%8E%E9%9D%A2%E8%AF%95/" class="category-chain-item">Part 8：工程与面试</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%B7%A5%E7%A8%8B%E4%BC%98%E5%8C%96/">#工程优化</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/">#性能调优</a>
+            
+              <a href="/tags/%E7%BC%93%E5%AD%98/">#缓存</a>
+            
+              <a href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/">#并行计算</a>
+            
+              <a href="/tags/%E5%AE%9E%E8%B7%B5%E7%BB%8F%E9%AA%8C/">#实践经验</a>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9/">#算法选择</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/a948c7b3" target="_self">
+          Part 6.7：AC 自动机——多模式匹配的终极武器
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/a948c7b3" target="_self">
+        <div>
+          AC 自动机（Aho-Corasick Automaton）是字符串匹配领域的一座高峰，它巧妙地融合了 Trie 树和 KMP 算法的精髓，能够在一次扫描中同时匹配多个模式串。无论是敏感词过滤、病毒特征码检测，还是文本挖掘，AC 自动机都是不可或缺的利器。本文将从零开始，带你理解 AC 自动机的构建原理、失配指针的奥秘，以及如何用 Python 实现一个完整的 AC 自动机。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-19 01:00" pubdate>
+              2025-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E8%BF%9B%E9%98%B6/">#算法进阶</a>
+            
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
+            
+              <a href="/tags/KMP/">#KMP</a>
+            
+              <a href="/tags/Trie/">#Trie</a>
+            
+              <a href="/tags/AC%E8%87%AA%E5%8A%A8%E6%9C%BA/">#AC自动机</a>
+            
+              <a href="/tags/Aho-Corasick/">#Aho-Corasick</a>
+            
+              <a href="/tags/%E5%A4%9A%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">#多模式匹配</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/ba38e901" target="_self">
+          Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/ba38e901" target="_self">
+        <div>
+          快速傅里叶变换（FFT）被誉为“20世纪最重要的算法之一”。它是一种基于分治思想的、能将特定计算从 O(n²) 奇迹般地优化到 O(n log n) 的算法。从多项式乘法到数字信号处理，从图像压缩到计算金融学，FFT 的身影无处不在。本文将从多项式表示法入手，深入剖析 FFT 的核心——单位复根、蝶形运算，带你领略这一算法世界中最优美的“蝶之舞”。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-19 01:00" pubdate>
+              2025-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-7%EF%BC%9A%E9%AB%98%E7%BA%A7%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 7：高级算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E8%BF%9B%E9%98%B6/">#算法进阶</a>
+            
+              <a href="/tags/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">#分治算法</a>
+            
+              <a href="/tags/FFT/">#FFT</a>
+            
+              <a href="/tags/%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/">#快速傅里叶变换</a>
+            
+              <a href="/tags/%E5%A4%9A%E9%A1%B9%E5%BC%8F/">#多项式</a>
+            
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/">#信号处理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/64113fb" target="_self">
+          Part 6.6：Trie (字典树)——高效的前缀查询神器
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/64113fb" target="_self">
+        <div>
+          Trie 树，又称字典树或前缀树，是处理字符串前缀问题的终极数据结构。它通过将字符串集合的公共前缀进行复用，实现了对词频统计、自动补全、敏感词过滤等场景的极速查询。本文将从 Trie 的节点结构入手，通过图解和 Python 代码，带你一步步实现一个完整的 Trie，并深入探讨其在各类问题中的应用。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-18 01:00" pubdate>
+              2025-11-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+            
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
+            
+              <a href="/tags/Trie/">#Trie</a>
+            
+              <a href="/tags/%E5%AD%97%E5%85%B8%E6%A0%91/">#字典树</a>
+            
+              <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/">#前缀树</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/5c507bf8" target="_self">
+          Part 7.4：数论算法——从质数到密码学的基石
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/5c507bf8" target="_self">
+        <div>
+          数论，这个古老而纯粹的数学分支，在计算机科学中扮演着意想不到的关键角色。从质数判定、最大公约数计算，到现代密码学的基石 RSA 算法，数论无处不在。本文将带你探索计算机科学中的基础数论算法，包括高效的质数筛法、优雅的欧几里得算法和处理大数幂运算的快速幂，为你揭示数字世界背后的深刻秩序。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-18 01:00" pubdate>
+              2025-11-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-7%EF%BC%9A%E9%AB%98%E7%BA%A7%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 7：高级算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">#算法思想</a>
+            
+              <a href="/tags/%E6%95%B0%E8%AE%BA/">#数论</a>
+            
+              <a href="/tags/%E8%B4%A8%E6%95%B0/">#质数</a>
+            
+              <a href="/tags/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/">#欧几里得算法</a>
+            
+              <a href="/tags/%E5%BF%AB%E9%80%9F%E5%B9%82/">#快速幂</a>
+            
+              <a href="/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/">#密码学</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/6a3b18be" target="_self">
+          Part 6.5：字符串哈希——O(1) 比较子串的利器
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/6a3b18be" target="_self">
+        <div>
+          字符串哈希是一种将任意长度的字符串映射为固定长度整数的强大技术。通过巧妙的滚动哈希（Rabin-Karp 算法核心），它能实现 O(1) 时间复杂度的子串比较，在处理大规模字符串问题时展现出惊人的效率。本文将带你从零开始，深入理解字符串哈希的原理、实现、冲突处理（双哈希），以及在子串搜索、重复子串查找等问题中的经典应用。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-17 01:00" pubdate>
+              2025-11-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
   
   
 
@@ -328,13 +796,13 @@
             
               <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">#算法基础</a>
             
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">#动态规划</a>
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
             
-              <a href="/tags/DP/">#DP</a>
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C/">#字符串哈希</a>
             
-              <a href="/tags/%E6%A0%91%E5%BD%A2DP/">#树形DP</a>
+              <a href="/tags/Rabin-Karp/">#Rabin-Karp</a>
             
-              <a href="/tags/%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E7%8B%AC%E7%AB%8B%E9%9B%86/">#树的最大独立集</a>
+              <a href="/tags/%E6%BB%9A%E5%8A%A8%E5%93%88%E5%B8%8C/">#滚动哈希</a>
             
           </div>
         
@@ -348,15 +816,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/posts/722abc1f" target="_self">
-          Part 2.8：二叉搜索树：有序世界的高效查找
+        <a href="/posts/626958a2" target="_self">
+          Part 7.3：随机化算法——当运气成为一种力量
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/722abc1f" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/626958a2" target="_self">
         <div>
-          二叉搜索树（BST）通过巧妙的有序性，将查找、插入、删除的平均时间复杂度降至 O(log n)。本文将深入剖析 BST 的核心性质、三大操作的实现细节（尤其是复杂的删除操作），并讲解其退化问题及平衡树的引入，为你打开有序数据结构的大门。
+          在算法的世界里，我们总是追求确定性和最优性。但如果引入一点“运气”，会发生什么？随机化算法，一种利用概率和随机性来解决问题的强大范式，常常能以更简单的设计和更高的期望效率，攻克确定性算法难以处理的难题。本文将深入剖析随机化算法的两大类型——拉斯维加斯和蒙特卡洛，并通过经典的随机化快速排序案例，带你领略“运气”在算法设计中的惊人力量。
         </div>
       </a>
 
@@ -364,8 +832,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 21:30" pubdate>
-              2025-11-15
+            <time datetime="2025-11-17 01:00" pubdate>
+              2025-11-17
             </time>
           </div>
         
@@ -385,7 +853,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-7%EF%BC%9A%E9%AB%98%E7%BA%A7%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 7：高级算法</a>
   
   
 
@@ -402,17 +870,17 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+              <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">#快速排序</a>
             
-              <a href="/tags/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">#二叉搜索树</a>
+              <a href="/tags/%E9%9A%8F%E6%9C%BA%E5%8C%96%E7%AE%97%E6%B3%95/">#随机化算法</a>
             
-              <a href="/tags/BST/">#BST</a>
+              <a href="/tags/Randomized-Algorithm/">#Randomized Algorithm</a>
             
-              <a href="/tags/%E6%9F%A5%E6%89%BE/">#查找</a>
+              <a href="/tags/%E6%A6%82%E7%8E%87%E7%AE%97%E6%B3%95/">#概率算法</a>
             
-              <a href="/tags/%E6%8F%92%E5%85%A5/">#插入</a>
+              <a href="/tags/%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B/">#蒙特卡洛</a>
             
-              <a href="/tags/%E5%88%A0%E9%99%A4/">#删除</a>
+              <a href="/tags/%E6%8B%89%E6%96%AF%E7%BB%B4%E5%8A%A0%E6%96%AF/">#拉斯维加斯</a>
             
           </div>
         
@@ -426,15 +894,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/posts/dac28bdb" target="_self">
-          Part 5.4：区间 DP
+        <a href="/posts/3af13cf5" target="_self">
+          Part 6.4：Manacher 回文算法
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/dac28bdb" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/3af13cf5" target="_self">
         <div>
-          区间 DP 是动态规划中一个重要的模型，专门解决通过合并相邻元素求解区间最优值的问题。本文将以经典的“石子合并”问题为例，为你剖析区间 DP 的核心思想，并手把手带你掌握其状态定义、状态转移方程以及至关重要的遍历顺序。
+          Manacher 算法是求解最长回文子串问题的终极武器，它巧妙地解决了奇偶长度回文串的差异，并利用回文的对称性实现了线性时间复杂度。本文将从“马拉车”的直观比喻入手，为你深入剖析其核心思想——臂长数组和对称性利用，并通过详尽的图示、动画式案例和 Python 实现，助你彻底掌握这一精妙的字符串算法。
         </div>
       </a>
 
@@ -442,8 +910,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 21:30" pubdate>
-              2025-11-15
+            <time datetime="2025-11-16 01:00" pubdate>
+              2025-11-16
             </time>
           </div>
         
@@ -463,7 +931,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-5%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="category-chain-item">Part 5：动态规划</a>
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
   
   
 
@@ -482,11 +950,13 @@
             
               <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">#算法基础</a>
             
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">#动态规划</a>
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
             
-              <a href="/tags/DP/">#DP</a>
+              <a href="/tags/Manacher/">#Manacher</a>
             
-              <a href="/tags/%E5%8C%BA%E9%97%B4DP/">#区间DP</a>
+              <a href="/tags/%E5%9B%9E%E6%96%87%E4%B8%B2/">#回文串</a>
+            
+              <a href="/tags/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/">#最长回文子串</a>
             
           </div>
         
@@ -500,15 +970,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/posts/2b8a6ba5" target="_self">
-          Part 2.7：并查集：高效处理“朋友圈”问题
+        <a href="/posts/62cad954" target="_self">
+          Part 7.2：分治算法——帝国的统治智慧与归并排序
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/2b8a6ba5" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/62cad954" target="_self">
         <div>
-          并查集（Disjoint Set Union）是处理动态连通性问题的利器。本文将通过“朋友圈”的生动比喻，深入剖析其 find 和 union 两大核心操作，并讲解路径压缩和按秩合并两大关键优化，让你彻底掌握这个查询效率近乎 O(1) 的高效数据结构。
+          分治算法，一种源自古罗马统治策略的强大算法思想，是解决复杂问题的利器。本文将深入剖析分治法的三大核心步骤——分解、解决、合并，通过经典的归并排序案例，带你掌握这一优雅且高效的算法设计范式。
         </div>
       </a>
 
@@ -516,8 +986,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 21:00" pubdate>
-              2025-11-15
+            <time datetime="2025-11-16 01:00" pubdate>
+              2025-11-16
             </time>
           </div>
         
@@ -537,7 +1007,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-7%EF%BC%9A%E9%AB%98%E7%BA%A7%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 7：高级算法</a>
   
   
 
@@ -554,15 +1024,17 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+              <a href="/tags/%E9%80%92%E5%BD%92/">#递归</a>
             
-              <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/">#并查集</a>
+              <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">#快速排序</a>
             
-              <a href="/tags/Union-Find/">#Union-Find</a>
+              <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">#归并排序</a>
             
-              <a href="/tags/%E8%B7%AF%E5%BE%84%E5%8E%8B%E7%BC%A9/">#路径压缩</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">#算法思想</a>
             
-              <a href="/tags/%E6%8C%89%E7%A7%A9%E5%90%88%E5%B9%B6/">#按秩合并</a>
+              <a href="/tags/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">#分治算法</a>
+            
+              <a href="/tags/Divide-and-Conquer/">#Divide and Conquer</a>
             
           </div>
         
@@ -576,15 +1048,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/posts/935c7c18" target="_self">
-          Part 5.3：最长公共子序列 (LCS)
+        <a href="/posts/b91ac887" target="_self">
+          Part 6.3：Z-Algorithm
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/935c7c18" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/b91ac887" target="_self">
         <div>
-          最长公共子序列（LCS）是动态规划在字符串问题上的经典应用。本文将从“代码比对”的直观场景入手，为你剖析 LCS 问题的二维 DP 解法，手把手推导状态转移方程，并展示如何通过回溯 DP 表找到具体的子序列，助你掌握这一面试高频题。
+          Z-Algorithm 是一种强大的线性时间字符串处理算法，它能高效计算字符串与其所有后缀的最长公共前缀。本文将从 Z-array 的定义入手，为你深入剖析其线性时间计算的精妙之处——Z-box 的利用，并通过详尽的图示、动画式案例和 Python 实现，助你掌握这个在模式匹配等领域大放异彩的算法。
         </div>
       </a>
 
@@ -592,8 +1064,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 21:00" pubdate>
-              2025-11-15
+            <time datetime="2025-11-16 00:30" pubdate>
+              2025-11-16
             </time>
           </div>
         
@@ -613,7 +1085,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-5%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="category-chain-item">Part 5：动态规划</a>
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
   
   
 
@@ -630,15 +1102,15 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">#动态规划</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">#算法基础</a>
             
-              <a href="/tags/DP/">#DP</a>
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
             
-              <a href="/tags/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/">#最长公共子序列</a>
+              <a href="/tags/%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">#模式匹配</a>
             
-              <a href="/tags/LCS/">#LCS</a>
+              <a href="/tags/Z-Algorithm/">#Z-Algorithm</a>
             
-              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/">#字符串算法</a>
+              <a href="/tags/Z-array/">#Z-array</a>
             
           </div>
         
@@ -652,15 +1124,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/posts/633a1b38" target="_self">
-          Part 2.6：堆与优先队列：O(log n) 的动态极值查找
+        <a href="/posts/bb72f8b1" target="_self">
+          Part 3.5：二分查找：O(log n) 的有序搜索艺术
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/633a1b38" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/bb72f8b1" target="_self">
         <div>
-          堆是一种特殊的完全二叉树，能在 O(log n) 时间内完成插入和删除最值操作。本文将深入剖析大顶堆和小顶堆的原理、堆化过程、数组实现，以及其在优先队列、Top-K 问题、堆排序等场景中的经典应用。
+          二分查找是在有序数组中进行高效搜索的经典算法。本文将深入讲解其 O(log n) 的原理、三种写法（左闭右闭、左闭右开、递归），并探讨其在查找边界、旋转数组等变体问题中的应用，助你彻底掌握这个面试必考算法。
         </div>
       </a>
 
@@ -668,8 +1140,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 20:30" pubdate>
-              2025-11-15
+            <time datetime="2025-11-16 00:00" pubdate>
+              2025-11-16
             </time>
           </div>
         
@@ -689,7 +1161,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-3%EF%BC%9A%E6%8E%92%E5%BA%8F%E4%B8%8E%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 3：排序与查找算法</a>
   
   
 
@@ -706,479 +1178,15 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
-            
-              <a href="/tags/%E5%A0%86/">#堆</a>
-            
-              <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">#优先队列</a>
-            
-              <a href="/tags/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91/">#完全二叉树</a>
-            
-              <a href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/">#堆排序</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/bc5c719c" target="_self">
-          Part 5.2：最长上升子序列 (LIS)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/bc5c719c" target="_self">
-        <div>
-          最长上升子序列（LIS）是动态规划中的经典问题，也是面试高频题。本文将从 O(n²) 的朴素 DP 解法入手，逐步优化到 O(n log n) 的贪心+二分查找解法，通过详尽的图示、动画式案例和 Python 实现，带你彻底攻克 LIS 问题。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 20:30" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-5%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="category-chain-item">Part 5：动态规划</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
+              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
             
               <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">#二分查找</a>
             
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">#动态规划</a>
+              <a href="/tags/Binary-Search/">#Binary Search</a>
             
-              <a href="/tags/DP/">#DP</a>
+              <a href="/tags/O-log-n/">#O(log n)</a>
             
-              <a href="/tags/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/">#最长上升子序列</a>
-            
-              <a href="/tags/LIS/">#LIS</a>
-            
-              <a href="/tags/%E8%B4%AA%E5%BF%83/">#贪心</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/add23264" target="_self">
-          Part 2.5：二叉树遍历：理解树的四种核心视角
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/add23264" target="_self">
-        <div>
-          树的遍历是所有树相关算法的基石。本文将深入讲解前序、中序、后序和层序这四种核心遍历方式，不仅提供递归和迭代（非递归）两种实现，还通过动画式案例剖析其执行流程和适用场景，让你真正掌握从不同视角“阅读”一棵树的能力。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 20:00" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">#二叉树</a>
-            
-              <a href="/tags/%E9%80%92%E5%BD%92/">#递归</a>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
-            
-              <a href="/tags/%E6%A0%88/">#栈</a>
-            
-              <a href="/tags/%E9%98%9F%E5%88%97/">#队列</a>
-            
-              <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">#树的遍历</a>
-            
-              <a href="/tags/DFS/">#DFS</a>
-            
-              <a href="/tags/BFS/">#BFS</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/5e813b19" target="_self">
-          Part 5.1：DP 入门：背包问题
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/5e813b19" target="_self">
-        <div>
-          动态规划（DP）是算法学习中的一座大山。本文将从最经典的 0-1 背包问题入手，用“小偷偷东西”的直观比喻，为你剖析 DP 的两大核心特性——最优子结构与重叠子问题，并手把手带你定义状态、推导状态转移方程，最终写出代码，助你迈出征服 DP 的第一步。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 20:00" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-5%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="category-chain-item">Part 5：动态规划</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">#算法基础</a>
-            
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">#动态规划</a>
-            
-              <a href="/tags/DP/">#DP</a>
-            
-              <a href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">#背包问题</a>
-            
-              <a href="/tags/0-1%E8%83%8C%E5%8C%85/">#0-1背包</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/3bc405d7" target="_self">
-          Part 2.4：树结构基础：从根到叶的层次艺术
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/3bc405d7" target="_self">
-        <div>
-          告别线性结构，进入非线性的树世界！本文将为你系统梳理树的核心概念与术语（节点、根、深度、高度等），介绍二叉树、满二叉树、完全二叉树等重要分类，并讲解树的两种主要存储方式（链式与数组），为后续深入学习树的遍历和高级树结构打下坚实基础。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 19:30" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">#二叉树</a>
-            
-              <a href="/tags/%E9%80%92%E5%BD%92/">#递归</a>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
-            
-              <a href="/tags/%E6%A0%91/">#树</a>
-            
-              <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">#树的遍历</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/98fa09" target="_self">
-          Part 4.9：二分图匹配：匈牙利算法
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/98fa09" target="_self">
-        <div>
-          匈牙利算法是求解二分图最大匹配问题的经典算法。本文将从"相亲配对"的直观比喻入手，为你剖析增广路的核心思想，并通过图示、动画式案例和 Python 实现，助你轻松掌握这一重要算法。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 19:30" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-4%EF%BC%9A%E5%9B%BE%E8%AE%BA%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 4：图论算法</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%9B%BE%E8%AE%BA/">#图论</a>
-            
-              <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/">#二分图</a>
-            
-              <a href="/tags/%E5%8C%B9%E9%85%8D/">#匹配</a>
-            
-              <a href="/tags/%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95/">#匈牙利算法</a>
-            
-              <a href="/tags/%E5%A2%9E%E5%B9%BF%E8%B7%AF/">#增广路</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/4ef8a3b7" target="_self">
-          Part 2.3：哈希表：O(1) 查找的黑魔法
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/4ef8a3b7" target="_self">
-        <div>
-          哈希表为何能实现近乎 O(1) 的查找速度？本文将为你揭开这层“黑魔法”的面纱，从哈希函数的设计到哈希冲突的经典解决方案（链地址法、开放地址法），通过图示、动画式案例和代码实战，让你彻底掌握这个在面试和工程中都至关重要的时间换空间利器。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 19:00" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
-            
-              <a href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8/">#哈希表</a>
-            
-              <a href="/tags/%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/">#哈希函数</a>
-            
-              <a href="/tags/%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81/">#哈希冲突</a>
-            
-              <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/">#散列表</a>
+              <a href="/tags/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/">#查找算法</a>
             
           </div>
         
@@ -1190,7 +1198,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
