@@ -1,0 +1,16 @@
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+_multiconfig.yml
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.deploy_git/
+.cache/
+

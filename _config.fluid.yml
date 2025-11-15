@@ -1,0 +1,112 @@
+# Fluid 主题配置
+# 详细配置请参考：https://hexo.fluid-dev.com/docs/guide/
+
+# 导航栏
+navbar:
+  blog_title: 我的技术博客
+  menu:
+    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
+    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
+
+# 首页
+index:
+  banner_img: /img/default.png
+  banner_img_height: 100
+  banner_mask_alpha: 0.3
+  slogan:
+    enable: true
+    text: 代码改变世界，学习成就未来
+  auto_excerpt:
+    enable: true
+
+# 文章页
+post:
+  banner_img: /img/default.png
+  banner_img_height: 70
+  banner_mask_alpha: 0.3
+  meta:
+    date:
+      enable: true
+      format: "YYYY-MM-DD"
+    category:
+      enable: true
+    tag:
+      enable: true
+  copyright:
+    enable: true
+    content: '本博客所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。'
+  prev_next:
+    enable: true
+  comments:
+    enable: false
+
+# 归档页
+archive:
+  banner_img: /img/default.png
+  banner_img_height: 80
+  banner_mask_alpha: 0.3
+
+# 分类页
+category:
+  banner_img: /img/default.png
+  banner_img_height: 80
+  banner_mask_alpha: 0.3
+
+# 标签页
+tag:
+  banner_img: /img/default.png
+  banner_img_height: 80
+  banner_mask_alpha: 0.3
+
+# 关于页
+about:
+  banner_img: /img/default.png
+  banner_img_height: 80
+  banner_mask_alpha: 0.3
+  avatar: /img/avatar.png
+  name: "技术博主"
+  intro: "热爱编程，专注于Java后端开发和算法学习"
+  icons:
+    - { class: "iconfont icon-github-fill", link: "https://github.com", tip: "GitHub" }
+
+# 页脚
+footer:
+  content: '
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+  '
+
+# 代码高亮
+code:
+  copy_btn: true
+  highlight:
+    enable: true
+    line_number: true
+    lib: "highlightjs"
+    highlightjs:
+      style: 'Github Gist'
+      bg_color: false
+
+# 搜索
+search:
+  enable: false
+
+# 懒加载
+lazyload:
+  enable: true
+  loading_img: /img/loading.gif
+  onlypost: false
+
+# 网页统计
+web_analytics:
+  enable: false
+
+# 暗色模式
+dark_mode:
+  enable: true
+  default: auto
+
