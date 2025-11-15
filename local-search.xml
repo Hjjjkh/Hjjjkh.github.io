@@ -515,9 +515,9 @@
       
       <tag>字符串</tag>
       
-      <tag>Trie</tag>
-      
       <tag>KMP</tag>
+      
+      <tag>Trie</tag>
       
       <tag>AC自动机</tag>
       
@@ -622,6 +622,8 @@
     
     <tags>
       
+      <tag>算法思想</tag>
+      
       <tag>数论</tag>
       
       <tag>质数</tag>
@@ -631,8 +633,6 @@
       <tag>快速幂</tag>
       
       <tag>密码学</tag>
-      
-      <tag>算法思想</tag>
       
     </tags>
     
@@ -772,11 +772,11 @@
       
       <tag>归并排序</tag>
       
-      <tag>算法思想</tag>
-      
       <tag>分治算法</tag>
       
       <tag>Divide and Conquer</tag>
+      
+      <tag>算法思想</tag>
       
     </tags>
     
