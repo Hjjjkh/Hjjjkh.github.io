@@ -1,19 +1,6 @@
-# robots.txt for https://Hjjjkh.github.io
-# 允许所有搜索引擎抓取
-
 User-agent: *
-Allow: /
-
-# 禁止抓取这些目录
 Disallow: /js/
 Disallow: /css/
 Disallow: /fonts/
-Disallow: /img/loading.gif
-
-# 站点地图
-Sitemap: https://Hjjjkh.github.io/sitemap.xml
-Sitemap: https://Hjjjkh.github.io/baidusitemap.xml
-
-# 爬虫访问频率限制
-Crawl-delay: 1
-
+Allow: /
+Sitemap: https://Hjjjkh.github.io/sitemap.xml,https://Hjjjkh.github.io/baidusitemap.xml
