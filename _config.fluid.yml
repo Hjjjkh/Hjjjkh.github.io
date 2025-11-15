@@ -131,7 +131,7 @@ fun_features:
   progressbar:
     enable: true
     height_px: 3
-    color: "#2563eb"
+    color: "#0366d6"
     # See: https://github.com/rstacruz/nprogress
     options: { showSpinner: false, trickleSpeed: 100 }
 
@@ -157,8 +157,8 @@ color:
 
   # 顶部菜单背景色
   # Color of navigation bar background
-  navbar_bg_color: "#1e3a8a"
-  navbar_bg_color_dark: "#1e293b"
+  navbar_bg_color: "#2f4154"
+  navbar_bg_color_dark: "#1f3144"
 
   # 顶部菜单字体色
   # Color of navigation bar text
@@ -197,13 +197,13 @@ color:
 
   # 文章超链接字体色
   # Color of post link
-  post_link_color: "#2563eb"
-  post_link_color_dark: "#60a5fa"
+  post_link_color: "#0366d6"
+  post_link_color_dark: "#30a9de"
 
   # 超链接悬浮时字体色
   # Color of link when hovering
-  link_hover_color: "#1d4ed8"
-  link_hover_color_dark: "#3b82f6"
+  link_hover_color: "#0366d6"
+  link_hover_color_dark: "#30a9de"
 
   # 超链接悬浮背景色
   # Color of link background when hovering
@@ -236,10 +236,10 @@ color:
 # 主题字体配置
 # Font
 font:
-  font_size: 16px
-  font_family:
-  letter_spacing: 0.02em
-  code_font_size: 85%
+  font_size: 17px
+  font_family: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Microsoft YaHei", sans-serif'
+  letter_spacing: 0.03em
+  code_font_size: 90%
 
 # 指定自定义 .js 文件路径，支持列表；路径是相对 source 目录，如 /js/custom.js 对应存放目录 source/js/custom.js
 # Specify the path of your custom js file, support list. The path is relative to the source directory, such as `/js/custom.js` corresponding to the directory `source/js/custom.js`
@@ -248,6 +248,7 @@ custom_js:
 # 指定自定义 .css 文件路径，用法和 custom_js 相同
 # The usage is the same as custom_js
 custom_css:
+  - /css/custom.css
 
 # 网页访问统计
 # Analysis of website visitors
