@@ -96,7 +96,7 @@ npm install
 
 ```bash
 # 启动本地服务器
-pnpm hexo server
+npx hexo server
 # 或
 npm run server
 
@@ -107,10 +107,10 @@ npm run server
 
 ```bash
 # 清理缓存和生成的文件
-pnpm hexo clean
+npx hexo clean
 
 # 重新生成
-pnpm hexo generate
+npx hexo generate
 ```
 
 ## ✍️ 写作指南
@@ -321,11 +321,14 @@ hexo deploy
 ### 2. 如何更换主题？
 
 ```bash
-# 安装新主题
+# 1. 安装新主题
 npm install hexo-theme-xxx
 
-# 修改 _config.yml
+# 2. 修改 _config.yml
 theme: xxx
+
+# 3. 如果主题有配置文件，创建对应的配置
+# 例如：_config.xxx.yml
 ```
 
 ### 3. 如何添加新页面？
