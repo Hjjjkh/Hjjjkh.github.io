@@ -19,7 +19,7 @@
   
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
-  <meta name="theme-color" content="#2f4154">
+  <meta name="theme-color" content="#1e3a8a">
   <meta name="author" content="李国强">
   <meta name="keywords" content="Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强">
   
@@ -74,11 +74,15 @@
 
 
 
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"hjjjkh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"hjjjkh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#2563eb","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -100,7 +104,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 100vh;">
+<div class="header-inner" style="height: 80vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -212,13 +216,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="代码改变世界，学习成就未来"></span>
+            <span id="subtitle" data-typed-text="探索技术边界 | 分享编程智慧 | 记录成长足迹"></span>
           
         </div>
 
@@ -242,7 +246,7 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          style="margin-top: 0">
+          >
           
           <div class="container">
             <div class="row">
@@ -256,15 +260,91 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+          <i class="index-pin iconfont icon-top" title="Pin on top"></i>
+        
         <a href="/posts/undefined" target="_self">
-          Fluid 主题深度美化与增强：打造独一无二的 Hexo 博客
+          Hexo 博客双分支部署实战：源码与部署分离的最佳实践
         </a>
       </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/undefined" target="_self">
         <div>
-          深度解析 Fluid 主题的配置与美化技巧，包括首页布局、导航栏定制、评论系统、统计分析、自定义样式等，帮助你打造一个独一无二的 Hexo 博客。
+          前言在使用 Hexo + GitHub Pages 搭建博客时，我们经常会遇到一个问题：如何同时管理源代码和部署文件？传统的做法是将源代码和生成的静态文件混在一起，或者使用两个仓库分别管理。今天，我将分享一个更优雅的解决方案：使用双分支策略，实现源码与部署的完美分离。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-15 14:20" pubdate>
+              2025-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-%E9%83%A8%E7%BD%B2/" class="category-chain-item">Hexo 部署</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Hexo/">#Hexo</a>
+            
+              <a href="/tags/GitHub-Pages/">#GitHub Pages</a>
+            
+              <a href="/tags/CI-CD/">#CI/CD</a>
+            
+              <a href="/tags/Git/">#Git</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/undefined" target="_self">
+          Fluid 主题配置与美化实践
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/undefined" target="_self">
+        <div>
+          Fluid 主题的配置与美化技巧，包括首页布局、导航栏定制、评论系统、统计分析、自定义样式等实用功能的配置方法。
         </div>
       </a>
 
@@ -288,8 +368,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Hexo-%E4%BC%98%E5%8C%96/" class="category-chain-item">Hexo 优化</a>
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/%E4%B8%BB%E9%A2%98%E5%AE%9A%E5%88%B6/" class="category-chain-item">主题定制</a>
+  
+  
+
   
 
       </span>
@@ -324,14 +411,14 @@
       <h2 class="index-header">
         
         <a href="/posts/undefined" target="_self">
-          Hexo 博客加载速度优化实战：从 3 秒到 1 秒的飞跃
+          Hexo 博客性能优化实践：加载速度提升指南
         </a>
       </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/undefined" target="_self">
         <div>
-          详细记录 Hexo 博客的性能优化实战过程，包括 DNS 预解析、资源压缩、CDN 加速、图片懒加载等技术，将博客加载时间从 3 秒优化到 1 秒以内。
+          详细记录 Hexo 博客的性能优化实战过程，包括 DNS 预解析、资源压缩、CDN 加速、图片懒加载等技术，有效提升博客加载速度。
         </div>
       </a>
 
@@ -355,8 +442,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Hexo-%E4%BC%98%E5%8C%96/" class="category-chain-item">Hexo 优化</a>
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="category-chain-item">Hexo 性能优化</a>
+  
+  
+
   
 
       </span>
@@ -393,14 +487,47 @@
       <h2 class="index-header">
         
         <a href="/posts/undefined" target="_self">
-          Hexo 博客终极 SEO 优化指南
+          Hello World
         </a>
       </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/undefined" target="_self">
         <div>
-          一份全面的 Hexo 博客 SEO 优化指南，涵盖 Sitemap、robots.txt、关键词、链接优化、CDN 加速等方面，帮助你的博客在搜索引擎中获得更好的排名。
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-15 14:17" pubdate>
+              2025-11-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/undefined" target="_self">
+          Hexo 博客 SEO 优化实践指南
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/undefined" target="_self">
+        <div>
+          一份实用的 Hexo 博客 SEO 优化指南，涵盖 Sitemap、robots.txt、关键词、链接优化、CDN 加速等方面，帮助你的博客在搜索引擎中获得更好的排名。
         </div>
       </a>
 
@@ -424,8 +551,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Hexo-%E4%BC%98%E5%8C%96/" class="category-chain-item">Hexo 优化</a>
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-SEO/" class="category-chain-item">Hexo SEO</a>
+  
+  
+
   
 
       </span>
@@ -448,39 +582,6 @@
               <a href="/tags/%E4%BC%98%E5%8C%96/">#优化</a>
             
           </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/undefined" target="_self">
-          Hello World
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/undefined" target="_self">
-        <div>
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 13:59" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
         
       </div>
     </article>
@@ -524,8 +625,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" class="category-chain-item">后端开发</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/Java-%E5%9F%BA%E7%A1%80/" class="category-chain-item">Java 基础</a>
+  
+  
+
   
 
       </span>
@@ -589,8 +697,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="category-chain-item">数据结构与算法</a>
+  <a href="/categories/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">算法与数据结构</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
   
 
       </span>
@@ -656,8 +771,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5/" class="category-chain-item">项目实践</a>
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" class="category-chain-item">后端开发</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+
   
 
       </span>
