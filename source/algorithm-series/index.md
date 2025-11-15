@@ -186,9 +186,10 @@ date: 2025-11-15 16:25:00
 
 如果您在学习过程中有任何疑问或建议，欢迎通过以下方式与我交流：
 
-- 📧 邮件：[您的邮箱]
-- 💬 评论：在每篇文章下方留言
-- 🌟 GitHub：[您的 GitHub 仓库链接]
+- 📧 **邮件**: [3480218956@qq.com](mailto:3480218956@qq.com)
+- 💬 **评论**: 在每篇文章下方留言 (已启用 Gitalk 评论系统)
+- 🌟 **GitHub**: [Hjjjkh/Hjjjkh.github.io](https://github.com/Hjjjkh/Hjjjkh.github.io)
+- 🏠 **博客主页**: [https://hjjjkh.github.io](https://hjjjkh.github.io)
 
 ---
 

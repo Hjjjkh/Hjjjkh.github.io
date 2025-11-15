@@ -116,6 +116,9 @@ deploy:
   repo: https://github.com/Hjjjkh/Hjjjkh.github.io.git
   branch: main
 
+# Gitalk
+gitalk:
+
 # SEO优化 - Sitemap配置
 sitemap:
   path: sitemap.xml
@@ -163,3 +166,10 @@ neat_js:
   compress:
   exclude:
     - '*.min.js'
+
+# 本地搜索
+search:
+  path: local-search.xml
+  field: post
+  format: html
+  limit: 10000
