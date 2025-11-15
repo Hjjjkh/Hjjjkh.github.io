@@ -68,7 +68,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           publish_branch: main  # 部署到 main 分支
-          force_orphan: false  # 不使用孤立分支，保留历史记录
+          force_orphan: true  # 使用孤立分支，每次全新部署
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Deploy: ${{ github.event.head_commit.message }}'
