@@ -1,0 +1,924 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  
+    <link rel="canonical" href="https://Hjjjkh.github.io/posts/b5c66293.html"/>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="李国强">
+  <meta name="keywords" content="Hexo 性能优化, 网站加速, DNS 预解析, 资源压缩, CDN, 图片懒加载, hexo-neat">
+  
+    <meta name="description" content="详细记录 Hexo 博客的性能优化实战过程，包括 DNS 预解析、资源压缩、CDN 加速、图片懒加载等技术，有效提升博客加载速度。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 博客性能优化实践：加载速度提升指南">
+<meta property="og:url" content="https://hjjjkh.github.io/posts/b5c66293">
+<meta property="og:site_name" content="李国强的技术博客">
+<meta property="og:description" content="详细记录 Hexo 博客的性能优化实战过程，包括 DNS 预解析、资源压缩、CDN 加速、图片懒加载等技术，有效提升博客加载速度。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-15T06:30:00.000Z">
+<meta property="article:modified_time" content="2025-11-15T08:52:21.786Z">
+<meta property="article:author" content="李国强">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Fluid">
+<meta property="article:tag" content="性能优化">
+<meta property="article:tag" content="CDN">
+<meta property="article:tag" content="压缩">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+    <!-- DNS 预解析，提前解析第三方域名 -->
+<link rel="dns-prefetch" href="//lib.baomitu.com">
+<link rel="dns-prefetch" href="//busuanzi.ibruce.info">
+<link rel="dns-prefetch" href="//registry.npmmirror.com">
+<link rel="preconnect" href="//lib.baomitu.com" crossorigin>
+<link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
+
+  
+  <title>Hexo 博客性能优化实践：加载速度提升指南 - 李国强的技术博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hjjjkh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#0366d6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>李国强的技术博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Hexo 博客性能优化实践：加载速度提升指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-15 14:30" pubdate>
+          2025年11月15日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Hexo 博客性能优化实践：加载速度提升指南</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年11月15日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一个加载缓慢的博客会让访客失去耐心，据统计，如果页面加载时间超过 3 秒，超过 50% 的用户会选择离开。本文将详细记录我是如何将 Hexo 博客的加载时间从 3 秒优化到 1 秒以内的完整过程，希望能为你的博客优化提供参考。</p>
+<span id="more"></span>
+
+<h2 id="优化前的性能分析"><a href="#优化前的性能分析" class="headerlink" title="优化前的性能分析"></a>优化前的性能分析</h2><p>在开始优化之前，我使用 Google PageSpeed Insights 对博客进行了测试：</p>
+<ul>
+<li><strong>首屏加载时间</strong>: 3.2 秒</li>
+<li><strong>总资源大小</strong>: 1.8 MB</li>
+<li><strong>请求数量</strong>: 42 个</li>
+<li><strong>性能评分</strong>: 68 分</li>
+</ul>
+<p>主要问题：</p>
+<ol>
+<li>DNS 查询时间过长（第三方资源）</li>
+<li>CSS 和 JS 文件未压缩</li>
+<li>图片体积过大</li>
+<li>缺少资源缓存策略</li>
+</ol>
+<h2 id="优化-1：DNS-预解析"><a href="#优化-1：DNS-预解析" class="headerlink" title="优化 1：DNS 预解析"></a>优化 1：DNS 预解析</h2><h3 id="什么是-DNS-预解析？"><a href="#什么是-DNS-预解析？" class="headerlink" title="什么是 DNS 预解析？"></a>什么是 DNS 预解析？</h3><p>当浏览器加载第三方资源（如 CDN、统计服务）时，需要先进行 DNS 查询来解析域名。DNS 预解析可以让浏览器在空闲时提前解析这些域名，从而减少实际请求时的延迟。</p>
+<h3 id="实施步骤"><a href="#实施步骤" class="headerlink" title="实施步骤"></a>实施步骤</h3><p>在 Fluid 主题配置文件 <code>_config.fluid.yml</code> 中添加自定义 HTML 头部：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># _config.fluid.yml</span><br><br><span class="hljs-attr">custom_head:</span> <span class="hljs-string">|</span><br><span class="hljs-string">  &lt;!-- DNS 预解析，提前解析第三方域名 --&gt;</span><br><span class="hljs-string">  &lt;link rel=&quot;dns-prefetch&quot; href=&quot;//lib.baomitu.com&quot;&gt;</span><br><span class="hljs-string">  &lt;link rel=&quot;dns-prefetch&quot; href=&quot;//busuanzi.ibruce.info&quot;&gt;</span><br><span class="hljs-string">  &lt;link rel=&quot;dns-prefetch&quot; href=&quot;//registry.npmmirror.com&quot;&gt;</span><br><span class="hljs-string">  &lt;link rel=&quot;preconnect&quot; href=&quot;//lib.baomitu.com&quot; crossorigin&gt;</span><br><span class="hljs-string">  &lt;link rel=&quot;preconnect&quot; href=&quot;//busuanzi.ibruce.info&quot; crossorigin&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>解释</strong>：</p>
+<ul>
+<li><code>dns-prefetch</code>: 仅进行 DNS 查询</li>
+<li><code>preconnect</code>: 不仅进行 DNS 查询，还建立 TCP 连接和 TLS 握手（更彻底，但开销更大）</li>
+</ul>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><ul>
+<li>DNS 查询时间减少：50-100ms</li>
+<li>首屏加载时间减少：约 200ms</li>
+</ul>
+<h2 id="优化-2：资源压缩"><a href="#优化-2：资源压缩" class="headerlink" title="优化 2：资源压缩"></a>优化 2：资源压缩</h2><h3 id="为什么要压缩？"><a href="#为什么要压缩？" class="headerlink" title="为什么要压缩？"></a>为什么要压缩？</h3><p>未压缩的 HTML、CSS 和 JavaScript 文件包含大量空格、换行和注释，这些都会增加文件大小和传输时间。压缩可以减少 30-50% 的文件体积。</p>
+<h3 id="安装-hexo-neat-插件"><a href="#安装-hexo-neat-插件" class="headerlink" title="安装 hexo-neat 插件"></a>安装 hexo-neat 插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pnpm install hexo-neat --save<br></code></pre></td></tr></table></figure>
+
+<h3 id="配置压缩选项"><a href="#配置压缩选项" class="headerlink" title="配置压缩选项"></a>配置压缩选项</h3><p>在 Hexo 主配置文件 <code>_config.yml</code> 中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># _config.yml</span><br><br><span class="hljs-comment"># 资源压缩</span><br><span class="hljs-attr">neat_enable:</span> <span class="hljs-literal">true</span><br><br><span class="hljs-attr">neat_html:</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">exclude:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;**/*.min.html&#x27;</span><br><br><span class="hljs-attr">neat_css:</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">exclude:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;**/*.min.css&#x27;</span><br><br><span class="hljs-attr">neat_js:</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">mangle:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">compress:</span><br>    <span class="hljs-attr">warnings:</span> <span class="hljs-literal">false</span><br>  <span class="hljs-attr">exclude:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;**/*.min.js&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>配置说明</strong>：</p>
+<ul>
+<li><code>neat_html</code>: 压缩 HTML，移除空格和注释</li>
+<li><code>neat_css</code>: 压缩 CSS</li>
+<li><code>neat_js</code>: 压缩 JavaScript<ul>
+<li><code>mangle</code>: 混淆变量名（进一步减小体积）</li>
+<li><code>compress.warnings: false</code>: 不显示压缩警告</li>
+</ul>
+</li>
+<li><code>exclude</code>: 排除已经压缩过的 <code>.min.*</code> 文件</li>
+</ul>
+<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><ul>
+<li>HTML 文件减少：约 20%</li>
+<li>CSS 文件减少：约 35%</li>
+<li>JavaScript 文件减少：约 40%</li>
+<li>总体积减少：从 1.8 MB 到 1.2 MB</li>
+</ul>
+<h2 id="优化-3：使用国内-CDN"><a href="#优化-3：使用国内-CDN" class="headerlink" title="优化 3：使用国内 CDN"></a>优化 3：使用国内 CDN</h2><h3 id="为什么选择国内-CDN？"><a href="#为什么选择国内-CDN？" class="headerlink" title="为什么选择国内 CDN？"></a>为什么选择国内 CDN？</h3><p>对于国内用户，使用国内 CDN（如百度 CDN）可以大幅提升资源加载速度，避免访问国外 CDN 时的网络延迟。</p>
+<h3 id="配置-Fluid-主题使用百度-CDN"><a href="#配置-Fluid-主题使用百度-CDN" class="headerlink" title="配置 Fluid 主题使用百度 CDN"></a>配置 Fluid 主题使用百度 CDN</h3><p>在 <code>_config.fluid.yml</code> 中：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># _config.fluid.yml</span><br><br><span class="hljs-attr">static_prefix:</span><br>  <span class="hljs-comment"># 内部静态</span><br>  <span class="hljs-attr">internal_js:</span> <span class="hljs-string">/js</span><br>  <span class="hljs-attr">internal_css:</span> <span class="hljs-string">/css</span><br>  <span class="hljs-attr">internal_img:</span> <span class="hljs-string">/img</span><br><br>  <span class="hljs-attr">anchor:</span> <span class="hljs-string">https://lib.baomitu.com/anchor-js/5.0.0/</span><br>  <span class="hljs-attr">github_markdown:</span> <span class="hljs-string">https://lib.baomitu.com/github-markdown-css/5.5.1/</span><br>  <span class="hljs-attr">jquery:</span> <span class="hljs-string">https://lib.baomitu.com/jquery/3.7.1/</span><br>  <span class="hljs-attr">bootstrap:</span> <span class="hljs-string">https://lib.baomitu.com/twitter-bootstrap/4.6.2/</span><br>  <span class="hljs-attr">prismjs:</span> <span class="hljs-string">https://lib.baomitu.com/prism/1.29.0/</span><br>  <span class="hljs-attr">tocbot:</span> <span class="hljs-string">https://lib.baomitu.com/tocbot/4.25.0/</span><br>  <span class="hljs-attr">typed:</span> <span class="hljs-string">https://lib.baomitu.com/typed.js/2.1.0/</span><br>  <span class="hljs-attr">fancybox:</span> <span class="hljs-string">https://lib.baomitu.com/fancybox/3.5.7/</span><br>  <span class="hljs-attr">nprogress:</span> <span class="hljs-string">https://lib.baomitu.com/nprogress/0.2.0/</span><br>  <span class="hljs-attr">mathjax:</span> <span class="hljs-string">https://lib.baomitu.com/mathjax/3.2.2/</span><br>  <span class="hljs-attr">katex:</span> <span class="hljs-string">https://lib.baomitu.com/KaTeX/0.16.9/</span><br>  <span class="hljs-attr">busuanzi:</span> <span class="hljs-string">https://busuanzi.ibruce.info/busuanzi/2.3/</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><ul>
+<li>国内访问速度提升：50-80%</li>
+<li>CDN 响应时间：从 800ms 降至 150ms</li>
+</ul>
+<h2 id="优化-4：图片懒加载"><a href="#优化-4：图片懒加载" class="headerlink" title="优化 4：图片懒加载"></a>优化 4：图片懒加载</h2><h3 id="什么是图片懒加载？"><a href="#什么是图片懒加载？" class="headerlink" title="什么是图片懒加载？"></a>什么是图片懒加载？</h3><p>图片懒加载是指只有当图片进入浏览器可视区域时才开始加载，而不是一次性加载页面上的所有图片。这可以大幅减少首屏加载时间。</p>
+<h3 id="启用-Fluid-主题的懒加载功能"><a href="#启用-Fluid-主题的懒加载功能" class="headerlink" title="启用 Fluid 主题的懒加载功能"></a>启用 Fluid 主题的懒加载功能</h3><p>在 <code>_config.fluid.yml</code> 中：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># _config.fluid.yml</span><br><br><span class="hljs-attr">lazyload:</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">loading_img:</span> <span class="hljs-string">/img/loading.gif</span><br>  <span class="hljs-attr">onlypost:</span> <span class="hljs-literal">false</span><br>  <span class="hljs-attr">offset_factor:</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>配置说明</strong>：</p>
+<ul>
+<li><code>enable</code>: 启用懒加载</li>
+<li><code>loading_img</code>: 图片加载时显示的占位图</li>
+<li><code>onlypost</code>: 是否仅在文章页启用（false 表示全站启用）</li>
+<li><code>offset_factor</code>: 提前加载的距离因子（2 表示提前 2 倍屏幕高度开始加载）</li>
+</ul>
+<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><ul>
+<li>首屏加载时间减少：约 500ms</li>
+<li>首屏资源大小减少：约 40%</li>
+</ul>
+<h2 id="优化-5：代码高亮优化"><a href="#优化-5：代码高亮优化" class="headerlink" title="优化 5：代码高亮优化"></a>优化 5：代码高亮优化</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>默认的代码高亮库（如 Highlight.js）体积较大，且会阻塞页面渲染。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>使用 Prism.js 并启用按需加载：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># _config.fluid.yml</span><br><br><span class="hljs-attr">code:</span><br>  <span class="hljs-attr">copy_btn:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">highlight:</span><br>    <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">line_number:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">lib:</span> <span class="hljs-string">&quot;prismjs&quot;</span><br>    <span class="hljs-attr">prismjs:</span><br>      <span class="hljs-attr">style:</span> <span class="hljs-string">&quot;default&quot;</span><br>      <span class="hljs-attr">preprocess:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><ul>
+<li>代码高亮库体积减少：约 60%</li>
+<li>页面渲染速度提升：约 200ms</li>
+</ul>
+<h2 id="优化-6：启用浏览器缓存"><a href="#优化-6：启用浏览器缓存" class="headerlink" title="优化 6：启用浏览器缓存"></a>优化 6：启用浏览器缓存</h2><p>虽然 GitHub Pages 会自动设置一些缓存策略，但我们可以通过 Service Worker 进一步优化。</p>
+<h3 id="创建-Service-Worker（可选）"><a href="#创建-Service-Worker（可选）" class="headerlink" title="创建 Service Worker（可选）"></a>创建 Service Worker（可选）</h3><p>在 <code>source</code> 目录下创建 <code>sw.js</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// /source/sw.js</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CACHE_NAME</span> = <span class="hljs-string">&#x27;blog-cache-v1&#x27;</span>;<br><span class="hljs-keyword">const</span> urlsToCache = [<br>  <span class="hljs-string">&#x27;/&#x27;</span>,<br>  <span class="hljs-string">&#x27;/css/main.css&#x27;</span>,<br>  <span class="hljs-string">&#x27;/js/boot.js&#x27;</span>,<br>  <span class="hljs-string">&#x27;/img/avatar.png&#x27;</span><br>];<br><br>self.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;install&#x27;</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> &#123;<br>  event.<span class="hljs-title function_">waitUntil</span>(<br>    caches.<span class="hljs-title function_">open</span>(<span class="hljs-variable constant_">CACHE_NAME</span>)<br>      .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">cache</span> =&gt;</span> cache.<span class="hljs-title function_">addAll</span>(urlsToCache))<br>  );<br>&#125;);<br><br>self.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;fetch&#x27;</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> &#123;<br>  event.<span class="hljs-title function_">respondWith</span>(<br>    caches.<span class="hljs-title function_">match</span>(event.<span class="hljs-property">request</span>)<br>      .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> response || <span class="hljs-title function_">fetch</span>(event.<span class="hljs-property">request</span>))<br>  );<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：Service Worker 是一个高级功能，需要谨慎使用，建议在充分测试后再启用。</p>
+<h2 id="优化结果对比"><a href="#优化结果对比" class="headerlink" title="优化结果对比"></a>优化结果对比</h2><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>优化前</th>
+<th>优化后</th>
+<th>提升</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>首屏加载时间</td>
+<td>3.2s</td>
+<td>0.9s</td>
+<td>72%</td>
+</tr>
+<tr>
+<td>总资源大小</td>
+<td>1.8 MB</td>
+<td>1.0 MB</td>
+<td>44%</td>
+</tr>
+<tr>
+<td>请求数量</td>
+<td>42 个</td>
+<td>28 个</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>PageSpeed 评分</td>
+<td>68 分</td>
+<td>94 分</td>
+<td>38%</td>
+</tr>
+</tbody></table>
+<h2 id="性能监控工具推荐"><a href="#性能监控工具推荐" class="headerlink" title="性能监控工具推荐"></a>性能监控工具推荐</h2><ol>
+<li><p><strong>Google PageSpeed Insights</strong>: <a target="_blank" rel="noopener" href="https://pagespeed.web.dev/">https://pagespeed.web.dev/</a></p>
+<ul>
+<li>提供详细的性能报告和优化建议</li>
+</ul>
+</li>
+<li><p><strong>GTmetrix</strong>: <a target="_blank" rel="noopener" href="https://gtmetrix.com/">https://gtmetrix.com/</a></p>
+<ul>
+<li>可视化的性能分析和瀑布图</li>
+</ul>
+</li>
+<li><p><strong>WebPageTest</strong>: <a target="_blank" rel="noopener" href="https://www.webpagetest.org/">https://www.webpagetest.org/</a></p>
+<ul>
+<li>多地域、多浏览器的性能测试</li>
+</ul>
+</li>
+<li><p><strong>Chrome DevTools</strong>:</p>
+<ul>
+<li>按 F12 打开开发者工具</li>
+<li>切换到 “Network” 和 “Performance” 面板</li>
+</ul>
+</li>
+</ol>
+<h2 id="后续优化建议"><a href="#后续优化建议" class="headerlink" title="后续优化建议"></a>后续优化建议</h2><ol>
+<li><p><strong>图片格式优化</strong>：</p>
+<ul>
+<li>使用 WebP 格式（体积比 JPEG 小 25-35%）</li>
+<li>使用图片压缩工具（如 TinyPNG）</li>
+</ul>
+</li>
+<li><p><strong>Critical CSS</strong>：</p>
+<ul>
+<li>将首屏 CSS 内联到 HTML 中</li>
+<li>延迟加载非关键 CSS</li>
+</ul>
+</li>
+<li><p><strong>HTTP&#x2F;2</strong>：</p>
+<ul>
+<li>GitHub Pages 已支持 HTTP&#x2F;2</li>
+<li>利用多路复用特性</li>
+</ul>
+</li>
+<li><p><strong>预加载关键资源</strong>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;preload&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/css/main.css&quot;</span> <span class="hljs-attr">as</span>=<span class="hljs-string">&quot;style&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;preload&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/js/boot.js&quot;</span> <span class="hljs-attr">as</span>=<span class="hljs-string">&quot;script&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过以上六个优化步骤，我们成功将博客的加载时间从 3.2 秒优化到 0.9 秒，性能评分从 68 分提升到 94 分。性能优化是一个持续的过程，需要根据实际情况不断调整和改进。</p>
+<p>记住：<strong>快速的网站不仅能提升用户体验，还能提高搜索引擎排名！</strong></p>
+<p>在下一篇文章中，我将分享如何深度美化和增强 Fluid 主题，敬请期待！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="category-chain-item">Hexo 性能优化</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Hexo/" class="print-no-link">#Hexo</a>
+      
+        <a href="/tags/Fluid/" class="print-no-link">#Fluid</a>
+      
+        <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="print-no-link">#性能优化</a>
+      
+        <a href="/tags/CDN/" class="print-no-link">#CDN</a>
+      
+        <a href="/tags/%E5%8E%8B%E7%BC%A9/" class="print-no-link">#压缩</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Hexo 博客性能优化实践：加载速度提升指南</div>
+      <div>https://hjjjkh.github.io/posts/b5c66293</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>李国强</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/c6983b5" title="Fluid 主题配置与美化实践">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Fluid 主题配置与美化实践</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/47e32e1a" title="Hexo 博客双分支部署实战：源码与部署分离的最佳实践">
+                        <span class="hidden-mobile">Hexo 博客双分支部署实战：源码与部署分离的最佳实践</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,871 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  
+    <link rel="canonical" href="https://Hjjjkh.github.io/posts/633a1b38.html"/>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="李国强">
+  <meta name="keywords" content="Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强">
+  
+    <meta name="description" content="堆是一种特殊的完全二叉树，能在 O(log n) 时间内完成插入和删除最值操作。本文将深入剖析大顶堆和小顶堆的原理、堆化过程、数组实现，以及其在优先队列、Top-K 问题、堆排序等场景中的经典应用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Part 2.6：堆与优先队列：O(log n) 的动态极值查找">
+<meta property="og:url" content="https://hjjjkh.github.io/posts/633a1b38">
+<meta property="og:site_name" content="李国强的技术博客">
+<meta property="og:description" content="堆是一种特殊的完全二叉树，能在 O(log n) 时间内完成插入和删除最值操作。本文将深入剖析大顶堆和小顶堆的原理、堆化过程、数组实现，以及其在优先队列、Top-K 问题、堆排序等场景中的经典应用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-15T12:30:00.000Z">
+<meta property="article:modified_time" content="2025-11-15T08:52:21.802Z">
+<meta property="article:author" content="李国强">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="堆">
+<meta property="article:tag" content="优先队列">
+<meta property="article:tag" content="完全二叉树">
+<meta property="article:tag" content="堆排序">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+    <!-- DNS 预解析，提前解析第三方域名 -->
+<link rel="dns-prefetch" href="//lib.baomitu.com">
+<link rel="dns-prefetch" href="//busuanzi.ibruce.info">
+<link rel="dns-prefetch" href="//registry.npmmirror.com">
+<link rel="preconnect" href="//lib.baomitu.com" crossorigin>
+<link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
+
+  
+  <title>Part 2.6：堆与优先队列：O(log n) 的动态极值查找 - 李国强的技术博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hjjjkh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#0366d6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>李国强的技术博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Part 2.6：堆与优先队列：O(log n) 的动态极值查找"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-15 20:30" pubdate>
+          2025年11月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Part 2.6：堆与优先队列：O(log n) 的动态极值查找</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年11月15日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="引言：如何快速找到”最重要”的任务？"><a href="#引言：如何快速找到”最重要”的任务？" class="headerlink" title="引言：如何快速找到”最重要”的任务？"></a>引言：如何快速找到”最重要”的任务？</h2><p>想象你是一个操作系统的任务调度器，面前有成百上千个任务等待执行。每个任务都有一个优先级。你需要<strong>始终</strong>执行优先级最高的任务。</p>
+<p>如果用普通数组存储这些任务，每次找到优先级最高的任务需要 <code>O(n)</code> 时间。如果用排序数组，虽然查找最值是 <code>O(1)</code>，但插入新任务需要 <code>O(n)</code> 时间。有没有一种数据结构，能同时高效地完成”插入”和”取出最值”这两个操作呢？</p>
+<p>答案就是我们今天的主角——**堆 (Heap)<strong>，以及基于堆实现的</strong>优先队列 (Priority Queue)**。</p>
+<p><strong>为什么堆如此重要？</strong></p>
+<ul>
+<li><strong>面试价值</strong>：堆是面试中的高频考点。Top-K 问题、数据流中的中位数、合并 K 个有序链表……这些经典题目的最优解都离不开堆。</li>
+<li><strong>工程价值</strong>：操作系统的任务调度、网络数据包的优先级处理、Dijkstra 最短路径算法……堆在系统底层和算法优化中无处不在。</li>
+</ul>
+<p>本文将带你深入理解堆的原理、实现和应用，让你掌握这个强大的”动态极值查找”利器。</p>
+<h2 id="1-堆的核心原理"><a href="#1-堆的核心原理" class="headerlink" title="1. 堆的核心原理"></a>1. 堆的核心原理</h2><h3 id="直觉：一个”半有序”的完全二叉树"><a href="#直觉：一个”半有序”的完全二叉树" class="headerlink" title="直觉：一个”半有序”的完全二叉树"></a>直觉：一个”半有序”的完全二叉树</h3><p>堆是一棵<strong>完全二叉树</strong>，它满足一个特殊的性质——**堆性质 (Heap Property)**：</p>
+<ul>
+<li><strong>大顶堆 (Max Heap)<strong>：每个节点的值都</strong>大于或等于</strong>其子节点的值。因此，根节点是整棵树的最大值。</li>
+<li><strong>小顶堆 (Min Heap)<strong>：每个节点的值都</strong>小于或等于</strong>其子节点的值。因此，根节点是整棵树的最小值。</li>
+</ul>
+<p>堆不要求左右子树之间有任何大小关系，只要求父节点与子节点之间的关系。这使得堆比二叉搜索树更”宽松”，但也足以让我们快速找到最值。</p>
+<h3 id="关键图示：大顶堆与小顶堆"><a href="#关键图示：大顶堆与小顶堆" class="headerlink" title="关键图示：大顶堆与小顶堆"></a>关键图示：大顶堆与小顶堆</h3><blockquote>
+<p><strong>图示标题：大顶堆示例</strong></p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nix">     <span class="hljs-number">90</span><br>    <span class="hljs-symbol">/</span>  \<br>  <span class="hljs-number">80</span>    <span class="hljs-number">70</span><br> <span class="hljs-symbol">/</span> \    <span class="hljs-symbol">/</span><br><span class="hljs-number">50</span>  <span class="hljs-number">60</span> <span class="hljs-number">40</span><br></code></pre></td></tr></table></figure>
+<p>每个父节点都大于其子节点。根节点 90 是最大值。</p>
+</blockquote>
+<blockquote>
+<p><strong>图示标题：小顶堆示例</strong></p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nix">     <span class="hljs-number">10</span><br>    <span class="hljs-symbol">/</span>  \<br>  <span class="hljs-number">20</span>    <span class="hljs-number">30</span><br> <span class="hljs-symbol">/</span> \    <span class="hljs-symbol">/</span><br><span class="hljs-number">40</span>  <span class="hljs-number">50</span> <span class="hljs-number">60</span><br></code></pre></td></tr></table></figure>
+<p>每个父节点都小于其子节点。根节点 10 是最小值。</p>
+</blockquote>
+<h3 id="数组实现"><a href="#数组实现" class="headerlink" title="数组实现"></a>数组实现</h3><p>由于堆是完全二叉树，我们可以用<strong>数组</strong>来高效地存储它。</p>
+<p><strong>索引关系</strong> (假设根节点索引为 0)：</p>
+<ul>
+<li>父节点索引 <code>i</code> 的左子节点索引：<code>2*i + 1</code></li>
+<li>父节点索引 <code>i</code> 的右子节点索引：<code>2*i + 2</code></li>
+<li>子节点索引 <code>i</code> 的父节点索引：<code>(i - 1) // 2</code></li>
+</ul>
+<h2 id="2-核心操作：堆化-Heapify"><a href="#2-核心操作：堆化-Heapify" class="headerlink" title="2. 核心操作：堆化 (Heapify)"></a>2. 核心操作：堆化 (Heapify)</h2><p>堆的所有操作都围绕着一个核心过程——**堆化 (Heapify)**，即维护堆性质的过程。</p>
+<h3 id="2-1-向上堆化-Heapify-Up-Sift-Up"><a href="#2-1-向上堆化-Heapify-Up-Sift-Up" class="headerlink" title="2.1 向上堆化 (Heapify Up &#x2F; Sift Up)"></a>2.1 向上堆化 (Heapify Up &#x2F; Sift Up)</h3><p><strong>使用场景</strong>：在堆的<strong>末尾</strong>插入一个新元素后，需要将其”上浮”到正确的位置。</p>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li>将新元素放在数组的末尾（完全二叉树的最后一个位置）。</li>
+<li>比较它与其父节点的值。</li>
+<li>如果违反了堆性质（大顶堆中子节点大于父节点，或小顶堆中子节点小于父节点），就交换它们。</li>
+<li>重复步骤 2-3，直到满足堆性质或到达根节点。</li>
+</ol>
+<p><strong>动画式案例</strong>：向大顶堆 <code>[90, 80, 70, 50, 60, 40]</code> 中插入 <code>85</code>。</p>
+<ol>
+<li><strong>初始状态</strong>: <code>[90, 80, 70, 50, 60, 40]</code></li>
+<li><strong>插入 85</strong>: <code>[90, 80, 70, 50, 60, 40, 85]</code></li>
+<li><strong>比较 85 与父节点 70</strong>: <code>85 &gt; 70</code>，交换。 <code>[90, 80, 85, 50, 60, 40, 70]</code></li>
+<li><strong>比较 85 与父节点 90</strong>: <code>85 &lt; 90</code>，满足堆性质，停止。</li>
+<li><strong>最终状态</strong>: <code>[90, 80, 85, 50, 60, 40, 70]</code></li>
+</ol>
+<h3 id="2-2-向下堆化-Heapify-Down-Sift-Down"><a href="#2-2-向下堆化-Heapify-Down-Sift-Down" class="headerlink" title="2.2 向下堆化 (Heapify Down &#x2F; Sift Down)"></a>2.2 向下堆化 (Heapify Down &#x2F; Sift Down)</h3><p><strong>使用场景</strong>：删除堆顶元素后，需要将新的堆顶”下沉”到正确的位置。</p>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li>将堆顶元素（根节点）与堆的最后一个元素交换，然后删除最后一个元素。</li>
+<li>从新的根节点开始，比较它与其两个子节点的值。</li>
+<li>如果违反了堆性质，就将它与<strong>更大的子节点</strong>（大顶堆）或<strong>更小的子节点</strong>（小顶堆）交换。</li>
+<li>重复步骤 2-3，直到满足堆性质或到达叶子节点。</li>
+</ol>
+<p><strong>动画式案例</strong>：从大顶堆 <code>[90, 80, 85, 50, 60, 40, 70]</code> 中删除堆顶 <code>90</code>。</p>
+<ol>
+<li><strong>初始状态</strong>: <code>[90, 80, 85, 50, 60, 40, 70]</code></li>
+<li><strong>交换堆顶与末尾</strong>: <code>[70, 80, 85, 50, 60, 40, 90]</code></li>
+<li><strong>删除末尾</strong>: <code>[70, 80, 85, 50, 60, 40]</code></li>
+<li><strong>比较 70 与子节点 80, 85</strong>: 最大的是 85，交换。 <code>[85, 80, 70, 50, 60, 40]</code></li>
+<li><strong>比较 70 与子节点 40</strong>: <code>70 &gt; 40</code>，满足堆性质，停止。</li>
+<li><strong>最终状态</strong>: <code>[85, 80, 70, 50, 60, 40]</code></li>
+</ol>
+<h2 id="3-Python-实现"><a href="#3-Python-实现" class="headerlink" title="3. Python 实现"></a>3. Python 实现</h2><h3 id="伪代码：大顶堆的核心操作"><a href="#伪代码：大顶堆的核心操作" class="headerlink" title="伪代码：大顶堆的核心操作"></a>伪代码：大顶堆的核心操作</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">class MaxHeap:<br>  constructor():<br>    this.heap = []<br>  <br>  // 插入元素<br>  function insert(value):<br>    this.heap.append(value)<br>    this._heapify_up(len(this.heap) - 1)<br>  <br>  // 删除并返回最大值<br>  function extract_max():<br>    if len(this.heap) == 0: Error(&quot;Heap is empty&quot;)<br>    max_value = this.heap[0]<br>    this.heap[0] = this.heap[len(this.heap) - 1]<br>    this.heap.pop()<br>    this._heapify_down(0)<br>    return max_value<br>  <br>  // 向上堆化<br>  function _heapify_up(index):<br>    parent = (index - 1) // 2<br>    if index &gt; 0 and this.heap[index] &gt; this.heap[parent]:<br>      swap(this.heap[index], this.heap[parent])<br>      this._heapify_up(parent)<br>  <br>  // 向下堆化<br>  function _heapify_down(index):<br>    largest = index<br>    left = 2 * index + 1<br>    right = 2 * index + 2<br>    <br>    if left &lt; len(this.heap) and this.heap[left] &gt; this.heap[largest]:<br>      largest = left<br>    if right &lt; len(this.heap) and this.heap[right] &gt; this.heap[largest]:<br>      largest = right<br>    <br>    if largest != index:<br>      swap(this.heap[index], this.heap[largest])<br>      this._heapify_down(largest)<br></code></pre></td></tr></table></figure>
+
+<h3 id="Python-实现：使用-heapq-模块"><a href="#Python-实现：使用-heapq-模块" class="headerlink" title="Python 实现：使用 heapq 模块"></a>Python 实现：使用 <code>heapq</code> 模块</h3><p>Python 的 <code>heapq</code> 模块提供了一个高效的<strong>小顶堆</strong>实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> heapq<br><br><span class="hljs-comment"># 创建一个空堆</span><br>heap = []<br><br><span class="hljs-comment"># 插入元素</span><br>heapq.heappush(heap, <span class="hljs-number">10</span>)<br>heapq.heappush(heap, <span class="hljs-number">5</span>)<br>heapq.heappush(heap, <span class="hljs-number">20</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Heap after pushes: <span class="hljs-subst">&#123;heap&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: [5, 10, 20]</span><br><br><span class="hljs-comment"># 弹出最小值</span><br>min_value = heapq.heappop(heap)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Popped min value: <span class="hljs-subst">&#123;min_value&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: 5</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Heap after pop: <span class="hljs-subst">&#123;heap&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: [10, 20]</span><br><br><span class="hljs-comment"># 将普通列表转换为堆</span><br>data = [<span class="hljs-number">30</span>, <span class="hljs-number">10</span>, <span class="hljs-number">50</span>, <span class="hljs-number">20</span>]<br>heapq.heapify(data)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Heapified list: <span class="hljs-subst">&#123;data&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: [10, 20, 50, 30]</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：<code>heapq</code> 只提供小顶堆。如果需要大顶堆，可以将所有元素取负后插入。</p>
+<h2 id="4-复杂度分析"><a href="#4-复杂度分析" class="headerlink" title="4. 复杂度分析"></a>4. 复杂度分析</h2><table>
+<thead>
+<tr>
+<th align="left">操作</th>
+<th align="center">时间复杂度</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>插入 (Insert)</strong></td>
+<td align="center"><code>O(log n)</code></td>
+<td align="left">最多需要向上堆化 <code>log n</code> 层</td>
+</tr>
+<tr>
+<td align="left"><strong>删除最值 (Extract Max&#x2F;Min)</strong></td>
+<td align="center"><code>O(log n)</code></td>
+<td align="left">最多需要向下堆化 <code>log n</code> 层</td>
+</tr>
+<tr>
+<td align="left"><strong>查看最值 (Peek)</strong></td>
+<td align="center"><code>O(1)</code></td>
+<td align="left">直接访问堆顶</td>
+</tr>
+<tr>
+<td align="left"><strong>建堆 (Heapify)</strong></td>
+<td align="center"><code>O(n)</code></td>
+<td align="left">从一个无序数组构建堆</td>
+</tr>
+</tbody></table>
+<p><strong>空间复杂度</strong>：<code>O(n)</code>，需要存储 <code>n</code> 个元素。</p>
+<h2 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. 应用场景</h2><h3 id="5-1-优先队列-Priority-Queue"><a href="#5-1-优先队列-Priority-Queue" class="headerlink" title="5.1 优先队列 (Priority Queue)"></a>5.1 优先队列 (Priority Queue)</h3><p>优先队列是一种抽象数据类型，元素按优先级出队，而非按插入顺序。堆是实现优先队列的最佳数据结构。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> heapq<br><br><span class="hljs-comment"># 使用元组 (priority, task) 来实现优先队列</span><br>pq = []<br>heapq.heappush(pq, (<span class="hljs-number">3</span>, <span class="hljs-string">&quot;Task C&quot;</span>))<br>heapq.heappush(pq, (<span class="hljs-number">1</span>, <span class="hljs-string">&quot;Task A&quot;</span>))<br>heapq.heappush(pq, (<span class="hljs-number">2</span>, <span class="hljs-string">&quot;Task B&quot;</span>))<br><br><span class="hljs-keyword">while</span> pq:<br>    priority, task = heapq.heappop(pq)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Processing <span class="hljs-subst">&#123;task&#125;</span> with priority <span class="hljs-subst">&#123;priority&#125;</span>&quot;</span>)<br><span class="hljs-comment"># 输出:</span><br><span class="hljs-comment"># Processing Task A with priority 1</span><br><span class="hljs-comment"># Processing Task B with priority 2</span><br><span class="hljs-comment"># Processing Task C with priority 3</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-Top-K-问题"><a href="#5-2-Top-K-问题" class="headerlink" title="5.2 Top-K 问题"></a>5.2 Top-K 问题</h3><p><strong>问题</strong>：从 <code>n</code> 个元素中找出最大的 <code>k</code> 个元素。</p>
+<p><strong>解法</strong>：维护一个大小为 <code>k</code> 的<strong>小顶堆</strong>。遍历所有元素，如果当前元素大于堆顶，就替换堆顶并重新堆化。最终堆中的 <code>k</code> 个元素就是最大的 <code>k</code> 个。</p>
+<p><strong>时间复杂度</strong>：<code>O(n log k)</code>，远优于排序的 <code>O(n log n)</code>。</p>
+<h3 id="5-3-堆排序"><a href="#5-3-堆排序" class="headerlink" title="5.3 堆排序"></a>5.3 堆排序</h3><p>堆排序是一种基于堆的排序算法。我们将在后续章节详细讲解。</p>
+<h3 id="5-4-Dijkstra-最短路径算法"><a href="#5-4-Dijkstra-最短路径算法" class="headerlink" title="5.4 Dijkstra 最短路径算法"></a>5.4 Dijkstra 最短路径算法</h3><p>在图论中，Dijkstra 算法使用优先队列（堆）来高效地找到下一个待访问的最近节点。</p>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>堆是一种特殊的完全二叉树，通过维护堆性质，实现了 <code>O(log n)</code> 的插入和删除最值操作。</p>
+<ul>
+<li><strong>核心</strong>：堆性质（父节点与子节点的大小关系）。</li>
+<li><strong>关键操作</strong>：向上堆化和向下堆化。</li>
+<li><strong>实现</strong>：用数组存储完全二叉树，利用索引关系访问父子节点。</li>
+<li><strong>应用</strong>：优先队列、Top-K 问题、堆排序、图算法。</li>
+</ul>
+<p>掌握了堆，你就拥有了解决”动态极值查找”问题的利器。在下一篇文章中，我们将学习另一种高效的数据结构——<strong>并查集</strong>，它在处理”连通性”问题时有着独特的优势。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
+      
+        <a href="/tags/%E5%A0%86/" class="print-no-link">#堆</a>
+      
+        <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="print-no-link">#优先队列</a>
+      
+        <a href="/tags/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91/" class="print-no-link">#完全二叉树</a>
+      
+        <a href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/" class="print-no-link">#堆排序</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Part 2.6：堆与优先队列：O(log n) 的动态极值查找</div>
+      <div>https://hjjjkh.github.io/posts/633a1b38</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>李国强</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/935c7c18" title="Part 5.3：最长公共子序列 (LCS)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Part 5.3：最长公共子序列 (LCS)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/bc5c719c" title="Part 5.2：最长上升子序列 (LIS)">
+                        <span class="hidden-mobile">Part 5.2：最长上升子序列 (LIS)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  
+    <link rel="canonical" href="https://Hjjjkh.github.io/posts/f4a573d.html"/>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="李国强">
+  <meta name="keywords" content="Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强">
+  
+    <meta name="description" content="状态压缩 DP 是一种利用二进制位来表示和处理集合状态的强大技巧，专门解决涉及元素排列组合的优化问题。本文将以经典的旅行商问题（TSP）为例，为你剖析状态压缩 DP 的核心思想，手把手带你理解如何用位掩码（bitmask）定义状态，并通过位运算实现状态转移，助你掌握这一 DP 中的“屠龙技”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Part 5.6：状态压缩 DP">
+<meta property="og:url" content="https://hjjjkh.github.io/posts/f4a573d">
+<meta property="og:site_name" content="李国强的技术博客">
+<meta property="og:description" content="状态压缩 DP 是一种利用二进制位来表示和处理集合状态的强大技巧，专门解决涉及元素排列组合的优化问题。本文将以经典的旅行商问题（TSP）为例，为你剖析状态压缩 DP 的核心思想，手把手带你理解如何用位掩码（bitmask）定义状态，并通过位运算实现状态转移，助你掌握这一 DP 中的“屠龙技”。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-15T14:30:00.000Z">
+<meta property="article:modified_time" content="2025-11-15T08:52:21.839Z">
+<meta property="article:author" content="李国强">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="DP">
+<meta property="article:tag" content="状态压缩DP">
+<meta property="article:tag" content="位运算">
+<meta property="article:tag" content="旅行商问题">
+<meta property="article:tag" content="TSP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+    <!-- DNS 预解析，提前解析第三方域名 -->
+<link rel="dns-prefetch" href="//lib.baomitu.com">
+<link rel="dns-prefetch" href="//busuanzi.ibruce.info">
+<link rel="dns-prefetch" href="//registry.npmmirror.com">
+<link rel="preconnect" href="//lib.baomitu.com" crossorigin>
+<link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
+
+  
+  <title>Part 5.6：状态压缩 DP - 李国强的技术博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hjjjkh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#0366d6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>李国强的技术博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Part 5.6：状态压缩 DP"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-15 22:30" pubdate>
+          2025年11月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Part 5.6：状态压缩 DP</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年11月15日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="引言：最短的送货路线"><a href="#引言：最短的送货路线" class="headerlink" title="引言：最短的送货路线"></a>引言：最短的送货路线</h2><p>想象一下，你是一名快递员，需要从仓库出发，依次访问 <code>n</code> 个不同的客户，最后再回到仓库。你手上有一张地图，记录了任意两个地点之间的距离。你的目标是：<strong>找到一条访问所有客户恰好一次并返回仓库的最短路线</strong>。</p>
+<p>这个问题，就是计算机科学领域最著名、最经典的 NP-Hard 问题之一——**旅行商问题 (Traveling Salesperson Problem, TSP)**。</p>
+<p>对于 <code>n</code> 个客户，总共有 <code>(n-1)!</code> 种可能的路线。当 <code>n</code> 稍微大一点（比如 20），这个数字就会变成天文数字，暴力枚举所有路线是绝对不可行的。</p>
+<p>那么，动态规划能解决吗？我们之前的 DP 问题，状态通常是 <code>dp[i]</code> 或 <code>dp[i][j]</code>，这里的 <code>i</code> 和 <code>j</code> 代表了位置或数量。但在 TSP 中，我们的状态不仅与当前在哪一个城市有关，还与<strong>已经访问了哪些城市</strong>有关。这个“已访问城市集合”的状态，用传统 DP 数组很难表示。</p>
+<p>这时，<strong>状态压缩动态规划 (State Compression DP)</strong> 闪亮登场。它用一种极其巧妙的方式——<strong>二进制位</strong>——来“压缩”集合状态，从而让 DP 成为可能。</p>
+<p><strong>为什么状态压缩 DP 如此重要？</strong></p>
+<ul>
+<li><strong>面试价值</strong>：状态压缩 DP 是 DP 中的进阶内容，是区分顶尖候选人的“分水岭”。它不仅考察 DP 思维，还考察对位运算的熟练掌握。能解决这类问题，意味着你具备了处理复杂组合优化问题的能力。</li>
+<li><strong>工程价值</strong>：虽然纯粹的 TSP 问题在实际工程中不常直接求解，但其“访问集合”的模型可以应用于任务分配（将 <code>n</code> 个任务分配给 <code>n</code> 个工人）、电路板布线、基因测序等多种场景。</li>
+</ul>
+<p>本文将以 TSP 为例，带你一步步揭开状态压缩 DP 的神秘面纱。</p>
+<h2 id="背景知识：位运算与集合"><a href="#背景知识：位运算与集合" class="headerlink" title="背景知识：位运算与集合"></a>背景知识：位运算与集合</h2><p>状态压缩 DP 的基石是<strong>位运算</strong>。一个 <code>n</code> 位的二进制数，可以天然地表示一个大小为 <code>n</code> 的集合的子集。</p>
+<p>假设我们有 4 个城市，编号为 0, 1, 2, 3。</p>
+<ul>
+<li>二进制数 <code>1011</code> (十进制 11) 可以表示一个集合 <code>&#123;0, 1, 3&#125;</code>。因为第 0, 1, 3 位是 <code>1</code>。</li>
+<li>二进制数 <code>0101</code> (十进制 5) 可以表示一个集合 <code>&#123;0, 2&#125;</code>。</li>
+</ul>
+<p>我们可以用位运算来高效地操作这些集合：</p>
+<ul>
+<li><strong>判断元素 <code>i</code> 是否在集合 <code>mask</code> 中</strong>：<code>(mask &gt;&gt; i) &amp; 1</code></li>
+<li>**将元素 <code>i</code> 加入集合 <code>mask</code>**：<code>mask | (1 &lt;&lt; i)</code></li>
+<li>**从集合 <code>mask</code> 中移除元素 <code>i</code>**：<code>mask &amp; ~(1 &lt;&lt; i)</code></li>
+</ul>
+<p>掌握这些位运算技巧，是理解状态压缩 DP 的前提。</p>
+<h2 id="详细算法原理-TSP"><a href="#详细算法原理-TSP" class="headerlink" title="详细算法原理 (TSP)"></a>详细算法原理 (TSP)</h2><h3 id="1-算法的“直觉”：记录路径的“足迹”"><a href="#1-算法的“直觉”：记录路径的“足迹”" class="headerlink" title="1. 算法的“直觉”：记录路径的“足迹”"></a>1. 算法的“直觉”：记录路径的“足迹”</h3><p>我们尝试用 DP 的思想来构建最短路径。假设我们从城市 0 出发。</p>
+<p><code>dp[...][i]</code> 表示…到达城市 <code>i</code> 的最短路径。</p>
+<p>但这个状态定义是不完整的。因为我们还需要知道在到达城市 <code>i</code> 之前，我们已经访问了哪些城市。例如，<code>0 -&gt; 1 -&gt; 2</code> 和 <code>0 -&gt; 3 -&gt; 2</code> 是两条都到达了城市 2 的路径，但它们的前置“足迹”不同，后续的决策也会完全不同。</p>
+<p>所以，我们的状态必须包含这个“足迹”信息。这个“足迹”就是一个已访问城市的集合。我们用一个二进制数 <code>mask</code> 来表示它。</p>
+<h3 id="2-严谨原理：状态定义与状态转移方程"><a href="#2-严谨原理：状态定义与状态转移方程" class="headerlink" title="2. 严谨原理：状态定义与状态转移方程"></a>2. 严谨原理：状态定义与状态转移方程</h3><ul>
+<li><p><strong>状态定义</strong>：<code>dp[mask][i]</code> 表示在访问了 <code>mask</code> 所代表的城市集合后，当前<strong>停在城市 <code>i</code></strong> 的最短路径总长度。其中，<code>mask</code> 的第 <code>i</code> 位必须为 1。</p>
+</li>
+<li><p><strong>状态转移方程</strong>：<br>我们如何计算 <code>dp[mask][i]</code>？这条路径必然是从另一个城市 <code>j</code> 走过来的。这个城市 <code>j</code> 必须满足：</p>
+<ol>
+<li><code>j</code> 也在 <code>mask</code> 集合中。</li>
+<li><code>j</code> 不是 <code>i</code>。</li>
+</ol>
+<p>这条路径的前一个状态是：访问了 <code>mask</code> 中除了 <code>i</code> 之外的所有城市，并且停在了城市 <code>j</code>。这个状态可以表示为 <code>dp[mask_without_i][j]</code>，其中 <code>mask_without_i</code> 就是将 <code>mask</code> 的第 <code>i</code> 位设为 0 的结果。</p>
+<p>因此，从 <code>j</code> 转移到 <code>i</code> 的总路径长度就是 <code>dp[mask_without_i][j] + dist(j, i)</code>。</p>
+<p>我们需要遍历所有可能的上一个城市 <code>j</code>，并找到其中的最小值。</p>
+<p><strong><code>dp[mask][i] = min(dp[mask ^ (1 &lt;&lt; i)][j] + dist[j][i])</code></strong><br>其中 <code>j</code> 是 <code>mask</code> 中除了 <code>i</code> 之外的任意一个城市。</p>
+</li>
+<li><p>**初始化 (Base Case)**：<br>我们从城市 0 出发。所以，只访问了城市 0 并且停在城市 0 的路径长度为 0。<br><code>dp[1][0] = 0</code> (二进制 <code>1</code> 表示集合 <code>&#123;0&#125;</code>)<br><code>dp</code> 表的其他所有值初始化为一个极大值。</p>
+</li>
+<li><p><strong>最终结果</strong>：<br>当我们访问了所有城市（<code>mask = (1&lt;&lt;n) - 1</code>）并停在某个城市 <code>i</code> 时，我们得到了 <code>dp[(1&lt;&lt;n)-1][i]</code>。最后，我们还需要从这个城市 <code>i</code> 返回起点城市 0。<br>所以，最终答案是 <code>min(dp[(1&lt;&lt;n)-1][i] + dist[i][0])</code> for <code>i</code> from <code>1</code> to <code>n-1</code>。</p>
+</li>
+</ul>
+<h2 id="步骤分解-Step-by-step"><a href="#步骤分解-Step-by-step" class="headerlink" title="步骤分解 (Step-by-step)"></a>步骤分解 (Step-by-step)</h2><ol>
+<li><strong>创建 DP 表</strong>：创建一个 <code>(1&lt;&lt;n) x n</code> 的二维数组 <code>dp</code>，初始化为极大值。</li>
+<li><strong>初始化</strong>：<code>dp[1][0] = 0</code>。</li>
+<li><strong>外层循环</strong>：遍历所有可能的集合状态 <code>mask</code>，从 <code>1</code> 到 <code>(1&lt;&lt;n) - 1</code>。</li>
+<li><strong>中层循环</strong>：遍历当前终点城市 <code>i</code>，从 <code>0</code> 到 <code>n-1</code>。</li>
+<li><strong>检查 <code>i</code> 是否在 <code>mask</code> 中</strong>：如果 <code>(mask &gt;&gt; i) &amp; 1</code> 为真，则继续。</li>
+<li><strong>内层循环</strong>：遍历上一个城市 <code>j</code>，从 <code>0</code> 到 <code>n-1</code>。</li>
+<li>**检查 <code>j</code> 是否在 <code>mask</code> 中且不等于 <code>i</code>**：如果 <code>j != i</code> 且 <code>(mask &gt;&gt; j) &amp; 1</code> 为真，则进行状态转移。</li>
+<li><strong>状态转移</strong>：<code>dp[mask][i] = min(dp[mask][i], dp[mask ^ (1 &lt;&lt; i)][j] + dist[j][i])</code>。</li>
+<li><strong>计算最终结果</strong>：遍历 <code>i</code> 从 <code>1</code> 到 <code>n-1</code>，计算 <code>dp[(1&lt;&lt;n)-1][i] + dist[i][0]</code> 的最小值。</li>
+</ol>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> math<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">traveling_salesperson</span>(<span class="hljs-params">dist</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    使用状态压缩 DP 解决 TSP 问题。</span><br><span class="hljs-string">    :param dist: 邻接矩阵，dist[i][j] 是城市 i 到 j 的距离。</span><br><span class="hljs-string">    :return: 最短路径长度。</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    n = <span class="hljs-built_in">len</span>(dist)<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br><br>    <span class="hljs-comment"># 1. DP 表初始化</span><br>    <span class="hljs-comment"># dp[mask][i]: 访问状态为 mask，当前在城市 i 的最短距离</span><br>    dp = [[math.inf] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span> &lt;&lt; n)]<br><br>    <span class="hljs-comment"># 2. Base Case</span><br>    <span class="hljs-comment"># 从城市 0 出发，所以只访问了 &#123;0&#125; 且停在 0 的距离是 0</span><br>    dp[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span><br><br>    <span class="hljs-comment"># 3. 遍历所有状态</span><br>    <span class="hljs-keyword">for</span> mask <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span> &lt;&lt; n):<br>        <span class="hljs-comment"># 4. 遍历当前终点城市 i</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>            <span class="hljs-comment"># 5. 确保 i 在 mask 集合中</span><br>            <span class="hljs-keyword">if</span> (mask &gt;&gt; i) &amp; <span class="hljs-number">1</span>:<br>                <span class="hljs-comment"># 6. 遍历上一个城市 j</span><br>                <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>                    <span class="hljs-comment"># 7. 确保 j 在 mask 集合中且不等于 i</span><br>                    <span class="hljs-keyword">if</span> j != i <span class="hljs-keyword">and</span> (mask &gt;&gt; j) &amp; <span class="hljs-number">1</span>:<br>                        <span class="hljs-comment"># 8. 状态转移</span><br>                        prev_mask = mask ^ (<span class="hljs-number">1</span> &lt;&lt; i)<br>                        dp[mask][i] = <span class="hljs-built_in">min</span>(dp[mask][i], dp[prev_mask][j] + dist[j][i])<br><br>    <span class="hljs-comment"># 9. 计算最终结果</span><br>    final_mask = (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span><br>    min_path = math.inf<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):<br>        <span class="hljs-comment"># 从终点 i 返回起点 0</span><br>        path = dp[final_mask][i] + dist[i][<span class="hljs-number">0</span>]<br>        min_path = <span class="hljs-built_in">min</span>(min_path, path)<br><br>    <span class="hljs-keyword">return</span> min_path <span class="hljs-keyword">if</span> min_path != math.inf <span class="hljs-keyword">else</span> <span class="hljs-number">0</span><br><br><span class="hljs-comment"># --- 案例测试 ---</span><br><span class="hljs-comment"># 4个城市的距离矩阵</span><br>dist_matrix = [<br>    [<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">20</span>],<br>    [<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">35</span>, <span class="hljs-number">25</span>],<br>    [<span class="hljs-number">15</span>, <span class="hljs-number">35</span>, <span class="hljs-number">0</span>, <span class="hljs-number">30</span>],<br>    [<span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>, <span class="hljs-number">0</span>]<br>]<br><br>shortest_path = traveling_salesperson(dist_matrix)<br><span class="hljs-comment"># 预期路径: 0 -&gt; 1 -&gt; 3 -&gt; 2 -&gt; 0 (10 + 25 + 30 + 15 = 80)</span><br><span class="hljs-comment"># 或 0 -&gt; 2 -&gt; 3 -&gt; 1 -&gt; 0 (15 + 30 + 25 + 10 = 80)</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;最短送货路线长度是: <span class="hljs-subst">&#123;shortest_path&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: 80</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><ul>
+<li><strong>时间复杂度</strong>: <code>O(n² * 2ⁿ)</code>。<ul>
+<li>状态总数是 <code>2ⁿ * n</code>。</li>
+<li>对于每个状态 <code>dp[mask][i]</code>，我们需要遍历 <code>n</code> 个可能的上一个城市 <code>j</code> 来进行转移。</li>
+<li>总的计算量是 <code>2ⁿ * n * n</code>。</li>
+</ul>
+</li>
+<li><strong>空间复杂度</strong>: <code>O(n * 2ⁿ)</code>。<ul>
+<li>我们需要一个 <code>(2ⁿ) x n</code> 的 <code>dp</code> 表。</li>
+</ul>
+</li>
+</ul>
+<p>虽然这个复杂度是指数级的，但相比于 <code>O(n!)</code> 的暴力枚举，它已经是一个巨大的进步，可以在 <code>n</code> 约为 20 时求解问题。</p>
+<h2 id="优势-劣势-易错点"><a href="#优势-劣势-易错点" class="headerlink" title="优势 &#x2F; 劣势 &#x2F; 易错点"></a>优势 &#x2F; 劣势 &#x2F; 易错点</h2><h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ol>
+<li><strong>解决组合优化</strong>：能够解决一类与子集、排列相关的组合优化问题。</li>
+<li><strong>思路巧妙</strong>：用位运算来表示状态，大大扩展了 DP 的应用范围。</li>
+</ol>
+<h3 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h3><ol>
+<li><strong>指数级复杂度</strong>：只能处理 <code>n</code> 规模很小（通常 <code>n &lt;= 20</code>）的问题。</li>
+<li><strong>不易理解</strong>：状态定义和位运算转移都比较抽象，需要扎实的位运算基础。</li>
+</ol>
+<h3 id="易错点"><a href="#易错点" class="headerlink" title="易错点"></a>易错点</h3><ol>
+<li><strong>循环顺序</strong>：必须先循环 <code>mask</code>，再循环 <code>i</code> 和 <code>j</code>。因为计算 <code>dp[mask]</code> 依赖于 <code>dp[prev_mask]</code>，而 <code>prev_mask</code> 总比 <code>mask</code> 小，所以按 <code>mask</code> 从小到大遍历是正确的。</li>
+<li><strong>位运算错误</strong>：在状态转移时，<code>prev_mask</code> 的计算 <code>mask ^ (1 &lt;&lt; i)</code> 很容易写错。</li>
+<li><strong>最终结果计算</strong>：忘记了从最后一个城市返回起点的距离。</li>
+</ol>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>状态压缩 DP 适用于那些 DP 状态中包含一个“集合”维度，且集合大小 <code>n</code> 不超过 20 左右的问题。</p>
+<ul>
+<li>**旅行商问题 (TSP)**：本文案例。</li>
+<li><strong>哈密顿路径问题</strong>：找到一条经过所有顶点恰好一次的路径。</li>
+<li><strong>任务分配问题</strong>：将 <code>n</code> 个任务分配给 <code>n</code> 个人，每个人完成不同任务有不同成本，求最小总成本。</li>
+<li><strong>棋盘覆盖问题</strong>：在棋盘上放置棋子，要求互相不能攻击，求最多能放多少个（如 N 皇后问题的变种）。</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>状态压缩 DP 是动态规划中的“屠龙技”，它将 DP 的维度从简单的数字扩展到了“集合”，并通过位运算这一精巧的工具实现了状态的表示和转移。</p>
+<h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>核心思想</strong>：使用一个整数（位掩码 bitmask）来表示一个集合的状态。<br>✅ <strong>状态定义</strong>：<code>dp[mask][i]</code> 通常表示在状态 <code>mask</code> 下，以 <code>i</code> 结尾的最优解。<br>✅ <strong>状态转移</strong>：利用位运算（<code>&amp;</code>, <code>|</code>, <code>^</code>, <code>&lt;&lt;</code>）来从子集状态转移到当前集合状态。<br>✅ <strong>复杂度</strong>：时间 <code>O(n² * 2ⁿ)</code>，空间 <code>O(n * 2ⁿ)</code>。<br>✅ <strong>适用范围</strong>：<code>n</code> 很小（<code>&lt;= 20</code>）的组合优化问题。</p>
+<p>掌握了状态压缩 DP，你对动态规划的理解将提升到一个新的高度。在下一篇文章中，我们将对整个动态规划系列进行总结，并探讨学习 DP 的通用方法论。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-5%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="category-chain-item">Part 5：动态规划</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="print-no-link">#动态规划</a>
+      
+        <a href="/tags/DP/" class="print-no-link">#DP</a>
+      
+        <a href="/tags/%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9DP/" class="print-no-link">#状态压缩DP</a>
+      
+        <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" class="print-no-link">#位运算</a>
+      
+        <a href="/tags/%E6%97%85%E8%A1%8C%E5%95%86%E9%97%AE%E9%A2%98/" class="print-no-link">#旅行商问题</a>
+      
+        <a href="/tags/TSP/" class="print-no-link">#TSP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Part 5.6：状态压缩 DP</div>
+      <div>https://hjjjkh.github.io/posts/f4a573d</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>李国强</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/e91315ae" title="Part 3.2：快速排序：分治思想的经典应用">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Part 3.2：快速排序：分治思想的经典应用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/8df8effd" title="Part 3.1：基础排序算法：冒泡、选择与插入">
+                        <span class="hidden-mobile">Part 3.1：基础排序算法：冒泡、选择与插入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
