@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Your Name">
+  <meta name="keywords" content="Java, 数据结构, 算法, 后端开发, 编程学习">
+  
+    <meta name="description" content="项目背景本文将介绍如何使用Spring Boot快速构建一个完整的RESTful API项目，包括用户管理、数据验证、异常处理等核心功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot项目实战：构建RESTful API">
+<meta property="og:url" content="https://your-username.github.io/posts/spring-boot-project-practice/index.html">
+<meta property="og:site_name" content="我的技术博客">
+<meta property="og:description" content="项目背景本文将介绍如何使用Spring Boot快速构建一个完整的RESTful API项目，包括用户管理、数据验证、异常处理等核心功能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-13T07:30:00.000Z">
+<meta property="article:modified_time" content="2025-11-15T04:22:19.381Z">
+<meta property="article:author" content="Your Name">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Spring Boot">
+<meta property="article:tag" content="RESTful API">
+<meta property="article:tag" content="后端开发">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Spring Boot项目实战：构建RESTful API - 我的技术博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"your-username.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>我的技术博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spring Boot项目实战：构建RESTful API"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-13 15:30" pubdate>
+          2025-11-13
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Spring Boot项目实战：构建RESTful API</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>本文将介绍如何使用Spring Boot快速构建一个完整的RESTful API项目，包括用户管理、数据验证、异常处理等核心功能。</p>
+<span id="more"></span>
+
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><ul>
+<li><strong>Spring Boot 3.x</strong></li>
+<li><strong>Spring Data JPA</strong></li>
+<li><strong>MySQL</strong></li>
+<li><strong>Maven</strong></li>
+<li><strong>Lombok</strong></li>
+</ul>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk">src<span class="hljs-regexp">/main/</span>java<span class="hljs-regexp">/com/</span>example/demo<br>├── controller      <span class="hljs-comment"># 控制器层</span><br>├── service         <span class="hljs-comment"># 业务逻辑层</span><br>├── repository      <span class="hljs-comment"># 数据访问层</span><br>├── entity          <span class="hljs-comment"># 实体类</span><br>├── dto             <span class="hljs-comment"># 数据传输对象</span><br>├── exception       <span class="hljs-comment"># 异常处理</span><br>└── config          <span class="hljs-comment"># 配置类</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="核心代码实现"><a href="#核心代码实现" class="headerlink" title="核心代码实现"></a>核心代码实现</h2><h3 id="1-实体类定义"><a href="#1-实体类定义" class="headerlink" title="1. 实体类定义"></a>1. 实体类定义</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;users&quot;)</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <br>    <span class="hljs-meta">@Column(nullable = false, unique = true)</span><br>    <span class="hljs-keyword">private</span> String username;<br>    <br>    <span class="hljs-meta">@Column(nullable = false)</span><br>    <span class="hljs-keyword">private</span> String email;<br>    <br>    <span class="hljs-meta">@Column(nullable = false)</span><br>    <span class="hljs-keyword">private</span> String password;<br>    <br>    <span class="hljs-meta">@CreatedDate</span><br>    <span class="hljs-keyword">private</span> LocalDateTime createdAt;<br>    <br>    <span class="hljs-meta">@LastModifiedDate</span><br>    <span class="hljs-keyword">private</span> LocalDateTime updatedAt;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-Repository层"><a href="#2-Repository层" class="headerlink" title="2. Repository层"></a>2. Repository层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Repository</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br>    Optional&lt;User&gt; <span class="hljs-title function_">findByUsername</span><span class="hljs-params">(String username)</span>;<br>    <br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">existsByUsername</span><span class="hljs-params">(String username)</span>;<br>    <br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">existsByEmail</span><span class="hljs-params">(String email)</span>;<br>    <br>    <span class="hljs-meta">@Query(&quot;SELECT u FROM User u WHERE u.email = :email&quot;)</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findByEmail</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;email&quot;)</span> String email)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-Service层"><a href="#3-Service层" class="headerlink" title="3. Service层"></a>3. Service层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserRepository userRepository;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PasswordEncoder passwordEncoder;<br>    <br>    <span class="hljs-keyword">public</span> UserDTO <span class="hljs-title function_">createUser</span><span class="hljs-params">(CreateUserRequest request)</span> &#123;<br>        <span class="hljs-comment">// 验证用户名是否已存在</span><br>        <span class="hljs-keyword">if</span> (userRepository.existsByUsername(request.getUsername())) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DuplicateResourceException</span>(<span class="hljs-string">&quot;用户名已存在&quot;</span>);<br>        &#125;<br>        <br>        <span class="hljs-comment">// 验证邮箱是否已存在</span><br>        <span class="hljs-keyword">if</span> (userRepository.existsByEmail(request.getEmail())) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DuplicateResourceException</span>(<span class="hljs-string">&quot;邮箱已被注册&quot;</span>);<br>        &#125;<br>        <br>        <span class="hljs-comment">// 创建用户</span><br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>();<br>        user.setUsername(request.getUsername());<br>        user.setEmail(request.getEmail());<br>        user.setPassword(passwordEncoder.encode(request.getPassword()));<br>        <br>        <span class="hljs-type">User</span> <span class="hljs-variable">savedUser</span> <span class="hljs-operator">=</span> userRepository.save(user);<br>        <span class="hljs-keyword">return</span> convertToDTO(savedUser);<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> UserDTO <span class="hljs-title function_">getUserById</span><span class="hljs-params">(Long id)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userRepository.findById(id)<br>            .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResourceNotFoundException</span>(<span class="hljs-string">&quot;用户不存在&quot;</span>));<br>        <span class="hljs-keyword">return</span> convertToDTO(user);<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> List&lt;UserDTO&gt; <span class="hljs-title function_">getAllUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> userRepository.findAll().stream()<br>            .map(<span class="hljs-built_in">this</span>::convertToDTO)<br>            .collect(Collectors.toList());<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> UserDTO <span class="hljs-title function_">updateUser</span><span class="hljs-params">(Long id, UpdateUserRequest request)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userRepository.findById(id)<br>            .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResourceNotFoundException</span>(<span class="hljs-string">&quot;用户不存在&quot;</span>));<br>        <br>        <span class="hljs-keyword">if</span> (request.getEmail() != <span class="hljs-literal">null</span>) &#123;<br>            user.setEmail(request.getEmail());<br>        &#125;<br>        <br>        <span class="hljs-type">User</span> <span class="hljs-variable">updatedUser</span> <span class="hljs-operator">=</span> userRepository.save(user);<br>        <span class="hljs-keyword">return</span> convertToDTO(updatedUser);<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteUser</span><span class="hljs-params">(Long id)</span> &#123;<br>        <span class="hljs-keyword">if</span> (!userRepository.existsById(id)) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResourceNotFoundException</span>(<span class="hljs-string">&quot;用户不存在&quot;</span>);<br>        &#125;<br>        userRepository.deleteById(id);<br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> UserDTO <span class="hljs-title function_">convertToDTO</span><span class="hljs-params">(User user)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserDTO</span>(<br>            user.getId(),<br>            user.getUsername(),<br>            user.getEmail(),<br>            user.getCreatedAt()<br>        );<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-Controller层"><a href="#4-Controller层" class="headerlink" title="4. Controller层"></a>4. Controller层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/users&quot;)</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-meta">@Validated</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserService userService;<br>    <br>    <span class="hljs-meta">@PostMapping</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; <span class="hljs-title function_">createUser</span><span class="hljs-params">(</span><br><span class="hljs-params">            <span class="hljs-meta">@Valid</span> <span class="hljs-meta">@RequestBody</span> CreateUserRequest request)</span> &#123;<br>        <span class="hljs-type">UserDTO</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userService.createUser(request);<br>        <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.CREATED)<br>            .body(ApiResponse.success(user, <span class="hljs-string">&quot;用户创建成功&quot;</span>));<br>    &#125;<br>    <br>    <span class="hljs-meta">@GetMapping(&quot;/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; <span class="hljs-title function_">getUserById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>        <span class="hljs-type">UserDTO</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userService.getUserById(id);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(ApiResponse.success(user));<br>    &#125;<br>    <br>    <span class="hljs-meta">@GetMapping</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;List&lt;UserDTO&gt;&gt;&gt; <span class="hljs-title function_">getAllUsers</span><span class="hljs-params">()</span> &#123;<br>        List&lt;UserDTO&gt; users = userService.getAllUsers();<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(ApiResponse.success(users));<br>    &#125;<br>    <br>    <span class="hljs-meta">@PutMapping(&quot;/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; <span class="hljs-title function_">updateUser</span><span class="hljs-params">(</span><br><span class="hljs-params">            <span class="hljs-meta">@PathVariable</span> Long id,</span><br><span class="hljs-params">            <span class="hljs-meta">@Valid</span> <span class="hljs-meta">@RequestBody</span> UpdateUserRequest request)</span> &#123;<br>        <span class="hljs-type">UserDTO</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userService.updateUser(id, request);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(ApiResponse.success(user, <span class="hljs-string">&quot;用户更新成功&quot;</span>));<br>    &#125;<br>    <br>    <span class="hljs-meta">@DeleteMapping(&quot;/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="hljs-title function_">deleteUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>        userService.deleteUser(id);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(ApiResponse.success(<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;用户删除成功&quot;</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-全局异常处理"><a href="#5-全局异常处理" class="headerlink" title="5. 全局异常处理"></a>5. 全局异常处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GlobalExceptionHandler</span> &#123;<br>    <br>    <span class="hljs-meta">@ExceptionHandler(ResourceNotFoundException.class)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="hljs-title function_">handleResourceNotFound</span><span class="hljs-params">(</span><br><span class="hljs-params">            ResourceNotFoundException ex)</span> &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND)<br>            .body(ApiResponse.error(ex.getMessage()));<br>    &#125;<br>    <br>    <span class="hljs-meta">@ExceptionHandler(DuplicateResourceException.class)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="hljs-title function_">handleDuplicateResource</span><span class="hljs-params">(</span><br><span class="hljs-params">            DuplicateResourceException ex)</span> &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.CONFLICT)<br>            .body(ApiResponse.error(ex.getMessage()));<br>    &#125;<br>    <br>    <span class="hljs-meta">@ExceptionHandler(MethodArgumentNotValidException.class)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Map&lt;String, String&gt;&gt;&gt; <span class="hljs-title function_">handleValidationErrors</span><span class="hljs-params">(</span><br><span class="hljs-params">            MethodArgumentNotValidException ex)</span> &#123;<br>        Map&lt;String, String&gt; errors = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        ex.getBindingResult().getFieldErrors().forEach(error -&gt;<br>            errors.put(error.getField(), error.getDefaultMessage())<br>        );<br>        <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.BAD_REQUEST)<br>            .body(ApiResponse.error(<span class="hljs-string">&quot;数据验证失败&quot;</span>, errors));<br>    &#125;<br>    <br>    <span class="hljs-meta">@ExceptionHandler(Exception.class)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="hljs-title function_">handleGenericException</span><span class="hljs-params">(Exception ex)</span> &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)<br>            .body(ApiResponse.error(<span class="hljs-string">&quot;服务器内部错误&quot;</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-统一响应格式"><a href="#6-统一响应格式" class="headerlink" title="6. 统一响应格式"></a>6. 统一响应格式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiResponse</span>&lt;T&gt; &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> success;<br>    <span class="hljs-keyword">private</span> String message;<br>    <span class="hljs-keyword">private</span> T data;<br>    <span class="hljs-keyword">private</span> LocalDateTime timestamp;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="hljs-title function_">success</span><span class="hljs-params">(T data)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiResponse</span>&lt;&gt;(<span class="hljs-literal">true</span>, <span class="hljs-string">&quot;操作成功&quot;</span>, data, LocalDateTime.now());<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="hljs-title function_">success</span><span class="hljs-params">(T data, String message)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiResponse</span>&lt;&gt;(<span class="hljs-literal">true</span>, message, data, LocalDateTime.now());<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="hljs-title function_">error</span><span class="hljs-params">(String message)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiResponse</span>&lt;&gt;(<span class="hljs-literal">false</span>, message, <span class="hljs-literal">null</span>, LocalDateTime.now());<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="hljs-title function_">error</span><span class="hljs-params">(String message, T data)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiResponse</span>&lt;&gt;(<span class="hljs-literal">false</span>, message, data, LocalDateTime.now());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><h3 id="application-yml"><a href="#application-yml" class="headerlink" title="application.yml"></a>application.yml</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">demo-api</span><br>  <br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/demo_db?useUnicode=true&amp;characterEncoding=utf8</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">your_password</span><br>    <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br>  <br>  <span class="hljs-attr">jpa:</span><br>    <span class="hljs-attr">hibernate:</span><br>      <span class="hljs-attr">ddl-auto:</span> <span class="hljs-string">update</span><br>    <span class="hljs-attr">show-sql:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">properties:</span><br>      <span class="hljs-attr">hibernate:</span><br>        <span class="hljs-attr">format_sql:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-attr">dialect:</span> <span class="hljs-string">org.hibernate.dialect.MySQL8Dialect</span><br>  <br><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span><br>  <span class="hljs-attr">servlet:</span><br>    <span class="hljs-attr">context-path:</span> <span class="hljs-string">/</span><br><br><span class="hljs-attr">logging:</span><br>  <span class="hljs-attr">level:</span><br>    <span class="hljs-attr">root:</span> <span class="hljs-string">INFO</span><br>    <span class="hljs-attr">com.example.demo:</span> <span class="hljs-string">DEBUG</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="API测试"><a href="#API测试" class="headerlink" title="API测试"></a>API测试</h2><h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST http://localhost:8080/api/users \<br>  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \<br>  -d <span class="hljs-string">&#x27;&#123;</span><br><span class="hljs-string">    &quot;username&quot;: &quot;john_doe&quot;,</span><br><span class="hljs-string">    &quot;email&quot;: &quot;john@example.com&quot;,</span><br><span class="hljs-string">    &quot;password&quot;: &quot;password123&quot;</span><br><span class="hljs-string">  &#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="获取所有用户"><a href="#获取所有用户" class="headerlink" title="获取所有用户"></a>获取所有用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X GET http://localhost:8080/api/users<br></code></pre></td></tr></table></figure>
+
+<h3 id="获取单个用户"><a href="#获取单个用户" class="headerlink" title="获取单个用户"></a>获取单个用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X GET http://localhost:8080/api/users/1<br></code></pre></td></tr></table></figure>
+
+<h3 id="更新用户"><a href="#更新用户" class="headerlink" title="更新用户"></a>更新用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X PUT http://localhost:8080/api/users/1 \<br>  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \<br>  -d <span class="hljs-string">&#x27;&#123;</span><br><span class="hljs-string">    &quot;email&quot;: &quot;newemail@example.com&quot;</span><br><span class="hljs-string">  &#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X DELETE http://localhost:8080/api/users/1<br></code></pre></td></tr></table></figure>
+
+<h2 id="项目亮点"><a href="#项目亮点" class="headerlink" title="项目亮点"></a>项目亮点</h2><ol>
+<li><strong>分层架构清晰</strong>：Controller、Service、Repository职责明确</li>
+<li><strong>统一异常处理</strong>：使用@RestControllerAdvice集中处理异常</li>
+<li><strong>数据验证</strong>：使用Bean Validation进行参数校验</li>
+<li><strong>统一响应格式</strong>：所有API返回统一的数据结构</li>
+<li><strong>RESTful设计</strong>：遵循REST API设计规范</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本项目展示了如何使用Spring Boot构建一个标准的RESTful API，涵盖了实际开发中的常见场景和最佳实践。通过这个项目，可以学习到：</p>
+<ul>
+<li>Spring Boot的基本使用</li>
+<li>RESTful API的设计原则</li>
+<li>数据库操作和ORM映射</li>
+<li>异常处理和数据验证</li>
+<li>项目分层架构</li>
+</ul>
+<h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><p>完整项目代码已上传至GitHub：[项目地址]</p>
+<p>欢迎Star和Fork！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5/" class="category-chain-item">项目实践</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Java/" class="print-no-link">#Java</a>
+      
+        <a href="/tags/Spring-Boot/" class="print-no-link">#Spring Boot</a>
+      
+        <a href="/tags/RESTful-API/" class="print-no-link">#RESTful API</a>
+      
+        <a href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" class="print-no-link">#后端开发</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spring Boot项目实战：构建RESTful API</div>
+      <div>https://your-username.github.io/posts/spring-boot-project-practice/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Your Name</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/binary-tree-traversal/" title="二叉树遍历算法详解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">二叉树遍历算法详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
