@@ -62,6 +62,8 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -78,6 +80,11 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -264,7 +271,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          1.5k 字
         
       </span>
     
@@ -275,7 +282,7 @@
         
         
         
-          14 分钟
+          13 分钟
         
       </span>
     
@@ -353,7 +360,15 @@
 </ol>
 <h2 id="优化-1：DNS-预解析"><a href="#优化-1：DNS-预解析" class="headerlink" title="优化 1：DNS 预解析"></a>优化 1：DNS 预解析</h2><h3 id="什么是-DNS-预解析？"><a href="#什么是-DNS-预解析？" class="headerlink" title="什么是 DNS 预解析？"></a>什么是 DNS 预解析？</h3><p>当浏览器加载第三方资源（如 CDN、统计服务）时，需要先进行 DNS 查询来解析域名。DNS 预解析可以让浏览器在空闲时提前解析这些域名，从而减少实际请求时的延迟。</p>
 <h3 id="实施步骤"><a href="#实施步骤" class="headerlink" title="实施步骤"></a>实施步骤</h3><p>在 Fluid 主题配置文件 <code>_config.fluid.yml</code> 中添加自定义 HTML 头部：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.fluid.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">custom_head:</span> <span class="string">|</span></span><br><span class="line"><span class="string">  &lt;!-- DNS 预解析，提前解析第三方域名 --&gt;</span></span><br><span class="line"><span class="string">  &lt;link rel=&quot;dns-prefetch&quot; href=&quot;//lib.baomitu.com&quot;&gt;</span></span><br><span class="line"><span class="string">  &lt;link rel=&quot;dns-prefetch&quot; href=&quot;//busuanzi.ibruce.info&quot;&gt;</span></span><br><span class="line"><span class="string">  &lt;link rel=&quot;dns-prefetch&quot; href=&quot;//registry.npmmirror.com&quot;&gt;</span></span><br><span class="line"><span class="string">  &lt;link rel=&quot;preconnect&quot; href=&quot;//lib.baomitu.com&quot; crossorigin&gt;</span></span><br><span class="line"><span class="string">  &lt;link rel=&quot;preconnect&quot; href=&quot;//busuanzi.ibruce.info&quot; crossorigin&gt;</span></span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># _config.fluid.yml</span>
+
+<span class="token key atrule">custom_head</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+  &lt;!-- DNS 预解析，提前解析第三方域名 -->
+  &lt;link rel="dns-prefetch" href="//lib.baomitu.com">
+  &lt;link rel="dns-prefetch" href="//busuanzi.ibruce.info">
+  &lt;link rel="dns-prefetch" href="//registry.npmmirror.com">
+  &lt;link rel="preconnect" href="//lib.baomitu.com" crossorigin>
+  &lt;link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>解释</strong>：</p>
 <ul>
@@ -365,10 +380,31 @@
 <li>首屏加载时间减少：约 200ms</li>
 </ul>
 <h2 id="优化-2：资源压缩"><a href="#优化-2：资源压缩" class="headerlink" title="优化 2：资源压缩"></a>优化 2：资源压缩</h2><h3 id="为什么要压缩？"><a href="#为什么要压缩？" class="headerlink" title="为什么要压缩？"></a>为什么要压缩？</h3><p>未压缩的 HTML、CSS 和 JavaScript 文件包含大量空格、换行和注释，这些都会增加文件大小和传输时间。压缩可以减少 30-50% 的文件体积。</p>
-<h3 id="安装-hexo-neat-插件"><a href="#安装-hexo-neat-插件" class="headerlink" title="安装 hexo-neat 插件"></a>安装 hexo-neat 插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pnpm install hexo-neat --save</span><br></pre></td></tr></table></figure>
+<h3 id="安装-hexo-neat-插件"><a href="#安装-hexo-neat-插件" class="headerlink" title="安装 hexo-neat 插件"></a>安装 hexo-neat 插件</h3><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">pnpm</span> <span class="token function">install</span> hexo-neat <span class="token parameter variable">--save</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
 
 <h3 id="配置压缩选项"><a href="#配置压缩选项" class="headerlink" title="配置压缩选项"></a>配置压缩选项</h3><p>在 Hexo 主配置文件 <code>_config.yml</code> 中添加：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.yml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 资源压缩</span></span><br><span class="line"><span class="attr">neat_enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">neat_html:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;**/*.min.html&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">neat_css:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;**/*.min.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">neat_js:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">    <span class="attr">warnings:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;**/*.min.js&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># _config.yml</span>
+
+<span class="token comment"># 资源压缩</span>
+<span class="token key atrule">neat_enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+
+<span class="token key atrule">neat_html</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">exclude</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token string">'**/*.min.html'</span>
+
+<span class="token key atrule">neat_css</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">exclude</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token string">'**/*.min.css'</span>
+
+<span class="token key atrule">neat_js</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">mangle</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">compress</span><span class="token punctuation">:</span>
+    <span class="token key atrule">warnings</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+  <span class="token key atrule">exclude</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token string">'**/*.min.js'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>配置说明</strong>：</p>
 <ul>
@@ -389,7 +425,26 @@
 </ul>
 <h2 id="优化-3：使用国内-CDN"><a href="#优化-3：使用国内-CDN" class="headerlink" title="优化 3：使用国内 CDN"></a>优化 3：使用国内 CDN</h2><h3 id="为什么选择国内-CDN？"><a href="#为什么选择国内-CDN？" class="headerlink" title="为什么选择国内 CDN？"></a>为什么选择国内 CDN？</h3><p>对于国内用户，使用国内 CDN（如百度 CDN）可以大幅提升资源加载速度，避免访问国外 CDN 时的网络延迟。</p>
 <h3 id="配置-Fluid-主题使用百度-CDN"><a href="#配置-Fluid-主题使用百度-CDN" class="headerlink" title="配置 Fluid 主题使用百度 CDN"></a>配置 Fluid 主题使用百度 CDN</h3><p>在 <code>_config.fluid.yml</code> 中：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.fluid.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">static_prefix:</span></span><br><span class="line">  <span class="comment"># 内部静态</span></span><br><span class="line">  <span class="attr">internal_js:</span> <span class="string">/js</span></span><br><span class="line">  <span class="attr">internal_css:</span> <span class="string">/css</span></span><br><span class="line">  <span class="attr">internal_img:</span> <span class="string">/img</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">anchor:</span> <span class="string">https://lib.baomitu.com/anchor-js/5.0.0/</span></span><br><span class="line">  <span class="attr">github_markdown:</span> <span class="string">https://lib.baomitu.com/github-markdown-css/5.5.1/</span></span><br><span class="line">  <span class="attr">jquery:</span> <span class="string">https://lib.baomitu.com/jquery/3.7.1/</span></span><br><span class="line">  <span class="attr">bootstrap:</span> <span class="string">https://lib.baomitu.com/twitter-bootstrap/4.6.2/</span></span><br><span class="line">  <span class="attr">prismjs:</span> <span class="string">https://lib.baomitu.com/prism/1.29.0/</span></span><br><span class="line">  <span class="attr">tocbot:</span> <span class="string">https://lib.baomitu.com/tocbot/4.25.0/</span></span><br><span class="line">  <span class="attr">typed:</span> <span class="string">https://lib.baomitu.com/typed.js/2.1.0/</span></span><br><span class="line">  <span class="attr">fancybox:</span> <span class="string">https://lib.baomitu.com/fancybox/3.5.7/</span></span><br><span class="line">  <span class="attr">nprogress:</span> <span class="string">https://lib.baomitu.com/nprogress/0.2.0/</span></span><br><span class="line">  <span class="attr">mathjax:</span> <span class="string">https://lib.baomitu.com/mathjax/3.2.2/</span></span><br><span class="line">  <span class="attr">katex:</span> <span class="string">https://lib.baomitu.com/KaTeX/0.16.9/</span></span><br><span class="line">  <span class="attr">busuanzi:</span> <span class="string">https://busuanzi.ibruce.info/busuanzi/2.3/</span></span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># _config.fluid.yml</span>
+
+<span class="token key atrule">static_prefix</span><span class="token punctuation">:</span>
+  <span class="token comment"># 内部静态</span>
+  <span class="token key atrule">internal_js</span><span class="token punctuation">:</span> /js
+  <span class="token key atrule">internal_css</span><span class="token punctuation">:</span> /css
+  <span class="token key atrule">internal_img</span><span class="token punctuation">:</span> /img
+
+  <span class="token key atrule">anchor</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/anchor<span class="token punctuation">-</span>js/5.0.0/
+  <span class="token key atrule">github_markdown</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/github<span class="token punctuation">-</span>markdown<span class="token punctuation">-</span>css/5.5.1/
+  <span class="token key atrule">jquery</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/jquery/3.7.1/
+  <span class="token key atrule">bootstrap</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/twitter<span class="token punctuation">-</span>bootstrap/4.6.2/
+  <span class="token key atrule">prismjs</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/prism/1.29.0/
+  <span class="token key atrule">tocbot</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/tocbot/4.25.0/
+  <span class="token key atrule">typed</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/typed.js/2.1.0/
+  <span class="token key atrule">fancybox</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/fancybox/3.5.7/
+  <span class="token key atrule">nprogress</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/nprogress/0.2.0/
+  <span class="token key atrule">mathjax</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/mathjax/3.2.2/
+  <span class="token key atrule">katex</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//lib.baomitu.com/KaTeX/0.16.9/
+  <span class="token key atrule">busuanzi</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//busuanzi.ibruce.info/busuanzi/2.3/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><ul>
 <li>国内访问速度提升：50-80%</li>
@@ -397,7 +452,13 @@
 </ul>
 <h2 id="优化-4：图片懒加载"><a href="#优化-4：图片懒加载" class="headerlink" title="优化 4：图片懒加载"></a>优化 4：图片懒加载</h2><h3 id="什么是图片懒加载？"><a href="#什么是图片懒加载？" class="headerlink" title="什么是图片懒加载？"></a>什么是图片懒加载？</h3><p>图片懒加载是指只有当图片进入浏览器可视区域时才开始加载，而不是一次性加载页面上的所有图片。这可以大幅减少首屏加载时间。</p>
 <h3 id="启用-Fluid-主题的懒加载功能"><a href="#启用-Fluid-主题的懒加载功能" class="headerlink" title="启用 Fluid 主题的懒加载功能"></a>启用 Fluid 主题的懒加载功能</h3><p>在 <code>_config.fluid.yml</code> 中：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.fluid.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">loading_img:</span> <span class="string">/img/loading.gif</span></span><br><span class="line">  <span class="attr">onlypost:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">offset_factor:</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># _config.fluid.yml</span>
+
+<span class="token key atrule">lazyload</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">loading_img</span><span class="token punctuation">:</span> /img/loading.gif
+  <span class="token key atrule">onlypost</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+  <span class="token key atrule">offset_factor</span><span class="token punctuation">:</span> <span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>配置说明</strong>：</p>
 <ul>
@@ -412,7 +473,17 @@
 </ul>
 <h2 id="优化-5：代码高亮优化"><a href="#优化-5：代码高亮优化" class="headerlink" title="优化 5：代码高亮优化"></a>优化 5：代码高亮优化</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>默认的代码高亮库（如 Highlight.js）体积较大，且会阻塞页面渲染。</p>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>使用 Prism.js 并启用按需加载：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.fluid.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">code:</span></span><br><span class="line">  <span class="attr">copy_btn:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">highlight:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">line_number:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">lib:</span> <span class="string">&quot;prismjs&quot;</span></span><br><span class="line">    <span class="attr">prismjs:</span></span><br><span class="line">      <span class="attr">style:</span> <span class="string">&quot;default&quot;</span></span><br><span class="line">      <span class="attr">preprocess:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># _config.fluid.yml</span>
+
+<span class="token key atrule">code</span><span class="token punctuation">:</span>
+  <span class="token key atrule">copy_btn</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">highlight</span><span class="token punctuation">:</span>
+    <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">line_number</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">lib</span><span class="token punctuation">:</span> <span class="token string">"prismjs"</span>
+    <span class="token key atrule">prismjs</span><span class="token punctuation">:</span>
+      <span class="token key atrule">style</span><span class="token punctuation">:</span> <span class="token string">"default"</span>
+      <span class="token key atrule">preprocess</span><span class="token punctuation">:</span> <span class="token boolean important">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><ul>
 <li>代码高亮库体积减少：约 60%</li>
@@ -420,7 +491,29 @@
 </ul>
 <h2 id="优化-6：启用浏览器缓存"><a href="#优化-6：启用浏览器缓存" class="headerlink" title="优化 6：启用浏览器缓存"></a>优化 6：启用浏览器缓存</h2><p>虽然 GitHub Pages 会自动设置一些缓存策略，但我们可以通过 Service Worker 进一步优化。</p>
 <h3 id="创建-Service-Worker（可选）"><a href="#创建-Service-Worker（可选）" class="headerlink" title="创建 Service Worker（可选）"></a>创建 Service Worker（可选）</h3><p>在 <code>source</code> 目录下创建 <code>sw.js</code>：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /source/sw.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">CACHE_NAME</span> = <span class="string">&#x27;blog-cache-v1&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> urlsToCache = [</span><br><span class="line">  <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;/css/main.css&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;/js/boot.js&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;/img/avatar.png&#x27;</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;install&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  event.<span class="title function_">waitUntil</span>(</span><br><span class="line">    caches.<span class="title function_">open</span>(<span class="variable constant_">CACHE_NAME</span>)</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function"><span class="params">cache</span> =&gt;</span> cache.<span class="title function_">addAll</span>(urlsToCache))</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;fetch&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  event.<span class="title function_">respondWith</span>(</span><br><span class="line">    caches.<span class="title function_">match</span>(event.<span class="property">request</span>)</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response || <span class="title function_">fetch</span>(event.<span class="property">request</span>))</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// /source/sw.js</span>
+
+<span class="token keyword">const</span> <span class="token constant">CACHE_NAME</span> <span class="token operator">=</span> <span class="token string">'blog-cache-v1'</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> urlsToCache <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token string">'/'</span><span class="token punctuation">,</span>
+  <span class="token string">'/css/main.css'</span><span class="token punctuation">,</span>
+  <span class="token string">'/js/boot.js'</span><span class="token punctuation">,</span>
+  <span class="token string">'/img/avatar.png'</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'install'</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+  event<span class="token punctuation">.</span><span class="token function">waitUntil</span><span class="token punctuation">(</span>
+    caches<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token constant">CACHE_NAME</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">cache</span> <span class="token operator">=></span> cache<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>urlsToCache<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'fetch'</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+  event<span class="token punctuation">.</span><span class="token function">respondWith</span><span class="token punctuation">(</span>
+    caches<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">response</span> <span class="token operator">=></span> response <span class="token operator">||</span> <span class="token function">fetch</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>注意</strong>：Service Worker 是一个高级功能，需要谨慎使用，建议在充分测试后再启用。</p>
 <h2 id="优化结果对比"><a href="#优化结果对比" class="headerlink" title="优化结果对比"></a>优化结果对比</h2><table>
@@ -500,7 +593,8 @@
 </ul>
 </li>
 <li><p><strong>预加载关键资源</strong>：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preload&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/css/main.css&quot;</span> <span class="attr">as</span>=<span class="string">&quot;style&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preload&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/js/boot.js&quot;</span> <span class="attr">as</span>=<span class="string">&quot;script&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preload<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/css/main.css<span class="token punctuation">"</span></span> <span class="token attr-name">as</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>style<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preload<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/js/boot.js<span class="token punctuation">"</span></span> <span class="token attr-name">as</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>script<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure></li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过以上六个优化步骤，我们成功将博客的加载时间从 3.2 秒优化到 0.9 秒，性能评分从 68 分提升到 94 分。性能优化是一个持续的过程，需要根据实际情况不断调整和改进。</p>
 <p>记住：<strong>快速的网站不仅能提升用户体验，还能提高搜索引擎排名！</strong></p>
@@ -700,6 +794,9 @@
 
 
 
+  
+
+
 
   
 
@@ -879,6 +976,8 @@
   });
 </script>
 
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

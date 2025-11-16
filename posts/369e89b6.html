@@ -34,10 +34,10 @@
 <meta property="article:modified_time" content="2025-11-15T08:52:21.796Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法">
-<meta property="article:tag" content="复杂度">
-<meta property="article:tag" content="时间复杂度">
 <meta property="article:tag" content="空间复杂度">
 <meta property="article:tag" content="算法基础">
+<meta property="article:tag" content="时间复杂度">
+<meta property="article:tag" content="复杂度">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -62,6 +62,8 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -78,6 +80,11 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -345,7 +352,15 @@
 <h2 id="1-什么是算法？"><a href="#1-什么是算法？" class="headerlink" title="1. 什么是算法？"></a>1. 什么是算法？</h2><h3 id="1-1-算法的定义"><a href="#1-1-算法的定义" class="headerlink" title="1.1 算法的定义"></a>1.1 算法的定义</h3><p><strong>算法（Algorithm）</strong> 是解决特定问题的一系列明确、有限的步骤。</p>
 <p>用更通俗的话说：<strong>算法就是解决问题的方法和步骤</strong>。</p>
 <h4 id="🌰-生活中的算法例子"><a href="#🌰-生活中的算法例子" class="headerlink" title="🌰 生活中的算法例子"></a>🌰 生活中的算法例子</h4><p><strong>问题：如何煮一碗泡面？</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">算法步骤：</span><br><span class="line">1. 烧开水</span><br><span class="line">2. 打开泡面包装</span><br><span class="line">3. 将面饼放入碗中</span><br><span class="line">4. 倒入调料包</span><br><span class="line">5. 倒入开水</span><br><span class="line">6. 等待 3 分钟</span><br><span class="line">7. 搅拌均匀</span><br><span class="line">8. 开始享用</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">算法步骤：
+1. 烧开水
+2. 打开泡面包装
+3. 将面饼放入碗中
+4. 倒入调料包
+5. 倒入开水
+6. 等待 3 分钟
+7. 搅拌均匀
+8. 开始享用<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>这就是一个算法！它具备算法的核心特征。</p>
 <hr>
@@ -386,7 +401,8 @@
 </tbody></table>
 <hr>
 <h3 id="1-3-算法-vs-程序"><a href="#1-3-算法-vs-程序" class="headerlink" title="1.3 算法 vs 程序"></a>1.3 算法 vs 程序</h3><p>很多人会混淆”算法”和”程序”，它们的区别是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">算法 = 解决问题的思路（抽象的）</span><br><span class="line">程序 = 算法的具体实现（用编程语言写出来）</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">算法 &#x3D; 解决问题的思路（抽象的）
+程序 &#x3D; 算法的具体实现（用编程语言写出来）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>举例：</strong></p>
 <ul>
@@ -425,7 +441,15 @@
 <hr>
 <h2 id="3-什么是复杂度？"><a href="#3-什么是复杂度？" class="headerlink" title="3. 什么是复杂度？"></a>3. 什么是复杂度？</h2><h3 id="3-1-为什么需要复杂度分析？"><a href="#3-1-为什么需要复杂度分析？" class="headerlink" title="3.1 为什么需要复杂度分析？"></a>3.1 为什么需要复杂度分析？</h3><p>假设你写了两个排序算法，如何判断哪个更好？</p>
 <p><strong>方法 1：直接运行测试</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">start = time.time()</span><br><span class="line">bubble_sort(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;冒泡排序耗时：<span class="subst">&#123;time.time() - start&#125;</span>秒&quot;</span>)</span><br><span class="line"></span><br><span class="line">start = time.time()</span><br><span class="line">quick_sort(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;快速排序耗时：<span class="subst">&#123;time.time() - start&#125;</span>秒&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+
+start <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+bubble_sort<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"冒泡排序耗时：</span><span class="token interpolation"><span class="token punctuation">&#123;</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start<span class="token punctuation">&#125;</span></span><span class="token string">秒"</span></span><span class="token punctuation">)</span>
+
+start <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+quick_sort<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"快速排序耗时：</span><span class="token interpolation"><span class="token punctuation">&#123;</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start<span class="token punctuation">&#125;</span></span><span class="token string">秒"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>问题：</strong></p>
 <ul>
@@ -438,7 +462,9 @@
 <hr>
 <h3 id="3-2-时间复杂度（Time-Complexity）"><a href="#3-2-时间复杂度（Time-Complexity）" class="headerlink" title="3.2 时间复杂度（Time Complexity）"></a>3.2 时间复杂度（Time Complexity）</h3><p><strong>时间复杂度</strong>：衡量算法执行时间随数据规模增长的趋势。</p>
 <h4 id="📊-核心思想"><a href="#📊-核心思想" class="headerlink" title="📊 核心思想"></a>📊 核心思想</h4><p>不关心具体执行了多少秒，只关心<strong>执行次数</strong>和<strong>数据规模 n</strong> 的关系。</p>
-<h4 id="🌰-例子-1：简单循环"><a href="#🌰-例子-1：简单循环" class="headerlink" title="🌰 例子 1：简单循环"></a>🌰 例子 1：简单循环</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">print_numbers</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):  <span class="comment"># 循环 n 次</span></span><br><span class="line">        <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+<h4 id="🌰-例子-1：简单循环"><a href="#🌰-例子-1：简单循环" class="headerlink" title="🌰 例子 1：简单循环"></a>🌰 例子 1：简单循环</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">print_numbers</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 循环 n 次</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -446,7 +472,10 @@
 <li>时间复杂度：**O(n)**（读作”大 O n”）</li>
 </ul>
 <hr>
-<h4 id="🌰-例子-2：嵌套循环"><a href="#🌰-例子-2：嵌套循环" class="headerlink" title="🌰 例子 2：嵌套循环"></a>🌰 例子 2：嵌套循环</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">print_pairs</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):      <span class="comment"># 外层循环 n 次</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):  <span class="comment"># 内层循环 n 次</span></span><br><span class="line">            <span class="built_in">print</span>(i, j)</span><br></pre></td></tr></table></figure>
+<h4 id="🌰-例子-2：嵌套循环"><a href="#🌰-例子-2：嵌套循环" class="headerlink" title="🌰 例子 2：嵌套循环"></a>🌰 例子 2：嵌套循环</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">print_pairs</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>      <span class="token comment"># 外层循环 n 次</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 内层循环 n 次</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -455,7 +484,17 @@
 <li>时间复杂度：<strong>O(n²)</strong></li>
 </ul>
 <hr>
-<h4 id="🌰-例子-3：对数复杂度"><a href="#🌰-例子-3：对数复杂度" class="headerlink" title="🌰 例子 3：对数复杂度"></a>🌰 例子 3：对数复杂度</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">binary_search</span>(<span class="params">arr, target</span>):</span><br><span class="line">    left, right = <span class="number">0</span>, <span class="built_in">len</span>(arr) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> left &lt;= right:</span><br><span class="line">        mid = (left + right) // <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> arr[mid] == target:</span><br><span class="line">            <span class="keyword">return</span> mid</span><br><span class="line">        <span class="keyword">elif</span> arr[mid] &lt; target:</span><br><span class="line">            left = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            right = mid - <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="🌰-例子-3：对数复杂度"><a href="#🌰-例子-3：对数复杂度" class="headerlink" title="🌰 例子 3：对数复杂度"></a>🌰 例子 3：对数复杂度</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">binary_search</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    left<span class="token punctuation">,</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>
+    <span class="token keyword">while</span> left <span class="token operator">&lt;=</span> right<span class="token punctuation">:</span>
+        mid <span class="token operator">=</span> <span class="token punctuation">(</span>left <span class="token operator">+</span> right<span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">2</span>
+        <span class="token keyword">if</span> arr<span class="token punctuation">[</span>mid<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> mid
+        <span class="token keyword">elif</span> arr<span class="token punctuation">[</span>mid<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">:</span>
+            left <span class="token operator">=</span> mid <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            right <span class="token operator">=</span> mid <span class="token operator">-</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -522,11 +561,29 @@
 <td>9.3×10¹⁵⁷</td>
 </tr>
 </tbody></table>
-<h4 id="📈-复杂度增长趋势图"><a href="#📈-复杂度增长趋势图" class="headerlink" title="📈 复杂度增长趋势图"></a>📈 复杂度增长趋势图</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">执行次数</span><br><span class="line">  ↑</span><br><span class="line">  |                                    O(2ⁿ)</span><br><span class="line">  |                                  /</span><br><span class="line">  |                               /</span><br><span class="line">  |                            /  O(n²)</span><br><span class="line">  |                         /   /</span><br><span class="line">  |                      /    /</span><br><span class="line">  |                   /     /  O(n log n)</span><br><span class="line">  |                /      /   O(n)</span><br><span class="line">  |             /       /   /</span><br><span class="line">  |          /        /   /  O(log n)</span><br><span class="line">  |       /         /   /  /</span><br><span class="line">  |    /          /   /  /  O(1)</span><br><span class="line">  |_/_________/__/__/__/____________→ 数据规模 n</span><br></pre></td></tr></table></figure>
+<h4 id="📈-复杂度增长趋势图"><a href="#📈-复杂度增长趋势图" class="headerlink" title="📈 复杂度增长趋势图"></a>📈 复杂度增长趋势图</h4><figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">执行次数
+  ↑
+  |                                    O(2ⁿ)
+  |                                  &#x2F;
+  |                               &#x2F;
+  |                            &#x2F;  O(n²)
+  |                         &#x2F;   &#x2F;
+  |                      &#x2F;    &#x2F;
+  |                   &#x2F;     &#x2F;  O(n log n)
+  |                &#x2F;      &#x2F;   O(n)
+  |             &#x2F;       &#x2F;   &#x2F;
+  |          &#x2F;        &#x2F;   &#x2F;  O(log n)
+  |       &#x2F;         &#x2F;   &#x2F;  &#x2F;
+  |    &#x2F;          &#x2F;   &#x2F;  &#x2F;  O(1)
+  |_&#x2F;_________&#x2F;__&#x2F;__&#x2F;__&#x2F;____________→ 数据规模 n<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <hr>
 <h3 id="3-4-空间复杂度（Space-Complexity）"><a href="#3-4-空间复杂度（Space-Complexity）" class="headerlink" title="3.4 空间复杂度（Space Complexity）"></a>3.4 空间复杂度（Space Complexity）</h3><p><strong>空间复杂度</strong>：衡量算法执行过程中所需额外内存空间随数据规模增长的趋势。</p>
-<h4 id="🌰-例子-1：O-1-空间"><a href="#🌰-例子-1：O-1-空间" class="headerlink" title="🌰 例子 1：O(1) 空间"></a>🌰 例子 1：O(1) 空间</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sum_array</span>(<span class="params">arr</span>):</span><br><span class="line">    total = <span class="number">0</span>  <span class="comment"># 只用了一个变量</span></span><br><span class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> arr:</span><br><span class="line">        total += num</span><br><span class="line">    <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+<h4 id="🌰-例子-1：O-1-空间"><a href="#🌰-例子-1：O-1-空间" class="headerlink" title="🌰 例子 1：O(1) 空间"></a>🌰 例子 1：O(1) 空间</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sum_array</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    total <span class="token operator">=</span> <span class="token number">0</span>  <span class="token comment"># 只用了一个变量</span>
+    <span class="token keyword">for</span> num <span class="token keyword">in</span> arr<span class="token punctuation">:</span>
+        total <span class="token operator">+=</span> num
+    <span class="token keyword">return</span> total<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -534,7 +591,11 @@
 <li>空间复杂度：<strong>O(1)</strong></li>
 </ul>
 <hr>
-<h4 id="🌰-例子-2：O-n-空间"><a href="#🌰-例子-2：O-n-空间" class="headerlink" title="🌰 例子 2：O(n) 空间"></a>🌰 例子 2：O(n) 空间</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">copy_array</span>(<span class="params">arr</span>):</span><br><span class="line">    new_arr = []</span><br><span class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> arr:</span><br><span class="line">        new_arr.append(num)  <span class="comment"># 创建了一个新数组</span></span><br><span class="line">    <span class="keyword">return</span> new_arr</span><br></pre></td></tr></table></figure>
+<h4 id="🌰-例子-2：O-n-空间"><a href="#🌰-例子-2：O-n-空间" class="headerlink" title="🌰 例子 2：O(n) 空间"></a>🌰 例子 2：O(n) 空间</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">copy_array</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    new_arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> num <span class="token keyword">in</span> arr<span class="token punctuation">:</span>
+        new_arr<span class="token punctuation">.</span>append<span class="token punctuation">(</span>num<span class="token punctuation">)</span>  <span class="token comment"># 创建了一个新数组</span>
+    <span class="token keyword">return</span> new_arr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -542,7 +603,12 @@
 <li>空间复杂度：<strong>O(n)</strong></li>
 </ul>
 <hr>
-<h4 id="🌰-例子-3：O-n²-空间"><a href="#🌰-例子-3：O-n²-空间" class="headerlink" title="🌰 例子 3：O(n²) 空间"></a>🌰 例子 3：O(n²) 空间</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_matrix</span>(<span class="params">n</span>):</span><br><span class="line">    matrix = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        row = [<span class="number">0</span>] * n  <span class="comment"># 每行 n 个元素</span></span><br><span class="line">        matrix.append(row)</span><br><span class="line">    <span class="keyword">return</span> matrix</span><br></pre></td></tr></table></figure>
+<h4 id="🌰-例子-3：O-n²-空间"><a href="#🌰-例子-3：O-n²-空间" class="headerlink" title="🌰 例子 3：O(n²) 空间"></a>🌰 例子 3：O(n²) 空间</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">create_matrix</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    matrix <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        row <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n  <span class="token comment"># 每行 n 个元素</span>
+        matrix<span class="token punctuation">.</span>append<span class="token punctuation">(</span>row<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> matrix<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -581,7 +647,11 @@
 <p>可以看到，n² 占主导地位，其他项可以忽略。</p>
 <hr>
 <h3 id="4-3-最好、最坏、平均情况"><a href="#4-3-最好、最坏、平均情况" class="headerlink" title="4.3 最好、最坏、平均情况"></a>4.3 最好、最坏、平均情况</h3><p>算法的复杂度可能因输入数据不同而不同。</p>
-<h4 id="🌰-例子：线性查找"><a href="#🌰-例子：线性查找" class="headerlink" title="🌰 例子：线性查找"></a>🌰 例子：线性查找</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">linear_search</span>(<span class="params">arr, target</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(arr)):</span><br><span class="line">        <span class="keyword">if</span> arr[i] == target:</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="🌰-例子：线性查找"><a href="#🌰-例子：线性查找" class="headerlink" title="🌰 例子：线性查找"></a>🌰 例子：线性查找</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">linear_search</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> i
+    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -593,7 +663,11 @@
 <p>[object Object]常我们说的时间复杂度指的是最坏情况**。</p>
 </blockquote>
 <hr>
-<h2 id="5-实战：分析复杂度"><a href="#5-实战：分析复杂度" class="headerlink" title="5. 实战：分析复杂度"></a>5. 实战：分析复杂度</h2><h3 id="5-1-例子-1：简单求和"><a href="#5-1-例子-1：简单求和" class="headerlink" title="5.1 例子 1：简单求和"></a>5.1 例子 1：简单求和</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sum_n</span>(<span class="params">n</span>):</span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        total += i</span><br><span class="line">    <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+<h2 id="5-实战：分析复杂度"><a href="#5-实战：分析复杂度" class="headerlink" title="5. 实战：分析复杂度"></a>5. 实战：分析复杂度</h2><h3 id="5-1-例子-1：简单求和"><a href="#5-1-例子-1：简单求和" class="headerlink" title="5.1 例子 1：简单求和"></a>5.1 例子 1：简单求和</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sum_n</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    total <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        total <span class="token operator">+=</span> i
+    <span class="token keyword">return</span> total<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -602,7 +676,12 @@
 <li><strong>空间复杂度</strong>：O(1)（只用了 total 和 i）</li>
 </ul>
 <hr>
-<h3 id="5-2-例子-2：冒泡排序"><a href="#5-2-例子-2：冒泡排序" class="headerlink" title="5.2 例子 2：冒泡排序"></a>5.2 例子 2：冒泡排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">bubble_sort</span>(<span class="params">arr</span>):</span><br><span class="line">    n = <span class="built_in">len</span>(arr)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n - i - <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> arr[j] &gt; arr[j + <span class="number">1</span>]:</span><br><span class="line">                arr[j], arr[j + <span class="number">1</span>] = arr[j + <span class="number">1</span>], arr[j]</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-例子-2：冒泡排序"><a href="#5-2-例子-2：冒泡排序" class="headerlink" title="5.2 例子 2：冒泡排序"></a>5.2 例子 2：冒泡排序</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">bubble_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n <span class="token operator">-</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -613,7 +692,10 @@
 <li><strong>空间复杂度</strong>：O(1)（原地排序）</li>
 </ul>
 <hr>
-<h3 id="5-3-例子-3：递归求斐波那契数列"><a href="#5-3-例子-3：递归求斐波那契数列" class="headerlink" title="5.3 例子 3：递归求斐波那契数列"></a>5.3 例子 3：递归求斐波那契数列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fibonacci</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fibonacci(n - <span class="number">1</span>) + fibonacci(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="5-3-例子-3：递归求斐波那契数列"><a href="#5-3-例子-3：递归求斐波那契数列" class="headerlink" title="5.3 例子 3：递归求斐波那契数列"></a>5.3 例子 3：递归求斐波那契数列</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> n
+    <span class="token keyword">return</span> fibonacci<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> fibonacci<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -624,7 +706,14 @@
 <li><strong>空间复杂度</strong>：O(n)（递归栈深度）</li>
 </ul>
 <hr>
-<h3 id="5-4-例子-4：优化后的斐波那契（动态规划）"><a href="#5-4-例子-4：优化后的斐波那契（动态规划）" class="headerlink" title="5.4 例子 4：优化后的斐波那契（动态规划）"></a>5.4 例子 4：优化后的斐波那契（动态规划）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fibonacci_dp</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    dp = [<span class="number">0</span>] * (n + <span class="number">1</span>)</span><br><span class="line">    dp[<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">        dp[i] = dp[i - <span class="number">1</span>] + dp[i - <span class="number">2</span>]</span><br><span class="line">    <span class="keyword">return</span> dp[n]</span><br></pre></td></tr></table></figure>
+<h3 id="5-4-例子-4：优化后的斐波那契（动态规划）"><a href="#5-4-例子-4：优化后的斐波那契（动态规划）" class="headerlink" title="5.4 例子 4：优化后的斐波那契（动态规划）"></a>5.4 例子 4：优化后的斐波那契（动态规划）</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">fibonacci_dp</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> n
+    dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    dp<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> dp<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> dp<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> dp<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>分析：</strong></p>
 <ul>
@@ -666,11 +755,16 @@
 </tr>
 </tbody></table>
 <hr>
-<h3 id="6-2-常见陷阱"><a href="#6-2-常见陷阱" class="headerlink" title="6.2 常见陷阱"></a>6.2 常见陷阱</h3><h4 id="❌-陷阱-1：忽略隐藏的循环"><a href="#❌-陷阱-1：忽略隐藏的循环" class="headerlink" title="❌ 陷阱 1：忽略隐藏的循环"></a>❌ 陷阱 1：忽略隐藏的循环</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">process</span>(<span class="params">arr</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(arr)):</span><br><span class="line">        arr.sort()  <span class="comment"># sort 本身是 O(n log n)</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-2-常见陷阱"><a href="#6-2-常见陷阱" class="headerlink" title="6.2 常见陷阱"></a>6.2 常见陷阱</h3><h4 id="❌-陷阱-1：忽略隐藏的循环"><a href="#❌-陷阱-1：忽略隐藏的循环" class="headerlink" title="❌ 陷阱 1：忽略隐藏的循环"></a>❌ 陷阱 1：忽略隐藏的循环</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">process</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        arr<span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># sort 本身是 O(n log n)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>实际复杂度</strong>：O(n² log n)，不是 O(n)！</p>
 <hr>
-<h4 id="❌-陷阱-2：递归的空间复杂度"><a href="#❌-陷阱-2：递归的空间复杂度" class="headerlink" title="❌ 陷阱 2：递归的空间复杂度"></a>❌ 陷阱 2：递归的空间复杂度</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> n * factorial(n - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="❌-陷阱-2：递归的空间复杂度"><a href="#❌-陷阱-2：递归的空间复杂度" class="headerlink" title="❌ 陷阱 2：递归的空间复杂度"></a>❌ 陷阱 2：递归的空间复杂度</h4><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">factorial</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> n <span class="token operator">*</span> factorial<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><strong>空间复杂度</strong>：O(n)（递归栈深度），不是 O(1)！</p>
 <hr>
@@ -738,7 +832,13 @@
 </ul>
 <hr>
 <h2 id="8-练习题"><a href="#8-练习题" class="headerlink" title="8. 练习题"></a>8. 练习题</h2><h3 id="8-1-基础题"><a href="#8-1-基础题" class="headerlink" title="8.1 基础题"></a>8.1 基础题</h3><p><strong>题目 1</strong>：分析以下代码的时间复杂度</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mystery</span>(<span class="params">n</span>):</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> i &lt; n:</span><br><span class="line">        i = i * <span class="number">2</span></span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">mystery</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    count <span class="token operator">=</span> <span class="token number">0</span>
+    i <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">while</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">:</span>
+        i <span class="token operator">=</span> i <span class="token operator">*</span> <span class="token number">2</span>
+        count <span class="token operator">+=</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> count<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <details>
 <summary>点击查看答案</summary>
@@ -749,7 +849,10 @@
 
 <hr>
 <p><strong>题目 2</strong>：分析以下代码的时间复杂度</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mystery2</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i):</span><br><span class="line">            <span class="built_in">print</span>(i, j)</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">mystery2</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <details>
 <summary>点击查看答案</summary>
@@ -763,7 +866,10 @@
 </ul>
 <hr>
 <h3 id="8-2-进阶题"><a href="#8-2-进阶题" class="headerlink" title="8.2 进阶题"></a>8.2 进阶题</h3><p><strong>题目 3</strong>：以下代码的时间复杂度是多少？</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mystery3</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> mystery3(n // <span class="number">2</span>) + mystery3(n // <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">mystery3</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> mystery3<span class="token punctuation">(</span>n <span class="token operator">//</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> mystery3<span class="token punctuation">(</span>n <span class="token operator">//</span> <span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <details>
 <summary>点击查看答案</summary>
@@ -844,13 +950,13 @@
       
         <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
       
-        <a href="/tags/%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#复杂度</a>
-      
-        <a href="/tags/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#时间复杂度</a>
-      
         <a href="/tags/%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#空间复杂度</a>
       
         <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="print-no-link">#算法基础</a>
+      
+        <a href="/tags/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#时间复杂度</a>
+      
+        <a href="/tags/%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#复杂度</a>
       
     </div>
   
@@ -995,6 +1101,9 @@
 
 
 
+
+
+  
 
 
 
@@ -1176,6 +1285,8 @@
   });
 </script>
 
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
