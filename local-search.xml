@@ -768,9 +768,9 @@
       
       <tag>递归</tag>
       
-      <tag>快速排序</tag>
-      
       <tag>归并排序</tag>
+      
+      <tag>快速排序</tag>
       
       <tag>算法思想</tag>
       
@@ -807,11 +807,11 @@
       
       <tag>字符串</tag>
       
+      <tag>模式匹配</tag>
+      
       <tag>Z-Algorithm</tag>
       
       <tag>Z-array</tag>
-      
-      <tag>模式匹配</tag>
       
     </tags>
     
@@ -947,9 +947,9 @@
       
       <tag>字符串</tag>
       
-      <tag>模式匹配</tag>
-      
       <tag>KMP</tag>
+      
+      <tag>模式匹配</tag>
       
       <tag>next数组</tag>
       
@@ -980,11 +980,11 @@
       
       <tag>算法</tag>
       
-      <tag>分治</tag>
-      
       <tag>归并排序</tag>
       
       <tag>Merge Sort</tag>
+      
+      <tag>分治</tag>
       
       <tag>稳定排序</tag>
       
@@ -1048,11 +1048,11 @@
       
       <tag>算法</tag>
       
+      <tag>分治</tag>
+      
       <tag>快速排序</tag>
       
       <tag>Quick Sort</tag>
-      
-      <tag>分治</tag>
       
       <tag>O(n log n)</tag>
       
@@ -1653,13 +1653,13 @@
     
     <tags>
       
-      <tag>空间复杂度</tag>
-      
-      <tag>算法基础</tag>
-      
       <tag>复杂度分析</tag>
       
       <tag>Big O</tag>
+      
+      <tag>算法基础</tag>
+      
+      <tag>空间复杂度</tag>
       
       <tag>原地算法</tag>
       
@@ -1727,11 +1727,11 @@
       
       <tag>时间复杂度</tag>
       
-      <tag>算法基础</tag>
-      
       <tag>复杂度分析</tag>
       
       <tag>Big O</tag>
+      
+      <tag>算法基础</tag>
       
       <tag>主定理</tag>
       
@@ -1762,13 +1762,13 @@
       
       <tag>算法</tag>
       
-      <tag>复杂度</tag>
-      
       <tag>时间复杂度</tag>
       
-      <tag>空间复杂度</tag>
-      
       <tag>算法基础</tag>
+      
+      <tag>复杂度</tag>
+      
+      <tag>空间复杂度</tag>
       
     </tags>
     

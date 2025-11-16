@@ -3,36 +3,39 @@
    Comment Section Optimization Styles
    ======================================== */
 
-/* 评论区容器优化 */
-.giscus, .giscus-frame {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* 评论区整体样式 */
+/* 评论区容器优化 - 针对外层容器 */
 #comments {
   margin-top: 3rem;
-  padding: 2rem 0;
-  border-top: 1px solid var(--board-bg-color, #e8e8e8);
+  padding: 2.5rem 0;
+  border-top: 2px solid #e8e8e8;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
-/* 评论标题样式 */
-#comments h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: var(--post-heading-color, #1a202c);
+/* Giscus 容器样式 */
+.giscus, 
+#giscus {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
-/* 评论框优化 - 圆角和阴影 */
+.giscus:hover,
+#giscus:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Giscus iframe 样式 */
 .giscus-frame {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
-}
-
-.giscus-frame:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100% !important;
+  border-radius: 8px !important;
+  border: none !important;
 }
 
 /* 响应式优化 */
@@ -40,41 +43,45 @@
   #comments {
     padding: 1.5rem 0;
     margin-top: 2rem;
+    border-radius: 8px;
   }
   
-  #comments h2 {
-    font-size: 1.3rem;
+  .giscus,
+  #giscus {
+    padding: 1rem;
   }
 }
 
 /* 暗色模式适配 */
 [data-user-color-scheme="dark"] #comments {
-  border-top-color: rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, #1a1f2e 0%, #252d38 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-[data-user-color-scheme="dark"] #comments h2 {
-  color: var(--post-heading-color-dark, #c4c6c9);
+[data-user-color-scheme="dark"] .giscus,
+[data-user-color-scheme="dark"] #giscus {
+  background: #2a3240;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
-[data-user-color-scheme="dark"] .giscus-frame {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-[data-user-color-scheme="dark"] .giscus-frame:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+[data-user-color-scheme="dark"] .giscus:hover,
+[data-user-color-scheme="dark"] #giscus:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* 加载动画优化 */
 .giscus-loading {
   text-align: center;
   padding: 2rem;
-  color: var(--sec-text-color, #718096);
+  color: #718096;
+  font-size: 0.95rem;
 }
 
 /* 评论数量显示优化 */
 .giscus-comment-count {
   font-size: 0.9rem;
-  color: var(--sec-text-color, #718096);
+  color: #718096;
   margin-left: 0.5rem;
 }
 
