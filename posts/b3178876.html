@@ -62,8 +62,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -80,11 +78,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -344,11 +337,7 @@
                 <h2 id="引言：智能的-Ctrl-F"><a href="#引言：智能的-Ctrl-F" class="headerlink" title="引言：智能的 Ctrl+F"></a>引言：智能的 Ctrl+F</h2><p>在日常使用电脑时，<code>Ctrl+F</code> 是我们用得最多的功能之一。当你在一个数万字的文档中查找一个特定单词时，计算机会瞬间定位到它的位置。这个看似简单的操作背后，隐藏着强大的<strong>字符串模式匹配 (String Pattern Matching)</strong> 算法。</p>
 <p>最朴素的想法是什么？——**暴力匹配 (Brute Force)**。将要查找的单词（模式串）与文档（文本串）从头开始，一个字符一个字符地对齐比较。如果遇到不匹配的字符，就将模式串向后移动一位，再从头开始比较。这种方法在大多数情况下工作得不错，但在某些“恶意”的情况下，它的效率会变得极其低下。</p>
 <p>例如，在文本串 <code>AAAAAAAAAAAAAAAAAB</code> 中查找模式串 <code>AAAAAB</code>。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">Text:   A A A A A A A A A A A A A A A B
-Pattern:A A A A A B  (Mismatch at B)
-        A A A A A B (Shift 1, mismatch at B)
-        A A A A A B (Shift 2, mismatch at B)
-        ...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Text:   A A A A A A A A A A A A A A A B</span><br><span class="line">Pattern:A A A A A B  (Mismatch at B)</span><br><span class="line">        A A A A A B (Shift 1, mismatch at B)</span><br><span class="line">        A A A A A B (Shift 2, mismatch at B)</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
 
 <p>每次失败，我们都只是将模式串后移一位，然后又进行大量重复的 <code>A</code> 与 <code>A</code> 的比较。这种“愚蠢”的回溯，正是暴力匹配的性能瓶颈。</p>
 <p><strong>KMP 算法</strong>（由 Knuth, Morris, Pratt 三位学者在 1977 年共同发表）正是为了解决这个问题而生。它通过预处理模式串，找到其中的“对称性”，使得在匹配失败时，能够<strong>智能地、大幅度地</strong>向后滑动，而不需要回溯文本串的指针，从而实现了 <code>O(n)</code> 的线性时间复杂度。</p>
@@ -358,17 +347,7 @@ Pattern:A A A A A B  (Mismatch at B)
 <li><strong>工程价值</strong>：KMP 及其变种是许多文本处理软件、搜索引擎、入侵检测系统、基因序列分析工具的核心组成部分。</li>
 </ul>
 <p>本文将带你从零开始，彻底搞懂 KMP 算法的精髓——<code>next</code> 数组。</p>
-<h2 id="背景知识：暴力匹配及其缺陷"><a href="#背景知识：暴力匹配及其缺陷" class="headerlink" title="背景知识：暴力匹配及其缺陷"></a>背景知识：暴力匹配及其缺陷</h2><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">brute_force_search</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> pattern<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    n<span class="token punctuation">,</span> m <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>pattern<span class="token punctuation">)</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n <span class="token operator">-</span> m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># i: text 中的起始位置</span>
-        j <span class="token operator">=</span> <span class="token number">0</span>
-        <span class="token keyword">while</span> j <span class="token operator">&lt;</span> m<span class="token punctuation">:</span>
-            <span class="token keyword">if</span> text<span class="token punctuation">[</span>i <span class="token operator">+</span> j<span class="token punctuation">]</span> <span class="token operator">!=</span> pattern<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span>
-                <span class="token keyword">break</span>
-            j <span class="token operator">+=</span> <span class="token number">1</span>
-        <span class="token keyword">if</span> j <span class="token operator">==</span> m<span class="token punctuation">:</span>
-            <span class="token keyword">return</span> i <span class="token comment"># 找到匹配</span>
-    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<h2 id="背景知识：暴力匹配及其缺陷"><a href="#背景知识：暴力匹配及其缺陷" class="headerlink" title="背景知识：暴力匹配及其缺陷"></a>背景知识：暴力匹配及其缺陷</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">brute_force_search</span>(<span class="params">text, pattern</span>):</span><br><span class="line">    n, m = <span class="built_in">len</span>(text), <span class="built_in">len</span>(pattern)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n - m + <span class="number">1</span>): <span class="comment"># i: text 中的起始位置</span></span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; m:</span><br><span class="line">            <span class="keyword">if</span> text[i + j] != pattern[j]:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> j == m:</span><br><span class="line">            <span class="keyword">return</span> i <span class="comment"># 找到匹配</span></span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><strong>时间复杂度</strong>：最坏情况下为 <code>O((n-m+1) * m)</code>，约等于 <code>O(n*m)</code>。</li>
@@ -377,12 +356,7 @@ Pattern:A A A A A B  (Mismatch at B)
 <h2 id="详细算法原理：KMP-的核心——Next-数组"><a href="#详细算法原理：KMP-的核心——Next-数组" class="headerlink" title="详细算法原理：KMP 的核心——Next 数组"></a>详细算法原理：KMP 的核心——Next 数组</h2><p>KMP 算法的核心思想是：<strong>当失配发生时，主串 <code>text</code> 的指针 <code>i</code> 永不回溯，而是通过移动模式串 <code>pattern</code> 的指针 <code>j</code> 来实现高效匹配。</strong></p>
 <p>而 <code>j</code> 应该移动到哪里，就完全取决于一个预先计算好的 <code>next</code> 数组。</p>
 <h3 id="1-算法的“直觉”：利用已匹配的前缀"><a href="#1-算法的“直觉”：利用已匹配的前缀" class="headerlink" title="1. 算法的“直觉”：利用已匹配的前缀"></a>1. 算法的“直觉”：利用已匹配的前缀</h3><p>假设我们在匹配过程中，<code>text[i]</code> 和 <code>pattern[j]</code> 发生了失配。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">text:    ... a b c a b d ...
-              ^ 
-              i
-pattern:     a b c a b c
-                   ^
-                   j<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">text:    ... a b c a b d ...</span><br><span class="line">              ^ </span><br><span class="line">              i</span><br><span class="line">pattern:     a b c a b c</span><br><span class="line">                   ^</span><br><span class="line">                   j</span><br></pre></td></tr></table></figure>
 
 <p>此时，我们已经知道 <code>text</code> 中 <code>i</code> 之前的一段 <code>abcab</code> 和 <code>pattern</code> 的前缀 <code>abcab</code> 是匹配的。暴力匹配会把 <code>pattern</code> 后移一位，然后从头开始比较，这显然是低效的。</p>
 <p>KMP 的想法是：我们已经匹配上的 <code>pattern</code> 前缀 <code>abcab</code>，它的<strong>最长公共前后缀</strong>是什么？</p>
@@ -394,15 +368,7 @@ pattern:     a b c a b c
 <p>这个信息告诉我们，<code>pattern</code> 的开头两个字符 <code>ab</code> 和结尾两个字符 <code>ab</code> 是一样的。由于 <code>text</code> 中 <code>i</code> 之前的部分也等于 <code>abcab</code>，那么 <code>text</code> 中 <code>i</code> 之前的最后两个字符也必然是 <code>ab</code>。</p>
 <blockquote>
 <p><strong>图示：利用公共前后缀进行滑动</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">text:    ... a b c a b d ...
-pattern:     a b c a b c  (失配)
-
-已匹配部分： a b c a b
-最长公共前后缀：   a b
-
-滑动后：
-text:    ... a b c a b d ...
-pattern:         a b c a b c (对齐公共前后缀)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">text:    ... a b c a b d ...</span><br><span class="line">pattern:     a b c a b c  (失配)</span><br><span class="line"></span><br><span class="line">已匹配部分： a b c a b</span><br><span class="line">最长公共前后缀：   a b</span><br><span class="line"></span><br><span class="line">滑动后：</span><br><span class="line">text:    ... a b c a b d ...</span><br><span class="line">pattern:         a b c a b c (对齐公共前后缀)</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p>我们直接把 <code>pattern</code> 滑动到其前缀 <code>ab</code> 与 <code>text</code> 中对应的后缀 <code>ab</code> 对齐的位置，然后从 <code>pattern[2]</code>（即 <code>c</code>）继续和 <code>text[i]</code> 比较。整个过程中，<code>text</code> 的指针 <code>i</code> 没有动！</p>
 <p>这个“最长公共前后缀的长度”，就是 <code>next</code> 数组要告诉我们的信息。</p>
@@ -507,60 +473,7 @@ pattern:         a b c a b c (对齐公共前后缀)<span aria-hidden="true" cla
 <li><strong>处理匹配</strong>：如果 <code>text[i] == pattern[j]</code>，则 <code>j++</code>。</li>
 <li><strong>判断成功</strong>：如果 <code>j == m</code>，说明匹配成功，返回 <code>i - m + 1</code>。然后可以令 <code>j = next[j-1]</code> 继续寻找下一个匹配。</li>
 </ol>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">compute_next</span><span class="token punctuation">(</span>pattern<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""计算 KMP 算法的 next 数组"""</span>
-    m <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>pattern<span class="token punctuation">)</span>
-    next_arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> m
-    j <span class="token operator">=</span> <span class="token number">0</span>  <span class="token comment"># j: 当前最长公共前后缀的长度</span>
-    
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> m<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment"># 如果不匹配，j 回溯</span>
-        <span class="token keyword">while</span> j <span class="token operator">></span> <span class="token number">0</span> <span class="token keyword">and</span> pattern<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> pattern<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            j <span class="token operator">=</span> next_arr<span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
-        
-        <span class="token comment"># 如果匹配，j 增加</span>
-        <span class="token keyword">if</span> pattern<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> pattern<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            j <span class="token operator">+=</span> <span class="token number">1</span>
-        
-        next_arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> j
-    <span class="token keyword">return</span> next_arr
-
-<span class="token keyword">def</span> <span class="token function">kmp_search</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> pattern<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""使用 KMP 算法在 text 中查找 pattern"""</span>
-    n<span class="token punctuation">,</span> m <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>pattern<span class="token punctuation">)</span>
-    <span class="token keyword">if</span> m <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token number">0</span>
-    
-    next_arr <span class="token operator">=</span> compute_next<span class="token punctuation">(</span>pattern<span class="token punctuation">)</span>
-    j <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment"># 模式串的指针</span>
-    
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 文本串的指针</span>
-        <span class="token comment"># 处理不匹配，利用 next 数组回溯 j</span>
-        <span class="token keyword">while</span> j <span class="token operator">></span> <span class="token number">0</span> <span class="token keyword">and</span> text<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> pattern<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            j <span class="token operator">=</span> next_arr<span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
-        
-        <span class="token comment"># 处理匹配</span>
-        <span class="token keyword">if</span> text<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> pattern<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            j <span class="token operator">+=</span> <span class="token number">1</span>
-        
-        <span class="token comment"># 匹配成功</span>
-        <span class="token keyword">if</span> j <span class="token operator">==</span> m<span class="token punctuation">:</span>
-            <span class="token keyword">return</span> i <span class="token operator">-</span> m <span class="token operator">+</span> <span class="token number">1</span>
-            <span class="token comment"># 如果需要查找所有匹配，则：</span>
-            <span class="token comment"># print(f"Found pattern at index &#123;i - m + 1&#125;")</span>
-            <span class="token comment"># j = next_arr[j - 1]</span>
-            
-    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
-
-<span class="token comment"># --- 案例测试 ---</span>
-text <span class="token operator">=</span> <span class="token string">"ABABDABACDABABCABAB"</span>
-pattern <span class="token operator">=</span> <span class="token string">"ABABCABAB"</span>
-next_val <span class="token operator">=</span> compute_next<span class="token punctuation">(</span>pattern<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Pattern '</span><span class="token interpolation"><span class="token punctuation">&#123;</span>pattern<span class="token punctuation">&#125;</span></span><span class="token string">' 的 next 数组是: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>next_val<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-<span class="token comment"># 预期: [0, 0, 1, 2, 0, 1, 2, 3, 4]</span>
-
-start_index <span class="token operator">=</span> kmp_search<span class="token punctuation">(</span>text<span class="token punctuation">,</span> pattern<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"在 text 中找到 pattern, 起始索引为: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>start_index<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span> <span class="token comment"># 预期: 10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_next</span>(<span class="params">pattern</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;计算 KMP 算法的 next 数组&quot;&quot;&quot;</span></span><br><span class="line">    m = <span class="built_in">len</span>(pattern)</span><br><span class="line">    next_arr = [<span class="number">0</span>] * m</span><br><span class="line">    j = <span class="number">0</span>  <span class="comment"># j: 当前最长公共前后缀的长度</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, m):</span><br><span class="line">        <span class="comment"># 如果不匹配，j 回溯</span></span><br><span class="line">        <span class="keyword">while</span> j &gt; <span class="number">0</span> <span class="keyword">and</span> pattern[i] != pattern[j]:</span><br><span class="line">            j = next_arr[j - <span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 如果匹配，j 增加</span></span><br><span class="line">        <span class="keyword">if</span> pattern[i] == pattern[j]:</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        next_arr[i] = j</span><br><span class="line">    <span class="keyword">return</span> next_arr</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">kmp_search</span>(<span class="params">text, pattern</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用 KMP 算法在 text 中查找 pattern&quot;&quot;&quot;</span></span><br><span class="line">    n, m = <span class="built_in">len</span>(text), <span class="built_in">len</span>(pattern)</span><br><span class="line">    <span class="keyword">if</span> m == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    next_arr = compute_next(pattern)</span><br><span class="line">    j = <span class="number">0</span> <span class="comment"># 模式串的指针</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n): <span class="comment"># 文本串的指针</span></span><br><span class="line">        <span class="comment"># 处理不匹配，利用 next 数组回溯 j</span></span><br><span class="line">        <span class="keyword">while</span> j &gt; <span class="number">0</span> <span class="keyword">and</span> text[i] != pattern[j]:</span><br><span class="line">            j = next_arr[j - <span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 处理匹配</span></span><br><span class="line">        <span class="keyword">if</span> text[i] == pattern[j]:</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 匹配成功</span></span><br><span class="line">        <span class="keyword">if</span> j == m:</span><br><span class="line">            <span class="keyword">return</span> i - m + <span class="number">1</span></span><br><span class="line">            <span class="comment"># 如果需要查找所有匹配，则：</span></span><br><span class="line">            <span class="comment"># print(f&quot;Found pattern at index &#123;i - m + 1&#125;&quot;)</span></span><br><span class="line">            <span class="comment"># j = next_arr[j - 1]</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">text = <span class="string">&quot;ABABDABACDABABCABAB&quot;</span></span><br><span class="line">pattern = <span class="string">&quot;ABABCABAB&quot;</span></span><br><span class="line">next_val = compute_next(pattern)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Pattern &#x27;<span class="subst">&#123;pattern&#125;</span>&#x27; 的 next 数组是: <span class="subst">&#123;next_val&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 预期: [0, 0, 1, 2, 0, 1, 2, 3, 4]</span></span><br><span class="line"></span><br><span class="line">start_index = kmp_search(text, pattern)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;在 text 中找到 pattern, 起始索引为: <span class="subst">&#123;start_index&#125;</span>&quot;</span>) <span class="comment"># 预期: 10</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><h3 id="时间复杂度-O-n-m"><a href="#时间复杂度-O-n-m" class="headerlink" title="时间复杂度: O(n + m)"></a>时间复杂度: O(n + m)</h3><ul>
 <li><strong><code>compute_next</code> 函数</strong>: <code>O(m)</code>。<ul>
@@ -750,7 +663,7 @@ start_index <span class="token operator">=</span> kmp_search<span class="token p
       Fluid.utils.createCssLink('/css/gitalk.css')
       Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
         var options = Object.assign(
-          {"clientID":"Ov23liPObWQGLMYdxwv7","clientSecret":"45b47f3d81b4fad6e9630db9e97c2d309e9b32b1","repo":"Hjjjkh.github.io","owner":"Hjjjkh","admin":["Hjjjkh"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"id":"location.pathname","proxy":"https://proxy.cors.sh/https://github.com/login/oauth/access_token"},
+          {"clientID":"Ov23liPObWQGLMYdxwv7","clientSecret":"45b47f3d81b4fad6e9630db9e97c2d309e9b32b1","repo":"Hjjjkh.github.io","owner":"Hjjjkh","admin":["Hjjjkh"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"id":"location.pathname","proxy":"https://cors.zme.ink/https://github.com/login/oauth/access_token"},
           {
             id: '7f5a769795f52bee4e74fd03436ed2d5'
           }
@@ -794,9 +707,6 @@ start_index <span class="token operator">=</span> kmp_search<span class="token p
 
 
 
-
-
-  
 
 
 
@@ -978,8 +888,6 @@ start_index <span class="token operator">=</span> kmp_search<span class="token p
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

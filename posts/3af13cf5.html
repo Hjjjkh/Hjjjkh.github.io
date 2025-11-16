@@ -62,8 +62,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -80,11 +78,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -271,7 +264,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.8k 字
+          2.9k 字
         
       </span>
     
@@ -388,9 +381,7 @@
 <p>当我们计算 <code>p[i]</code> 时，如果 <code>i</code> 在 <code>max_right</code> 的左边（即 <code>i &lt; max_right</code>），那么我们就可以利用对称性。</p>
 <blockquote>
 <p><strong>图示：利用对称性</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">T: ... [ ... (i_mirror) ... | ... (i) ... ] ...
-            ^               ^               ^
-            L             center            R &#x3D; max_right<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T: ... [ ... (i_mirror) ... | ... (i) ... ] ...</span><br><span class="line">            ^               ^               ^</span><br><span class="line">            L             center            R = max_right</span><br></pre></td></tr></table></figure>
 </blockquote>
 <ul>
 <li><code>i_mirror</code> 是 <code>i</code> 关于中心 <code>center</code> 的对称点，<code>i_mirror = 2 * center - i</code>。</li>
@@ -403,8 +394,7 @@
 <p><strong><code>p[i] = p[i_mirror]</code></strong></p>
 <blockquote>
 <p><strong>图示：Case 1</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">T: ... [ ... ( ... ) ... | ... ( ... ) ... ] ...
-            i_mirror          center            i<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T: ... [ ... ( ... ) ... | ... ( ... ) ... ] ...</span><br><span class="line">            i_mirror          center            i</span><br></pre></td></tr></table></figure>
 <p><code>i_mirror</code> 的回文区域完全在大回文区域内部，<code>i</code> 的回文区域也一样。</p>
 </blockquote>
 <p><strong>Case 2: <code>p[i_mirror] &gt;= max_right - i</code></strong></p>
@@ -427,64 +417,7 @@
 <li><strong>找到最大臂长</strong>：遍历 <code>p</code> 数组，找到最大的臂长 <code>max_len</code> 和其对应的中心 <code>center_idx</code>。</li>
 <li><strong>计算结果</strong>：最长回文子串的长度是 <code>max_len</code>，其在原字符串中的起始位置可以通过 <code>center_idx</code> 和 <code>max_len</code> 计算得出。</li>
 </ol>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">manacher</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">str</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""使用 Manacher 算法找到最长回文子串"""</span>
-    <span class="token keyword">if</span> <span class="token keyword">not</span> s<span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token string">""</span>
-
-    <span class="token comment"># 1. 预处理字符串</span>
-    t <span class="token operator">=</span> <span class="token string">'#'</span> <span class="token operator">+</span> <span class="token string">'#'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'#'</span>
-    n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span>
-    
-    <span class="token comment"># 2. 初始化</span>
-    p <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n  <span class="token comment"># 臂长数组</span>
-    center<span class="token punctuation">,</span> max_right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
-    
-    <span class="token comment"># 用于记录最长回文子串的中心和长度</span>
-    max_len<span class="token punctuation">,</span> result_center <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
-
-    <span class="token comment"># 3. 主循环</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment"># 4. 利用对称性计算 p[i] 的初始值</span>
-        <span class="token comment"># 如果 i 在 max_right 内部，可以利用对称性</span>
-        <span class="token keyword">if</span> i <span class="token operator">&lt;</span> max_right<span class="token punctuation">:</span>
-            i_mirror <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span> center <span class="token operator">-</span> i
-            <span class="token comment"># p[i] 至少是 p[i_mirror] 和 max_right - i 中的较小值</span>
-            p<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>p<span class="token punctuation">[</span>i_mirror<span class="token punctuation">]</span><span class="token punctuation">,</span> max_right <span class="token operator">-</span> i<span class="token punctuation">)</span>
-        <span class="token comment"># 如果 i 在外部，p[i] 初始为 0</span>
-
-        <span class="token comment"># 5. 暴力扩展</span>
-        <span class="token comment"># 尝试以 i 为中心，p[i] 为臂长向两边扩展</span>
-        a <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">+</span> p<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-        b <span class="token operator">=</span> i <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">-</span> p<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-        <span class="token keyword">while</span> a <span class="token operator">&lt;</span> n <span class="token keyword">and</span> b <span class="token operator">>=</span> <span class="token number">0</span> <span class="token keyword">and</span> t<span class="token punctuation">[</span>a<span class="token punctuation">]</span> <span class="token operator">==</span> t<span class="token punctuation">[</span>b<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            p<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
-            a <span class="token operator">+=</span> <span class="token number">1</span>
-            b <span class="token operator">-=</span> <span class="token number">1</span>
-
-        <span class="token comment"># 6. 更新 max_right 和 center</span>
-        <span class="token keyword">if</span> i <span class="token operator">+</span> p<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">></span> max_right<span class="token punctuation">:</span>
-            max_right <span class="token operator">=</span> i <span class="token operator">+</span> p<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-            center <span class="token operator">=</span> i
-
-        <span class="token comment"># 7. 更新最长回文子串的信息</span>
-        <span class="token keyword">if</span> p<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">></span> max_len<span class="token punctuation">:</span>
-            max_len <span class="token operator">=</span> p<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-            result_center <span class="token operator">=</span> i
-
-    <span class="token comment"># 8. 从结果中提取原始字符串</span>
-    start <span class="token operator">=</span> <span class="token punctuation">(</span>result_center <span class="token operator">-</span> max_len<span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">2</span>
-    end <span class="token operator">=</span> start <span class="token operator">+</span> max_len
-    <span class="token keyword">return</span> s<span class="token punctuation">[</span>start<span class="token punctuation">:</span>end<span class="token punctuation">]</span>
-
-<span class="token comment"># --- 案例测试 ---</span>
-s1 <span class="token operator">=</span> <span class="token string">"babad"</span>
-s2 <span class="token operator">=</span> <span class="token string">"cbbd"</span>
-s3 <span class="token operator">=</span> <span class="token string">"abacdfgdcaba"</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>s1<span class="token punctuation">&#125;</span></span><span class="token string">' 的最长回文子串是: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>manacher<span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span> <span class="token comment"># bab</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>s2<span class="token punctuation">&#125;</span></span><span class="token string">' 的最长回文子串是: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>manacher<span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span> <span class="token comment"># bb</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>s3<span class="token punctuation">&#125;</span></span><span class="token string">' 的最长回文子串是: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>manacher<span class="token punctuation">(</span>s3<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span> <span class="token comment"># aba</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">manacher</span>(<span class="params">s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用 Manacher 算法找到最长回文子串&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> s:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 预处理字符串</span></span><br><span class="line">    t = <span class="string">&#x27;#&#x27;</span> + <span class="string">&#x27;#&#x27;</span>.join(s) + <span class="string">&#x27;#&#x27;</span></span><br><span class="line">    n = <span class="built_in">len</span>(t)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 初始化</span></span><br><span class="line">    p = [<span class="number">0</span>] * n  <span class="comment"># 臂长数组</span></span><br><span class="line">    center, max_right = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 用于记录最长回文子串的中心和长度</span></span><br><span class="line">    max_len, result_center = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 主循环</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="comment"># 4. 利用对称性计算 p[i] 的初始值</span></span><br><span class="line">        <span class="comment"># 如果 i 在 max_right 内部，可以利用对称性</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; max_right:</span><br><span class="line">            i_mirror = <span class="number">2</span> * center - i</span><br><span class="line">            <span class="comment"># p[i] 至少是 p[i_mirror] 和 max_right - i 中的较小值</span></span><br><span class="line">            p[i] = <span class="built_in">min</span>(p[i_mirror], max_right - i)</span><br><span class="line">        <span class="comment"># 如果 i 在外部，p[i] 初始为 0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 5. 暴力扩展</span></span><br><span class="line">        <span class="comment"># 尝试以 i 为中心，p[i] 为臂长向两边扩展</span></span><br><span class="line">        a = i + <span class="number">1</span> + p[i]</span><br><span class="line">        b = i - <span class="number">1</span> - p[i]</span><br><span class="line">        <span class="keyword">while</span> a &lt; n <span class="keyword">and</span> b &gt;= <span class="number">0</span> <span class="keyword">and</span> t[a] == t[b]:</span><br><span class="line">            p[i] += <span class="number">1</span></span><br><span class="line">            a += <span class="number">1</span></span><br><span class="line">            b -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 6. 更新 max_right 和 center</span></span><br><span class="line">        <span class="keyword">if</span> i + p[i] &gt; max_right:</span><br><span class="line">            max_right = i + p[i]</span><br><span class="line">            center = i</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 7. 更新最长回文子串的信息</span></span><br><span class="line">        <span class="keyword">if</span> p[i] &gt; max_len:</span><br><span class="line">            max_len = p[i]</span><br><span class="line">            result_center = i</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 8. 从结果中提取原始字符串</span></span><br><span class="line">    start = (result_center - max_len) // <span class="number">2</span></span><br><span class="line">    end = start + max_len</span><br><span class="line">    <span class="keyword">return</span> s[start:end]</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">s1 = <span class="string">&quot;babad&quot;</span></span><br><span class="line">s2 = <span class="string">&quot;cbbd&quot;</span></span><br><span class="line">s3 = <span class="string">&quot;abacdfgdcaba&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;&#x27;<span class="subst">&#123;s1&#125;</span>&#x27; 的最长回文子串是: <span class="subst">&#123;manacher(s1)&#125;</span>&quot;</span>) <span class="comment"># bab</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;&#x27;<span class="subst">&#123;s2&#125;</span>&#x27; 的最长回文子串是: <span class="subst">&#123;manacher(s2)&#125;</span>&quot;</span>) <span class="comment"># bb</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;&#x27;<span class="subst">&#123;s3&#125;</span>&#x27; 的最长回文子串是: <span class="subst">&#123;manacher(s3)&#125;</span>&quot;</span>) <span class="comment"># aba</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><ul>
 <li><strong>时间复杂度</strong>: <code>O(n)</code>。<ul>
@@ -666,7 +599,7 @@ s3 <span class="token operator">=</span> <span class="token string">"abacdfgdcab
       Fluid.utils.createCssLink('/css/gitalk.css')
       Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
         var options = Object.assign(
-          {"clientID":"Ov23liPObWQGLMYdxwv7","clientSecret":"45b47f3d81b4fad6e9630db9e97c2d309e9b32b1","repo":"Hjjjkh.github.io","owner":"Hjjjkh","admin":["Hjjjkh"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"id":"location.pathname","proxy":"https://proxy.cors.sh/https://github.com/login/oauth/access_token"},
+          {"clientID":"Ov23liPObWQGLMYdxwv7","clientSecret":"45b47f3d81b4fad6e9630db9e97c2d309e9b32b1","repo":"Hjjjkh.github.io","owner":"Hjjjkh","admin":["Hjjjkh"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"id":"location.pathname","proxy":"https://cors.zme.ink/https://github.com/login/oauth/access_token"},
           {
             id: 'a5a6a77589ca56ee77daef9152cde26b'
           }
@@ -710,9 +643,6 @@ s3 <span class="token operator">=</span> <span class="token string">"abacdfgdcab
 
 
 
-
-
-  
 
 
 
@@ -894,8 +824,6 @@ s3 <span class="token operator">=</span> <span class="token string">"abacdfgdcab
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
