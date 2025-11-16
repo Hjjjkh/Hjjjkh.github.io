@@ -61,6 +61,8 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -78,10 +80,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
-
-
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
-<link rel="stylesheet" href="/css/custom.css">
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
 
@@ -448,27 +451,57 @@
 </ul>
 <h2 id="三、DP-的常见分类与模板"><a href="#三、DP-的常见分类与模板" class="headerlink" title="三、DP 的常见分类与模板"></a>三、DP 的常见分类与模板</h2><h3 id="1-线性-DP"><a href="#1-线性-DP" class="headerlink" title="1. 线性 DP"></a>1. 线性 DP</h3><p><strong>特点</strong>：状态在一维或二维的线性空间上转移。</p>
 <p><strong>模板</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一维线性 DP</span></span><br><span class="line">dp = [<span class="number">0</span>] * (n + <span class="number">1</span>)</span><br><span class="line">dp[<span class="number">0</span>] = base_case</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">    dp[i] = f(dp[j] <span class="keyword">for</span> j &lt; i)</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 一维线性 DP
+dp &#x3D; [0] * (n + 1)
+dp[0] &#x3D; base_case
+for i in range(1, n + 1):
+    dp[i] &#x3D; f(dp[j] for j &lt; i)</code></pre></div></figure>
 
 <p><strong>代表问题</strong>：LIS、爬楼梯、打家劫舍。</p>
 <h3 id="2-背包-DP"><a href="#2-背包-DP" class="headerlink" title="2. 背包 DP"></a>2. 背包 DP</h3><p><strong>特点</strong>：涉及”选或不选”的决策，通常有容量限制。</p>
 <p><strong>模板</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 0-1 背包</span></span><br><span class="line">dp = [[<span class="number">0</span>] * (W + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, W + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> j &lt; weight[i-<span class="number">1</span>]:</span><br><span class="line">            dp[i][j] = dp[i-<span class="number">1</span>][j]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i-<span class="number">1</span>][j], dp[i-<span class="number">1</span>][j-weight[i-<span class="number">1</span>]] + value[i-<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 0-1 背包
+dp &#x3D; [[0] * (W + 1) for _ in range(n + 1)]
+for i in range(1, n + 1):
+    for j in range(1, W + 1):
+        if j &lt; weight[i-1]:
+            dp[i][j] &#x3D; dp[i-1][j]
+        else:
+            dp[i][j] &#x3D; max(dp[i-1][j], dp[i-1][j-weight[i-1]] + value[i-1])</code></pre></div></figure>
 
 <p><strong>代表问题</strong>：0-1 背包、完全背包、多重背包。</p>
 <h3 id="3-区间-DP"><a href="#3-区间-DP" class="headerlink" title="3. 区间 DP"></a>3. 区间 DP</h3><p><strong>特点</strong>：状态定义在一个区间 <code>[i, j]</code> 上，通过枚举分割点 <code>k</code> 来转移。</p>
 <p><strong>模板</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dp = [[<span class="number">0</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line"><span class="comment"># 初始化 dp[i][i]</span></span><br><span class="line"><span class="keyword">for</span> length <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n - length + <span class="number">1</span>):</span><br><span class="line">        j = i + length - <span class="number">1</span></span><br><span class="line">        dp[i][j] = <span class="built_in">min</span>/<span class="built_in">max</span>(dp[i][k] + dp[k+<span class="number">1</span>][j] + cost <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(i, j))</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">dp &#x3D; [[0] * n for _ in range(n)]
+# 初始化 dp[i][i]
+for length in range(2, n + 1):
+    for i in range(n - length + 1):
+        j &#x3D; i + length - 1
+        dp[i][j] &#x3D; min&#x2F;max(dp[i][k] + dp[k+1][j] + cost for k in range(i, j))</code></pre></div></figure>
 
 <p><strong>代表问题</strong>：石子合并、矩阵链乘法、最长回文子序列。</p>
 <h3 id="4-树形-DP"><a href="#4-树形-DP" class="headerlink" title="4. 树形 DP"></a>4. 树形 DP</h3><p><strong>特点</strong>：在树形结构上进行 DP，通过 DFS（后序遍历）实现状态转移。</p>
 <p><strong>模板</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">u</span>):</span><br><span class="line">    dp[u][<span class="number">0</span>] = ...</span><br><span class="line">    dp[u][<span class="number">1</span>] = ...</span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> children[u]:</span><br><span class="line">        dfs(v)</span><br><span class="line">        dp[u][<span class="number">0</span>] += f(dp[v])</span><br><span class="line">        dp[u][<span class="number">1</span>] += g(dp[v])</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def dfs(u):
+    dp[u][0] &#x3D; ...
+    dp[u][1] &#x3D; ...
+    for v in children[u]:
+        dfs(v)
+        dp[u][0] +&#x3D; f(dp[v])
+        dp[u][1] +&#x3D; g(dp[v])</code></pre></div></figure>
 
 <p><strong>代表问题</strong>：树的最大独立集、树的直径、树的重心。</p>
 <h3 id="5-状态压缩-DP"><a href="#5-状态压缩-DP" class="headerlink" title="5. 状态压缩 DP"></a>5. 状态压缩 DP</h3><p><strong>特点</strong>：用二进制位表示集合状态，适用于 <code>n &lt;= 20</code> 的组合优化问题。</p>
 <p><strong>模板</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dp = [[inf] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span> &lt;&lt; n)]</span><br><span class="line">dp[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> mask <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">1</span> &lt;&lt; n):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> (mask &gt;&gt; i) &amp; <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                <span class="keyword">if</span> j != i <span class="keyword">and</span> (mask &gt;&gt; j) &amp; <span class="number">1</span>:</span><br><span class="line">                    prev_mask = mask ^ (<span class="number">1</span> &lt;&lt; i)</span><br><span class="line">                    dp[mask][i] = <span class="built_in">min</span>(dp[mask][i], dp[prev_mask][j] + cost[j][i])</span><br></pre></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">dp &#x3D; [[inf] * n for _ in range(1 &lt;&lt; n)]
+dp[1][0] &#x3D; 0
+for mask in range(1, 1 &lt;&lt; n):
+    for i in range(n):
+        if (mask &gt;&gt; i) &amp; 1:
+            for j in range(n):
+                if j !&#x3D; i and (mask &gt;&gt; j) &amp; 1:
+                    prev_mask &#x3D; mask ^ (1 &lt;&lt; i)
+                    dp[mask][i] &#x3D; min(dp[mask][i], dp[prev_mask][j] + cost[j][i])</code></pre></div></figure>
 
 <p><strong>代表问题</strong>：TSP、哈密顿路径、任务分配。</p>
 <h2 id="四、DP-的常见优化技巧"><a href="#四、DP-的常见优化技巧" class="headerlink" title="四、DP 的常见优化技巧"></a>四、DP 的常见优化技巧</h2><h3 id="1-空间优化：滚动数组"><a href="#1-空间优化：滚动数组" class="headerlink" title="1. 空间优化：滚动数组"></a>1. 空间优化：滚动数组</h3><p>如果 <code>dp[i]</code> 只依赖于 <code>dp[i-1]</code>，可以用两个一维数组交替使用，或者直接用一维数组（注意遍历顺序）。</p>
@@ -740,6 +773,9 @@
 
 
 
+  
+
+
 
   
 
@@ -919,6 +955,12 @@
   });
 </script>
 
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
