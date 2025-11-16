@@ -64,8 +64,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -82,11 +80,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -111,7 +104,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -273,7 +267,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          1.7k 字
         
       </span>
     
@@ -418,79 +412,7 @@
 <li><strong>拓扑排序</strong>。</li>
 </ul>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面我们使用邻接表来实现 BFS 和 DFS。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">from collections import deque, defaultdict
-
-class Graph:
-    def __init__(self):
-        # 使用邻接表表示图
-        self.adj &#x3D; defaultdict(list)
-    
-    def add_edge(self, u, v):
-        &quot;&quot;&quot;添加一条从 u 到 v 的边 (对于无向图，应双向添加)&quot;&quot;&quot;
-        self.adj[u].append(v)
-
-    def bfs(self, start_node):
-        &quot;&quot;&quot;从 start_node 开始进行广度优先搜索&quot;&quot;&quot;
-        if start_node not in self.adj:
-            print(&quot;起始节点不存在&quot;)
-            return
-
-        visited &#x3D; set()
-        queue &#x3D; deque([start_node])
-        visited.add(start_node)
-        
-        result &#x3D; []
-        while queue:
-            node &#x3D; queue.popleft()
-            result.append(node)
-            
-            for neighbor in self.adj[node]:
-                if neighbor not in visited:
-                    visited.add(neighbor)
-                    queue.append(neighbor)
-        
-        print(f&quot;BFS 遍历结果: &#123;result&#125;&quot;)
-        return result
-
-    def dfs(self, start_node):
-        &quot;&quot;&quot;从 start_node 开始进行深度优先搜索&quot;&quot;&quot;
-        if start_node not in self.adj:
-            print(&quot;起始节点不存在&quot;)
-            return
-        
-        visited &#x3D; set()
-        result &#x3D; []
-        
-        def _dfs_recursive(node):
-            visited.add(node)
-            result.append(node)
-            
-            for neighbor in self.adj[node]:
-                if neighbor not in visited:
-                    _dfs_recursive(neighbor)
-        
-        _dfs_recursive(start_node)
-        print(f&quot;DFS 遍历结果: &#123;result&#125;&quot;)
-        return result
-
-# --- 案例测试 ---
-# 创建一个有向图
-g &#x3D; Graph()
-g.add_edge(&#39;A&#39;, &#39;B&#39;)
-g.add_edge(&#39;A&#39;, &#39;C&#39;)
-g.add_edge(&#39;B&#39;, &#39;D&#39;)
-g.add_edge(&#39;B&#39;, &#39;E&#39;)
-g.add_edge(&#39;C&#39;, &#39;F&#39;)
-
-#      A
-#     &#x2F; \
-#    B   C
-#   &#x2F; \   \
-#  D   E   F
-
-print(&quot;从 &#39;A&#39; 开始遍历:&quot;)
-g.bfs(&#39;A&#39;)  # BFS 遍历结果: [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;]
-g.dfs(&#39;A&#39;)  # DFS 遍历结果: [&#39;A&#39;, &#39;B&#39;, &#39;D&#39;, &#39;E&#39;, &#39;C&#39;, &#39;F&#39;] (可能因邻接表顺序而异)</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque, defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Graph</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 使用邻接表表示图</span></span><br><span class="line">        <span class="variable language_">self</span>.adj = defaultdict(<span class="built_in">list</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_edge</span>(<span class="params">self, u, v</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加一条从 u 到 v 的边 (对于无向图，应双向添加)&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.adj[u].append(v)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">bfs</span>(<span class="params">self, start_node</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;从 start_node 开始进行广度优先搜索&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> start_node <span class="keyword">not</span> <span class="keyword">in</span> <span class="variable language_">self</span>.adj:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;起始节点不存在&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        visited = <span class="built_in">set</span>()</span><br><span class="line">        queue = deque([start_node])</span><br><span class="line">        visited.add(start_node)</span><br><span class="line">        </span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">while</span> queue:</span><br><span class="line">            node = queue.popleft()</span><br><span class="line">            result.append(node)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> neighbor <span class="keyword">in</span> <span class="variable language_">self</span>.adj[node]:</span><br><span class="line">                <span class="keyword">if</span> neighbor <span class="keyword">not</span> <span class="keyword">in</span> visited:</span><br><span class="line">                    visited.add(neighbor)</span><br><span class="line">                    queue.append(neighbor)</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;BFS 遍历结果: <span class="subst">&#123;result&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">self, start_node</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;从 start_node 开始进行深度优先搜索&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> start_node <span class="keyword">not</span> <span class="keyword">in</span> <span class="variable language_">self</span>.adj:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;起始节点不存在&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        visited = <span class="built_in">set</span>()</span><br><span class="line">        result = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">_dfs_recursive</span>(<span class="params">node</span>):</span><br><span class="line">            visited.add(node)</span><br><span class="line">            result.append(node)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> neighbor <span class="keyword">in</span> <span class="variable language_">self</span>.adj[node]:</span><br><span class="line">                <span class="keyword">if</span> neighbor <span class="keyword">not</span> <span class="keyword">in</span> visited:</span><br><span class="line">                    _dfs_recursive(neighbor)</span><br><span class="line">        </span><br><span class="line">        _dfs_recursive(start_node)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;DFS 遍历结果: <span class="subst">&#123;result&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line"><span class="comment"># 创建一个有向图</span></span><br><span class="line">g = Graph()</span><br><span class="line">g.add_edge(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>)</span><br><span class="line">g.add_edge(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line">g.add_edge(<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;D&#x27;</span>)</span><br><span class="line">g.add_edge(<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;E&#x27;</span>)</span><br><span class="line">g.add_edge(<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;F&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#      A</span></span><br><span class="line"><span class="comment">#     / \</span></span><br><span class="line"><span class="comment">#    B   C</span></span><br><span class="line"><span class="comment">#   / \   \</span></span><br><span class="line"><span class="comment">#  D   E   F</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;从 &#x27;A&#x27; 开始遍历:&quot;</span>)</span><br><span class="line">g.bfs(<span class="string">&#x27;A&#x27;</span>)  <span class="comment"># BFS 遍历结果: [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, &#x27;D&#x27;, &#x27;E&#x27;, &#x27;F&#x27;]</span></span><br><span class="line">g.dfs(<span class="string">&#x27;A&#x27;</span>)  <span class="comment"># DFS 遍历结果: [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;D&#x27;, &#x27;E&#x27;, &#x27;C&#x27;, &#x27;F&#x27;] (可能因邻接表顺序而异)</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>图的表示和遍历是整个图论算法的基石。几乎所有高级的图论算法，都是在 BFS 或 DFS 的框架上进行扩展和修改的。</p>
 <h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>图的表示</strong>：邻接矩阵（<code>O(V²)</code> 空间，<code>O(1)</code> 查边）和邻接表（<code>O(V+E)</code> 空间，更常用）。<br>✅ <strong>广度优先搜索 (BFS)<strong>：使用</strong>队列</strong>，按层次遍历，常用于求解无权图的<strong>最短路径</strong>。<br>✅ <strong>深度优先搜索 (DFS)<strong>：使用</strong>递归</strong>或<strong>栈</strong>，一条路走到底，常用于<strong>路径查找</strong>、<strong>环检测</strong>和<strong>连通性</strong>问题。</p>
@@ -711,9 +633,6 @@ g.dfs(&#39;A&#39;)  # DFS 遍历结果: [&#39;A&#39;, &#39;B&#39;, &#39;D&#39;, 
 
 
 
-  
-
-
 
   
 
@@ -893,12 +812,6 @@ g.dfs(&#39;A&#39;)  # DFS 遍历结果: [&#39;A&#39;, &#39;B&#39;, &#39;D&#39;, 
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

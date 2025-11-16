@@ -62,8 +62,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -80,11 +78,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -109,7 +102,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -271,7 +265,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k 字
+          2.1k 字
         
       </span>
     
@@ -282,7 +276,7 @@
         
         
         
-          19 分钟
+          18 分钟
         
       </span>
     
@@ -371,17 +365,11 @@
 <li>集合3: <code>5</code> (5是老大)</li>
 </ul>
 <p>**数组表示 <code>parent</code>**：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">index:  0  1  2  3  4  5
-value: [0, 0, 0, 3, 3, 5]</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">index:  0  1  2  3  4  5</span><br><span class="line">value: [0, 0, 0, 3, 3, 5]</span><br></pre></td></tr></table></figure>
 <p><code>parent[0]=0</code>, <code>parent[3]=3</code>, <code>parent[5]=5</code> 表示 0, 3, 5 是三个集合的根节点。</p>
 </blockquote>
 <h2 id="2-核心操作"><a href="#2-核心操作" class="headerlink" title="2. 核心操作"></a>2. 核心操作</h2><h3 id="2-1-Find：找老大"><a href="#2-1-Find：找老大" class="headerlink" title="2.1 Find：找老大"></a>2.1 Find：找老大</h3><p><code>find(i)</code> 操作就是从节点 <code>i</code> 开始，沿着 <code>parent</code> 数组不断向上查找，直到找到根节点（即 <code>parent[i] == i</code> 的节点）。</p>
-<h4 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h4><figure><div class="code-wrapper"><pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">function find(i):
-  &#x2F;&#x2F; 如果当前节点不是根节点
-  while parent[i] !&#x3D; i:
-    &#x2F;&#x2F; 继续向上找
-    i &#x3D; parent[i]
-  return i</code></pre></div></figure>
+<h4 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function find(i):</span><br><span class="line">  // 如果当前节点不是根节点</span><br><span class="line">  while parent[i] != i:</span><br><span class="line">    // 继续向上找</span><br><span class="line">    i = parent[i]</span><br><span class="line">  return i</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-2-Union：合并团伙"><a href="#2-2-Union：合并团伙" class="headerlink" title="2.2 Union：合并团伙"></a>2.2 Union：合并团伙</h3><p><code>union(i, j)</code> 操作就是将节点 <code>i</code> 和节点 <code>j</code> 所在的两个集合合并。</p>
 <p><strong>步骤</strong>：</p>
@@ -390,12 +378,7 @@ value: [0, 0, 0, 3, 3, 5]</code></pre></div></figure>
 <li>通过 <code>find(j)</code> 找到 <code>j</code> 的老大 <code>root_j</code>。</li>
 <li>如果 <code>root_i</code> 和 <code>root_j</code> 不相同，说明他们不在一个集合，就将一个老大认另一个为父节点，例如 <code>parent[root_i] = root_j</code>。</li>
 </ol>
-<h4 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h4><figure><div class="code-wrapper"><pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">function union(i, j):
-  root_i &#x3D; find(i)
-  root_j &#x3D; find(j)
-  
-  if root_i !&#x3D; root_j:
-    parent[root_i] &#x3D; root_j</code></pre></div></figure>
+<h4 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function union(i, j):</span><br><span class="line">  root_i = find(i)</span><br><span class="line">  root_j = find(j)</span><br><span class="line">  </span><br><span class="line">  if root_i != root_j:</span><br><span class="line">    parent[root_i] = root_j</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-关键优化：让查询飞起来"><a href="#3-关键优化：让查询飞起来" class="headerlink" title="3. 关键优化：让查询飞起来"></a>3. 关键优化：让查询飞起来</h2><p>上述基础版本的并查集，在最坏情况下，树可能退化成一条链。此时 <code>find</code> 操作的时间复杂度为 <code>O(n)</code>，效率很低。</p>
 <p>为了解决这个问题，我们引入两种强大的优化：<strong>路径压缩</strong>和<strong>按秩合并</strong>。</p>
@@ -408,12 +391,7 @@ value: [0, 0, 0, 3, 3, 5]</code></pre></div></figure>
 <li><strong>压缩路径</strong>: 在回溯时，将 4, 3, 2, 1 的父节点全部指向 0。</li>
 <li><strong>查找后</strong>: <code>parent = [0, 0, 0, 0, 0]</code></li>
 </ol>
-<h4 id="伪代码-递归实现"><a href="#伪代码-递归实现" class="headerlink" title="伪代码 (递归实现)"></a>伪代码 (递归实现)</h4><figure><div class="code-wrapper"><pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">function find_with_compression(i):
-  if parent[i] &#x3D;&#x3D; i:
-    return i
-  &#x2F;&#x2F; 递归查找根节点，并将路径上所有节点的父节点设为根节点
-  parent[i] &#x3D; find_with_compression(parent[i])
-  return parent[i]</code></pre></div></figure>
+<h4 id="伪代码-递归实现"><a href="#伪代码-递归实现" class="headerlink" title="伪代码 (递归实现)"></a>伪代码 (递归实现)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function find_with_compression(i):</span><br><span class="line">  if parent[i] == i:</span><br><span class="line">    return i</span><br><span class="line">  // 递归查找根节点，并将路径上所有节点的父节点设为根节点</span><br><span class="line">  parent[i] = find_with_compression(parent[i])</span><br><span class="line">  return parent[i]</span><br></pre></td></tr></table></figure>
 
 <p>路径压缩是<strong>最重要</strong>的优化，仅此一项就能极大地提升并查集的性能。</p>
 <h3 id="3-2-按秩合并-Union-by-Rank-Size"><a href="#3-2-按秩合并-Union-by-Rank-Size" class="headerlink" title="3.2 按秩合并 (Union by Rank&#x2F;Size)"></a>3.2 按秩合并 (Union by Rank&#x2F;Size)</h3><p><strong>思想</strong>：在 <code>union</code> 操作时，总是将<strong>较小的树</strong>合并到<strong>较大的树</strong>上。这样可以有效地避免树的高度过快增长。</p>
@@ -423,57 +401,9 @@ value: [0, 0, 0, 3, 3, 5]</code></pre></div></figure>
 <li>**按秩 (Rank)**：用一个 <code>rank</code> 数组记录每棵树的高度。合并时，将高度较小的树的根指向高度较大的树的根。</li>
 <li>**按大小 (Size)**：用一个 <code>size</code> 数组记录每个集合的元素数量。合并时，将元素数量较少的集合合并到较多的集合上。</li>
 </ul>
-<h4 id="伪代码-按秩合并"><a href="#伪代码-按秩合并" class="headerlink" title="伪代码 (按秩合并)"></a>伪代码 (按秩合并)</h4><figure><div class="code-wrapper"><pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">&#x2F;&#x2F; 初始化: rank 数组全为 1
-function union_by_rank(i, j):
-  root_i &#x3D; find(i)
-  root_j &#x3D; find(j)
-  
-  if root_i !&#x3D; root_j:
-    if rank[root_i] &lt; rank[root_j]:
-      parent[root_i] &#x3D; root_j
-    else if rank[root_i] &gt; rank[root_j]:
-      parent[root_j] &#x3D; root_i
-    else: &#x2F;&#x2F; rank 相等
-      parent[root_j] &#x3D; root_i
-      rank[root_i] &#x3D; rank[root_i] + 1</code></pre></div></figure>
+<h4 id="伪代码-按秩合并"><a href="#伪代码-按秩合并" class="headerlink" title="伪代码 (按秩合并)"></a>伪代码 (按秩合并)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 初始化: rank 数组全为 1</span><br><span class="line">function union_by_rank(i, j):</span><br><span class="line">  root_i = find(i)</span><br><span class="line">  root_j = find(j)</span><br><span class="line">  </span><br><span class="line">  if root_i != root_j:</span><br><span class="line">    if rank[root_i] &lt; rank[root_j]:</span><br><span class="line">      parent[root_i] = root_j</span><br><span class="line">    else if rank[root_i] &gt; rank[root_j]:</span><br><span class="line">      parent[root_j] = root_i</span><br><span class="line">    else: // rank 相等</span><br><span class="line">      parent[root_j] = root_i</span><br><span class="line">      rank[root_i] = rank[root_i] + 1</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-Python-实现-带优化"><a href="#4-Python-实现-带优化" class="headerlink" title="4. Python 实现 (带优化)"></a>4. Python 实现 (带优化)</h2><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">class DSU:
-    def __init__(self, n):
-        # 初始化，每个元素的父节点是自己
-        self.parent &#x3D; list(range(n))
-        # 初始化，每个集合的大小为 1
-        self.size &#x3D; [1] * n
-
-    def find(self, i):
-        &quot;&quot;&quot;查找根节点，并进行路径压缩&quot;&quot;&quot;
-        if self.parent[i] &#x3D;&#x3D; i:
-            return i
-        self.parent[i] &#x3D; self.find(self.parent[i])
-        return self.parent[i]
-
-    def union(self, i, j):
-        &quot;&quot;&quot;按大小合并两个集合&quot;&quot;&quot;
-        root_i &#x3D; self.find(i)
-        root_j &#x3D; self.find(j)
-
-        if root_i !&#x3D; root_j:
-            # 将小树合并到大树
-            if self.size[root_i] &lt; self.size[root_j]:
-                root_i, root_j &#x3D; root_j, root_i # 交换
-            
-            self.parent[root_j] &#x3D; root_i
-            self.size[root_i] +&#x3D; self.size[root_j]
-            return True # 返回 True 表示成功合并
-        return False # 返回 False 表示已在同一集合
-
-# 示例
-dsu &#x3D; DSU(10)
-dsu.union(1, 2)
-dsu.union(2, 3)
-dsu.union(5, 6)
-
-print(dsu.find(1) &#x3D;&#x3D; dsu.find(3)) # 输出: True
-print(dsu.find(1) &#x3D;&#x3D; dsu.find(5)) # 输出: False</code></pre></div></figure>
+<h2 id="4-Python-实现-带优化"><a href="#4-Python-实现-带优化" class="headerlink" title="4. Python 实现 (带优化)"></a>4. Python 实现 (带优化)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DSU</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        <span class="comment"># 初始化，每个元素的父节点是自己</span></span><br><span class="line">        <span class="variable language_">self</span>.parent = <span class="built_in">list</span>(<span class="built_in">range</span>(n))</span><br><span class="line">        <span class="comment"># 初始化，每个集合的大小为 1</span></span><br><span class="line">        <span class="variable language_">self</span>.size = [<span class="number">1</span>] * n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find</span>(<span class="params">self, i</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;查找根节点，并进行路径压缩&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.parent[i] == i:</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">        <span class="variable language_">self</span>.parent[i] = <span class="variable language_">self</span>.find(<span class="variable language_">self</span>.parent[i])</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.parent[i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">union</span>(<span class="params">self, i, j</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;按大小合并两个集合&quot;&quot;&quot;</span></span><br><span class="line">        root_i = <span class="variable language_">self</span>.find(i)</span><br><span class="line">        root_j = <span class="variable language_">self</span>.find(j)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root_i != root_j:</span><br><span class="line">            <span class="comment"># 将小树合并到大树</span></span><br><span class="line">            <span class="keyword">if</span> <span class="variable language_">self</span>.size[root_i] &lt; <span class="variable language_">self</span>.size[root_j]:</span><br><span class="line">                root_i, root_j = root_j, root_i <span class="comment"># 交换</span></span><br><span class="line">            </span><br><span class="line">            <span class="variable language_">self</span>.parent[root_j] = root_i</span><br><span class="line">            <span class="variable language_">self</span>.size[root_i] += <span class="variable language_">self</span>.size[root_j]</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span> <span class="comment"># 返回 True 表示成功合并</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span> <span class="comment"># 返回 False 表示已在同一集合</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">dsu = DSU(<span class="number">10</span>)</span><br><span class="line">dsu.union(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">dsu.union(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">dsu.union(<span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(dsu.find(<span class="number">1</span>) == dsu.find(<span class="number">3</span>)) <span class="comment"># 输出: True</span></span><br><span class="line"><span class="built_in">print</span>(dsu.find(<span class="number">1</span>) == dsu.find(<span class="number">5</span>)) <span class="comment"># 输出: False</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="5-复杂度分析"><a href="#5-复杂度分析" class="headerlink" title="5. 复杂度分析"></a>5. 复杂度分析</h2><p>当同时使用<strong>路径压缩</strong>和<strong>按秩&#x2F;大小合并</strong>这两种优化时，并查集的操作时间复杂度可以达到**近乎 <code>O(1)</code>**。</p>
 <p>严格来说，其时间复杂度是 <code>O(α(n))</code>，其中 <code>α(n)</code> 是<strong>反阿克曼函数</strong>。这个函数增长极其缓慢，对于所有实际应用中的 <code>n</code>，<code>α(n)</code> 的值都不会超过 5。因此，我们可以认为它是常数时间。</p>
@@ -732,9 +662,6 @@ print(dsu.find(1) &#x3D;&#x3D; dsu.find(5)) # 输出: False</code></pre></div></
 
 
 
-  
-
-
 
   
 
@@ -914,12 +841,6 @@ print(dsu.find(1) &#x3D;&#x3D; dsu.find(5)) # 输出: False</code></pre></div></
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

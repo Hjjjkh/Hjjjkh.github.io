@@ -61,8 +61,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -79,11 +77,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -108,7 +101,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -344,16 +338,7 @@
 <span id="more"></span>
 
 <h2 id="1-基础配置：让搜索引擎“认识”你"><a href="#1-基础配置：让搜索引擎“认识”你" class="headerlink" title="1. 基础配置：让搜索引擎“认识”你"></a>1. 基础配置：让搜索引擎“认识”你</h2><p>首先，我们需要在 Hexo 的主配置文件 <code>_config.yml</code> 中，完善网站的基础信息。这些信息是搜索引擎了解你网站的第一窗口。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># _config.yml
-
-title: 李国强的技术博客
-subtitle: &#39;分享Java、数据结构与算法的学习之旅&#39;
-description: &#39;记录编程学习、项目实践和技术成长，专注于Java后端开发、数据结构与算法、Spring Boot等技术分享&#39;
-keywords: Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强
-author: 李国强
-language: zh-CN
-url: https:&#x2F;&#x2F;Hjjjkh.github.io
-root: &#x2F;</code></pre></div></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">title:</span> <span class="string">李国强的技术博客</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;分享Java、数据结构与算法的学习之旅&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;记录编程学习、项目实践和技术成长，专注于Java后端开发、数据结构与算法、Spring Boot等技术分享&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span> <span class="string">Java,</span> <span class="string">数据结构,</span> <span class="string">算法,</span> <span class="string">后端开发,</span> <span class="string">编程学习,</span> <span class="string">Spring</span> <span class="string">Boot,</span> <span class="string">技术博客,</span> <span class="string">李国强</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">李国强</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://Hjjjkh.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><strong><code>title</code>, <code>description</code>, <code>keywords</code></strong>: 这是网站的“三围”，务必认真填写，它们会作为你网站的默认元数据。</li>
@@ -362,57 +347,28 @@ root: &#x2F;</code></pre></div></figure>
 <h2 id="2-优化-URL-结构-Permalink"><a href="#2-优化-URL-结构-Permalink" class="headerlink" title="2. 优化 URL 结构 (Permalink)"></a>2. 优化 URL 结构 (Permalink)</h2><p>一个简洁、语义化的 URL 结构对 SEO 非常友好。Hexo 默认的 <code>/:year/:month/:day/:title/</code> 结构层级太深，且包含非 ASCII 字符时可能出现问题。</p>
 <p>我们通过安装 <code>hexo-abbrlink</code> 插件，生成一个独一无二的短链接。</p>
 <p><strong>安装插件</strong>:</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pnpm install hexo-abbrlink --save</code></pre></div></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pnpm install hexo-abbrlink --save</span><br></pre></td></tr></table></figure>
 
 <p><strong>配置 <code>_config.yml</code></strong>:</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># _config.yml
-
-permalink: posts&#x2F;:abbrlink.html
-
-abbrlink:
-  alg: crc32  # 算法
-  rep: hex    # 进制</code></pre></div></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">posts/:abbrlink.html</span></span><br><span class="line"></span><br><span class="line"><span class="attr">abbrlink:</span></span><br><span class="line">  <span class="attr">alg:</span> <span class="string">crc32</span>  <span class="comment"># 算法</span></span><br><span class="line">  <span class="attr">rep:</span> <span class="string">hex</span>    <span class="comment"># 进制</span></span><br></pre></td></tr></table></figure>
 
 <p>这样，你的文章链接就会变成 <code>https://your.domain/posts/a1b2c3d4.html</code>，既美观又对 SEO 友好。</p>
 <h2 id="3-生成站点地图-Sitemap"><a href="#3-生成站点地图-Sitemap" class="headerlink" title="3. 生成站点地图 (Sitemap)"></a>3. 生成站点地图 (Sitemap)</h2><p>Sitemap (站点地图) 是一个 XML 文件，它告诉搜索引擎你的网站上有哪些页面可以抓取。这对于新网站尤其重要，可以大大加快收录速度。</p>
 <p><strong>安装插件</strong>:</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pnpm install hexo-generator-sitemap hexo-generator-baidu-sitemap --save</code></pre></div></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pnpm install hexo-generator-sitemap hexo-generator-baidu-sitemap --save</span><br></pre></td></tr></table></figure>
 
 <p><strong>配置 <code>_config.yml</code></strong>:</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># _config.yml
-
-# Sitemap
-sitemap:
-  path: sitemap.xml
-
-# 百度 Sitemap
-baidusitemap:
-  path: baidusitemap.xml</code></pre></div></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.yml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Sitemap</span></span><br><span class="line"><span class="attr">sitemap:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">sitemap.xml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 百度 Sitemap</span></span><br><span class="line"><span class="attr">baidusitemap:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">baidusitemap.xml</span></span><br></pre></td></tr></table></figure>
 
 <p>生成博客后，你会在根目录找到 <code>sitemap.xml</code> 和 <code>baidusitemap.xml</code>。记得将这两个文件的链接提交到 Google Search Console 和百度站长平台。</p>
 <h2 id="4-创建-robots-txt"><a href="#4-创建-robots-txt" class="headerlink" title="4. 创建 robots.txt"></a>4. 创建 <code>robots.txt</code></h2><p><code>robots.txt</code> 文件用于告诉爬虫哪些内容可以抓取，哪些需要忽略。一个好的 <code>robots.txt</code> 可以避免爬虫在不重要的页面（如后台、CSS&#x2F;JS 文件）上浪费时间和资源。</p>
 <p>在 <code>source</code> 目录下创建一个 <code>robots.txt</code> 文件：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-txt" data-language="txt"><code class="language-txt"># &#x2F;source&#x2F;robots.txt
-
-User-agent: *
-Allow: &#x2F;
-
-Disallow: &#x2F;js&#x2F;
-Disallow: &#x2F;css&#x2F;
-Disallow: &#x2F;img&#x2F;
-
-Sitemap: https:&#x2F;&#x2F;Hjjjkh.github.io&#x2F;sitemap.xml
-Sitemap: https:&#x2F;&#x2F;Hjjjkh.github.io&#x2F;baidusitemap.xml</code></pre></div></figure>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># /source/robots.txt</span><br><span class="line"></span><br><span class="line">User-agent: *</span><br><span class="line">Allow: /</span><br><span class="line"></span><br><span class="line">Disallow: /js/</span><br><span class="line">Disallow: /css/</span><br><span class="line">Disallow: /img/</span><br><span class="line"></span><br><span class="line">Sitemap: https://Hjjjkh.github.io/sitemap.xml</span><br><span class="line">Sitemap: https://Hjjjkh.github.io/baidusitemap.xml</span><br></pre></td></tr></table></figure>
 
 <p>这个配置允许所有爬虫抓取所有页面，但忽略了静态资源目录，并指明了站点地图的位置。</p>
 <h2 id="5-优化文章的-SEO-元数据"><a href="#5-优化文章的-SEO-元数据" class="headerlink" title="5. 优化文章的 SEO 元数据"></a>5. 优化文章的 SEO 元数据</h2><p>除了全局配置，每一篇文章都应该有自己独立的 <code>description</code> 和 <code>keywords</code>。这能让搜索引擎更精确地了解每一页的内容。</p>
 <p>在每篇文章的 Front-matter 中添加：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">---
-title: Hexo 博客终极 SEO 优化指南
-date: 2025-11-15 14:00:00
-description: 一份全面的 Hexo 博客 SEO 优化指南，涵盖 Sitemap、robots.txt、关键词、链接优化等方面，帮助你的博客获得更好的排名。
-keywords: Hexo SEO, Hexo 优化, Sitemap, robots.txt
----</code></pre></div></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">Hexo</span> <span class="string">博客终极</span> <span class="string">SEO</span> <span class="string">优化指南</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2025-11-15 14:00:00</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">一份全面的</span> <span class="string">Hexo</span> <span class="string">博客</span> <span class="string">SEO</span> <span class="string">优化指南，涵盖</span> <span class="string">Sitemap、robots.txt、关键词、链接优化等方面，帮助你的博客获得更好的排名。</span></span><br><span class="line"><span class="attr">keywords:</span> <span class="string">Hexo</span> <span class="string">SEO,</span> <span class="string">Hexo</span> <span class="string">优化,</span> <span class="string">Sitemap,</span> <span class="string">robots.txt</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><strong><code>description</code></strong>: 100-160 字，是对文章内容的精准概括。</li>
@@ -421,19 +377,13 @@ keywords: Hexo SEO, Hexo 优化, Sitemap, robots.txt
 <h2 id="6-Fluid-主题的-SEO-增强功能"><a href="#6-Fluid-主题的-SEO-增强功能" class="headerlink" title="6. Fluid 主题的 SEO 增强功能"></a>6. Fluid 主题的 SEO 增强功能</h2><p>我们使用的 Fluid 主题内置了许多强大的 SEO 功能，只需要在 <code>_config.fluid.yml</code> 中开启即可。</p>
 <ul>
 <li><p><strong>规范链接 (Canonical)</strong>: 避免因 URL 参数等问题导致的内容重复收录。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># _config.fluid.yml
-canonical:
-  enable: true</code></pre></div></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.fluid.yml</span></span><br><span class="line"><span class="attr">canonical:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>Open Graph (OG) 协议</strong>: 优化你的内容在社交媒体（如微信、Facebook）分享时的展示效果。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># _config.fluid.yml
-open_graph:
-  enable: true
-  twitter_card: summary_large_image</code></pre></div></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.fluid.yml</span></span><br><span class="line"><span class="attr">open_graph:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">twitter_card:</span> <span class="string">summary_large_image</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>强制 HTTPS</strong>: 提升网站安全性，也是 Google 排名的一个因素。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># _config.fluid.yml
-force_https: true</code></pre></div></figure></li>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _config.fluid.yml</span></span><br><span class="line"><span class="attr">force_https:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过以上六个步骤，我们已经为 Hexo 博客建立了一个非常坚实的 SEO 基础。SEO 是一个持续优化的过程，但做好这些基础工作，你的博客就已经领先于很多人了。接下来，你需要做的就是持续创作高质量的内容！</p>
 <p>在下一篇文章中，我将分享如何进一步优化博客的加载速度，敬请期待！</p>
@@ -647,9 +597,6 @@ force_https: true</code></pre></div></figure></li>
 
 
 
-  
-
-
 
   
 
@@ -829,12 +776,6 @@ force_https: true</code></pre></div></figure></li>
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

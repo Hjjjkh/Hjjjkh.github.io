@@ -63,8 +63,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -81,11 +79,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -110,7 +103,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -283,7 +277,7 @@
         
         
         
-          18 分钟
+          17 分钟
         
       </span>
     
@@ -378,10 +372,7 @@
 <li><code>dist[i][j]</code> &#x3D; <code>infinity</code>（如果 <code>i</code> 和 <code>j</code> 之间没有边）。</li>
 </ul>
 </li>
-<li>进行三层循环：<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">for k from 1 to V:
-    for i from 1 to V:
-        for j from 1 to V:
-            dist[i][j] &#x3D; min(dist[i][j], dist[i][k] + dist[k][j])</code></pre></div></figure></li>
+<li>进行三层循环：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for k from 1 to V:</span><br><span class="line">    for i from 1 to V:</span><br><span class="line">        for j from 1 to V:</span><br><span class="line">            dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</span><br></pre></td></tr></table></figure></li>
 <li><strong>检测负权环</strong>：算法结束后，如果 <code>dist[i][i] &lt; 0</code>，说明从 <code>i</code> 出发存在负权环。</li>
 </ol>
 <h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><ul>
@@ -391,108 +382,9 @@
 <li>需要计算任意两点之间的最短路径。</li>
 <li>图的规模不大（<code>V</code> 通常小于 500）。</li>
 </ul>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><h3 id="Bellman-Ford-算法实现"><a href="#Bellman-Ford-算法实现" class="headerlink" title="Bellman-Ford 算法实现"></a>Bellman-Ford 算法实现</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def bellman_ford(graph, nodes, start):
-    &quot;&quot;&quot;
-    Bellman-Ford 算法求单源最短路径
-    graph: 边列表，格式为 [(u, v, weight), ...]
-    nodes: 节点列表
-    start: 起点
-    返回: (距离字典, 是否存在负权环)
-    &quot;&quot;&quot;
-    dist &#x3D; &#123;node: float(&#39;inf&#39;) for node in nodes&#125;
-    dist[start] &#x3D; 0
-    num_nodes &#x3D; len(nodes)
-    
-    # V-1 轮松弛
-    for _ in range(num_nodes - 1):
-        for u, v, weight in graph:
-            if dist[u] !&#x3D; float(&#39;inf&#39;) and dist[u] + weight &lt; dist[v]:
-                dist[v] &#x3D; dist[u] + weight
-    
-    # 检测负权环
-    has_negative_cycle &#x3D; False
-    for u, v, weight in graph:
-        if dist[u] !&#x3D; float(&#39;inf&#39;) and dist[u] + weight &lt; dist[v]:
-            has_negative_cycle &#x3D; True
-            break
-            
-    return dist, has_negative_cycle
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><h3 id="Bellman-Ford-算法实现"><a href="#Bellman-Ford-算法实现" class="headerlink" title="Bellman-Ford 算法实现"></a>Bellman-Ford 算法实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">bellman_ford</span>(<span class="params">graph, nodes, start</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Bellman-Ford 算法求单源最短路径</span></span><br><span class="line"><span class="string">    graph: 边列表，格式为 [(u, v, weight), ...]</span></span><br><span class="line"><span class="string">    nodes: 节点列表</span></span><br><span class="line"><span class="string">    start: 起点</span></span><br><span class="line"><span class="string">    返回: (距离字典, 是否存在负权环)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    dist = &#123;node: <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">for</span> node <span class="keyword">in</span> nodes&#125;</span><br><span class="line">    dist[start] = <span class="number">0</span></span><br><span class="line">    num_nodes = <span class="built_in">len</span>(nodes)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># V-1 轮松弛</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> u, v, weight <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">if</span> dist[u] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">and</span> dist[u] + weight &lt; dist[v]:</span><br><span class="line">                dist[v] = dist[u] + weight</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检测负权环</span></span><br><span class="line">    has_negative_cycle = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> u, v, weight <span class="keyword">in</span> graph:</span><br><span class="line">        <span class="keyword">if</span> dist[u] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">and</span> dist[u] + weight &lt; dist[v]:</span><br><span class="line">            has_negative_cycle = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> dist, has_negative_cycle</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">nodes = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>]</span><br><span class="line">graph_edges = [</span><br><span class="line">    (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, -<span class="number">1</span>), (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">4</span>),</span><br><span class="line">    (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">3</span>), (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="number">2</span>), (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="number">2</span>),</span><br><span class="line">    (<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">1</span>), (<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">5</span>),</span><br><span class="line">    (<span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, -<span class="number">3</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">dist, cycle = bellman_ford(graph_edges, nodes, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Bellman-Ford 算法结果:&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> cycle:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  图中存在负权环&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">for</span> node, d <span class="keyword">in</span> <span class="built_in">sorted</span>(dist.items()):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  A -&gt; <span class="subst">&#123;node&#125;</span>: <span class="subst">&#123;d&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># Bellman-Ford 算法结果:</span></span><br><span class="line"><span class="comment">#   A -&gt; A: 0</span></span><br><span class="line"><span class="comment">#   A -&gt; B: -1</span></span><br><span class="line"><span class="comment">#   A -&gt; C: 2</span></span><br><span class="line"><span class="comment">#   A -&gt; D: -2</span></span><br><span class="line"><span class="comment">#   A -&gt; E: 1</span></span><br></pre></td></tr></table></figure>
 
-# --- 案例测试 ---
-nodes &#x3D; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-graph_edges &#x3D; [
-    (&#39;A&#39;, &#39;B&#39;, -1), (&#39;A&#39;, &#39;C&#39;, 4),
-    (&#39;B&#39;, &#39;C&#39;, 3), (&#39;B&#39;, &#39;D&#39;, 2), (&#39;B&#39;, &#39;E&#39;, 2),
-    (&#39;D&#39;, &#39;B&#39;, 1), (&#39;D&#39;, &#39;C&#39;, 5),
-    (&#39;E&#39;, &#39;D&#39;, -3)
-]
-
-dist, cycle &#x3D; bellman_ford(graph_edges, nodes, &#39;A&#39;)
-print(&quot;Bellman-Ford 算法结果:&quot;)
-if cycle:
-    print(&quot;  图中存在负权环&quot;)
-else:
-    for node, d in sorted(dist.items()):
-        print(f&quot;  A -&gt; &#123;node&#125;: &#123;d&#125;&quot;)
-
-# 输出:
-# Bellman-Ford 算法结果:
-#   A -&gt; A: 0
-#   A -&gt; B: -1
-#   A -&gt; C: 2
-#   A -&gt; D: -2
-#   A -&gt; E: 1</code></pre></div></figure>
-
-<h3 id="Floyd-Warshall-算法实现"><a href="#Floyd-Warshall-算法实现" class="headerlink" title="Floyd-Warshall 算法实现"></a>Floyd-Warshall 算法实现</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">from collections import defaultdict
-
-def floyd_warshall(nodes, edges):
-    &quot;&quot;&quot;
-    Floyd-Warshall 算法求多源最短路径
-    nodes: 节点列表
-    edges: 边列表，格式为 [(u, v, weight), ...]
-    返回: 距离矩阵
-    &quot;&quot;&quot;
-    num_nodes &#x3D; len(nodes)
-    node_map &#x3D; &#123;node: i for i, node in enumerate(nodes)&#125;
-    
-    # 初始化距离矩阵
-    dist &#x3D; [[float(&#39;inf&#39;)] * num_nodes for _ in range(num_nodes)]
-    for i in range(num_nodes):
-        dist[i][i] &#x3D; 0
-    
-    for u, v, weight in edges:
-        i, j &#x3D; node_map[u], node_map[v]
-        dist[i][j] &#x3D; weight
-    
-    # 动态规划
-    for k in range(num_nodes):
-        for i in range(num_nodes):
-            for j in range(num_nodes):
-                if dist[i][k] !&#x3D; float(&#39;inf&#39;) and dist[k][j] !&#x3D; float(&#39;inf&#39;):
-                    dist[i][j] &#x3D; min(dist[i][j], dist[i][k] + dist[k][j])
-    
-    return dist
-
-# --- 案例测试 ---
-nodes &#x3D; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;]
-edges &#x3D; [
-    (&#39;A&#39;, &#39;B&#39;, 3), (&#39;A&#39;, &#39;D&#39;, 7),
-    (&#39;B&#39;, &#39;A&#39;, 8), (&#39;B&#39;, &#39;C&#39;, 2),
-    (&#39;C&#39;, &#39;A&#39;, 5), (&#39;C&#39;, &#39;D&#39;, 1),
-    (&#39;D&#39;, &#39;A&#39;, 2)
-]
-
-dist_matrix &#x3D; floyd_warshall(nodes, edges)
-print(&quot;\nFloyd-Warshall 算法结果 (距离矩阵):&quot;)
-for row in dist_matrix:
-    print(f&quot;  &#123;row&#125;&quot;)
-
-# 输出:
-# Floyd-Warshall 算法结果 (距离矩阵):
-#   [0, 3, 5, 6]
-#   [5, 0, 2, 3]
-#   [3, 6, 0, 1]
-#   [2, 5, 7, 0]</code></pre></div></figure>
+<h3 id="Floyd-Warshall-算法实现"><a href="#Floyd-Warshall-算法实现" class="headerlink" title="Floyd-Warshall 算法实现"></a>Floyd-Warshall 算法实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">floyd_warshall</span>(<span class="params">nodes, edges</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Floyd-Warshall 算法求多源最短路径</span></span><br><span class="line"><span class="string">    nodes: 节点列表</span></span><br><span class="line"><span class="string">    edges: 边列表，格式为 [(u, v, weight), ...]</span></span><br><span class="line"><span class="string">    返回: 距离矩阵</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    num_nodes = <span class="built_in">len</span>(nodes)</span><br><span class="line">    node_map = &#123;node: i <span class="keyword">for</span> i, node <span class="keyword">in</span> <span class="built_in">enumerate</span>(nodes)&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 初始化距离矩阵</span></span><br><span class="line">    dist = [[<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)] * num_nodes <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes)]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">        dist[i][i] = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> u, v, weight <span class="keyword">in</span> edges:</span><br><span class="line">        i, j = node_map[u], node_map[v]</span><br><span class="line">        dist[i][j] = weight</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 动态规划</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">                <span class="keyword">if</span> dist[i][k] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">and</span> dist[k][j] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>):</span><br><span class="line">                    dist[i][j] = <span class="built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dist</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">nodes = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>]</span><br><span class="line">edges = [</span><br><span class="line">    (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">3</span>), (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="number">7</span>),</span><br><span class="line">    (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">8</span>), (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">2</span>),</span><br><span class="line">    (<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">5</span>), (<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="number">1</span>),</span><br><span class="line">    (<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">2</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">dist_matrix = floyd_warshall(nodes, edges)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nFloyd-Warshall 算法结果 (距离矩阵):&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> dist_matrix:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  <span class="subst">&#123;row&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># Floyd-Warshall 算法结果 (距离矩阵):</span></span><br><span class="line"><span class="comment">#   [0, 3, 5, 6]</span></span><br><span class="line"><span class="comment">#   [5, 0, 2, 3]</span></span><br><span class="line"><span class="comment">#   [3, 6, 0, 1]</span></span><br><span class="line"><span class="comment">#   [2, 5, 7, 0]</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><table>
 <thead>
@@ -772,9 +664,6 @@ for row in dist_matrix:
 
 
 
-  
-
-
 
   
 
@@ -954,12 +843,6 @@ for row in dist_matrix:
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
