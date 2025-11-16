@@ -63,8 +63,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -81,11 +79,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -272,7 +265,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          1.9k 字
         
       </span>
     
@@ -283,7 +276,7 @@
         
         
         
-          17 分钟
+          16 分钟
         
       </span>
     
@@ -352,21 +345,11 @@
 <p>答案是**后缀数组 (Suffix Array)**。它是一种空间高效、功能强大的数据结构，通过对字符串的所有后缀进行排序，将许多复杂的子串问题转化为简单的数组操作。</p>
 <h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="什么是后缀？"><a href="#什么是后缀？" class="headerlink" title="什么是后缀？"></a>什么是后缀？</h3><p>对于一个字符串 <code>S</code>，它的<strong>后缀 (Suffix)</strong> 是指从某个位置开始到字符串末尾的子串。</p>
 <p>例如，字符串 <code>&quot;banana&quot;</code> 的所有后缀为：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">0: banana
-1: anana
-2: nana
-3: ana
-4: na
-5: a</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0: banana</span><br><span class="line">1: anana</span><br><span class="line">2: nana</span><br><span class="line">3: ana</span><br><span class="line">4: na</span><br><span class="line">5: a</span><br></pre></td></tr></table></figure>
 
 <h3 id="什么是后缀数组？"><a href="#什么是后缀数组？" class="headerlink" title="什么是后缀数组？"></a>什么是后缀数组？</h3><p><strong>后缀数组 (Suffix Array, SA)</strong> 是一个整数数组，它存储了字符串所有后缀的<strong>起始位置</strong>，并且这些后缀是按照<strong>字典序排序</strong>的。</p>
 <p>对于 <code>&quot;banana&quot;</code>，我们先列出所有后缀及其字典序排序：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">5: a
-3: ana
-1: anana
-0: banana
-4: na
-2: nana</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">5: a</span><br><span class="line">3: ana</span><br><span class="line">1: anana</span><br><span class="line">0: banana</span><br><span class="line">4: na</span><br><span class="line">2: nana</span><br></pre></td></tr></table></figure>
 
 <p>因此，后缀数组 <code>SA = [5, 3, 1, 0, 4, 2]</code>。</p>
 <blockquote>
@@ -382,125 +365,20 @@
 </ol>
 <p>由于每次排序都可以利用上一次排序的结果，我们可以用<strong>基数排序</strong>在 <code>O(N)</code> 时间内完成每一轮排序，总共需要 <code>O(log N)</code> 轮，因此总时间复杂度为 <code>O(N log N)</code>。</p>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面是一个使用倍增算法构建后缀数组的 Python 实现。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def build_suffix_array(s: str) -&gt; list[int]:
-    &quot;&quot;&quot;
-    使用倍增算法构建后缀数组
-    时间复杂度: O(N log N)
-    &quot;&quot;&quot;
-    n &#x3D; len(s)
-    # 将字符串转换为整数数组（方便排序）
-    s &#x3D; [ord(c) for c in s]
-    
-    # sa[i] 表示排名第 i 的后缀的起始位置
-    sa &#x3D; list(range(n))
-    # rank[i] 表示从位置 i 开始的后缀的排名
-    rank &#x3D; s[:]
-    # tmp 用于存储新的 rank
-    tmp &#x3D; [0] * n
-    
-    k &#x3D; 1  # 当前比较的长度
-    while k &lt; n:
-        # 按照 (rank[i], rank[i+k]) 进行排序
-        # 使用 Python 的稳定排序
-        sa.sort(key&#x3D;lambda i: (rank[i], rank[i + k] if i + k &lt; n else -1))
-        
-        # 更新 rank
-        tmp[sa[0]] &#x3D; 0
-        for i in range(1, n):
-            # 如果两个后缀的前 2k 个字符相同，rank 相同
-            prev &#x3D; sa[i - 1]
-            curr &#x3D; sa[i]
-            if rank[prev] &#x3D;&#x3D; rank[curr] and \
-               (rank[prev + k] if prev + k &lt; n else -1) &#x3D;&#x3D; (rank[curr + k] if curr + k &lt; n else -1):
-                tmp[curr] &#x3D; tmp[prev]
-            else:
-                tmp[curr] &#x3D; tmp[prev] + 1
-        
-        rank &#x3D; tmp[:]
-        k *&#x3D; 2
-    
-    return sa
-
-# --- 案例测试 ---
-s &#x3D; &quot;banana&quot;
-sa &#x3D; build_suffix_array(s)
-print(f&quot;字符串: &#123;s&#125;&quot;)
-print(f&quot;后缀数组: &#123;sa&#125;&quot;)
-print(&quot;\n排序后的后缀:&quot;)
-for i, pos in enumerate(sa):
-    print(f&quot;&#123;i&#125;: &#123;s[pos:]&#125;&quot;)
-
-# 输出:
-# 字符串: banana
-# 后缀数组: [5, 3, 1, 0, 4, 2]
-#
-# 排序后的后缀:
-# 0: a
-# 1: ana
-# 2: anana
-# 3: banana
-# 4: na
-# 5: nana</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_suffix_array</span>(<span class="params">s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[<span class="built_in">int</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用倍增算法构建后缀数组</span></span><br><span class="line"><span class="string">    时间复杂度: O(N log N)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    n = <span class="built_in">len</span>(s)</span><br><span class="line">    <span class="comment"># 将字符串转换为整数数组（方便排序）</span></span><br><span class="line">    s = [<span class="built_in">ord</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> s]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># sa[i] 表示排名第 i 的后缀的起始位置</span></span><br><span class="line">    sa = <span class="built_in">list</span>(<span class="built_in">range</span>(n))</span><br><span class="line">    <span class="comment"># rank[i] 表示从位置 i 开始的后缀的排名</span></span><br><span class="line">    rank = s[:]</span><br><span class="line">    <span class="comment"># tmp 用于存储新的 rank</span></span><br><span class="line">    tmp = [<span class="number">0</span>] * n</span><br><span class="line">    </span><br><span class="line">    k = <span class="number">1</span>  <span class="comment"># 当前比较的长度</span></span><br><span class="line">    <span class="keyword">while</span> k &lt; n:</span><br><span class="line">        <span class="comment"># 按照 (rank[i], rank[i+k]) 进行排序</span></span><br><span class="line">        <span class="comment"># 使用 Python 的稳定排序</span></span><br><span class="line">        sa.sort(key=<span class="keyword">lambda</span> i: (rank[i], rank[i + k] <span class="keyword">if</span> i + k &lt; n <span class="keyword">else</span> -<span class="number">1</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 更新 rank</span></span><br><span class="line">        tmp[sa[<span class="number">0</span>]] = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">            <span class="comment"># 如果两个后缀的前 2k 个字符相同，rank 相同</span></span><br><span class="line">            prev = sa[i - <span class="number">1</span>]</span><br><span class="line">            curr = sa[i]</span><br><span class="line">            <span class="keyword">if</span> rank[prev] == rank[curr] <span class="keyword">and</span> \</span><br><span class="line">               (rank[prev + k] <span class="keyword">if</span> prev + k &lt; n <span class="keyword">else</span> -<span class="number">1</span>) == (rank[curr + k] <span class="keyword">if</span> curr + k &lt; n <span class="keyword">else</span> -<span class="number">1</span>):</span><br><span class="line">                tmp[curr] = tmp[prev]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tmp[curr] = tmp[prev] + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        rank = tmp[:]</span><br><span class="line">        k *= <span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> sa</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">s = <span class="string">&quot;banana&quot;</span></span><br><span class="line">sa = build_suffix_array(s)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;字符串: <span class="subst">&#123;s&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;后缀数组: <span class="subst">&#123;sa&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n排序后的后缀:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i, pos <span class="keyword">in</span> <span class="built_in">enumerate</span>(sa):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;i&#125;</span>: <span class="subst">&#123;s[pos:]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># 字符串: banana</span></span><br><span class="line"><span class="comment"># 后缀数组: [5, 3, 1, 0, 4, 2]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 排序后的后缀:</span></span><br><span class="line"><span class="comment"># 0: a</span></span><br><span class="line"><span class="comment"># 1: ana</span></span><br><span class="line"><span class="comment"># 2: anana</span></span><br><span class="line"><span class="comment"># 3: banana</span></span><br><span class="line"><span class="comment"># 4: na</span></span><br><span class="line"><span class="comment"># 5: nana</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="LCP-数组：后缀数组的黄金搭档"><a href="#LCP-数组：后缀数组的黄金搭档" class="headerlink" title="LCP 数组：后缀数组的黄金搭档"></a>LCP 数组：后缀数组的黄金搭档</h2><p>有了后缀数组，我们还需要一个辅助数组来解决更多问题，那就是 **LCP 数组 (Longest Common Prefix Array)**。</p>
 <p><strong>LCP[i]</strong> 表示排序后第 <code>i</code> 个后缀和第 <code>i-1</code> 个后缀的<strong>最长公共前缀的长度</strong>。</p>
 <p>对于 <code>&quot;banana&quot;</code> 的后缀数组：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">0: a        LCP[0] &#x3D; 0 (没有前一个)
-1: ana      LCP[1] &#x3D; 1 (与 &quot;a&quot; 的 LCP 是 &quot;a&quot;)
-2: anana    LCP[2] &#x3D; 3 (与 &quot;ana&quot; 的 LCP 是 &quot;ana&quot;)
-3: banana   LCP[3] &#x3D; 0 (与 &quot;anana&quot; 的 LCP 是 &quot;&quot;)
-4: na       LCP[4] &#x3D; 0 (与 &quot;banana&quot; 的 LCP 是 &quot;&quot;)
-5: nana     LCP[5] &#x3D; 2 (与 &quot;na&quot; 的 LCP 是 &quot;na&quot;)</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0: a        LCP[0] = 0 (没有前一个)</span><br><span class="line">1: ana      LCP[1] = 1 (与 &quot;a&quot; 的 LCP 是 &quot;a&quot;)</span><br><span class="line">2: anana    LCP[2] = 3 (与 &quot;ana&quot; 的 LCP 是 &quot;ana&quot;)</span><br><span class="line">3: banana   LCP[3] = 0 (与 &quot;anana&quot; 的 LCP 是 &quot;&quot;)</span><br><span class="line">4: na       LCP[4] = 0 (与 &quot;banana&quot; 的 LCP 是 &quot;&quot;)</span><br><span class="line">5: nana     LCP[5] = 2 (与 &quot;na&quot; 的 LCP 是 &quot;na&quot;)</span><br></pre></td></tr></table></figure>
 
 <p>因此，<code>LCP = [0, 1, 3, 0, 0, 2]</code>。</p>
 <h3 id="构建-LCP-数组：Kasai-算法"><a href="#构建-LCP-数组：Kasai-算法" class="headerlink" title="构建 LCP 数组：Kasai 算法"></a>构建 LCP 数组：Kasai 算法</h3><p>Kasai 算法可以在 <code>O(N)</code> 时间内构建 LCP 数组。它的核心观察是：如果后缀 <code>i</code> 和它在排序中的前一个后缀的 LCP 长度为 <code>h</code>，那么后缀 <code>i+1</code> 和它的前一个后缀的 LCP 长度至少为 <code>h-1</code>。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def build_lcp_array(s: str, sa: list[int]) -&gt; list[int]:
-    &quot;&quot;&quot;
-    使用 Kasai 算法构建 LCP 数组
-    时间复杂度: O(N)
-    &quot;&quot;&quot;
-    n &#x3D; len(s)
-    # rank[i] 表示从位置 i 开始的后缀在 SA 中的排名
-    rank &#x3D; [0] * n
-    for i in range(n):
-        rank[sa[i]] &#x3D; i
-    
-    lcp &#x3D; [0] * n
-    h &#x3D; 0  # 当前 LCP 长度
-    
-    for i in range(n):
-        if rank[i] &gt; 0:
-            j &#x3D; sa[rank[i] - 1]  # 前一个后缀的起始位置
-            # 计算 s[i:] 和 s[j:] 的 LCP
-            while i + h &lt; n and j + h &lt; n and s[i + h] &#x3D;&#x3D; s[j + h]:
-                h +&#x3D; 1
-            lcp[rank[i]] &#x3D; h
-            if h &gt; 0:
-                h -&#x3D; 1
-    
-    return lcp
-
-# --- 案例测试 ---
-s &#x3D; &quot;banana&quot;
-sa &#x3D; build_suffix_array(s)
-lcp &#x3D; build_lcp_array(s, sa)
-print(f&quot;LCP 数组: &#123;lcp&#125;&quot;)
-
-# 输出:
-# LCP 数组: [0, 1, 3, 0, 0, 2]</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_lcp_array</span>(<span class="params">s: <span class="built_in">str</span>, sa: <span class="built_in">list</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">list</span>[<span class="built_in">int</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用 Kasai 算法构建 LCP 数组</span></span><br><span class="line"><span class="string">    时间复杂度: O(N)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    n = <span class="built_in">len</span>(s)</span><br><span class="line">    <span class="comment"># rank[i] 表示从位置 i 开始的后缀在 SA 中的排名</span></span><br><span class="line">    rank = [<span class="number">0</span>] * n</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        rank[sa[i]] = i</span><br><span class="line">    </span><br><span class="line">    lcp = [<span class="number">0</span>] * n</span><br><span class="line">    h = <span class="number">0</span>  <span class="comment"># 当前 LCP 长度</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> rank[i] &gt; <span class="number">0</span>:</span><br><span class="line">            j = sa[rank[i] - <span class="number">1</span>]  <span class="comment"># 前一个后缀的起始位置</span></span><br><span class="line">            <span class="comment"># 计算 s[i:] 和 s[j:] 的 LCP</span></span><br><span class="line">            <span class="keyword">while</span> i + h &lt; n <span class="keyword">and</span> j + h &lt; n <span class="keyword">and</span> s[i + h] == s[j + h]:</span><br><span class="line">                h += <span class="number">1</span></span><br><span class="line">            lcp[rank[i]] = h</span><br><span class="line">            <span class="keyword">if</span> h &gt; <span class="number">0</span>:</span><br><span class="line">                h -= <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> lcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">s = <span class="string">&quot;banana&quot;</span></span><br><span class="line">sa = build_suffix_array(s)</span><br><span class="line">lcp = build_lcp_array(s, sa)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;LCP 数组: <span class="subst">&#123;lcp&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># LCP 数组: [0, 1, 3, 0, 0, 2]</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="经典应用"><a href="#经典应用" class="headerlink" title="经典应用"></a>经典应用</h2><h3 id="1-最长重复子串"><a href="#1-最长重复子串" class="headerlink" title="1. 最长重复子串"></a>1. 最长重复子串</h3><p><strong>问题</strong>：找出字符串中最长的重复子串（至少出现两次）。</p>
 <p><strong>解法</strong>：最长重复子串一定是某两个后缀的最长公共前缀。因此，答案就是 <code>max(LCP)</code>。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def longest_repeated_substring(s: str) -&gt; str:
-    sa &#x3D; build_suffix_array(s)
-    lcp &#x3D; build_lcp_array(s, sa)
-    max_lcp &#x3D; max(lcp)
-    if max_lcp &#x3D;&#x3D; 0:
-        return &quot;&quot;
-    idx &#x3D; lcp.index(max_lcp)
-    return s[sa[idx]:sa[idx] + max_lcp]
-
-print(longest_repeated_substring(&quot;banana&quot;))  # &quot;ana&quot;</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">longest_repeated_substring</span>(<span class="params">s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    sa = build_suffix_array(s)</span><br><span class="line">    lcp = build_lcp_array(s, sa)</span><br><span class="line">    max_lcp = <span class="built_in">max</span>(lcp)</span><br><span class="line">    <span class="keyword">if</span> max_lcp == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    idx = lcp.index(max_lcp)</span><br><span class="line">    <span class="keyword">return</span> s[sa[idx]:sa[idx] + max_lcp]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(longest_repeated_substring(<span class="string">&quot;banana&quot;</span>))  <span class="comment"># &quot;ana&quot;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-不同子串的数量"><a href="#2-不同子串的数量" class="headerlink" title="2. 不同子串的数量"></a>2. 不同子串的数量</h3><p><strong>问题</strong>：统计字符串中有多少个不同的子串。</p>
 <p><strong>解法</strong>：</p>
@@ -509,14 +387,7 @@ print(longest_repeated_substring(&quot;banana&quot;))  # &quot;ana&quot;</code><
 <li>但其中有重复的子串，重复的数量等于所有 LCP 值的和。</li>
 <li>因此，不同子串的数量 &#x3D; <code>N * (N + 1) / 2 - sum(LCP)</code>。</li>
 </ul>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def count_distinct_substrings(s: str) -&gt; int:
-    n &#x3D; len(s)
-    sa &#x3D; build_suffix_array(s)
-    lcp &#x3D; build_lcp_array(s, sa)
-    total &#x3D; n * (n + 1) &#x2F;&#x2F; 2
-    return total - sum(lcp)
-
-print(count_distinct_substrings(&quot;banana&quot;))  # 15</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">count_distinct_substrings</span>(<span class="params">s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    n = <span class="built_in">len</span>(s)</span><br><span class="line">    sa = build_suffix_array(s)</span><br><span class="line">    lcp = build_lcp_array(s, sa)</span><br><span class="line">    total = n * (n + <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> total - <span class="built_in">sum</span>(lcp)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(count_distinct_substrings(<span class="string">&quot;banana&quot;</span>))  <span class="comment"># 15</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="3-字符串匹配"><a href="#3-字符串匹配" class="headerlink" title="3. 字符串匹配"></a>3. 字符串匹配</h3><p><strong>问题</strong>：判断模式串 <code>P</code> 是否在文本串 <code>T</code> 中出现。</p>
 <p><strong>解法</strong>：在 <code>T</code> 的后缀数组中进行<strong>二分查找</strong>。由于后缀是排序的，我们可以在 <code>O(M log N)</code> 时间内找到所有匹配位置，其中 <code>M</code> 是模式串的长度。</p>
@@ -742,9 +613,6 @@ print(count_distinct_substrings(&quot;banana&quot;))  # 15</code></pre></div></f
 
 
 
-  
-
-
 
   
 
@@ -924,12 +792,6 @@ print(count_distinct_substrings(&quot;banana&quot;))  # 15</code></pre></div></f
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

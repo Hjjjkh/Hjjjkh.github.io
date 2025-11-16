@@ -34,11 +34,11 @@
 <meta property="article:modified_time" content="2025-11-15T16:30:37.664Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="递归">
-<meta property="article:tag" content="归并排序">
 <meta property="article:tag" content="快速排序">
+<meta property="article:tag" content="归并排序">
+<meta property="article:tag" content="算法思想">
 <meta property="article:tag" content="分治算法">
 <meta property="article:tag" content="Divide and Conquer">
-<meta property="article:tag" content="算法思想">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -63,8 +63,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -81,11 +79,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -449,95 +442,9 @@
 </li>
 </ul>
 <p>最终得到完全有序的数组。</p>
-<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：归并排序"><a href="#伪代码：归并排序" class="headerlink" title="伪代码：归并排序"></a>伪代码：归并排序</h3><figure><div class="code-wrapper"><pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">&#x2F;&#x2F; 对数组 A 的 [p...r] 范围进行排序
-function MergeSort(A, p, r):
-    &#x2F;&#x2F; 1. 基本情况：如果范围只有一个或没有元素，则已有序
-    if p &gt;&#x3D; r:
-        return
-    
-    &#x2F;&#x2F; 2. 分解：找到中点 q
-    q &#x3D; floor((p + r) &#x2F; 2)
-    
-    &#x2F;&#x2F; 3. 解决：递归排序左右两部分
-    MergeSort(A, p, q)
-    MergeSort(A, q + 1, r)
-    
-    &#x2F;&#x2F; 4. 合并：将已排序的 A[p...q] 和 A[q+1...r] 合并
-    Merge(A, p, q, r)
+<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：归并排序"><a href="#伪代码：归并排序" class="headerlink" title="伪代码：归并排序"></a>伪代码：归并排序</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">// 对数组 A 的 [p...r] 范围进行排序</span><br><span class="line">function MergeSort(A, p, r):</span><br><span class="line">    // 1. 基本情况：如果范围只有一个或没有元素，则已有序</span><br><span class="line">    if p &gt;= r:</span><br><span class="line">        return</span><br><span class="line">    </span><br><span class="line">    // 2. 分解：找到中点 q</span><br><span class="line">    q = floor((p + r) / 2)</span><br><span class="line">    </span><br><span class="line">    // 3. 解决：递归排序左右两部分</span><br><span class="line">    MergeSort(A, p, q)</span><br><span class="line">    MergeSort(A, q + 1, r)</span><br><span class="line">    </span><br><span class="line">    // 4. 合并：将已排序的 A[p...q] 和 A[q+1...r] 合并</span><br><span class="line">    Merge(A, p, q, r)</span><br><span class="line"></span><br><span class="line">// 合并函数</span><br><span class="line">function Merge(A, p, q, r):</span><br><span class="line">    // 创建临时数组 L 和 R，分别拷贝 A[p...q] 和 A[q+1...r]</span><br><span class="line">    L = copy(A[p...q])</span><br><span class="line">    R = copy(A[q+1...r])</span><br><span class="line">    </span><br><span class="line">    // 使用双指针 i, j, k 分别指向 L, R 和 A</span><br><span class="line">    i = 0, j = 0, k = p</span><br><span class="line">    </span><br><span class="line">    // 比较 L 和 R 的元素，将较小的放入 A</span><br><span class="line">    while i &lt; length(L) and j &lt; length(R):</span><br><span class="line">        if L[i] &lt;= R[j]:</span><br><span class="line">            A[k] = L[i]</span><br><span class="line">            i = i + 1</span><br><span class="line">        else:</span><br><span class="line">            A[k] = R[j]</span><br><span class="line">            j = j + 1</span><br><span class="line">        k = k + 1</span><br><span class="line">        </span><br><span class="line">    // 将 L 或 R 中剩余的元素拷贝回 A</span><br><span class="line">    while i &lt; length(L):</span><br><span class="line">        A[k] = L[i]</span><br><span class="line">        i = i + 1, k = k + 1</span><br><span class="line">    while j &lt; length(R):</span><br><span class="line">        A[k] = R[j]</span><br><span class="line">        j = j + 1, k = k + 1</span><br></pre></td></tr></table></figure>
 
-&#x2F;&#x2F; 合并函数
-function Merge(A, p, q, r):
-    &#x2F;&#x2F; 创建临时数组 L 和 R，分别拷贝 A[p...q] 和 A[q+1...r]
-    L &#x3D; copy(A[p...q])
-    R &#x3D; copy(A[q+1...r])
-    
-    &#x2F;&#x2F; 使用双指针 i, j, k 分别指向 L, R 和 A
-    i &#x3D; 0, j &#x3D; 0, k &#x3D; p
-    
-    &#x2F;&#x2F; 比较 L 和 R 的元素，将较小的放入 A
-    while i &lt; length(L) and j &lt; length(R):
-        if L[i] &lt;&#x3D; R[j]:
-            A[k] &#x3D; L[i]
-            i &#x3D; i + 1
-        else:
-            A[k] &#x3D; R[j]
-            j &#x3D; j + 1
-        k &#x3D; k + 1
-        
-    &#x2F;&#x2F; 将 L 或 R 中剩余的元素拷贝回 A
-    while i &lt; length(L):
-        A[k] &#x3D; L[i]
-        i &#x3D; i + 1, k &#x3D; k + 1
-    while j &lt; length(R):
-        A[k] &#x3D; R[j]
-        j &#x3D; j + 1, k &#x3D; k + 1</code></pre></div></figure>
-
-<h3 id="Python-实现：归并排序"><a href="#Python-实现：归并排序" class="headerlink" title="Python 实现：归并排序"></a>Python 实现：归并排序</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def merge_sort(arr):
-    &quot;&quot;&quot;使用分治法实现归并排序&quot;&quot;&quot;
-    # 1. 基本情况
-    if len(arr) &lt;&#x3D; 1:
-        return arr
-    
-    # 2. 分解
-    mid &#x3D; len(arr) &#x2F;&#x2F; 2
-    left_half &#x3D; arr[:mid]
-    right_half &#x3D; arr[mid:]
-    
-    # 3. 解决 (递归)
-    sorted_left &#x3D; merge_sort(left_half)
-    sorted_right &#x3D; merge_sort(right_half)
-    
-    # 4. 合并
-    return merge(sorted_left, sorted_right)
-
-def merge(left, right):
-    &quot;&quot;&quot;合并两个已排序的数组&quot;&quot;&quot;
-    result &#x3D; []
-    i, j &#x3D; 0, 0
-    
-    while i &lt; len(left) and j &lt; len(right):
-        if left[i] &lt;&#x3D; right[j]:
-            result.append(left[i])
-            i +&#x3D; 1
-        else:
-            result.append(right[j])
-            j +&#x3D; 1
-            
-    # 将剩余的元素追加到结果末尾
-    result.extend(left[i:])
-    result.extend(right[j:])
-    
-    return result
-
-# --- 案例测试 ---
-my_array &#x3D; [38, 27, 43, 3, 9, 82, 10]
-print(f&quot;Original array: &#123;my_array&#125;&quot;)
-sorted_array &#x3D; merge_sort(my_array)
-print(f&quot;Sorted array:   &#123;sorted_array&#125;&quot;)
-
-# 输出:
-# Original array: [38, 27, 43, 3, 9, 82, 10]
-# Sorted array:   [3, 9, 10, 27, 38, 43, 82]</code></pre></div></figure>
+<h3 id="Python-实现：归并排序"><a href="#Python-实现：归并排序" class="headerlink" title="Python 实现：归并排序"></a>Python 实现：归并排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">merge_sort</span>(<span class="params">arr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用分治法实现归并排序&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 基本情况</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(arr) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> arr</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 分解</span></span><br><span class="line">    mid = <span class="built_in">len</span>(arr) // <span class="number">2</span></span><br><span class="line">    left_half = arr[:mid]</span><br><span class="line">    right_half = arr[mid:]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 解决 (递归)</span></span><br><span class="line">    sorted_left = merge_sort(left_half)</span><br><span class="line">    sorted_right = merge_sort(right_half)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 4. 合并</span></span><br><span class="line">    <span class="keyword">return</span> merge(sorted_left, sorted_right)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">left, right</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;合并两个已排序的数组&quot;&quot;&quot;</span></span><br><span class="line">    result = []</span><br><span class="line">    i, j = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(left) <span class="keyword">and</span> j &lt; <span class="built_in">len</span>(right):</span><br><span class="line">        <span class="keyword">if</span> left[i] &lt;= right[j]:</span><br><span class="line">            result.append(left[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result.append(right[j])</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">    <span class="comment"># 将剩余的元素追加到结果末尾</span></span><br><span class="line">    result.extend(left[i:])</span><br><span class="line">    result.extend(right[j:])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">my_array = [<span class="number">38</span>, <span class="number">27</span>, <span class="number">43</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">82</span>, <span class="number">10</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Original array: <span class="subst">&#123;my_array&#125;</span>&quot;</span>)</span><br><span class="line">sorted_array = merge_sort(my_array)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Sorted array:   <span class="subst">&#123;sorted_array&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># Original array: [38, 27, 43, 3, 9, 82, 10]</span></span><br><span class="line"><span class="comment"># Sorted array:   [3, 9, 10, 27, 38, 43, 82]</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><h3 id="时间复杂度：O-n-log-n"><a href="#时间复杂度：O-n-log-n" class="headerlink" title="时间复杂度：O(n log n)"></a>时间复杂度：O(n log n)</h3><p>我们使用<strong>递归树法</strong>进行分析，这在 <strong>Part 1.2</strong> 中已有详细介绍。</p>
 <ol>
@@ -635,15 +542,15 @@ print(f&quot;Sorted array:   &#123;sorted_array&#125;&quot;)
       
         <a href="/tags/%E9%80%92%E5%BD%92/" class="print-no-link">#递归</a>
       
+        <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="print-no-link">#快速排序</a>
+      
         <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="print-no-link">#归并排序</a>
       
-        <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="print-no-link">#快速排序</a>
+        <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/" class="print-no-link">#算法思想</a>
       
         <a href="/tags/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/" class="print-no-link">#分治算法</a>
       
         <a href="/tags/Divide-and-Conquer/" class="print-no-link">#Divide and Conquer</a>
-      
-        <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/" class="print-no-link">#算法思想</a>
       
     </div>
   
@@ -805,9 +712,6 @@ print(f&quot;Sorted array:   &#123;sorted_array&#125;&quot;)
 
 
 
-
-
-  
 
 
 
@@ -989,12 +893,6 @@ print(f&quot;Sorted array:   &#123;sorted_array&#125;&quot;)
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

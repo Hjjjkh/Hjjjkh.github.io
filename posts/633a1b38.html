@@ -62,8 +62,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -80,11 +78,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -358,20 +351,12 @@
 <p>堆不要求左右子树之间有任何大小关系，只要求父节点与子节点之间的关系。这使得堆比二叉搜索树更”宽松”，但也足以让我们快速找到最值。</p>
 <h3 id="关键图示：大顶堆与小顶堆"><a href="#关键图示：大顶堆与小顶堆" class="headerlink" title="关键图示：大顶堆与小顶堆"></a>关键图示：大顶堆与小顶堆</h3><blockquote>
 <p><strong>图示标题：大顶堆示例</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">     90
-    &#x2F;  \
-  80    70
- &#x2F; \    &#x2F;
-50  60 40</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">     90</span><br><span class="line">    /  \</span><br><span class="line">  80    70</span><br><span class="line"> / \    /</span><br><span class="line">50  60 40</span><br></pre></td></tr></table></figure>
 <p>每个父节点都大于其子节点。根节点 90 是最大值。</p>
 </blockquote>
 <blockquote>
 <p><strong>图示标题：小顶堆示例</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">     10
-    &#x2F;  \
-  20    30
- &#x2F; \    &#x2F;
-40  50 60</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">     10</span><br><span class="line">    /  \</span><br><span class="line">  20    30</span><br><span class="line"> / \    /</span><br><span class="line">40  50 60</span><br></pre></td></tr></table></figure>
 <p>每个父节点都小于其子节点。根节点 10 是最小值。</p>
 </blockquote>
 <h3 id="数组实现"><a href="#数组实现" class="headerlink" title="数组实现"></a>数组实现</h3><p>由于堆是完全二叉树，我们可以用<strong>数组</strong>来高效地存储它。</p>
@@ -415,67 +400,10 @@
 <li><strong>比较 70 与子节点 40</strong>: <code>70 &gt; 40</code>，满足堆性质，停止。</li>
 <li><strong>最终状态</strong>: <code>[85, 80, 70, 50, 60, 40]</code></li>
 </ol>
-<h2 id="3-Python-实现"><a href="#3-Python-实现" class="headerlink" title="3. Python 实现"></a>3. Python 实现</h2><h3 id="伪代码：大顶堆的核心操作"><a href="#伪代码：大顶堆的核心操作" class="headerlink" title="伪代码：大顶堆的核心操作"></a>伪代码：大顶堆的核心操作</h3><figure><div class="code-wrapper"><pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">class MaxHeap:
-  constructor():
-    this.heap &#x3D; []
-  
-  &#x2F;&#x2F; 插入元素
-  function insert(value):
-    this.heap.append(value)
-    this._heapify_up(len(this.heap) - 1)
-  
-  &#x2F;&#x2F; 删除并返回最大值
-  function extract_max():
-    if len(this.heap) &#x3D;&#x3D; 0: Error(&quot;Heap is empty&quot;)
-    max_value &#x3D; this.heap[0]
-    this.heap[0] &#x3D; this.heap[len(this.heap) - 1]
-    this.heap.pop()
-    this._heapify_down(0)
-    return max_value
-  
-  &#x2F;&#x2F; 向上堆化
-  function _heapify_up(index):
-    parent &#x3D; (index - 1) &#x2F;&#x2F; 2
-    if index &gt; 0 and this.heap[index] &gt; this.heap[parent]:
-      swap(this.heap[index], this.heap[parent])
-      this._heapify_up(parent)
-  
-  &#x2F;&#x2F; 向下堆化
-  function _heapify_down(index):
-    largest &#x3D; index
-    left &#x3D; 2 * index + 1
-    right &#x3D; 2 * index + 2
-    
-    if left &lt; len(this.heap) and this.heap[left] &gt; this.heap[largest]:
-      largest &#x3D; left
-    if right &lt; len(this.heap) and this.heap[right] &gt; this.heap[largest]:
-      largest &#x3D; right
-    
-    if largest !&#x3D; index:
-      swap(this.heap[index], this.heap[largest])
-      this._heapify_down(largest)</code></pre></div></figure>
+<h2 id="3-Python-实现"><a href="#3-Python-实现" class="headerlink" title="3. Python 实现"></a>3. Python 实现</h2><h3 id="伪代码：大顶堆的核心操作"><a href="#伪代码：大顶堆的核心操作" class="headerlink" title="伪代码：大顶堆的核心操作"></a>伪代码：大顶堆的核心操作</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class MaxHeap:</span><br><span class="line">  constructor():</span><br><span class="line">    this.heap = []</span><br><span class="line">  </span><br><span class="line">  // 插入元素</span><br><span class="line">  function insert(value):</span><br><span class="line">    this.heap.append(value)</span><br><span class="line">    this._heapify_up(len(this.heap) - 1)</span><br><span class="line">  </span><br><span class="line">  // 删除并返回最大值</span><br><span class="line">  function extract_max():</span><br><span class="line">    if len(this.heap) == 0: Error(&quot;Heap is empty&quot;)</span><br><span class="line">    max_value = this.heap[0]</span><br><span class="line">    this.heap[0] = this.heap[len(this.heap) - 1]</span><br><span class="line">    this.heap.pop()</span><br><span class="line">    this._heapify_down(0)</span><br><span class="line">    return max_value</span><br><span class="line">  </span><br><span class="line">  // 向上堆化</span><br><span class="line">  function _heapify_up(index):</span><br><span class="line">    parent = (index - 1) // 2</span><br><span class="line">    if index &gt; 0 and this.heap[index] &gt; this.heap[parent]:</span><br><span class="line">      swap(this.heap[index], this.heap[parent])</span><br><span class="line">      this._heapify_up(parent)</span><br><span class="line">  </span><br><span class="line">  // 向下堆化</span><br><span class="line">  function _heapify_down(index):</span><br><span class="line">    largest = index</span><br><span class="line">    left = 2 * index + 1</span><br><span class="line">    right = 2 * index + 2</span><br><span class="line">    </span><br><span class="line">    if left &lt; len(this.heap) and this.heap[left] &gt; this.heap[largest]:</span><br><span class="line">      largest = left</span><br><span class="line">    if right &lt; len(this.heap) and this.heap[right] &gt; this.heap[largest]:</span><br><span class="line">      largest = right</span><br><span class="line">    </span><br><span class="line">    if largest != index:</span><br><span class="line">      swap(this.heap[index], this.heap[largest])</span><br><span class="line">      this._heapify_down(largest)</span><br></pre></td></tr></table></figure>
 
 <h3 id="Python-实现：使用-heapq-模块"><a href="#Python-实现：使用-heapq-模块" class="headerlink" title="Python 实现：使用 heapq 模块"></a>Python 实现：使用 <code>heapq</code> 模块</h3><p>Python 的 <code>heapq</code> 模块提供了一个高效的<strong>小顶堆</strong>实现。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">import heapq
-
-# 创建一个空堆
-heap &#x3D; []
-
-# 插入元素
-heapq.heappush(heap, 10)
-heapq.heappush(heap, 5)
-heapq.heappush(heap, 20)
-print(f&quot;Heap after pushes: &#123;heap&#125;&quot;) # 输出: [5, 10, 20]
-
-# 弹出最小值
-min_value &#x3D; heapq.heappop(heap)
-print(f&quot;Popped min value: &#123;min_value&#125;&quot;) # 输出: 5
-print(f&quot;Heap after pop: &#123;heap&#125;&quot;) # 输出: [10, 20]
-
-# 将普通列表转换为堆
-data &#x3D; [30, 10, 50, 20]
-heapq.heapify(data)
-print(f&quot;Heapified list: &#123;data&#125;&quot;) # 输出: [10, 20, 50, 30]</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个空堆</span></span><br><span class="line">heap = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入元素</span></span><br><span class="line">heapq.heappush(heap, <span class="number">10</span>)</span><br><span class="line">heapq.heappush(heap, <span class="number">5</span>)</span><br><span class="line">heapq.heappush(heap, <span class="number">20</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Heap after pushes: <span class="subst">&#123;heap&#125;</span>&quot;</span>) <span class="comment"># 输出: [5, 10, 20]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 弹出最小值</span></span><br><span class="line">min_value = heapq.heappop(heap)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Popped min value: <span class="subst">&#123;min_value&#125;</span>&quot;</span>) <span class="comment"># 输出: 5</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Heap after pop: <span class="subst">&#123;heap&#125;</span>&quot;</span>) <span class="comment"># 输出: [10, 20]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将普通列表转换为堆</span></span><br><span class="line">data = [<span class="number">30</span>, <span class="number">10</span>, <span class="number">50</span>, <span class="number">20</span>]</span><br><span class="line">heapq.heapify(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Heapified list: <span class="subst">&#123;data&#125;</span>&quot;</span>) <span class="comment"># 输出: [10, 20, 50, 30]</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>注意</strong>：<code>heapq</code> 只提供小顶堆。如果需要大顶堆，可以将所有元素取负后插入。</p>
 <h2 id="4-复杂度分析"><a href="#4-复杂度分析" class="headerlink" title="4. 复杂度分析"></a>4. 复杂度分析</h2><table>
@@ -509,21 +437,7 @@ print(f&quot;Heapified list: &#123;data&#125;&quot;) # 输出: [10, 20, 50, 30]<
 </tbody></table>
 <p><strong>空间复杂度</strong>：<code>O(n)</code>，需要存储 <code>n</code> 个元素。</p>
 <h2 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. 应用场景</h2><h3 id="5-1-优先队列-Priority-Queue"><a href="#5-1-优先队列-Priority-Queue" class="headerlink" title="5.1 优先队列 (Priority Queue)"></a>5.1 优先队列 (Priority Queue)</h3><p>优先队列是一种抽象数据类型，元素按优先级出队，而非按插入顺序。堆是实现优先队列的最佳数据结构。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">import heapq
-
-# 使用元组 (priority, task) 来实现优先队列
-pq &#x3D; []
-heapq.heappush(pq, (3, &quot;Task C&quot;))
-heapq.heappush(pq, (1, &quot;Task A&quot;))
-heapq.heappush(pq, (2, &quot;Task B&quot;))
-
-while pq:
-    priority, task &#x3D; heapq.heappop(pq)
-    print(f&quot;Processing &#123;task&#125; with priority &#123;priority&#125;&quot;)
-# 输出:
-# Processing Task A with priority 1
-# Processing Task B with priority 2
-# Processing Task C with priority 3</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用元组 (priority, task) 来实现优先队列</span></span><br><span class="line">pq = []</span><br><span class="line">heapq.heappush(pq, (<span class="number">3</span>, <span class="string">&quot;Task C&quot;</span>))</span><br><span class="line">heapq.heappush(pq, (<span class="number">1</span>, <span class="string">&quot;Task A&quot;</span>))</span><br><span class="line">heapq.heappush(pq, (<span class="number">2</span>, <span class="string">&quot;Task B&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> pq:</span><br><span class="line">    priority, task = heapq.heappop(pq)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Processing <span class="subst">&#123;task&#125;</span> with priority <span class="subst">&#123;priority&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># Processing Task A with priority 1</span></span><br><span class="line"><span class="comment"># Processing Task B with priority 2</span></span><br><span class="line"><span class="comment"># Processing Task C with priority 3</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="5-2-Top-K-问题"><a href="#5-2-Top-K-问题" class="headerlink" title="5.2 Top-K 问题"></a>5.2 Top-K 问题</h3><p><strong>问题</strong>：从 <code>n</code> 个元素中找出最大的 <code>k</code> 个元素。</p>
 <p><strong>解法</strong>：维护一个大小为 <code>k</code> 的<strong>小顶堆</strong>。遍历所有元素，如果当前元素大于堆顶，就替换堆顶并重新堆化。最终堆中的 <code>k</code> 个元素就是最大的 <code>k</code> 个。</p>
@@ -750,9 +664,6 @@ while pq:
 
 
 
-  
-
-
 
   
 
@@ -932,12 +843,6 @@ while pq:
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

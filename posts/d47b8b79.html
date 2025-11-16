@@ -62,8 +62,6 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -80,11 +78,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -419,69 +412,7 @@
 </li>
 </ol>
 <p><strong>最终结果</strong>：<code>max(dp[0][0], dp[0][1]) = max(16, 18) = 18</code>。</p>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def happy_party(happiness, subordinates):
-    &quot;&quot;&quot;
-    解决“没有上司的舞会”问题（树的最大权独立集）。
-    :param happiness: 每个员工的欢乐指数列表。
-    :param subordinates: 邻接表，subordinates[i] 是 i 的直接下属列表。
-    :return: 最大欢乐指数之和。
-    &quot;&quot;&quot;
-    n &#x3D; len(happiness)
-    if n &#x3D;&#x3D; 0:
-        return 0
-
-    # dp[u][0]: 不邀请 u 的最大欢乐值
-    # dp[u][1]: 邀请 u 的最大欢乐值
-    dp &#x3D; [[0, 0] for _ in range(n)]
-
-    def dfs(u):
-        # 1. 初始化当前节点
-        dp[u][0] &#x3D; 0
-        dp[u][1] &#x3D; happiness[u]
-
-        # 2. 递归处理所有子节点
-        for v in subordinates[u]:
-            dfs(v)
-            # 3. 根据子节点的结果更新当前节点
-            # 如果不邀请 u，则其子节点 v 可来可不来，取最大值
-            dp[u][0] +&#x3D; max(dp[v][0], dp[v][1])
-            # 如果邀请 u，则其子节点 v 都不能来
-            dp[u][1] +&#x3D; dp[v][0]
-
-    # 找到根节点（没有上司的员工）
-    has_boss &#x3D; [False] * n
-    for u in range(n):
-        for v in subordinates[u]:
-            has_boss[v] &#x3D; True
-    
-    root &#x3D; -1
-    for i in range(n):
-        if not has_boss[i]:
-            root &#x3D; i
-            break
-    
-    if root &#x3D;&#x3D; -1: # 如果是环状结构（不符合题意），随便选一个起点
-        root &#x3D; 0
-
-    # 从根节点开始 DFS
-    dfs(root)
-
-    # 返回最终结果
-    return max(dp[root][0], dp[root][1])
-
-# --- 案例测试 ---
-happiness &#x3D; [10, 5, 8, 2, 6]
-# 组织架构：0-&gt;1, 0-&gt;2, 1-&gt;3, 1-&gt;4
-subordinates &#x3D; [
-    [1, 2],  # 0 的下属是 1, 2
-    [3, 4],  # 1 的下属是 3, 4
-    [],      # 2 是叶子节点
-    [],      # 3 是叶子节点
-    []       # 4 是叶子节点
-]
-
-max_happiness &#x3D; happy_party(happiness, subordinates)
-print(f&quot;派对的最大欢乐指数是: &#123;max_happiness&#125;&quot;) # 输出: 18</code></pre></div></figure>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">happy_party</span>(<span class="params">happiness, subordinates</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    解决“没有上司的舞会”问题（树的最大权独立集）。</span></span><br><span class="line"><span class="string">    :param happiness: 每个员工的欢乐指数列表。</span></span><br><span class="line"><span class="string">    :param subordinates: 邻接表，subordinates[i] 是 i 的直接下属列表。</span></span><br><span class="line"><span class="string">    :return: 最大欢乐指数之和。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    n = <span class="built_in">len</span>(happiness)</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># dp[u][0]: 不邀请 u 的最大欢乐值</span></span><br><span class="line">    <span class="comment"># dp[u][1]: 邀请 u 的最大欢乐值</span></span><br><span class="line">    dp = [[<span class="number">0</span>, <span class="number">0</span>] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">u</span>):</span><br><span class="line">        <span class="comment"># 1. 初始化当前节点</span></span><br><span class="line">        dp[u][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">        dp[u][<span class="number">1</span>] = happiness[u]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2. 递归处理所有子节点</span></span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> subordinates[u]:</span><br><span class="line">            dfs(v)</span><br><span class="line">            <span class="comment"># 3. 根据子节点的结果更新当前节点</span></span><br><span class="line">            <span class="comment"># 如果不邀请 u，则其子节点 v 可来可不来，取最大值</span></span><br><span class="line">            dp[u][<span class="number">0</span>] += <span class="built_in">max</span>(dp[v][<span class="number">0</span>], dp[v][<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 如果邀请 u，则其子节点 v 都不能来</span></span><br><span class="line">            dp[u][<span class="number">1</span>] += dp[v][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 找到根节点（没有上司的员工）</span></span><br><span class="line">    has_boss = [<span class="literal">False</span>] * n</span><br><span class="line">    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> subordinates[u]:</span><br><span class="line">            has_boss[v] = <span class="literal">True</span></span><br><span class="line">    </span><br><span class="line">    root = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> has_boss[i]:</span><br><span class="line">            root = i</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> root == -<span class="number">1</span>: <span class="comment"># 如果是环状结构（不符合题意），随便选一个起点</span></span><br><span class="line">        root = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从根节点开始 DFS</span></span><br><span class="line">    dfs(root)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回最终结果</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">max</span>(dp[root][<span class="number">0</span>], dp[root][<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">happiness = [<span class="number">10</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">6</span>]</span><br><span class="line"><span class="comment"># 组织架构：0-&gt;1, 0-&gt;2, 1-&gt;3, 1-&gt;4</span></span><br><span class="line">subordinates = [</span><br><span class="line">    [<span class="number">1</span>, <span class="number">2</span>],  <span class="comment"># 0 的下属是 1, 2</span></span><br><span class="line">    [<span class="number">3</span>, <span class="number">4</span>],  <span class="comment"># 1 的下属是 3, 4</span></span><br><span class="line">    [],      <span class="comment"># 2 是叶子节点</span></span><br><span class="line">    [],      <span class="comment"># 3 是叶子节点</span></span><br><span class="line">    []       <span class="comment"># 4 是叶子节点</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">max_happiness = happy_party(happiness, subordinates)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;派对的最大欢乐指数是: <span class="subst">&#123;max_happiness&#125;</span>&quot;</span>) <span class="comment"># 输出: 18</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><ul>
 <li><strong>时间复杂度</strong>: <code>O(N)</code>。其中 <code>N</code> 是员工（节点）数量。算法的核心是一个 DFS 遍历，每个节点和每条边都只会被访问一次。</li>
@@ -723,9 +654,6 @@ print(f&quot;派对的最大欢乐指数是: &#123;max_happiness&#125;&quot;) # 
 
 
 
-  
-
-
 
   
 
@@ -905,12 +833,6 @@ print(f&quot;派对的最大欢乐指数是: &#123;max_happiness&#125;&quot;) # 
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
