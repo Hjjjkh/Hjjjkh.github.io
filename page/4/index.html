@@ -46,9 +46,37 @@
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
 <!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<script>
+  // Auto switch PrismJS theme based on dark mode
+  (function() {
+    const darkTheme = document.getElementById('prism-dark-manual');
+    const lightTheme = document.getElementById('prism-light-manual');
+    
+    function updateTheme() {
+      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
+      if (isDark) {
+        darkTheme.media = 'all';
+        lightTheme.media = 'none';
+      } else {
+        darkTheme.media = 'none';
+        lightTheme.media = 'all';
+      }
+    }
+    
+    // Initial theme
+    updateTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-user-color-scheme']
+    });
+  })();
+</script>
 
   
   <title>李国强的技术博客</title>
@@ -796,9 +824,9 @@
             
               <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
             
-              <a href="/tags/%E6%A0%91/">#树</a>
-            
               <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">#树的遍历</a>
+            
+              <a href="/tags/%E6%A0%91/">#树</a>
             
           </div>
         
@@ -1094,13 +1122,13 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">#空间复杂度</a>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">#算法基础</a>
-            
               <a href="/tags/%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/">#复杂度分析</a>
             
               <a href="/tags/Big-O/">#Big O</a>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">#算法基础</a>
+            
+              <a href="/tags/%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">#空间复杂度</a>
             
               <a href="/tags/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95/">#原地算法</a>
             

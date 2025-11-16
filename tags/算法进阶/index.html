@@ -46,9 +46,37 @@
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
 <!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<script>
+  // Auto switch PrismJS theme based on dark mode
+  (function() {
+    const darkTheme = document.getElementById('prism-dark-manual');
+    const lightTheme = document.getElementById('prism-light-manual');
+    
+    function updateTheme() {
+      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
+      if (isDark) {
+        darkTheme.media = 'all';
+        lightTheme.media = 'none';
+      } else {
+        darkTheme.media = 'none';
+        lightTheme.media = 'all';
+      }
+    }
+    
+    // Initial theme
+    updateTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-user-color-scheme']
+    });
+  })();
+</script>
 
   
   <title>标签 - 算法进阶 - 李国强的技术博客</title>
@@ -304,15 +332,15 @@
     </a>
   
     
-    <a href="/posts/ba38e901" class="list-group-item list-group-item-action">
-      <time>11-19</time>
-      <div class="list-group-item-title">Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞</div>
-    </a>
-  
-    
     <a href="/posts/a948c7b3" class="list-group-item list-group-item-action">
       <time>11-19</time>
       <div class="list-group-item-title">Part 6.7：AC 自动机——多模式匹配的终极武器</div>
+    </a>
+  
+    
+    <a href="/posts/ba38e901" class="list-group-item list-group-item-action">
+      <time>11-19</time>
+      <div class="list-group-item-title">Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞</div>
     </a>
   
 </div>

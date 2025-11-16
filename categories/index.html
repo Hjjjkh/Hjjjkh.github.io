@@ -46,9 +46,37 @@
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
 <!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<script>
+  // Auto switch PrismJS theme based on dark mode
+  (function() {
+    const darkTheme = document.getElementById('prism-dark-manual');
+    const lightTheme = document.getElementById('prism-light-manual');
+    
+    function updateTheme() {
+      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
+      if (isDark) {
+        darkTheme.media = 'all';
+        lightTheme.media = 'none';
+      } else {
+        darkTheme.media = 'none';
+        lightTheme.media = 'all';
+      }
+    }
+    
+    // Initial theme
+    updateTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-user-color-scheme']
+    });
+  })();
+</script>
 
   
   <title>分类 - 李国强的技术博客</title>
@@ -419,111 +447,6 @@
     
     <div class="category-sub row nomargin-x">
       <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Part 4：图论算法"
-        id="heading-490edbf66a67b688161b47b2b49d5069" role="tab" data-toggle="collapse" href="#collapse-490edbf66a67b688161b47b2b49d5069"
-        aria-expanded="false"
-      >
-        Part 4：图论算法
-        <span class="list-group-count"></span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-        <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-4%EF%BC%9A%E5%9B%BE%E8%AE%BA%E7%AE%97%E6%B3%95/" class="category-count col-2 col-md-1 col-xm-1">
-          <i class="iconfont icon-articles"></i>
-          <span>8</span>
-        </a>
-      
-      <div class="category-collapse collapse " id="collapse-490edbf66a67b688161b47b2b49d5069"
-           role="tabpanel" aria-labelledby="heading-490edbf66a67b688161b47b2b49d5069">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/posts/59ecaa5b" title="Part 4.8：网络流——从水管到算法的流量优化之旅"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.8：网络流——从水管到算法的流量优化之旅</span>
-        </a>
-      
-    
-      
-      
-        <a href="/posts/acc8187e" title="Part 4.7：二分图匹配——月老的红线与匈牙利算法"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.7：二分图匹配——月老的红线与匈牙利算法</span>
-        </a>
-      
-    
-      
-      
-        <a href="/posts/998851bc" title="Part 4.6：强连通分量 (SCC)——将复杂图分解为核心簇"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.6：强连通分量 (SCC)——将复杂图分解为核心簇</span>
-        </a>
-      
-    
-      
-      
-        <a href="/posts/cee53c4f" title="Part 4.5：拓扑排序——安排任务的艺术"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.5：拓扑排序——安排任务的艺术</span>
-        </a>
-      
-    
-      
-      
-        <a href="/posts/dff8203e" title="Part 4.4：多源最短路与负权环 (Bellman-Ford &amp; Floyd-Warshall)"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.4：多源最短路与负权环 (Bellman-Ford &amp; Floyd-Warshall)</span>
-        </a>
-      
-    
-      
-      
-        <a href="/posts/6c6faf80" title="Part 4.3：单源最短路——从一点到所有点的最优路径 (Dijkstra &amp; SPFA)"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.3：单源最短路——从一点到所有点的最优路径 (Dijkstra &amp; SPFA)</span>
-        </a>
-      
-    
-      
-      
-        <a href="/posts/39868bc3" title="Part 4.2：最小生成树 (MST)——Kruskal 与 Prim 算法"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.2：最小生成树 (MST)——Kruskal 与 Prim 算法</span>
-        </a>
-      
-    
-      
-      
-        <a href="/posts/d5dfc2ae" title="Part 4.1：图论入门——图的表示与遍历 (BFS &amp; DFS)"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Part 4.1：图论入门——图的表示与遍历 (BFS &amp; DFS)</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Part 2：基础数据结构"
         id="heading-4774bad92327b5717b6ae7abdb86994b" role="tab" data-toggle="collapse" href="#collapse-4774bad92327b5717b6ae7abdb86994b"
         aria-expanded="false"
@@ -615,6 +538,111 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Part 2.1：数组与链表：相爱相杀的线性双雄</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Part 4：图论算法"
+        id="heading-490edbf66a67b688161b47b2b49d5069" role="tab" data-toggle="collapse" href="#collapse-490edbf66a67b688161b47b2b49d5069"
+        aria-expanded="false"
+      >
+        Part 4：图论算法
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-4%EF%BC%9A%E5%9B%BE%E8%AE%BA%E7%AE%97%E6%B3%95/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>8</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-490edbf66a67b688161b47b2b49d5069"
+           role="tabpanel" aria-labelledby="heading-490edbf66a67b688161b47b2b49d5069">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/posts/59ecaa5b" title="Part 4.8：网络流——从水管到算法的流量优化之旅"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.8：网络流——从水管到算法的流量优化之旅</span>
+        </a>
+      
+    
+      
+      
+        <a href="/posts/acc8187e" title="Part 4.7：二分图匹配——月老的红线与匈牙利算法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.7：二分图匹配——月老的红线与匈牙利算法</span>
+        </a>
+      
+    
+      
+      
+        <a href="/posts/998851bc" title="Part 4.6：强连通分量 (SCC)——将复杂图分解为核心簇"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.6：强连通分量 (SCC)——将复杂图分解为核心簇</span>
+        </a>
+      
+    
+      
+      
+        <a href="/posts/cee53c4f" title="Part 4.5：拓扑排序——安排任务的艺术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.5：拓扑排序——安排任务的艺术</span>
+        </a>
+      
+    
+      
+      
+        <a href="/posts/dff8203e" title="Part 4.4：多源最短路与负权环 (Bellman-Ford &amp; Floyd-Warshall)"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.4：多源最短路与负权环 (Bellman-Ford &amp; Floyd-Warshall)</span>
+        </a>
+      
+    
+      
+      
+        <a href="/posts/6c6faf80" title="Part 4.3：单源最短路——从一点到所有点的最优路径 (Dijkstra &amp; SPFA)"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.3：单源最短路——从一点到所有点的最优路径 (Dijkstra &amp; SPFA)</span>
+        </a>
+      
+    
+      
+      
+        <a href="/posts/39868bc3" title="Part 4.2：最小生成树 (MST)——Kruskal 与 Prim 算法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.2：最小生成树 (MST)——Kruskal 与 Prim 算法</span>
+        </a>
+      
+    
+      
+      
+        <a href="/posts/d5dfc2ae" title="Part 4.1：图论入门——图的表示与遍历 (BFS &amp; DFS)"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Part 4.1：图论入门——图的表示与遍历 (BFS &amp; DFS)</span>
         </a>
       
     
@@ -1037,6 +1065,48 @@
     
     <div class="category-sub row nomargin-x">
       <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="主题定制"
+        id="heading-cd54a5cf6cd36ef172981d93d2204386" role="tab" data-toggle="collapse" href="#collapse-cd54a5cf6cd36ef172981d93d2204386"
+        aria-expanded="false"
+      >
+        主题定制
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/%E4%B8%BB%E9%A2%98%E5%AE%9A%E5%88%B6/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>1</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-cd54a5cf6cd36ef172981d93d2204386"
+           role="tabpanel" aria-labelledby="heading-cd54a5cf6cd36ef172981d93d2204386">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/posts/c6983b5" title="Fluid 主题配置与美化实践"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Fluid 主题配置与美化实践</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Hexo SEO"
         id="heading-c3096dcbd351c6e52a54fd443e4f6f4a" role="tab" data-toggle="collapse" href="#collapse-c3096dcbd351c6e52a54fd443e4f6f4a"
         aria-expanded="false"
@@ -1079,22 +1149,22 @@
     
     <div class="category-sub row nomargin-x">
       <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="主题定制"
-        id="heading-cd54a5cf6cd36ef172981d93d2204386" role="tab" data-toggle="collapse" href="#collapse-cd54a5cf6cd36ef172981d93d2204386"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Hexo 功能扩展"
+        id="heading-56421a30805d16e7259b73fc6a3622a5" role="tab" data-toggle="collapse" href="#collapse-56421a30805d16e7259b73fc6a3622a5"
         aria-expanded="false"
       >
-        主题定制
+        Hexo 功能扩展
         <span class="list-group-count"></span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-        <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/%E4%B8%BB%E9%A2%98%E5%AE%9A%E5%88%B6/" class="category-count col-2 col-md-1 col-xm-1">
+        <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95/" class="category-count col-2 col-md-1 col-xm-1">
           <i class="iconfont icon-articles"></i>
           <span>1</span>
         </a>
       
-      <div class="category-collapse collapse " id="collapse-cd54a5cf6cd36ef172981d93d2204386"
-           role="tabpanel" aria-labelledby="heading-cd54a5cf6cd36ef172981d93d2204386">
+      <div class="category-collapse collapse " id="collapse-56421a30805d16e7259b73fc6a3622a5"
+           role="tabpanel" aria-labelledby="heading-56421a30805d16e7259b73fc6a3622a5">
         
         
           
@@ -1103,10 +1173,10 @@
     
       
       
-        <a href="/posts/c6983b5" title="Fluid 主题配置与美化实践"
+        <a href="/posts/dcd36d73" title="为 Hexo 博客添加 Gitalk 评论系统——从零到一的完整指南"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">Fluid 主题配置与美化实践</span>
+          <span class="category-post">为 Hexo 博客添加 Gitalk 评论系统——从零到一的完整指南</span>
         </a>
       
     
@@ -1191,48 +1261,6 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Hexo 博客性能优化实践：加载速度提升指南</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Hexo 功能扩展"
-        id="heading-56421a30805d16e7259b73fc6a3622a5" role="tab" data-toggle="collapse" href="#collapse-56421a30805d16e7259b73fc6a3622a5"
-        aria-expanded="false"
-      >
-        Hexo 功能扩展
-        <span class="list-group-count"></span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-        <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95/" class="category-count col-2 col-md-1 col-xm-1">
-          <i class="iconfont icon-articles"></i>
-          <span>1</span>
-        </a>
-      
-      <div class="category-collapse collapse " id="collapse-56421a30805d16e7259b73fc6a3622a5"
-           role="tabpanel" aria-labelledby="heading-56421a30805d16e7259b73fc6a3622a5">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/posts/dcd36d73" title="为 Hexo 博客添加 Gitalk 评论系统——从零到一的完整指南"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">为 Hexo 博客添加 Gitalk 评论系统——从零到一的完整指南</span>
         </a>
       
     

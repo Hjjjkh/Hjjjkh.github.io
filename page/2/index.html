@@ -46,9 +46,37 @@
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
 <!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<script>
+  // Auto switch PrismJS theme based on dark mode
+  (function() {
+    const darkTheme = document.getElementById('prism-dark-manual');
+    const lightTheme = document.getElementById('prism-light-manual');
+    
+    function updateTheme() {
+      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
+      if (isDark) {
+        darkTheme.media = 'all';
+        lightTheme.media = 'none';
+      } else {
+        darkTheme.media = 'none';
+        lightTheme.media = 'all';
+      }
+    }
+    
+    // Initial theme
+    updateTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-user-color-scheme']
+    });
+  })();
+</script>
 
   
   <title>李国强的技术博客</title>
@@ -428,6 +456,86 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/posts/a948c7b3" target="_self">
+          Part 6.7：AC 自动机——多模式匹配的终极武器
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/a948c7b3" target="_self">
+        <div>
+          AC 自动机（Aho-Corasick Automaton）是字符串匹配领域的一座高峰，它巧妙地融合了 Trie 树和 KMP 算法的精髓，能够在一次扫描中同时匹配多个模式串。无论是敏感词过滤、病毒特征码检测，还是文本挖掘，AC 自动机都是不可或缺的利器。本文将从零开始，带你理解 AC 自动机的构建原理、失配指针的奥秘，以及如何用 Python 实现一个完整的 AC 自动机。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-19 01:00" pubdate>
+              2025-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E8%BF%9B%E9%98%B6/">#算法进阶</a>
+            
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
+            
+              <a href="/tags/Trie/">#Trie</a>
+            
+              <a href="/tags/KMP/">#KMP</a>
+            
+              <a href="/tags/AC%E8%87%AA%E5%8A%A8%E6%9C%BA/">#AC自动机</a>
+            
+              <a href="/tags/Aho-Corasick/">#Aho-Corasick</a>
+            
+              <a href="/tags/%E5%A4%9A%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">#多模式匹配</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/posts/ba38e901" target="_self">
           Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞
         </a>
@@ -493,86 +601,6 @@
               <a href="/tags/%E5%A4%9A%E9%A1%B9%E5%BC%8F/">#多项式</a>
             
               <a href="/tags/%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/">#信号处理</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/a948c7b3" target="_self">
-          Part 6.7：AC 自动机——多模式匹配的终极武器
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/a948c7b3" target="_self">
-        <div>
-          AC 自动机（Aho-Corasick Automaton）是字符串匹配领域的一座高峰，它巧妙地融合了 Trie 树和 KMP 算法的精髓，能够在一次扫描中同时匹配多个模式串。无论是敏感词过滤、病毒特征码检测，还是文本挖掘，AC 自动机都是不可或缺的利器。本文将从零开始，带你理解 AC 自动机的构建原理、失配指针的奥秘，以及如何用 Python 实现一个完整的 AC 自动机。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-19 01:00" pubdate>
-              2025-11-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95%E8%BF%9B%E9%98%B6/">#算法进阶</a>
-            
-              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
-            
-              <a href="/tags/KMP/">#KMP</a>
-            
-              <a href="/tags/Trie/">#Trie</a>
-            
-              <a href="/tags/AC%E8%87%AA%E5%8A%A8%E6%9C%BA/">#AC自动机</a>
-            
-              <a href="/tags/Aho-Corasick/">#Aho-Corasick</a>
-            
-              <a href="/tags/%E5%A4%9A%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">#多模式匹配</a>
             
           </div>
         
@@ -1026,9 +1054,9 @@
             
               <a href="/tags/%E9%80%92%E5%BD%92/">#递归</a>
             
-              <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">#归并排序</a>
-            
               <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">#快速排序</a>
+            
+              <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">#归并排序</a>
             
               <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">#算法思想</a>
             
@@ -1106,11 +1134,11 @@
             
               <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
             
-              <a href="/tags/%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">#模式匹配</a>
-            
               <a href="/tags/Z-Algorithm/">#Z-Algorithm</a>
             
               <a href="/tags/Z-array/">#Z-array</a>
+            
+              <a href="/tags/%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">#模式匹配</a>
             
           </div>
         

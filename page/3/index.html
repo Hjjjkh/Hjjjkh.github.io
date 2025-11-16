@@ -46,9 +46,37 @@
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
 <!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<script>
+  // Auto switch PrismJS theme based on dark mode
+  (function() {
+    const darkTheme = document.getElementById('prism-dark-manual');
+    const lightTheme = document.getElementById('prism-light-manual');
+    
+    function updateTheme() {
+      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
+      if (isDark) {
+        darkTheme.media = 'all';
+        lightTheme.media = 'none';
+      } else {
+        darkTheme.media = 'none';
+        lightTheme.media = 'all';
+      }
+    }
+    
+    // Initial theme
+    updateTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-user-color-scheme']
+    });
+  })();
+</script>
 
   
   <title>李国强的技术博客</title>
@@ -482,9 +510,9 @@
             
               <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
             
-              <a href="/tags/KMP/">#KMP</a>
-            
               <a href="/tags/%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">#模式匹配</a>
+            
+              <a href="/tags/KMP/">#KMP</a>
             
               <a href="/tags/next%E6%95%B0%E7%BB%84/">#next数组</a>
             
@@ -556,11 +584,11 @@
             
               <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
             
+              <a href="/tags/%E5%88%86%E6%B2%BB/">#分治</a>
+            
               <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">#归并排序</a>
             
               <a href="/tags/Merge-Sort/">#Merge Sort</a>
-            
-              <a href="/tags/%E5%88%86%E6%B2%BB/">#分治</a>
             
               <a href="/tags/%E7%A8%B3%E5%AE%9A%E6%8E%92%E5%BA%8F/">#稳定排序</a>
             
@@ -650,6 +678,82 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/posts/e91315ae" target="_self">
+          Part 3.2：快速排序：分治思想的经典应用
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/e91315ae" target="_self">
+        <div>
+          快速排序是实际应用中最常用的排序算法之一。本文将深入剖析其分治思想、分区（Partition）过程、三种优化策略（随机化、三路快排、尾递归），并讲解其平均 O(n log n)、最坏 O(n²) 的复杂度特性。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-15 22:30" pubdate>
+              2025-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-3%EF%BC%9A%E6%8E%92%E5%BA%8F%E4%B8%8E%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 3：排序与查找算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            
+              <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">#快速排序</a>
+            
+              <a href="/tags/Quick-Sort/">#Quick Sort</a>
+            
+              <a href="/tags/%E5%88%86%E6%B2%BB/">#分治</a>
+            
+              <a href="/tags/O-n-log-n/">#O(n log n)</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/posts/f4a573d" target="_self">
           Part 5.6：状态压缩 DP
         </a>
@@ -715,82 +819,6 @@
               <a href="/tags/%E6%97%85%E8%A1%8C%E5%95%86%E9%97%AE%E9%A2%98/">#旅行商问题</a>
             
               <a href="/tags/TSP/">#TSP</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/e91315ae" target="_self">
-          Part 3.2：快速排序：分治思想的经典应用
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/e91315ae" target="_self">
-        <div>
-          快速排序是实际应用中最常用的排序算法之一。本文将深入剖析其分治思想、分区（Partition）过程、三种优化策略（随机化、三路快排、尾递归），并讲解其平均 O(n log n)、最坏 O(n²) 的复杂度特性。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 22:30" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-3%EF%BC%9A%E6%8E%92%E5%BA%8F%E4%B8%8E%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 3：排序与查找算法</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
-            
-              <a href="/tags/%E5%88%86%E6%B2%BB/">#分治</a>
-            
-              <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">#快速排序</a>
-            
-              <a href="/tags/Quick-Sort/">#Quick Sort</a>
-            
-              <a href="/tags/O-n-log-n/">#O(n log n)</a>
             
           </div>
         

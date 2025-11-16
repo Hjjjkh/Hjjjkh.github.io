@@ -34,10 +34,10 @@
 <meta property="article:modified_time" content="2025-11-15T08:52:21.796Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法">
-<meta property="article:tag" content="复杂度">
 <meta property="article:tag" content="时间复杂度">
-<meta property="article:tag" content="空间复杂度">
 <meta property="article:tag" content="算法基础">
+<meta property="article:tag" content="复杂度">
+<meta property="article:tag" content="空间复杂度">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -52,9 +52,37 @@
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
 <!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<script>
+  // Auto switch PrismJS theme based on dark mode
+  (function() {
+    const darkTheme = document.getElementById('prism-dark-manual');
+    const lightTheme = document.getElementById('prism-light-manual');
+    
+    function updateTheme() {
+      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
+      if (isDark) {
+        darkTheme.media = 'all';
+        lightTheme.media = 'none';
+      } else {
+        darkTheme.media = 'none';
+        lightTheme.media = 'all';
+      }
+    }
+    
+    // Initial theme
+    updateTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-user-color-scheme']
+    });
+  })();
+</script>
 
   
   <title>Part 1.1：什么是算法？什么是复杂度？ - 李国强的技术博客</title>
@@ -849,13 +877,13 @@
       
         <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
       
-        <a href="/tags/%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#复杂度</a>
-      
         <a href="/tags/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#时间复杂度</a>
       
-        <a href="/tags/%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#空间复杂度</a>
-      
         <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="print-no-link">#算法基础</a>
+      
+        <a href="/tags/%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#复杂度</a>
+      
+        <a href="/tags/%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="print-no-link">#空间复杂度</a>
       
     </div>
   
