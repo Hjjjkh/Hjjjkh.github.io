@@ -63,6 +63,8 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -79,6 +81,11 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -408,7 +415,24 @@
 </li>
 </ol>
 <p><strong>最终 <code>dp</code> 数组</strong>: <code>[1, 1, 1, 2, 2, 3]</code><br><strong>最终结果</strong>: <code>max(dp) = 3</code>。LIS 长度为 3 (例如 <code>[2, 5, 7]</code> 或 <code>[2, 3, 7]</code>)。</p>
-<h3 id="4-Python-实现-O-n²"><a href="#4-Python-实现-O-n²" class="headerlink" title="4. Python 实现 (O(n²))"></a>4. Python 实现 (O(n²))</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">length_of_lis_n2</span>(<span class="params">nums</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> nums:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    n = <span class="built_in">len</span>(nums)</span><br><span class="line">    <span class="comment"># dp[i] 表示以 nums[i] 结尾的最长上升子序列的长度</span></span><br><span class="line">    dp = [<span class="number">1</span>] * n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i):</span><br><span class="line">            <span class="keyword">if</span> nums[j] &lt; nums[i]:</span><br><span class="line">                dp[i] = <span class="built_in">max</span>(dp[i], dp[j] + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">max</span>(dp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">nums = [<span class="number">10</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">101</span>, <span class="number">18</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;O(n^2) 解法, LIS 长度: <span class="subst">&#123;length_of_lis_n2(nums)&#125;</span>&quot;</span>) <span class="comment"># 输出: 4</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-Python-实现-O-n²"><a href="#4-Python-实现-O-n²" class="headerlink" title="4. Python 实现 (O(n²))"></a>4. Python 实现 (O(n²))</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def length_of_lis_n2(nums):
+    if not nums:
+        return 0
+    
+    n &#x3D; len(nums)
+    # dp[i] 表示以 nums[i] 结尾的最长上升子序列的长度
+    dp &#x3D; [1] * n
+
+    for i in range(n):
+        for j in range(i):
+            if nums[j] &lt; nums[i]:
+                dp[i] &#x3D; max(dp[i], dp[j] + 1)
+
+    return max(dp)
+
+# --- 案例测试 ---
+nums &#x3D; [10, 9, 2, 5, 3, 7, 101, 18]
+print(f&quot;O(n^2) 解法, LIS 长度: &#123;length_of_lis_n2(nums)&#125;&quot;) # 输出: 4</code></pre></div></figure>
 
 <h3 id="5-复杂度分析"><a href="#5-复杂度分析" class="headerlink" title="5. 复杂度分析"></a>5. 复杂度分析</h3><ul>
 <li><strong>时间复杂度</strong>: <code>O(n²)</code>。因为我们有两层嵌套循环，每层都与 <code>n</code> 相关。</li>
@@ -449,7 +473,35 @@
 <blockquote>
 <p>⚠️ <strong>重要易错点</strong>：最终的 <code>tails</code> 数组 <code>[2, 3, 7, 18]</code> <strong>不是</strong> LIS 本身！真正的 LIS 之一是 <code>[2, 3, 7, 101]</code>。<code>tails</code> 数组只保证了其<strong>长度</strong>是正确的。</p>
 </blockquote>
-<h3 id="4-Python-实现-O-n-log-n"><a href="#4-Python-实现-O-n-log-n" class="headerlink" title="4. Python 实现 (O(n log n))"></a>4. Python 实现 (O(n log n))</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">length_of_lis_nlogn</span>(<span class="params">nums</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> nums:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># tails[i] 存储长度为 i+1 的 LIS 的最小结尾值</span></span><br><span class="line">    tails = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">        <span class="comment"># 二分查找：在 tails 中找到第一个 &gt;= num 的位置</span></span><br><span class="line">        left, right = <span class="number">0</span>, <span class="built_in">len</span>(tails)</span><br><span class="line">        <span class="keyword">while</span> left &lt; right:</span><br><span class="line">            mid = (left + right) // <span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> tails[mid] &lt; num:</span><br><span class="line">                left = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                right = mid</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> left == <span class="built_in">len</span>(tails):</span><br><span class="line">            <span class="comment"># num 比所有 tails 中的数都大，追加</span></span><br><span class="line">            tails.append(num)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 替换</span></span><br><span class="line">            tails[left] = num</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(tails)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">nums = [<span class="number">10</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">101</span>, <span class="number">18</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;O(n log n) 解法, LIS 长度: <span class="subst">&#123;length_of_lis_nlogn(nums)&#125;</span>&quot;</span>) <span class="comment"># 输出: 4</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-Python-实现-O-n-log-n"><a href="#4-Python-实现-O-n-log-n" class="headerlink" title="4. Python 实现 (O(n log n))"></a>4. Python 实现 (O(n log n))</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def length_of_lis_nlogn(nums):
+    if not nums:
+        return 0
+    
+    # tails[i] 存储长度为 i+1 的 LIS 的最小结尾值
+    tails &#x3D; []
+
+    for num in nums:
+        # 二分查找：在 tails 中找到第一个 &gt;&#x3D; num 的位置
+        left, right &#x3D; 0, len(tails)
+        while left &lt; right:
+            mid &#x3D; (left + right) &#x2F;&#x2F; 2
+            if tails[mid] &lt; num:
+                left &#x3D; mid + 1
+            else:
+                right &#x3D; mid
+        
+        if left &#x3D;&#x3D; len(tails):
+            # num 比所有 tails 中的数都大，追加
+            tails.append(num)
+        else:
+            # 替换
+            tails[left] &#x3D; num
+            
+    return len(tails)
+
+# --- 案例测试 ---
+nums &#x3D; [10, 9, 2, 5, 3, 7, 101, 18]
+print(f&quot;O(n log n) 解法, LIS 长度: &#123;length_of_lis_nlogn(nums)&#125;&quot;) # 输出: 4</code></pre></div></figure>
 
 <h3 id="5-复杂度分析-1"><a href="#5-复杂度分析-1" class="headerlink" title="5. 复杂度分析"></a>5. 复杂度分析</h3><ul>
 <li><strong>时间复杂度</strong>: <code>O(n log n)</code>。外层循环遍历 <code>n</code> 个数字，内层是一个二分查找，其时间复杂度为 <code>log k</code>，其中 <code>k</code> 是 <code>tails</code> 数组的当前长度 (<code>k &lt;= n</code>)。所以总时间复杂度是 <code>O(n log n)</code>。</li>
@@ -684,6 +736,9 @@
 
 
 
+  
+
+
 
   
 
@@ -863,6 +918,12 @@
   });
 </script>
 
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

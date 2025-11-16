@@ -64,6 +64,8 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -80,6 +82,11 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -372,9 +379,93 @@
 <li>在 DFS 函数中：<br>a.  将当前顶点标记为已访问。<br>b.  递归地对所有未被访问的邻居进行 DFS。<br>c.  当一个顶点的所有邻居都已被访问后，将该顶点<strong>插入到 <code>result</code> 列表的头部</strong>。</li>
 </ol>
 <p><strong>环路检测</strong>：在 DFS 过程中，我们需要维护一个 <code>recursion_stack</code> 来记录当前递归路径上的顶点。如果在访问一个顶点的邻居时，发现该邻居已经在 <code>recursion_stack</code> 中，说明遇到了一个反向边，即图中存在环路。</p>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><h3 id="Kahn-算法实现"><a href="#Kahn-算法实现" class="headerlink" title="Kahn 算法实现"></a>Kahn 算法实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque, defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">kahn_topological_sort</span>(<span class="params">graph, nodes</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Kahn 算法实现拓扑排序</span></span><br><span class="line"><span class="string">    graph: 邻接表 &#123;node: [neighbors...]&#125;</span></span><br><span class="line"><span class="string">    nodes: 所有节点的列表</span></span><br><span class="line"><span class="string">    返回: 拓扑排序列表，如果存在环则返回 None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 计算所有节点的入度</span></span><br><span class="line">    in_degree = &#123;node: <span class="number">0</span> <span class="keyword">for</span> node <span class="keyword">in</span> nodes&#125;</span><br><span class="line">    <span class="keyword">for</span> u <span class="keyword">in</span> graph:</span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> graph[u]:</span><br><span class="line">            in_degree[v] += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 将所有入度为 0 的节点入队</span></span><br><span class="line">    queue = deque([node <span class="keyword">for</span> node <span class="keyword">in</span> nodes <span class="keyword">if</span> in_degree[node] == <span class="number">0</span>])</span><br><span class="line">    </span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">while</span> queue:</span><br><span class="line">        u = queue.popleft()</span><br><span class="line">        result.append(u)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. &quot;移除&quot; u 的所有出边</span></span><br><span class="line">        <span class="keyword">if</span> u <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">for</span> v <span class="keyword">in</span> graph[u]:</span><br><span class="line">                in_degree[v] -= <span class="number">1</span></span><br><span class="line">                <span class="comment"># 4. 如果邻居入度变为 0，入队</span></span><br><span class="line">                <span class="keyword">if</span> in_degree[v] == <span class="number">0</span>:</span><br><span class="line">                    queue.append(v)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 5. 环路检测</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(result) == <span class="built_in">len</span>(nodes):</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span>  <span class="comment"># 存在环路</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">nodes = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>]</span><br><span class="line">graph = &#123;</span><br><span class="line">    <span class="string">&#x27;A&#x27;</span>: [<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;B&#x27;</span>: [<span class="string">&#x27;D&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;C&#x27;</span>: [<span class="string">&#x27;D&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;D&#x27;</span>: [<span class="string">&#x27;E&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;F&#x27;</span>: [<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;E&#x27;</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result_kahn = kahn_topological_sort(graph, nodes)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Kahn 算法拓扑排序结果: <span class="subst">&#123;result_kahn&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 可能的输出: [&#x27;A&#x27;, &#x27;F&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, &#x27;D&#x27;, &#x27;E&#x27;]</span></span><br></pre></td></tr></table></figure>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><h3 id="Kahn-算法实现"><a href="#Kahn-算法实现" class="headerlink" title="Kahn 算法实现"></a>Kahn 算法实现</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">from collections import deque, defaultdict
 
-<h3 id="DFS-算法实现"><a href="#DFS-算法实现" class="headerlink" title="DFS 算法实现"></a>DFS 算法实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">dfs_topological_sort</span>(<span class="params">graph, nodes</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    DFS 算法实现拓扑排序</span></span><br><span class="line"><span class="string">    返回: 拓扑排序列表，如果存在环则返回 None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    result = []</span><br><span class="line">    visited = <span class="built_in">set</span>()  <span class="comment"># 记录已完成 DFS 的节点</span></span><br><span class="line">    recursion_stack = <span class="built_in">set</span>()  <span class="comment"># 记录当前递归路径上的节点，用于判环</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_dfs</span>(<span class="params">u</span>):</span><br><span class="line">        visited.add(u)</span><br><span class="line">        recursion_stack.add(u)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> u <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">for</span> v <span class="keyword">in</span> graph[u]:</span><br><span class="line">                <span class="keyword">if</span> v <span class="keyword">not</span> <span class="keyword">in</span> visited:</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> _dfs(v):</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">False</span>  <span class="comment"># 发现环</span></span><br><span class="line">                <span class="keyword">elif</span> v <span class="keyword">in</span> recursion_stack:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span>  <span class="comment"># 发现环</span></span><br><span class="line">        </span><br><span class="line">        recursion_stack.remove(u)</span><br><span class="line">        result.insert(<span class="number">0</span>, u)  <span class="comment"># 在头部插入</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> node <span class="keyword">in</span> nodes:</span><br><span class="line">        <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> visited:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> _dfs(node):</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span>  <span class="comment"># 存在环路</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">result_dfs = dfs_topological_sort(graph, nodes)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;DFS 算法拓扑排序结果: <span class="subst">&#123;result_dfs&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 可能的输出: [&#x27;F&#x27;, &#x27;A&#x27;, &#x27;C&#x27;, &#x27;B&#x27;, &#x27;D&#x27;, &#x27;E&#x27;]</span></span><br></pre></td></tr></table></figure>
+def kahn_topological_sort(graph, nodes):
+    &quot;&quot;&quot;
+    Kahn 算法实现拓扑排序
+    graph: 邻接表 &#123;node: [neighbors...]&#125;
+    nodes: 所有节点的列表
+    返回: 拓扑排序列表，如果存在环则返回 None
+    &quot;&quot;&quot;
+    # 1. 计算所有节点的入度
+    in_degree &#x3D; &#123;node: 0 for node in nodes&#125;
+    for u in graph:
+        for v in graph[u]:
+            in_degree[v] +&#x3D; 1
+    
+    # 2. 将所有入度为 0 的节点入队
+    queue &#x3D; deque([node for node in nodes if in_degree[node] &#x3D;&#x3D; 0])
+    
+    result &#x3D; []
+    while queue:
+        u &#x3D; queue.popleft()
+        result.append(u)
+        
+        # 3. &quot;移除&quot; u 的所有出边
+        if u in graph:
+            for v in graph[u]:
+                in_degree[v] -&#x3D; 1
+                # 4. 如果邻居入度变为 0，入队
+                if in_degree[v] &#x3D;&#x3D; 0:
+                    queue.append(v)
+    
+    # 5. 环路检测
+    if len(result) &#x3D;&#x3D; len(nodes):
+        return result
+    else:
+        return None  # 存在环路
+
+# --- 案例测试 ---
+nodes &#x3D; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;]
+graph &#x3D; &#123;
+    &#39;A&#39;: [&#39;B&#39;, &#39;C&#39;],
+    &#39;B&#39;: [&#39;D&#39;],
+    &#39;C&#39;: [&#39;D&#39;],
+    &#39;D&#39;: [&#39;E&#39;],
+    &#39;F&#39;: [&#39;C&#39;, &#39;E&#39;]
+&#125;
+
+result_kahn &#x3D; kahn_topological_sort(graph, nodes)
+print(f&quot;Kahn 算法拓扑排序结果: &#123;result_kahn&#125;&quot;)
+# 可能的输出: [&#39;A&#39;, &#39;F&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre></div></figure>
+
+<h3 id="DFS-算法实现"><a href="#DFS-算法实现" class="headerlink" title="DFS 算法实现"></a>DFS 算法实现</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def dfs_topological_sort(graph, nodes):
+    &quot;&quot;&quot;
+    DFS 算法实现拓扑排序
+    返回: 拓扑排序列表，如果存在环则返回 None
+    &quot;&quot;&quot;
+    result &#x3D; []
+    visited &#x3D; set()  # 记录已完成 DFS 的节点
+    recursion_stack &#x3D; set()  # 记录当前递归路径上的节点，用于判环
+
+    def _dfs(u):
+        visited.add(u)
+        recursion_stack.add(u)
+        
+        if u in graph:
+            for v in graph[u]:
+                if v not in visited:
+                    if not _dfs(v):
+                        return False  # 发现环
+                elif v in recursion_stack:
+                    return False  # 发现环
+        
+        recursion_stack.remove(u)
+        result.insert(0, u)  # 在头部插入
+        return True
+
+    for node in nodes:
+        if node not in visited:
+            if not _dfs(node):
+                return None  # 存在环路
+    
+    return result
+
+# --- 案例测试 ---
+result_dfs &#x3D; dfs_topological_sort(graph, nodes)
+print(f&quot;DFS 算法拓扑排序结果: &#123;result_dfs&#125;&quot;)
+# 可能的输出: [&#39;F&#39;, &#39;A&#39;, &#39;C&#39;, &#39;B&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre></div></figure>
 
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>对于两种算法，时间复杂度和空间复杂度都是相同的：</p>
 <ul>
@@ -606,6 +697,9 @@
 
 
 
+  
+
+
 
   
 
@@ -785,6 +879,12 @@
   });
 </script>
 
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

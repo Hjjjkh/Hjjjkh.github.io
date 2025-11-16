@@ -61,6 +61,8 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -77,6 +79,11 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -263,7 +270,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k 字
+          1.2k 字
         
       </span>
     
@@ -343,31 +350,271 @@
 <li><strong>Maven</strong></li>
 <li><strong>Lombok</strong></li>
 </ul>
-<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">src/main/java/com/example/demo</span><br><span class="line">├── controller      # 控制器层</span><br><span class="line">├── service         # 业务逻辑层</span><br><span class="line">├── repository      # 数据访问层</span><br><span class="line">├── entity          # 实体类</span><br><span class="line">├── dto             # 数据传输对象</span><br><span class="line">├── exception       # 异常处理</span><br><span class="line">└── config          # 配置类</span><br></pre></td></tr></table></figure>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">src&#x2F;main&#x2F;java&#x2F;com&#x2F;example&#x2F;demo
+├── controller      # 控制器层
+├── service         # 业务逻辑层
+├── repository      # 数据访问层
+├── entity          # 实体类
+├── dto             # 数据传输对象
+├── exception       # 异常处理
+└── config          # 配置类</code></pre></div></figure>
 
-<h2 id="核心代码实现"><a href="#核心代码实现" class="headerlink" title="核心代码实现"></a>核心代码实现</h2><h3 id="1-实体类定义"><a href="#1-实体类定义" class="headerlink" title="1. 实体类定义"></a>1. 实体类定义</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;users&quot;)</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column(nullable = false, unique = true)</span></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column(nullable = false)</span></span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column(nullable = false)</span></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@CreatedDate</span></span><br><span class="line">    <span class="keyword">private</span> LocalDateTime createdAt;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@LastModifiedDate</span></span><br><span class="line">    <span class="keyword">private</span> LocalDateTime updatedAt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="核心代码实现"><a href="#核心代码实现" class="headerlink" title="核心代码实现"></a>核心代码实现</h2><h3 id="1-实体类定义"><a href="#1-实体类定义" class="headerlink" title="1. 实体类定义"></a>1. 实体类定义</h3><figure><div class="code-wrapper"><pre class="line-numbers language-java" data-language="java"><code class="language-java">@Entity
+@Table(name &#x3D; &quot;users&quot;)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User &#123;
+    @Id
+    @GeneratedValue(strategy &#x3D; GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable &#x3D; false, unique &#x3D; true)
+    private String username;
+    
+    @Column(nullable &#x3D; false)
+    private String email;
+    
+    @Column(nullable &#x3D; false)
+    private String password;
+    
+    @CreatedDate
+    private LocalDateTime createdAt;
+    
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+&#125;</code></pre></div></figure>
 
-<h3 id="2-Repository层"><a href="#2-Repository层" class="headerlink" title="2. Repository层"></a>2. Repository层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserRepository</span> <span class="keyword">extends</span> <span class="title class_">JpaRepository</span>&lt;User, Long&gt; &#123;</span><br><span class="line">    Optional&lt;User&gt; <span class="title function_">findByUsername</span><span class="params">(String username)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">existsByUsername</span><span class="params">(String username)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">existsByEmail</span><span class="params">(String email)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Query(&quot;SELECT u FROM User u WHERE u.email = :email&quot;)</span></span><br><span class="line">    Optional&lt;User&gt; <span class="title function_">findByEmail</span><span class="params">(<span class="meta">@Param(&quot;email&quot;)</span> String email)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-Repository层"><a href="#2-Repository层" class="headerlink" title="2. Repository层"></a>2. Repository层</h3><figure><div class="code-wrapper"><pre class="line-numbers language-java" data-language="java"><code class="language-java">@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; &#123;
+    Optional&lt;User&gt; findByUsername(String username);
+    
+    boolean existsByUsername(String username);
+    
+    boolean existsByEmail(String email);
+    
+    @Query(&quot;SELECT u FROM User u WHERE u.email &#x3D; :email&quot;)
+    Optional&lt;User&gt; findByEmail(@Param(&quot;email&quot;) String email);
+&#125;</code></pre></div></figure>
 
-<h3 id="3-Service层"><a href="#3-Service层" class="headerlink" title="3. Service层"></a>3. Service层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserRepository userRepository;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> PasswordEncoder passwordEncoder;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> UserDTO <span class="title function_">createUser</span><span class="params">(CreateUserRequest request)</span> &#123;</span><br><span class="line">        <span class="comment">// 验证用户名是否已存在</span></span><br><span class="line">        <span class="keyword">if</span> (userRepository.existsByUsername(request.getUsername())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">DuplicateResourceException</span>(<span class="string">&quot;用户名已存在&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 验证邮箱是否已存在</span></span><br><span class="line">        <span class="keyword">if</span> (userRepository.existsByEmail(request.getEmail())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">DuplicateResourceException</span>(<span class="string">&quot;邮箱已被注册&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 创建用户</span></span><br><span class="line">        <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">        user.setUsername(request.getUsername());</span><br><span class="line">        user.setEmail(request.getEmail());</span><br><span class="line">        user.setPassword(passwordEncoder.encode(request.getPassword()));</span><br><span class="line">        </span><br><span class="line">        <span class="type">User</span> <span class="variable">savedUser</span> <span class="operator">=</span> userRepository.save(user);</span><br><span class="line">        <span class="keyword">return</span> convertToDTO(savedUser);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> UserDTO <span class="title function_">getUserById</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userRepository.findById(id)</span><br><span class="line">            .orElseThrow(() -&gt; <span class="keyword">new</span> <span class="title class_">ResourceNotFoundException</span>(<span class="string">&quot;用户不存在&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span> convertToDTO(user);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> List&lt;UserDTO&gt; <span class="title function_">getAllUsers</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> userRepository.findAll().stream()</span><br><span class="line">            .map(<span class="built_in">this</span>::convertToDTO)</span><br><span class="line">            .collect(Collectors.toList());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> UserDTO <span class="title function_">updateUser</span><span class="params">(Long id, UpdateUserRequest request)</span> &#123;</span><br><span class="line">        <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userRepository.findById(id)</span><br><span class="line">            .orElseThrow(() -&gt; <span class="keyword">new</span> <span class="title class_">ResourceNotFoundException</span>(<span class="string">&quot;用户不存在&quot;</span>));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (request.getEmail() != <span class="literal">null</span>) &#123;</span><br><span class="line">            user.setEmail(request.getEmail());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">User</span> <span class="variable">updatedUser</span> <span class="operator">=</span> userRepository.save(user);</span><br><span class="line">        <span class="keyword">return</span> convertToDTO(updatedUser);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deleteUser</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!userRepository.existsById(id)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ResourceNotFoundException</span>(<span class="string">&quot;用户不存在&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        userRepository.deleteById(id);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> UserDTO <span class="title function_">convertToDTO</span><span class="params">(User user)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">UserDTO</span>(</span><br><span class="line">            user.getId(),</span><br><span class="line">            user.getUsername(),</span><br><span class="line">            user.getEmail(),</span><br><span class="line">            user.getCreatedAt()</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-Service层"><a href="#3-Service层" class="headerlink" title="3. Service层"></a>3. Service层</h3><figure><div class="code-wrapper"><pre class="line-numbers language-java" data-language="java"><code class="language-java">@Service
+@RequiredArgsConstructor
+public class UserService &#123;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    
+    public UserDTO createUser(CreateUserRequest request) &#123;
+        &#x2F;&#x2F; 验证用户名是否已存在
+        if (userRepository.existsByUsername(request.getUsername())) &#123;
+            throw new DuplicateResourceException(&quot;用户名已存在&quot;);
+        &#125;
+        
+        &#x2F;&#x2F; 验证邮箱是否已存在
+        if (userRepository.existsByEmail(request.getEmail())) &#123;
+            throw new DuplicateResourceException(&quot;邮箱已被注册&quot;);
+        &#125;
+        
+        &#x2F;&#x2F; 创建用户
+        User user &#x3D; new User();
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        
+        User savedUser &#x3D; userRepository.save(user);
+        return convertToDTO(savedUser);
+    &#125;
+    
+    public UserDTO getUserById(Long id) &#123;
+        User user &#x3D; userRepository.findById(id)
+            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;用户不存在&quot;));
+        return convertToDTO(user);
+    &#125;
+    
+    public List&lt;UserDTO&gt; getAllUsers() &#123;
+        return userRepository.findAll().stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+    &#125;
+    
+    public UserDTO updateUser(Long id, UpdateUserRequest request) &#123;
+        User user &#x3D; userRepository.findById(id)
+            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;用户不存在&quot;));
+        
+        if (request.getEmail() !&#x3D; null) &#123;
+            user.setEmail(request.getEmail());
+        &#125;
+        
+        User updatedUser &#x3D; userRepository.save(user);
+        return convertToDTO(updatedUser);
+    &#125;
+    
+    public void deleteUser(Long id) &#123;
+        if (!userRepository.existsById(id)) &#123;
+            throw new ResourceNotFoundException(&quot;用户不存在&quot;);
+        &#125;
+        userRepository.deleteById(id);
+    &#125;
+    
+    private UserDTO convertToDTO(User user) &#123;
+        return new UserDTO(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail(),
+            user.getCreatedAt()
+        );
+    &#125;
+&#125;</code></pre></div></figure>
 
-<h3 id="4-Controller层"><a href="#4-Controller层" class="headerlink" title="4. Controller层"></a>4. Controller层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api/users&quot;)</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="meta">@Validated</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@PostMapping</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; <span class="title function_">createUser</span><span class="params">(</span></span><br><span class="line"><span class="params">            <span class="meta">@Valid</span> <span class="meta">@RequestBody</span> CreateUserRequest request)</span> &#123;</span><br><span class="line">        <span class="type">UserDTO</span> <span class="variable">user</span> <span class="operator">=</span> userService.createUser(request);</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.CREATED)</span><br><span class="line">            .body(ApiResponse.success(user, <span class="string">&quot;用户创建成功&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(&quot;/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; <span class="title function_">getUserById</span><span class="params">(<span class="meta">@PathVariable</span> Long id)</span> &#123;</span><br><span class="line">        <span class="type">UserDTO</span> <span class="variable">user</span> <span class="operator">=</span> userService.getUserById(id);</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.ok(ApiResponse.success(user));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;List&lt;UserDTO&gt;&gt;&gt; <span class="title function_">getAllUsers</span><span class="params">()</span> &#123;</span><br><span class="line">        List&lt;UserDTO&gt; users = userService.getAllUsers();</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.ok(ApiResponse.success(users));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@PutMapping(&quot;/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; <span class="title function_">updateUser</span><span class="params">(</span></span><br><span class="line"><span class="params">            <span class="meta">@PathVariable</span> Long id,</span></span><br><span class="line"><span class="params">            <span class="meta">@Valid</span> <span class="meta">@RequestBody</span> UpdateUserRequest request)</span> &#123;</span><br><span class="line">        <span class="type">UserDTO</span> <span class="variable">user</span> <span class="operator">=</span> userService.updateUser(id, request);</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.ok(ApiResponse.success(user, <span class="string">&quot;用户更新成功&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@DeleteMapping(&quot;/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="title function_">deleteUser</span><span class="params">(<span class="meta">@PathVariable</span> Long id)</span> &#123;</span><br><span class="line">        userService.deleteUser(id);</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.ok(ApiResponse.success(<span class="literal">null</span>, <span class="string">&quot;用户删除成功&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-Controller层"><a href="#4-Controller层" class="headerlink" title="4. Controller层"></a>4. Controller层</h3><figure><div class="code-wrapper"><pre class="line-numbers language-java" data-language="java"><code class="language-java">@RestController
+@RequestMapping(&quot;&#x2F;api&#x2F;users&quot;)
+@RequiredArgsConstructor
+@Validated
+public class UserController &#123;
+    private final UserService userService;
+    
+    @PostMapping
+    public ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; createUser(
+            @Valid @RequestBody CreateUserRequest request) &#123;
+        UserDTO user &#x3D; userService.createUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ApiResponse.success(user, &quot;用户创建成功&quot;));
+    &#125;
+    
+    @GetMapping(&quot;&#x2F;&#123;id&#125;&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; getUserById(@PathVariable Long id) &#123;
+        UserDTO user &#x3D; userService.getUserById(id);
+        return ResponseEntity.ok(ApiResponse.success(user));
+    &#125;
+    
+    @GetMapping
+    public ResponseEntity&lt;ApiResponse&lt;List&lt;UserDTO&gt;&gt;&gt; getAllUsers() &#123;
+        List&lt;UserDTO&gt; users &#x3D; userService.getAllUsers();
+        return ResponseEntity.ok(ApiResponse.success(users));
+    &#125;
+    
+    @PutMapping(&quot;&#x2F;&#123;id&#125;&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;UserDTO&gt;&gt; updateUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserRequest request) &#123;
+        UserDTO user &#x3D; userService.updateUser(id, request);
+        return ResponseEntity.ok(ApiResponse.success(user, &quot;用户更新成功&quot;));
+    &#125;
+    
+    @DeleteMapping(&quot;&#x2F;&#123;id&#125;&quot;)
+    public ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; deleteUser(@PathVariable Long id) &#123;
+        userService.deleteUser(id);
+        return ResponseEntity.ok(ApiResponse.success(null, &quot;用户删除成功&quot;));
+    &#125;
+&#125;</code></pre></div></figure>
 
-<h3 id="5-全局异常处理"><a href="#5-全局异常处理" class="headerlink" title="5. 全局异常处理"></a>5. 全局异常处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalExceptionHandler</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ExceptionHandler(ResourceNotFoundException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="title function_">handleResourceNotFound</span><span class="params">(</span></span><br><span class="line"><span class="params">            ResourceNotFoundException ex)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND)</span><br><span class="line">            .body(ApiResponse.error(ex.getMessage()));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ExceptionHandler(DuplicateResourceException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="title function_">handleDuplicateResource</span><span class="params">(</span></span><br><span class="line"><span class="params">            DuplicateResourceException ex)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.CONFLICT)</span><br><span class="line">            .body(ApiResponse.error(ex.getMessage()));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ExceptionHandler(MethodArgumentNotValidException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Map&lt;String, String&gt;&gt;&gt; <span class="title function_">handleValidationErrors</span><span class="params">(</span></span><br><span class="line"><span class="params">            MethodArgumentNotValidException ex)</span> &#123;</span><br><span class="line">        Map&lt;String, String&gt; errors = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        ex.getBindingResult().getFieldErrors().forEach(error -&gt;</span><br><span class="line">            errors.put(error.getField(), error.getDefaultMessage())</span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.BAD_REQUEST)</span><br><span class="line">            .body(ApiResponse.error(<span class="string">&quot;数据验证失败&quot;</span>, errors));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ExceptionHandler(Exception.class)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; <span class="title function_">handleGenericException</span><span class="params">(Exception ex)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span><br><span class="line">            .body(ApiResponse.error(<span class="string">&quot;服务器内部错误&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-全局异常处理"><a href="#5-全局异常处理" class="headerlink" title="5. 全局异常处理"></a>5. 全局异常处理</h3><figure><div class="code-wrapper"><pre class="line-numbers language-java" data-language="java"><code class="language-java">@RestControllerAdvice
+public class GlobalExceptionHandler &#123;
+    
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; handleResourceNotFound(
+            ResourceNotFoundException ex) &#123;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ApiResponse.error(ex.getMessage()));
+    &#125;
+    
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; handleDuplicateResource(
+            DuplicateResourceException ex) &#123;
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ApiResponse.error(ex.getMessage()));
+    &#125;
+    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ApiResponse&lt;Map&lt;String, String&gt;&gt;&gt; handleValidationErrors(
+            MethodArgumentNotValidException ex) &#123;
+        Map&lt;String, String&gt; errors &#x3D; new HashMap&lt;&gt;();
+        ex.getBindingResult().getFieldErrors().forEach(error -&gt;
+            errors.put(error.getField(), error.getDefaultMessage())
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse.error(&quot;数据验证失败&quot;, errors));
+    &#125;
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ApiResponse&lt;Void&gt;&gt; handleGenericException(Exception ex) &#123;
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(ApiResponse.error(&quot;服务器内部错误&quot;));
+    &#125;
+&#125;</code></pre></div></figure>
 
-<h3 id="6-统一响应格式"><a href="#6-统一响应格式" class="headerlink" title="6. 统一响应格式"></a>6. 统一响应格式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ApiResponse</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> success;</span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime timestamp;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">success</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(<span class="literal">true</span>, <span class="string">&quot;操作成功&quot;</span>, data, LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">success</span><span class="params">(T data, String message)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(<span class="literal">true</span>, message, data, LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">error</span><span class="params">(String message)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(<span class="literal">false</span>, message, <span class="literal">null</span>, LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">error</span><span class="params">(String message, T data)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(<span class="literal">false</span>, message, data, LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-统一响应格式"><a href="#6-统一响应格式" class="headerlink" title="6. 统一响应格式"></a>6. 统一响应格式</h3><figure><div class="code-wrapper"><pre class="line-numbers language-java" data-language="java"><code class="language-java">@Data
+@AllArgsConstructor
+public class ApiResponse&lt;T&gt; &#123;
+    private boolean success;
+    private String message;
+    private T data;
+    private LocalDateTime timestamp;
+    
+    public static &lt;T&gt; ApiResponse&lt;T&gt; success(T data) &#123;
+        return new ApiResponse&lt;&gt;(true, &quot;操作成功&quot;, data, LocalDateTime.now());
+    &#125;
+    
+    public static &lt;T&gt; ApiResponse&lt;T&gt; success(T data, String message) &#123;
+        return new ApiResponse&lt;&gt;(true, message, data, LocalDateTime.now());
+    &#125;
+    
+    public static &lt;T&gt; ApiResponse&lt;T&gt; error(String message) &#123;
+        return new ApiResponse&lt;&gt;(false, message, null, LocalDateTime.now());
+    &#125;
+    
+    public static &lt;T&gt; ApiResponse&lt;T&gt; error(String message, T data) &#123;
+        return new ApiResponse&lt;&gt;(false, message, data, LocalDateTime.now());
+    &#125;
+&#125;</code></pre></div></figure>
 
-<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><h3 id="application-yml"><a href="#application-yml" class="headerlink" title="application.yml"></a>application.yml</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">demo-api</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql://localhost:3306/demo_db?useUnicode=true&amp;characterEncoding=utf8</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">your_password</span></span><br><span class="line">    <span class="attr">driver-class-name:</span> <span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">jpa:</span></span><br><span class="line">    <span class="attr">hibernate:</span></span><br><span class="line">      <span class="attr">ddl-auto:</span> <span class="string">update</span></span><br><span class="line">    <span class="attr">show-sql:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">properties:</span></span><br><span class="line">      <span class="attr">hibernate:</span></span><br><span class="line">        <span class="attr">format_sql:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">dialect:</span> <span class="string">org.hibernate.dialect.MySQL8Dialect</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">context-path:</span> <span class="string">/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">logging:</span></span><br><span class="line">  <span class="attr">level:</span></span><br><span class="line">    <span class="attr">root:</span> <span class="string">INFO</span></span><br><span class="line">    <span class="attr">com.example.demo:</span> <span class="string">DEBUG</span></span><br></pre></td></tr></table></figure>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><h3 id="application-yml"><a href="#application-yml" class="headerlink" title="application.yml"></a>application.yml</h3><figure><div class="code-wrapper"><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">spring:
+  application:
+    name: demo-api
+  
+  datasource:
+    url: jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;demo_db?useUnicode&#x3D;true&amp;characterEncoding&#x3D;utf8
+    username: root
+    password: your_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  
+server:
+  port: 8080
+  servlet:
+    context-path: &#x2F;
 
-<h2 id="API测试"><a href="#API测试" class="headerlink" title="API测试"></a>API测试</h2><h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:8080/api/users \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;username&quot;: &quot;john_doe&quot;,</span></span><br><span class="line"><span class="string">    &quot;email&quot;: &quot;john@example.com&quot;,</span></span><br><span class="line"><span class="string">    &quot;password&quot;: &quot;password123&quot;</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+logging:
+  level:
+    root: INFO
+    com.example.demo: DEBUG</code></pre></div></figure>
 
-<h3 id="获取所有用户"><a href="#获取所有用户" class="headerlink" title="获取所有用户"></a>获取所有用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET http://localhost:8080/api/users</span><br></pre></td></tr></table></figure>
+<h2 id="API测试"><a href="#API测试" class="headerlink" title="API测试"></a>API测试</h2><h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">curl -X POST http:&#x2F;&#x2F;localhost:8080&#x2F;api&#x2F;users \
+  -H &quot;Content-Type: application&#x2F;json&quot; \
+  -d &#39;&#123;
+    &quot;username&quot;: &quot;john_doe&quot;,
+    &quot;email&quot;: &quot;john@example.com&quot;,
+    &quot;password&quot;: &quot;password123&quot;
+  &#125;&#39;</code></pre></div></figure>
 
-<h3 id="获取单个用户"><a href="#获取单个用户" class="headerlink" title="获取单个用户"></a>获取单个用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET http://localhost:8080/api/users/1</span><br></pre></td></tr></table></figure>
+<h3 id="获取所有用户"><a href="#获取所有用户" class="headerlink" title="获取所有用户"></a>获取所有用户</h3><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">curl -X GET http:&#x2F;&#x2F;localhost:8080&#x2F;api&#x2F;users</code></pre></div></figure>
 
-<h3 id="更新用户"><a href="#更新用户" class="headerlink" title="更新用户"></a>更新用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT http://localhost:8080/api/users/1 \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;email&quot;: &quot;newemail@example.com&quot;</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="获取单个用户"><a href="#获取单个用户" class="headerlink" title="获取单个用户"></a>获取单个用户</h3><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">curl -X GET http:&#x2F;&#x2F;localhost:8080&#x2F;api&#x2F;users&#x2F;1</code></pre></div></figure>
 
-<h3 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X DELETE http://localhost:8080/api/users/1</span><br></pre></td></tr></table></figure>
+<h3 id="更新用户"><a href="#更新用户" class="headerlink" title="更新用户"></a>更新用户</h3><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">curl -X PUT http:&#x2F;&#x2F;localhost:8080&#x2F;api&#x2F;users&#x2F;1 \
+  -H &quot;Content-Type: application&#x2F;json&quot; \
+  -d &#39;&#123;
+    &quot;email&quot;: &quot;newemail@example.com&quot;
+  &#125;&#39;</code></pre></div></figure>
+
+<h3 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h3><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">curl -X DELETE http:&#x2F;&#x2F;localhost:8080&#x2F;api&#x2F;users&#x2F;1</code></pre></div></figure>
 
 <h2 id="项目亮点"><a href="#项目亮点" class="headerlink" title="项目亮点"></a>项目亮点</h2><ol>
 <li><strong>分层架构清晰</strong>：Controller、Service、Repository职责明确</li>
@@ -590,6 +837,9 @@
 
 
 
+  
+
+
 
   
 
@@ -769,6 +1019,12 @@
   });
 </script>
 
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

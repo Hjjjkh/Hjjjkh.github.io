@@ -64,6 +64,8 @@
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
@@ -80,6 +82,11 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -379,7 +386,78 @@
 <li><strong>时间复杂度有保证</strong>：<code>O(V * E²)</code>，其中 <code>V</code> 是顶点数，<code>E</code> 是边数。</li>
 <li><strong>稳定性好</strong>：不会出现 DFS 可能导致的性能问题。</li>
 </ul>
-<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque, defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bfs_find_path</span>(<span class="params">graph, source, sink, parent</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用 BFS 在残余网络中寻找增广路&quot;&quot;&quot;</span></span><br><span class="line">    visited = &#123;source&#125;</span><br><span class="line">    queue = deque([source])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> queue:</span><br><span class="line">        u = queue.popleft()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> graph[u]:</span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">not</span> <span class="keyword">in</span> visited <span class="keyword">and</span> graph[u][v] &gt; <span class="number">0</span>:</span><br><span class="line">                visited.add(v)</span><br><span class="line">                queue.append(v)</span><br><span class="line">                parent[v] = u</span><br><span class="line">                <span class="keyword">if</span> v == sink:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">edmonds_karp</span>(<span class="params">graph, source, sink</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Edmonds-Karp 算法求解最大流</span></span><br><span class="line"><span class="string">    graph: 邻接矩阵表示的容量图 &#123;u: &#123;v: capacity&#125;&#125;</span></span><br><span class="line"><span class="string">    source: 源点</span></span><br><span class="line"><span class="string">    sink: 汇点</span></span><br><span class="line"><span class="string">    返回: 最大流值</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 深拷贝图，作为残余网络</span></span><br><span class="line">    residual_graph = defaultdict(<span class="keyword">lambda</span>: defaultdict(<span class="built_in">int</span>))</span><br><span class="line">    <span class="keyword">for</span> u <span class="keyword">in</span> graph:</span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> graph[u]:</span><br><span class="line">            residual_graph[u][v] = graph[u][v]</span><br><span class="line">    </span><br><span class="line">    parent = &#123;&#125;</span><br><span class="line">    max_flow = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 不断寻找增广路</span></span><br><span class="line">    <span class="keyword">while</span> bfs_find_path(residual_graph, source, sink, parent):</span><br><span class="line">        <span class="comment"># 找到瓶颈容量</span></span><br><span class="line">        path_flow = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        s = sink</span><br><span class="line">        <span class="keyword">while</span> s != source:</span><br><span class="line">            path_flow = <span class="built_in">min</span>(path_flow, residual_graph[parent[s]][s])</span><br><span class="line">            s = parent[s]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 更新残余网络</span></span><br><span class="line">        v = sink</span><br><span class="line">        <span class="keyword">while</span> v != source:</span><br><span class="line">            u = parent[v]</span><br><span class="line">            residual_graph[u][v] -= path_flow</span><br><span class="line">            residual_graph[v][u] += path_flow</span><br><span class="line">            v = parent[v]</span><br><span class="line">        </span><br><span class="line">        max_flow += path_flow</span><br><span class="line">        parent = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> max_flow</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line"><span class="comment"># 构建流网络</span></span><br><span class="line">graph = defaultdict(<span class="keyword">lambda</span>: defaultdict(<span class="built_in">int</span>))</span><br><span class="line">graph[<span class="string">&#x27;S&#x27;</span>][<span class="string">&#x27;A&#x27;</span>] = <span class="number">10</span></span><br><span class="line">graph[<span class="string">&#x27;S&#x27;</span>][<span class="string">&#x27;B&#x27;</span>] = <span class="number">5</span></span><br><span class="line">graph[<span class="string">&#x27;A&#x27;</span>][<span class="string">&#x27;B&#x27;</span>] = <span class="number">15</span></span><br><span class="line">graph[<span class="string">&#x27;A&#x27;</span>][<span class="string">&#x27;T&#x27;</span>] = <span class="number">10</span></span><br><span class="line">graph[<span class="string">&#x27;B&#x27;</span>][<span class="string">&#x27;T&#x27;</span>] = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">max_flow_value = edmonds_karp(graph, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;最大流: <span class="subst">&#123;max_flow_value&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># 最大流: 15</span></span><br></pre></td></tr></table></figure>
+<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">from collections import deque, defaultdict
+
+def bfs_find_path(graph, source, sink, parent):
+    &quot;&quot;&quot;使用 BFS 在残余网络中寻找增广路&quot;&quot;&quot;
+    visited &#x3D; &#123;source&#125;
+    queue &#x3D; deque([source])
+    
+    while queue:
+        u &#x3D; queue.popleft()
+        
+        for v in graph[u]:
+            if v not in visited and graph[u][v] &gt; 0:
+                visited.add(v)
+                queue.append(v)
+                parent[v] &#x3D; u
+                if v &#x3D;&#x3D; sink:
+                    return True
+    return False
+
+def edmonds_karp(graph, source, sink):
+    &quot;&quot;&quot;
+    Edmonds-Karp 算法求解最大流
+    graph: 邻接矩阵表示的容量图 &#123;u: &#123;v: capacity&#125;&#125;
+    source: 源点
+    sink: 汇点
+    返回: 最大流值
+    &quot;&quot;&quot;
+    # 深拷贝图，作为残余网络
+    residual_graph &#x3D; defaultdict(lambda: defaultdict(int))
+    for u in graph:
+        for v in graph[u]:
+            residual_graph[u][v] &#x3D; graph[u][v]
+    
+    parent &#x3D; &#123;&#125;
+    max_flow &#x3D; 0
+    
+    # 不断寻找增广路
+    while bfs_find_path(residual_graph, source, sink, parent):
+        # 找到瓶颈容量
+        path_flow &#x3D; float(&#39;inf&#39;)
+        s &#x3D; sink
+        while s !&#x3D; source:
+            path_flow &#x3D; min(path_flow, residual_graph[parent[s]][s])
+            s &#x3D; parent[s]
+        
+        # 更新残余网络
+        v &#x3D; sink
+        while v !&#x3D; source:
+            u &#x3D; parent[v]
+            residual_graph[u][v] -&#x3D; path_flow
+            residual_graph[v][u] +&#x3D; path_flow
+            v &#x3D; parent[v]
+        
+        max_flow +&#x3D; path_flow
+        parent &#x3D; &#123;&#125;
+    
+    return max_flow
+
+# --- 案例测试 ---
+# 构建流网络
+graph &#x3D; defaultdict(lambda: defaultdict(int))
+graph[&#39;S&#39;][&#39;A&#39;] &#x3D; 10
+graph[&#39;S&#39;][&#39;B&#39;] &#x3D; 5
+graph[&#39;A&#39;][&#39;B&#39;] &#x3D; 15
+graph[&#39;A&#39;][&#39;T&#39;] &#x3D; 10
+graph[&#39;B&#39;][&#39;T&#39;] &#x3D; 10
+
+max_flow_value &#x3D; edmonds_karp(graph, &#39;S&#39;, &#39;T&#39;)
+print(f&quot;最大流: &#123;max_flow_value&#125;&quot;)
+
+# 输出:
+# 最大流: 15</code></pre></div></figure>
 
 <h2 id="最大流最小割定理"><a href="#最大流最小割定理" class="headerlink" title="最大流最小割定理"></a>最大流最小割定理</h2><p>网络流理论中最重要的定理之一是**最大流最小割定理 (Max-Flow Min-Cut Theorem)**。</p>
 <h3 id="割-Cut"><a href="#割-Cut" class="headerlink" title="割 (Cut)"></a>割 (Cut)</h3><p>一个<strong>割</strong>是将图的顶点集 <code>V</code> 分成两个不相交的子集 <code>S</code> 和 <code>T</code>，使得源点 <code>s</code> 在 <code>S</code> 中，汇点 <code>t</code> 在 <code>T</code> 中。</p>
@@ -659,6 +737,9 @@
 
 
 
+  
+
+
 
   
 
@@ -838,6 +919,12 @@
   });
 </script>
 
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
