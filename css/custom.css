@@ -1,507 +1,152 @@
 /* ========================================
-   全局字体与排版优化 - 舒适阅读方案
+   评论区优化样式
+   Comment Section Optimization Styles
    ======================================== */
 
-/* ========================================
-   1. 正文内容优化
-   ======================================== */
-
-/* 文章正文 - 提升行高和段落间距 */
-.markdown-body {
-  font-size: 1rem;
-  line-height: 1.75 !important; /* 从 1.6 提升到 1.75，更舒适 */
+/* 评论区容器优化 */
+.giscus, .giscus-frame {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
-/* 段落间距优化 */
-.markdown-body p {
-  margin-bottom: 1.5em;
-  margin-top: 0.5em;
-}
-
-/* 标题行高优化 */
-.markdown-body h1 {
-  font-size: 2.2em;
-  line-height: 1.3;
-  margin-top: 1.5em;
-  margin-bottom: 0.8em;
-}
-
-.markdown-body h2 {
-  font-size: 1.8em;
-  line-height: 1.35;
-  margin-top: 1.4em;
-  margin-bottom: 0.7em;
-}
-
-.markdown-body h3 {
-  font-size: 1.5em;
-  line-height: 1.4;
-  margin-top: 1.3em;
-  margin-bottom: 0.6em;
-}
-
-.markdown-body h4 {
-  font-size: 1.25em;
-  line-height: 1.45;
-  margin-top: 1.2em;
-  margin-bottom: 0.5em;
-}
-
-.markdown-body h5 {
-  font-size: 1.1em;
-  line-height: 1.5;
-}
-
-.markdown-body h6 {
-  font-size: 1em;
-  line-height: 1.5;
-}
-
-/* 列表行高优化 */
-.markdown-body ul,
-.markdown-body ol {
-  line-height: 1.8;
-  margin-bottom: 1.5em;
-}
-
-.markdown-body li {
-  margin-bottom: 0.5em;
-}
-
-/* 引用块优化 */
-.markdown-body blockquote {
-  line-height: 1.7;
-  padding: 1em 1.2em;
-  margin: 1.5em 0;
-  font-size: 0.98em;
-}
-
-/* 代码块优化 */
-.markdown-body pre {
-  line-height: 1.6;
-  padding: 1.2em;
-  margin: 1.5em 0;
-}
-
-.markdown-body code {
-  font-size: 0.9em;
-  padding: 0.2em 0.4em;
-}
-
-/* ========================================
-   2. 文章列表页优化
-   ======================================== */
-
-/* 文章列表标题 - 增大字号，更醒目 */
-.index-card .index-card-title {
-  font-size: 1.5rem !important; /* 从默认的 1.25rem 提升 */
-  line-height: 1.4;
-  margin-bottom: 0.8rem;
-  font-weight: 600;
-}
-
-/* 文章摘要 - 优化行高 */
-.index-card .index-card-body {
-  font-size: 1rem;
-  line-height: 1.7;
-  margin-bottom: 1rem;
-}
-
-/* 文章元信息（日期、分类、标签等）- 稍微增大 */
-.index-card .index-card-meta {
-  font-size: 0.9rem; /* 从 0.85rem 提升 */
-  line-height: 1.6;
-}
-
-.index-card .index-card-meta i {
-  margin-right: 0.3rem;
-}
-
-/* 文章列表卡片间距 */
-.index-card {
-  margin-bottom: 2rem;
-  padding: 1.8rem;
-}
-
-/* ========================================
-   3. 首页 Banner 优化
-   ======================================== */
-
-/* 主标题 - 增大字号，增强视觉冲击力 */
-.index-header .index-title {
-  font-size: 3.5rem !important; /* 从默认的 3rem 提升 */
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-/* 副标题 - 优化字号和行高 */
-.index-header .index-subtitle {
-  font-size: 1.3rem !important; /* 从默认的 1.1rem 提升 */
-  line-height: 1.6;
-  margin-top: 1rem;
-}
-
-/* 响应式：移动端适配 */
-@media (max-width: 768px) {
-  .index-header .index-title {
-    font-size: 2.5rem !important;
-  }
-  
-  .index-header .index-subtitle {
-    font-size: 1.1rem !important;
-  }
-}
-
-/* ========================================
-   4. 文章页面标题优化
-   ======================================== */
-
-/* 文章标题 - 增大字号 */
-.post-title {
-  font-size: 2.5rem !important; /* 从默认的 2rem 提升 */
-  line-height: 1.3;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-}
-
-/* 文章元信息 */
-.post-meta {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-/* 响应式：移动端适配 */
-@media (max-width: 768px) {
-  .post-title {
-    font-size: 1.8rem !important;
-  }
-}
-
-/* ========================================
-   5. 归档页面优化
-   ======================================== */
-
-/* 归档页面文章标题 */
-.archive-item-title {
-  font-size: 1.2rem !important;
-  line-height: 1.5;
-  font-weight: 500;
-}
-
-/* 归档页面日期 */
-.archive-item-date {
-  font-size: 0.9rem;
-}
-
-/* ========================================
-   6. 分类和标签页面优化
-   ======================================== */
-
-/* 分类/标签标题 */
-.category-title,
-.tag-title {
-  font-size: 1.3rem !important;
-  line-height: 1.4;
-  margin-bottom: 1rem;
-}
-
-/* 分类/标签列表项 */
-.category-list-item,
-.tag-list-item {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 0.8rem;
-}
-
-/* ========================================
-   7. 导航栏优化
-   ======================================== */
-
-/* 导航栏链接 - 稍微增大 */
-.navbar-nav .nav-link {
-  font-size: 1rem !important; /* 从 0.95rem 提升 */
-  font-weight: 500;
-}
-
-/* 导航栏下拉菜单 */
-.navbar-nav .dropdown-menu .dropdown-item {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  padding: 0.6rem 1.2rem;
-}
-
-/* ========================================
-   8. 侧边栏/目录优化
-   ======================================== */
-
-/* 目录标题 */
-.toc-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.8rem;
-}
-
-/* 目录链接 */
-.toc-link {
-  font-size: 0.95rem;
-  line-height: 1.8;
-}
-
-/* ========================================
-   9. 页脚优化
-   ======================================== */
-
-/* 页脚文字 */
-.footer {
-  font-size: 0.9rem;
-  line-height: 1.7;
-}
-
-/* ========================================
-   10. 按钮和链接优化
-   ======================================== */
-
-/* 按钮文字 */
-.btn {
-  font-size: 0.95rem;
-  padding: 0.6rem 1.2rem;
-  font-weight: 500;
-}
-
-/* 阅读更多按钮 */
-.index-card .index-card-more {
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-/* ========================================
-   11. 响应式优化 - 移动端
-   ======================================== */
-
-@media (max-width: 768px) {
-  /* 移动端正文字体保持 17px，但调整行高 */
-  .markdown-body {
-    line-height: 1.8 !important; /* 移动端稍微增加行高 */
-  }
-  
-  /* 移动端文章列表标题 */
-  .index-card .index-card-title {
-    font-size: 1.3rem !important;
-  }
-  
-  /* 移动端文章列表卡片间距 */
-  .index-card {
-    padding: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-}
-
-/* ========================================
-   12. 特殊元素优化
-   ======================================== */
-
-/* 表格优化 */
-.markdown-body table {
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.markdown-body th {
-  font-weight: 600;
-  padding: 0.8rem;
-}
-
-.markdown-body td {
-  padding: 0.8rem;
-}
-
-/* 注释/脚注优化 */
-.footnotes {
-  font-size: 0.9rem;
-  line-height: 1.7;
+/* 评论区整体样式 */
+#comments {
   margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line-color);
+  padding: 2rem 0;
+  border-top: 1px solid var(--board-bg-color, #e8e8e8);
 }
 
-/* 图片说明文字 */
-.markdown-body figcaption {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  text-align: center;
-  margin-top: 0.5rem;
-  color: var(--sec-text-color);
-}
-
-/* ========================================
-   13. 中英文混排优化
-   ======================================== */
-
-/* 为中英文混排添加更好的间距 */
-.markdown-body {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ========================================
-   14. 打印样式优化
-   ======================================== */
-
-@media print {
-  .markdown-body {
-    font-size: 12pt;
-    line-height: 1.6;
-  }
-  
-  .markdown-body h1 {
-    font-size: 20pt;
-  }
-  
-  .markdown-body h2 {
-    font-size: 16pt;
-  }
-  
-  .markdown-body h3 {
-    font-size: 14pt;
-  }
-}
-
-/* ========================================
-   15. 深色模式适配
-   ======================================== */
-
-/* 深色模式下保持相同的字体大小和行高 */
-[data-user-color-scheme='dark'] .markdown-body,
-.dark-mode .markdown-body {
-  line-height: 1.75 !important;
-}
-
-/* ========================================
-   优化完成！
-   所有区域的字体大小和排版都已优化
-   ======================================== */
-
-/* ========================================
-   16. Giscus 评论区美化
-   ======================================== */
-
-/* 评论区容器美化 */
-#comments {
-  margin-top: 3rem !important;
-  padding: 2.5rem 2rem !important;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  position: relative;
-  overflow: hidden;
-}
-
-/* 深色模式下的评论区容器 */
-[data-user-color-scheme='dark'] #comments {
-  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* 评论区标题美化 */
-#comments::before {
-  content: "💬 评论交流";
-  display: block;
-  font-size: 1.8rem;
-  font-weight: 700;
+/* 评论标题样式 */
+#comments h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #2d3748;
-  text-align: center;
-  letter-spacing: 2px;
+  color: var(--post-heading-color, #1a202c);
 }
 
-[data-user-color-scheme='dark'] #comments::before {
-  color: #e2e8f0;
-}
-
-/* Giscus iframe 容器美化 */
-.giscus,
+/* 评论框优化 - 圆角和阴影 */
 .giscus-frame {
-  margin-top: 1.5rem !important;
-  border-radius: 12px !important;
-  overflow: hidden;
-  background: white;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
-  transition: all 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
 }
 
-[data-user-color-scheme='dark'] .giscus,
-[data-user-color-scheme='dark'] .giscus-frame {
-  background: #1a202c;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* 悬停效果 */
-.giscus:hover,
 .giscus-frame:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-[data-user-color-scheme='dark'] .giscus:hover,
-[data-user-color-scheme='dark'] .giscus-frame:hover {
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3) !important;
-}
-
-/* 评论区加载动画 */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-#comments {
-  animation: fadeInUp 0.8s ease-out;
-}
-
-/* 装饰性背景元素 */
-#comments::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.giscus,
-.giscus-frame {
-  position: relative;
-  z-index: 1;
-}
-
-/* 移动端评论区优化 */
+/* 响应式优化 */
 @media (max-width: 768px) {
   #comments {
-    margin-top: 2rem !important;
-    padding: 1.5rem 1rem !important;
-    border-radius: 12px;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
   }
   
-  #comments::before {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    letter-spacing: 1px;
-  }
-  
-  .giscus,
-  .giscus-frame {
-    margin-top: 1rem !important;
+  #comments h2 {
+    font-size: 1.3rem;
   }
 }
 
+/* 暗色模式适配 */
+[data-user-color-scheme="dark"] #comments {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-user-color-scheme="dark"] #comments h2 {
+  color: var(--post-heading-color-dark, #c4c6c9);
+}
+
+[data-user-color-scheme="dark"] .giscus-frame {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-user-color-scheme="dark"] .giscus-frame:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* 加载动画优化 */
+.giscus-loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--sec-text-color, #718096);
+}
+
+/* 评论数量显示优化 */
+.giscus-comment-count {
+  font-size: 0.9rem;
+  color: var(--sec-text-color, #718096);
+  margin-left: 0.5rem;
+}
+
+/* ========================================
+   代码高亮优化（确保与 Prism 兼容）
+   Code Highlight Optimization
+   ======================================== */
+
+/* 代码块整体样式 */
+pre[class*="language-"] {
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 行内代码样式 */
+code:not([class*="language-"]) {
+  background-color: rgba(27, 31, 35, 0.05);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  color: #e83e8c;
+}
+
+[data-user-color-scheme="dark"] code:not([class*="language-"]) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ff7b72;
+}
+
+/* 代码块行号优化 */
+.line-numbers .line-numbers-rows {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-user-color-scheme="dark"] .line-numbers .line-numbers-rows {
+  border-right-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 复制按钮优化 */
+.code-copy-btn {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+pre:hover .code-copy-btn {
+  opacity: 1;
+}
+
+/* ========================================
+   页面整体优化
+   Overall Page Optimization
+   ======================================== */
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 链接悬停效果优化 */
+a {
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+/* 图片加载优化 */
+img {
+  transition: opacity 0.3s ease;
+}
+
+img[loading="lazy"] {
+  opacity: 0;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
