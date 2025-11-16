@@ -52,6 +52,11 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
+<!-- Manually injected PrismJS for code highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
   
   <title>Part 4.7：二分图匹配——月老的红线与匈牙利算法 - 李国强的技术博客</title>
 
@@ -62,8 +67,6 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
@@ -81,11 +84,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -110,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -284,7 +281,7 @@
         
         
         
-          15 分钟
+          14 分钟
         
       </span>
     
@@ -372,61 +369,7 @@
 <li>在 <code>dfs(u, visited, match)</code> 函数中：<br>a.  遍历 <code>u</code> 的所有邻居 <code>v</code>（<code>v</code> 在 <code>V</code> 集合中）。<br>b.  如果 <code>v</code> 在本次 DFS 中未被访问：<br>i.  标记 <code>v</code> 为已访问。<br>ii. 如果 <code>v</code> 是一个未匹配点，或者我们可以为 <code>v</code> 当前的匹配点 <code>match[v]</code> 找到一条新的增广路（递归调用 <code>dfs(match[v], ...)</code>），那么我们就找到了一条从 <code>u</code> 开始的增广路。<br>iii. 更新匹配：<code>match[v] = u</code>，并返回 <code>True</code>。<br>c.  如果遍历完所有邻居都无法找到增广路，返回 <code>False</code>。</li>
 <li>统计 <code>match</code> 数组中有效的匹配数量，即为最大匹配数。</li>
 </ol>
-<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">from collections import defaultdict
-
-def hungarian_dfs(u, graph, match, visited):
-    &quot;&quot;&quot;为顶点 u 寻找增广路&quot;&quot;&quot;
-    for v in graph[u]:
-        if not visited[v]:
-            visited[v] &#x3D; True
-            # 如果 v 未被匹配，或者 v 的匹配对象可以找到新的匹配
-            if v not in match or hungarian_dfs(match[v], graph, match, visited):
-                match[v] &#x3D; u
-                return True
-    return False
-
-def maximum_bipartite_matching(graph, u_nodes, v_nodes):
-    &quot;&quot;&quot;
-    匈牙利算法求解二分图最大匹配
-    graph: 邻接表，只包含从 U 到 V 的边
-    u_nodes: U 集合的节点列表
-    v_nodes: V 集合的节点列表
-    返回: 最大匹配数和匹配对
-    &quot;&quot;&quot;
-    match &#x3D; &#123;&#125;  # 存储 V -&gt; U 的匹配关系
-    max_matching &#x3D; 0
-    
-    for u in u_nodes:
-        # 每次为新的 u 寻找增广路时，都要重置 visited 数组
-        visited &#x3D; &#123;v: False for v in v_nodes&#125;
-        if hungarian_dfs(u, graph, match, visited):
-            max_matching +&#x3D; 1
-            
-    # 整理匹配对 (U, V)
-    matching_pairs &#x3D; [(v, u) for u, v in match.items()]
-    return max_matching, matching_pairs
-
-# --- 案例测试 ---
-# U 集合: 男生, V 集合: 女生
-u_nodes &#x3D; [&#39;M1&#39;, &#39;M2&#39;, &#39;M3&#39;, &#39;M4&#39;]
-v_nodes &#x3D; [&#39;F1&#39;, &#39;F2&#39;, &#39;F3&#39;, &#39;F4&#39;]
-
-# 表示好感关系 (U -&gt; V)
-graph &#x3D; &#123;
-    &#39;M1&#39;: [&#39;F1&#39;, &#39;F2&#39;],
-    &#39;M2&#39;: [&#39;F1&#39;],
-    &#39;M3&#39;: [&#39;F2&#39;, &#39;F3&#39;],
-    &#39;M4&#39;: [&#39;F4&#39;]
-&#125;
-
-max_count, pairs &#x3D; maximum_bipartite_matching(graph, u_nodes, v_nodes)
-
-print(f&quot;最大匹配数: &#123;max_count&#125;&quot;)
-print(f&quot;匹配结果: &#123;sorted(pairs)&#125;&quot;)
-
-# 输出:
-# 最大匹配数: 4
-# 匹配结果: [(&#39;F1&#39;, &#39;M2&#39;), (&#39;F2&#39;, &#39;M1&#39;), (&#39;F3&#39;, &#39;M3&#39;), (&#39;F4&#39;, &#39;M4&#39;)]</code></pre></div></figure>
+<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hungarian_dfs</span>(<span class="params">u, graph, <span class="keyword">match</span>, visited</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;为顶点 u 寻找增广路&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> graph[u]:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> visited[v]:</span><br><span class="line">            visited[v] = <span class="literal">True</span></span><br><span class="line">            <span class="comment"># 如果 v 未被匹配，或者 v 的匹配对象可以找到新的匹配</span></span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">not</span> <span class="keyword">in</span> <span class="keyword">match</span> <span class="keyword">or</span> hungarian_dfs(<span class="keyword">match</span>[v], graph, <span class="keyword">match</span>, visited):</span><br><span class="line">                <span class="keyword">match</span>[v] = u</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">maximum_bipartite_matching</span>(<span class="params">graph, u_nodes, v_nodes</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    匈牙利算法求解二分图最大匹配</span></span><br><span class="line"><span class="string">    graph: 邻接表，只包含从 U 到 V 的边</span></span><br><span class="line"><span class="string">    u_nodes: U 集合的节点列表</span></span><br><span class="line"><span class="string">    v_nodes: V 集合的节点列表</span></span><br><span class="line"><span class="string">    返回: 最大匹配数和匹配对</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">match</span> = &#123;&#125;  <span class="comment"># 存储 V -&gt; U 的匹配关系</span></span><br><span class="line">    max_matching = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> u <span class="keyword">in</span> u_nodes:</span><br><span class="line">        <span class="comment"># 每次为新的 u 寻找增广路时，都要重置 visited 数组</span></span><br><span class="line">        visited = &#123;v: <span class="literal">False</span> <span class="keyword">for</span> v <span class="keyword">in</span> v_nodes&#125;</span><br><span class="line">        <span class="keyword">if</span> hungarian_dfs(u, graph, <span class="keyword">match</span>, visited):</span><br><span class="line">            max_matching += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">    <span class="comment"># 整理匹配对 (U, V)</span></span><br><span class="line">    matching_pairs = [(v, u) <span class="keyword">for</span> u, v <span class="keyword">in</span> <span class="keyword">match</span>.items()]</span><br><span class="line">    <span class="keyword">return</span> max_matching, matching_pairs</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line"><span class="comment"># U 集合: 男生, V 集合: 女生</span></span><br><span class="line">u_nodes = [<span class="string">&#x27;M1&#x27;</span>, <span class="string">&#x27;M2&#x27;</span>, <span class="string">&#x27;M3&#x27;</span>, <span class="string">&#x27;M4&#x27;</span>]</span><br><span class="line">v_nodes = [<span class="string">&#x27;F1&#x27;</span>, <span class="string">&#x27;F2&#x27;</span>, <span class="string">&#x27;F3&#x27;</span>, <span class="string">&#x27;F4&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 表示好感关系 (U -&gt; V)</span></span><br><span class="line">graph = &#123;</span><br><span class="line">    <span class="string">&#x27;M1&#x27;</span>: [<span class="string">&#x27;F1&#x27;</span>, <span class="string">&#x27;F2&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;M2&#x27;</span>: [<span class="string">&#x27;F1&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;M3&#x27;</span>: [<span class="string">&#x27;F2&#x27;</span>, <span class="string">&#x27;F3&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;M4&#x27;</span>: [<span class="string">&#x27;F4&#x27;</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">max_count, pairs = maximum_bipartite_matching(graph, u_nodes, v_nodes)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;最大匹配数: <span class="subst">&#123;max_count&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;匹配结果: <span class="subst">&#123;<span class="built_in">sorted</span>(pairs)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># 最大匹配数: 4</span></span><br><span class="line"><span class="comment"># 匹配结果: [(&#x27;F1&#x27;, &#x27;M2&#x27;), (&#x27;F2&#x27;, &#x27;M1&#x27;), (&#x27;F3&#x27;, &#x27;M3&#x27;), (&#x27;F4&#x27;, &#x27;M4&#x27;)]</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><ul>
 <li><strong>时间复杂度</strong>: <code>O(V * E)</code>，其中 <code>V</code> 是顶点总数，<code>E</code> 是边数。外层循环遍历 <code>U</code> 中的每个顶点（最多 <code>V</code> 次），内层 DFS 最多访问所有边一次（<code>E</code> 次）。</li>
@@ -654,9 +597,6 @@ print(f&quot;匹配结果: &#123;sorted(pairs)&#125;&quot;)
 
 
 
-  
-
-
 
   
 
@@ -836,12 +776,6 @@ print(f&quot;匹配结果: &#123;sorted(pairs)&#125;&quot;)
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

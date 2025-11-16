@@ -52,6 +52,11 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
+<!-- Manually injected PrismJS for code highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
   
   <title>Part 8.1：工程算法优化——从理论到实践的最后一公里 - 李国强的技术博客</title>
 
@@ -62,8 +67,6 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
@@ -81,11 +84,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -110,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -420,27 +417,12 @@
 <li>**空间局部性 (Spatial Locality)**：如果一个数据被访问，那么它附近的数据也很可能被访问。</li>
 </ul>
 <p><strong>案例：数组遍历 vs. 链表遍历</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 数组遍历 (缓存友好)
-arr &#x3D; [i for i in range(1000000)]
-total &#x3D; sum(arr)  # 顺序访问，空间局部性极好
-
-# 链表遍历 (缓存不友好)
-class Node:
-    def __init__(self, val):
-        self.val &#x3D; val
-        self.next &#x3D; None
-
-# 链表节点在内存中是随机分布的，访问下一个节点时，缓存命中率低</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数组遍历 (缓存友好)</span></span><br><span class="line">arr = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000000</span>)]</span><br><span class="line">total = <span class="built_in">sum</span>(arr)  <span class="comment"># 顺序访问，空间局部性极好</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 链表遍历 (缓存不友好)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, val</span>):</span><br><span class="line">        <span class="variable language_">self</span>.val = val</span><br><span class="line">        <span class="variable language_">self</span>.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 链表节点在内存中是随机分布的，访问下一个节点时，缓存命中率低</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>结论</strong>：即使两者的时间复杂度都是 <code>O(n)</code>，数组遍历通常比链表遍历快 5-10 倍，因为数组的内存是连续的，缓存命中率高。</p>
 <h3 id="3-优化技巧：数据结构的布局"><a href="#3-优化技巧：数据结构的布局" class="headerlink" title="3. 优化技巧：数据结构的布局"></a>3. 优化技巧：数据结构的布局</h3><p><strong>案例：结构体数组 vs. 数组结构体</strong></p>
 <p>假设你要处理 100 万个学生的成绩，每个学生有姓名和分数。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 方式 1：结构体数组 (Array of Structs, AoS)
-students &#x3D; [&#123;&quot;name&quot;: &quot;Alice&quot;, &quot;score&quot;: 90&#125;, ...]
-
-# 方式 2：数组结构体 (Struct of Arrays, SoA)
-names &#x3D; [&quot;Alice&quot;, ...]
-scores &#x3D; [90, ...]</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方式 1：结构体数组 (Array of Structs, AoS)</span></span><br><span class="line">students = [&#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;Alice&quot;</span>, <span class="string">&quot;score&quot;</span>: <span class="number">90</span>&#125;, ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式 2：数组结构体 (Struct of Arrays, SoA)</span></span><br><span class="line">names = [<span class="string">&quot;Alice&quot;</span>, ...]</span><br><span class="line">scores = [<span class="number">90</span>, ...]</span><br></pre></td></tr></table></figure>
 
 <p>如果你只需要计算平均分，方式 2 的性能会远超方式 1，因为 <code>scores</code> 数组在内存中是连续的，缓存命中率高。而方式 1 中，访问每个分数时，都会把不需要的 <code>name</code> 字段也加载进缓存，浪费了宝贵的缓存空间。</p>
 <h2 id="Part-B：算法选择的权衡"><a href="#Part-B：算法选择的权衡" class="headerlink" title="Part B：算法选择的权衡"></a>Part B：算法选择的权衡</h2><h3 id="1-常数因子的重要性"><a href="#1-常数因子的重要性" class="headerlink" title="1. 常数因子的重要性"></a>1. 常数因子的重要性</h3><p>大 O 符号隐藏了常数因子，但在实践中，常数因子至关重要。</p>
@@ -452,13 +434,7 @@ scores &#x3D; [90, ...]</code></pre></div></figure>
 <p>在实践中，对于大多数数据，快速排序比归并排序快 2-3 倍，这就是为什么 C++ 的 <code>std::sort</code> 和 Python 的 <code>sorted</code> 都基于快速排序的变体（Introsort）。</p>
 <h3 id="2-小数据量的特殊处理"><a href="#2-小数据量的特殊处理" class="headerlink" title="2. 小数据量的特殊处理"></a>2. 小数据量的特殊处理</h3><p>对于小数据量（如 <code>n &lt; 10</code>），插入排序这种 <code>O(n²)</code> 的算法反而比 <code>O(n log n)</code> 的算法更快，因为它的常数因子极小，且没有递归开销。</p>
 <p><strong>优化技巧</strong>：混合排序算法。在快速排序或归并排序的递归过程中，当子数组规模小于某个阈值（如 10）时，切换到插入排序。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def optimized_quick_sort(arr, low, high):
-    if high - low &lt; 10:
-        insertion_sort(arr, low, high)  # 小数组用插入排序
-    elif low &lt; high:
-        pivot &#x3D; partition(arr, low, high)
-        optimized_quick_sort(arr, low, pivot - 1)
-        optimized_quick_sort(arr, pivot + 1, high)</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">optimized_quick_sort</span>(<span class="params">arr, low, high</span>):</span><br><span class="line">    <span class="keyword">if</span> high - low &lt; <span class="number">10</span>:</span><br><span class="line">        insertion_sort(arr, low, high)  <span class="comment"># 小数组用插入排序</span></span><br><span class="line">    <span class="keyword">elif</span> low &lt; high:</span><br><span class="line">        pivot = partition(arr, low, high)</span><br><span class="line">        optimized_quick_sort(arr, low, pivot - <span class="number">1</span>)</span><br><span class="line">        optimized_quick_sort(arr, pivot + <span class="number">1</span>, high)</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-数据特征驱动的算法选择"><a href="#3-数据特征驱动的算法选择" class="headerlink" title="3. 数据特征驱动的算法选择"></a>3. 数据特征驱动的算法选择</h3><ul>
 <li><strong>数据几乎有序</strong>：使用插入排序或 Timsort（Python 的默认排序），它们对部分有序数据的性能接近 <code>O(n)</code>。</li>
@@ -466,18 +442,7 @@ scores &#x3D; [90, ...]</code></pre></div></figure>
 <li><strong>需要稳定性</strong>：使用归并排序或 Timsort。</li>
 </ul>
 <h2 id="Part-C：空间换时间-vs-时间换空间"><a href="#Part-C：空间换时间-vs-时间换空间" class="headerlink" title="Part C：空间换时间 vs. 时间换空间"></a>Part C：空间换时间 vs. 时间换空间</h2><h3 id="1-空间换时间：记忆化与预计算"><a href="#1-空间换时间：记忆化与预计算" class="headerlink" title="1. 空间换时间：记忆化与预计算"></a>1. 空间换时间：记忆化与预计算</h3><p><strong>案例：斐波那契数列</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 朴素递归：O(2^n) 时间，O(n) 空间（递归栈）
-def fib(n):
-    if n &lt;&#x3D; 1: return n
-    return fib(n-1) + fib(n-2)
-
-# 记忆化：O(n) 时间，O(n) 空间
-memo &#x3D; &#123;&#125;
-def fib_memo(n):
-    if n in memo: return memo[n]
-    if n &lt;&#x3D; 1: return n
-    memo[n] &#x3D; fib_memo(n-1) + fib_memo(n-2)
-    return memo[n]</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 朴素递归：O(2^n) 时间，O(n) 空间（递归栈）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>: <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fib(n-<span class="number">1</span>) + fib(n-<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 记忆化：O(n) 时间，O(n) 空间</span></span><br><span class="line">memo = &#123;&#125;</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> memo: <span class="keyword">return</span> memo[n]</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>: <span class="keyword">return</span> n</span><br><span class="line">    memo[n] = fib_memo(n-<span class="number">1</span>) + fib_memo(n-<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> memo[n]</span><br></pre></td></tr></table></figure>
 
 <p>通过牺牲 <code>O(n)</code> 的空间，我们将时间复杂度从指数级降到了线性。</p>
 <h3 id="2-时间换空间：流式算法"><a href="#2-时间换空间：流式算法" class="headerlink" title="2. 时间换空间：流式算法"></a>2. 时间换空间：流式算法</h3><p>在处理海量数据时，内存可能不足以存储所有中间结果。这时需要”时间换空间”。</p>
@@ -507,25 +472,11 @@ def fib_memo(n):
 <li>使用<strong>线程池</strong>，避免频繁创建销毁线程。</li>
 </ul>
 <h2 id="Part-E：那些教科书不会告诉你的技巧"><a href="#Part-E：那些教科书不会告诉你的技巧" class="headerlink" title="Part E：那些教科书不会告诉你的技巧"></a>Part E：那些教科书不会告诉你的技巧</h2><h3 id="1-位运算的魔法"><a href="#1-位运算的魔法" class="headerlink" title="1. 位运算的魔法"></a>1. 位运算的魔法</h3><p>位运算比算术运算快得多。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 判断奇偶
-if n % 2 &#x3D;&#x3D; 0:  # 慢
-if n &amp; 1 &#x3D;&#x3D; 0:  # 快
-
-# 乘以 2 的幂
-n * 4  # 慢
-n &lt;&lt; 2  # 快
-
-# 取模（当除数是 2 的幂时）
-n % 16  # 慢
-n &amp; 15  # 快</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断奇偶</span></span><br><span class="line"><span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">0</span>:  <span class="comment"># 慢</span></span><br><span class="line"><span class="keyword">if</span> n &amp; <span class="number">1</span> == <span class="number">0</span>:  <span class="comment"># 快</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 乘以 2 的幂</span></span><br><span class="line">n * <span class="number">4</span>  <span class="comment"># 慢</span></span><br><span class="line">n &lt;&lt; <span class="number">2</span>  <span class="comment"># 快</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取模（当除数是 2 的幂时）</span></span><br><span class="line">n % <span class="number">16</span>  <span class="comment"># 慢</span></span><br><span class="line">n &amp; <span class="number">15</span>  <span class="comment"># 快</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-避免分支预测失败"><a href="#2-避免分支预测失败" class="headerlink" title="2. 避免分支预测失败"></a>2. 避免分支预测失败</h3><p>现代 CPU 有分支预测器。如果分支难以预测（如随机数据的 <code>if-else</code>），性能会下降。</p>
 <p><strong>优化技巧</strong>：将条件语句转换为无分支的算术运算。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 有分支
-result &#x3D; a if condition else b
-
-# 无分支（在某些情况下更快）
-result &#x3D; condition * a + (1 - condition) * b</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有分支</span></span><br><span class="line">result = a <span class="keyword">if</span> condition <span class="keyword">else</span> b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 无分支（在某些情况下更快）</span></span><br><span class="line">result = condition * a + (<span class="number">1</span> - condition) * b</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-编译器优化"><a href="#3-编译器优化" class="headerlink" title="3. 编译器优化"></a>3. 编译器优化</h3><ul>
 <li>使用 <code>-O2</code> 或 <code>-O3</code> 编译选项。</li>
@@ -673,8 +624,8 @@ result &#x3D; condition * a + (1 - condition) * b</code></pre></div></figure>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/a948c7b3" title="Part 6.7：AC 自动机——多模式匹配的终极武器">
-                        <span class="hidden-mobile">Part 6.7：AC 自动机——多模式匹配的终极武器</span>
+                      <a href="/posts/ba38e901" title="Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞">
+                        <span class="hidden-mobile">Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -756,9 +707,6 @@ result &#x3D; condition * a + (1 - condition) * b</code></pre></div></figure>
 
 
 
-
-
-  
 
 
 
@@ -940,12 +888,6 @@ result &#x3D; condition * a + (1 - condition) * b</code></pre></div></figure>
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

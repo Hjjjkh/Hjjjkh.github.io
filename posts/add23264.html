@@ -54,6 +54,11 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
+<!-- Manually injected PrismJS for code highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
   
   <title>Part 2.5：二叉树遍历：理解树的四种核心视角 - 李国强的技术博客</title>
 
@@ -64,8 +69,6 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
@@ -83,11 +86,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -112,8 +110,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -364,13 +361,7 @@
 <p><strong>直觉</strong>：像一个领导视察工作，先到办公室（根节点）报到，然后去左边的部门视察，最后去右边的部门视察。对于每个子部门，也遵循同样的视察流程。</p>
 <h4 id="动画式案例"><a href="#动画式案例" class="headerlink" title="动画式案例"></a>动画式案例</h4><blockquote>
 <p><strong>图示</strong>：一棵二叉树</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">    F
-   &#x2F; \
-  B   G
- &#x2F; \   \
-A   D   I
-   &#x2F; \   &#x2F;
-  C   E H</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    F</span><br><span class="line">   / \</span><br><span class="line">  B   G</span><br><span class="line"> / \   \</span><br><span class="line">A   D   I</span><br><span class="line">   / \   /</span><br><span class="line">  C   E H</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p><strong>遍历过程</strong>：</p>
 <ol>
@@ -390,12 +381,7 @@ A   D   I
 </ol>
 <p><strong>最终序列</strong>：<code>F, B, A, D, C, E, G, I, H</code></p>
 <h4 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h4><p><strong>递归实现 (Recursive)</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def preorder_recursive(root):
-    if not root:
-        return
-    print(root.value)      # 1. 访问根节点
-    preorder_recursive(root.left)  # 2. 遍历左子树
-    preorder_recursive(root.right) # 3. 遍历右子树</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">preorder_recursive</span>(<span class="params">root</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(root.value)      <span class="comment"># 1. 访问根节点</span></span><br><span class="line">    preorder_recursive(root.left)  <span class="comment"># 2. 遍历左子树</span></span><br><span class="line">    preorder_recursive(root.right) <span class="comment"># 3. 遍历右子树</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>迭代实现 (Iterative) - 使用栈</strong></p>
 <p>思路：用一个栈来模拟递归的过程。</p>
@@ -404,17 +390,7 @@ A   D   I
 <li>当栈不为空时，弹出一个节点并访问它。</li>
 <li><strong>先将右子节点入栈，再将左子节点入栈</strong>。（因为栈是 LIFO，后入的左子节点会先被访问）</li>
 </ol>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def preorder_iterative(root):
-    if not root:
-        return
-    stack &#x3D; [root]
-    while stack:
-        node &#x3D; stack.pop()
-        print(node.value)
-        if node.right:
-            stack.append(node.right)
-        if node.left:
-            stack.append(node.left)</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">preorder_iterative</span>(<span class="params">root</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(node.value)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            stack.append(node.right)</span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            stack.append(node.left)</span><br></pre></td></tr></table></figure>
 
 <p><strong>应用场景</strong>：常用于<strong>创建树的副本</strong>或<strong>序列化树</strong>，因为先访问根节点可以方便地确定结构。</p>
 <h3 id="2-中序遍历-In-order-L-R-R"><a href="#2-中序遍历-In-order-L-R-R" class="headerlink" title="2. 中序遍历 (In-order): L -&gt; R -&gt; R"></a>2. 中序遍历 (In-order): L -&gt; R -&gt; R</h3><p><strong>口诀</strong>：左、根、右。</p>
@@ -431,12 +407,7 @@ A   D   I
 </ol>
 <p><strong>最终序列</strong>：<code>A, B, C, D, E, F, G, H, I</code></p>
 <h4 id="实现方式-1"><a href="#实现方式-1" class="headerlink" title="实现方式"></a>实现方式</h4><p><strong>递归实现</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def inorder_recursive(root):
-    if not root:
-        return
-    inorder_recursive(root.left)   # 1. 遍历左子树
-    print(root.value)       # 2. 访问根节点
-    inorder_recursive(root.right)  # 3. 遍历右子树</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">inorder_recursive</span>(<span class="params">root</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder_recursive(root.left)   <span class="comment"># 1. 遍历左子树</span></span><br><span class="line">    <span class="built_in">print</span>(root.value)       <span class="comment"># 2. 访问根节点</span></span><br><span class="line">    inorder_recursive(root.right)  <span class="comment"># 3. 遍历右子树</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>迭代实现 - 使用栈</strong></p>
 <p>思路：</p>
@@ -445,16 +416,7 @@ A   D   I
 <li>当无法再往左时，弹出一个节点并访问它。</li>
 <li>将当前节点转向其右子节点，重复步骤 1。</li>
 </ol>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def inorder_iterative(root):
-    stack &#x3D; []
-    current &#x3D; root
-    while current or stack:
-        while current:
-            stack.append(current)
-            current &#x3D; current.left
-        current &#x3D; stack.pop()
-        print(current.value)
-        current &#x3D; current.right</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">inorder_iterative</span>(<span class="params">root</span>):</span><br><span class="line">    stack = []</span><br><span class="line">    current = root</span><br><span class="line">    <span class="keyword">while</span> current <span class="keyword">or</span> stack:</span><br><span class="line">        <span class="keyword">while</span> current:</span><br><span class="line">            stack.append(current)</span><br><span class="line">            current = current.left</span><br><span class="line">        current = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(current.value)</span><br><span class="line">        current = current.right</span><br></pre></td></tr></table></figure>
 
 <p><strong>应用场景</strong>：在<strong>二叉搜索树 (BST)</strong> 中，中序遍历可以得到一个<strong>有序</strong>的节点序列。这是它最重要的特性。</p>
 <h3 id="3-后序遍历-Post-order-L-R-R"><a href="#3-后序遍历-Post-order-L-R-R" class="headerlink" title="3. 后序遍历 (Post-order): L -&gt; R -&gt; R"></a>3. 后序遍历 (Post-order): L -&gt; R -&gt; R</h3><p><strong>口诀</strong>：左、右、根。</p>
@@ -473,30 +435,11 @@ A   D   I
 </ol>
 <p><strong>最终序列</strong>：<code>A, C, E, D, B, H, I, G, F</code></p>
 <h4 id="实现方式-2"><a href="#实现方式-2" class="headerlink" title="实现方式"></a>实现方式</h4><p><strong>递归实现</strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def postorder_recursive(root):
-    if not root:
-        return
-    postorder_recursive(root.left)  # 1. 遍历左子树
-    postorder_recursive(root.right) # 2. 遍历右子树
-    print(root.value)       # 3. 访问根节点</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">postorder_recursive</span>(<span class="params">root</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    postorder_recursive(root.left)  <span class="comment"># 1. 遍历左子树</span></span><br><span class="line">    postorder_recursive(root.right) <span class="comment"># 2. 遍历右子树</span></span><br><span class="line">    <span class="built_in">print</span>(root.value)       <span class="comment"># 3. 访问根节点</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>迭代实现 - 使用栈</strong></p>
 <p>后序的迭代实现最复杂。一个巧妙的方法是<strong>改造前序遍历</strong>。<br>前序是“根-左-右”，我们可以实现一个“根-右-左”的遍历，然后将结果<strong>反转</strong>，就得到了“左-右-根”的后序遍历。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def postorder_iterative(root):
-    if not root:
-        return
-    stack &#x3D; [root]
-    result &#x3D; []
-    while stack:
-        node &#x3D; stack.pop()
-        result.append(node.value)
-        # 与前序相反，先压入左子节点
-        if node.left:
-            stack.append(node.left)
-        if node.right:
-            stack.append(node.right)
-    # 反转结果
-    print(result[::-1])</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">postorder_iterative</span>(<span class="params">root</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        result.append(node.value)</span><br><span class="line">        <span class="comment"># 与前序相反，先压入左子节点</span></span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            stack.append(node.left)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            stack.append(node.right)</span><br><span class="line">    <span class="comment"># 反转结果</span></span><br><span class="line">    <span class="built_in">print</span>(result[::-<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
 
 <p><strong>应用场景</strong>：常用于<strong>计算</strong>或<strong>销毁</strong>。例如，计算一个目录的总大小（必须先计算完所有子目录的大小），或者释放一棵树的内存（必须先释放子节点才能释放父节点）。</p>
 <h2 id="Part-B：广度优先搜索-BFS-的唯一视角"><a href="#Part-B：广度优先搜索-BFS-的唯一视角" class="headerlink" title="Part B：广度优先搜索 (BFS) 的唯一视角"></a>Part B：广度优先搜索 (BFS) 的唯一视角</h2><h3 id="4-层序遍历-Level-order"><a href="#4-层序遍历-Level-order" class="headerlink" title="4. 层序遍历 (Level-order)"></a>4. 层序遍历 (Level-order)</h3><p><strong>口诀</strong>：从上到下，从左到右。</p>
@@ -516,19 +459,7 @@ A   D   I
 <li>当队列不为空时，出队一个节点并访问它。</li>
 <li>将其所有子节点（先左后右）依次入队。</li>
 </ol>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">from collections import deque
-
-def levelorder(root):
-    if not root:
-        return
-    queue &#x3D; deque([root])
-    while queue:
-        node &#x3D; queue.popleft() # 从队列头部取出
-        print(node.value)
-        if node.left:
-            queue.append(node.left)
-        if node.right:
-            queue.append(node.right)</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">levelorder</span>(<span class="params">root</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    queue = deque([root])</span><br><span class="line">    <span class="keyword">while</span> queue:</span><br><span class="line">        node = queue.popleft() <span class="comment"># 从队列头部取出</span></span><br><span class="line">        <span class="built_in">print</span>(node.value)</span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            queue.append(node.left)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            queue.append(node.right)</span><br></pre></td></tr></table></figure>
 
 <p><strong>应用场景</strong>：非常适合解决<strong>最短路径</strong>问题（在无权图中），或者需要按层级处理的问题（如找到树的最小深度）。</p>
 <h2 id="Part-C：从遍历到解题"><a href="#Part-C：从遍历到解题" class="headerlink" title="Part C：从遍历到解题"></a>Part C：从遍历到解题</h2><p>掌握了遍历，我们就可以解决很多问题。例如，一个经典的面试题：</p>
@@ -810,9 +741,6 @@ def levelorder(root):
 
 
 
-  
-
-
 
   
 
@@ -992,12 +920,6 @@ def levelorder(root):
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

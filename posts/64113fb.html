@@ -51,6 +51,11 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
+<!-- Manually injected PrismJS for code highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
   
   <title>Part 6.6：Trie (字典树)——高效的前缀查询神器 - 李国强的技术博客</title>
 
@@ -61,8 +66,6 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
@@ -80,11 +83,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -109,8 +107,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -272,7 +269,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          1.6k 字
         
       </span>
     
@@ -354,69 +351,12 @@
 </ol>
 <blockquote>
 <p><strong>图示：插入 <code>&quot;sea&quot;</code>, <code>&quot;sell&quot;</code>, <code>&quot;see&quot;</code></strong></p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">     (root)
-       | &#39;s&#39;
-       (s)
-      &#x2F;   \
-  &#39;e&#39; &#x2F;     \ &#39;o&#39;
-    (se)      (so)
-   &#x2F;    \
-&#39;a&#39;&#x2F;      \&#39;e&#39;
-(sea)*      (see)*
-  | &#39;l&#39;
-  (sel)
-    | &#39;l&#39;
-    (sell)*</code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">     (root)</span><br><span class="line">       | &#x27;s&#x27;</span><br><span class="line">       (s)</span><br><span class="line">      /   \</span><br><span class="line">  &#x27;e&#x27; /     \ &#x27;o&#x27;</span><br><span class="line">    (se)      (so)</span><br><span class="line">   /    \</span><br><span class="line">&#x27;a&#x27;/      \&#x27;e&#x27;</span><br><span class="line">(sea)*      (see)*</span><br><span class="line">  | &#x27;l&#x27;</span><br><span class="line">  (sel)</span><br><span class="line">    | &#x27;l&#x27;</span><br><span class="line">    (sell)*</span><br></pre></td></tr></table></figure>
 <p><code>*</code> 标记表示一个单词的结尾。</p>
 </blockquote>
 <p>从图中可以看出，<code>&quot;sea&quot;</code>, <code>&quot;sell&quot;</code>, <code>&quot;see&quot;</code> 复用了共同的前缀 <code>&quot;se&quot;</code>，从而节省了存储空间，并为快速前缀查询打下了基础。</p>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面我们用 Python 来实现一个 Trie。每个节点 <code>TrieNode</code> 包含两个核心部分：<code>children</code>（子节点）和一个 <code>is_end_of_word</code>（单词结束标记）。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">class TrieNode:
-    def __init__(self):
-        # 使用字典存储子节点，键是字符，值是 TrieNode
-        self.children &#x3D; &#123;&#125;
-        self.is_end_of_word &#x3D; False
-
-class Trie:
-    def __init__(self):
-        &quot;&quot;&quot;初始化一个空的 Trie 树&quot;&quot;&quot;
-        self.root &#x3D; TrieNode()
-
-    def insert(self, word: str) -&gt; None:
-        &quot;&quot;&quot;向 Trie 树中插入一个单词&quot;&quot;&quot;
-        node &#x3D; self.root
-        for char in word:
-            if char not in node.children:
-                node.children[char] &#x3D; TrieNode()
-            node &#x3D; node.children[char]
-        node.is_end_of_word &#x3D; True
-
-    def search(self, word: str) -&gt; bool:
-        &quot;&quot;&quot;查找一个单词是否在 Trie 树中&quot;&quot;&quot;
-        node &#x3D; self.root
-        for char in word:
-            if char not in node.children:
-                return False
-            node &#x3D; node.children[char]
-        return node.is_end_of_word
-
-    def starts_with(self, prefix: str) -&gt; bool:
-        &quot;&quot;&quot;查找 Trie 树中是否存在以指定前缀开头的单词&quot;&quot;&quot;
-        node &#x3D; self.root
-        for char in prefix:
-            if char not in node.children:
-                return False
-            node &#x3D; node.children[char]
-        return True
-
-# --- 案例测试 ---
-trie &#x3D; Trie()
-trie.insert(&quot;apple&quot;)
-print(f&quot;Search &#39;apple&#39;: &#123;trie.search(&#39;apple&#39;)&#125;&quot;)     # True
-print(f&quot;Search &#39;app&#39;: &#123;trie.search(&#39;app&#39;)&#125;&quot;)         # False
-print(f&quot;Starts with &#39;app&#39;: &#123;trie.starts_with(&#39;app&#39;)&#125;&quot;) # True
-trie.insert(&quot;app&quot;)
-print(f&quot;Search &#39;app&#39; after insert: &#123;trie.search(&#39;app&#39;)&#125;&quot;) # True</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TrieNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 使用字典存储子节点，键是字符，值是 TrieNode</span></span><br><span class="line">        <span class="variable language_">self</span>.children = &#123;&#125;</span><br><span class="line">        <span class="variable language_">self</span>.is_end_of_word = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;初始化一个空的 Trie 树&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.root = TrieNode()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;向 Trie 树中插入一个单词&quot;&quot;&quot;</span></span><br><span class="line">        node = <span class="variable language_">self</span>.root</span><br><span class="line">        <span class="keyword">for</span> char <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">if</span> char <span class="keyword">not</span> <span class="keyword">in</span> node.children:</span><br><span class="line">                node.children[char] = TrieNode()</span><br><span class="line">            node = node.children[char]</span><br><span class="line">        node.is_end_of_word = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;查找一个单词是否在 Trie 树中&quot;&quot;&quot;</span></span><br><span class="line">        node = <span class="variable language_">self</span>.root</span><br><span class="line">        <span class="keyword">for</span> char <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">if</span> char <span class="keyword">not</span> <span class="keyword">in</span> node.children:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            node = node.children[char]</span><br><span class="line">        <span class="keyword">return</span> node.is_end_of_word</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">starts_with</span>(<span class="params">self, prefix: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;查找 Trie 树中是否存在以指定前缀开头的单词&quot;&quot;&quot;</span></span><br><span class="line">        node = <span class="variable language_">self</span>.root</span><br><span class="line">        <span class="keyword">for</span> char <span class="keyword">in</span> prefix:</span><br><span class="line">            <span class="keyword">if</span> char <span class="keyword">not</span> <span class="keyword">in</span> node.children:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            node = node.children[char]</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">trie = Trie()</span><br><span class="line">trie.insert(<span class="string">&quot;apple&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Search &#x27;apple&#x27;: <span class="subst">&#123;trie.search(<span class="string">&#x27;apple&#x27;</span>)&#125;</span>&quot;</span>)     <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Search &#x27;app&#x27;: <span class="subst">&#123;trie.search(<span class="string">&#x27;app&#x27;</span>)&#125;</span>&quot;</span>)         <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Starts with &#x27;app&#x27;: <span class="subst">&#123;trie.starts_with(<span class="string">&#x27;app&#x27;</span>)&#125;</span>&quot;</span>) <span class="comment"># True</span></span><br><span class="line">trie.insert(<span class="string">&quot;app&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Search &#x27;app&#x27; after insert: <span class="subst">&#123;trie.search(<span class="string">&#x27;app&#x27;</span>)&#125;</span>&quot;</span>) <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>假设 <code>L</code> 是我们操作的字符串（单词或前缀）的长度。</p>
 <ul>
@@ -565,9 +505,9 @@ print(f&quot;Search &#39;app&#39; after insert: &#123;trie.search(&#39;app&#39;)
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/ba38e901" title="Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞">
+                      <a href="/posts/a948c7b3" title="Part 6.7：AC 自动机——多模式匹配的终极武器">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞</span>
+                        <span class="hidden-mobile">Part 6.7：AC 自动机——多模式匹配的终极武器</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -658,9 +598,6 @@ print(f&quot;Search &#39;app&#39; after insert: &#123;trie.search(&#39;app&#39;)
 
 
 
-
-
-  
 
 
 
@@ -842,12 +779,6 @@ print(f&quot;Search &#39;app&#39; after insert: &#123;trie.search(&#39;app&#39;)
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 

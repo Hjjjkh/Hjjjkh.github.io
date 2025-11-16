@@ -45,6 +45,11 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
+<!-- Manually injected PrismJS for code highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
   
   <title>李国强的技术博客</title>
 
@@ -66,11 +71,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -95,8 +95,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -651,82 +650,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/posts/e91315ae" target="_self">
-          Part 3.2：快速排序：分治思想的经典应用
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/e91315ae" target="_self">
-        <div>
-          快速排序是实际应用中最常用的排序算法之一。本文将深入剖析其分治思想、分区（Partition）过程、三种优化策略（随机化、三路快排、尾递归），并讲解其平均 O(n log n)、最坏 O(n²) 的复杂度特性。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 22:30" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-3%EF%BC%9A%E6%8E%92%E5%BA%8F%E4%B8%8E%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 3：排序与查找算法</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
-            
-              <a href="/tags/%E5%88%86%E6%B2%BB/">#分治</a>
-            
-              <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">#快速排序</a>
-            
-              <a href="/tags/Quick-Sort/">#Quick Sort</a>
-            
-              <a href="/tags/O-n-log-n/">#O(n log n)</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/posts/f4a573d" target="_self">
           Part 5.6：状态压缩 DP
         </a>
@@ -792,6 +715,82 @@
               <a href="/tags/%E6%97%85%E8%A1%8C%E5%95%86%E9%97%AE%E9%A2%98/">#旅行商问题</a>
             
               <a href="/tags/TSP/">#TSP</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/e91315ae" target="_self">
+          Part 3.2：快速排序：分治思想的经典应用
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/e91315ae" target="_self">
+        <div>
+          快速排序是实际应用中最常用的排序算法之一。本文将深入剖析其分治思想、分区（Partition）过程、三种优化策略（随机化、三路快排、尾递归），并讲解其平均 O(n log n)、最坏 O(n²) 的复杂度特性。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-15 22:30" pubdate>
+              2025-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-3%EF%BC%9A%E6%8E%92%E5%BA%8F%E4%B8%8E%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 3：排序与查找算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            
+              <a href="/tags/%E5%88%86%E6%B2%BB/">#分治</a>
+            
+              <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">#快速排序</a>
+            
+              <a href="/tags/Quick-Sort/">#Quick Sort</a>
+            
+              <a href="/tags/O-n-log-n/">#O(n log n)</a>
             
           </div>
         

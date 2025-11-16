@@ -51,6 +51,11 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
+<!-- Manually injected PrismJS for code highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" id="prism-dark-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" id="prism-light-manual" media="none">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
   
   <title>Part 2.3：哈希表：O(1) 查找的黑魔法 - 李国强的技术博客</title>
 
@@ -61,8 +66,6 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
@@ -80,11 +83,6 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -109,8 +107,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -448,61 +445,10 @@
 </li>
 </ol>
 <p><strong>删除问题</strong>：开放寻址法在删除元素时不能直接置空，否则会截断探测路径。通常使用一个特殊的“已删除”标记。</p>
-<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：基于链地址法的哈希表"><a href="#伪代码：基于链地址法的哈希表" class="headerlink" title="伪代码：基于链地址法的哈希表"></a>伪代码：基于链地址法的哈希表</h3><figure><div class="code-wrapper"><pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">class HashTable:
-  constructor(size):
-    this.size &#x3D; size
-    this.table &#x3D; new Array(size) &#x2F;&#x2F; 每个元素是一个链表
-
-  function _hash(key):
-    return hash(key) % this.size
-
-  function put(key, value):
-    index &#x3D; this._hash(key)
-    if this.table[index] is NULL:
-      this.table[index] &#x3D; new LinkedList()
-    
-    &#x2F;&#x2F; 检查 key 是否已存在，若存在则更新
-    for node in this.table[index]:
-      if node.key &#x3D;&#x3D; key:
-        node.value &#x3D; value
-        return
-    
-    &#x2F;&#x2F; 若不存在，则添加到链表
-    this.table[index].append(new Node(key, value))
-
-  function get(key):
-    index &#x3D; this._hash(key)
-    if this.table[index] is NOT NULL:
-      for node in this.table[index]:
-        if node.key &#x3D;&#x3D; key:
-          return node.value
-    return NULL &#x2F;&#x2F; 未找到</code></pre></div></figure>
+<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：基于链地址法的哈希表"><a href="#伪代码：基于链地址法的哈希表" class="headerlink" title="伪代码：基于链地址法的哈希表"></a>伪代码：基于链地址法的哈希表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class HashTable:</span><br><span class="line">  constructor(size):</span><br><span class="line">    this.size = size</span><br><span class="line">    this.table = new Array(size) // 每个元素是一个链表</span><br><span class="line"></span><br><span class="line">  function _hash(key):</span><br><span class="line">    return hash(key) % this.size</span><br><span class="line"></span><br><span class="line">  function put(key, value):</span><br><span class="line">    index = this._hash(key)</span><br><span class="line">    if this.table[index] is NULL:</span><br><span class="line">      this.table[index] = new LinkedList()</span><br><span class="line">    </span><br><span class="line">    // 检查 key 是否已存在，若存在则更新</span><br><span class="line">    for node in this.table[index]:</span><br><span class="line">      if node.key == key:</span><br><span class="line">        node.value = value</span><br><span class="line">        return</span><br><span class="line">    </span><br><span class="line">    // 若不存在，则添加到链表</span><br><span class="line">    this.table[index].append(new Node(key, value))</span><br><span class="line"></span><br><span class="line">  function get(key):</span><br><span class="line">    index = this._hash(key)</span><br><span class="line">    if this.table[index] is NOT NULL:</span><br><span class="line">      for node in this.table[index]:</span><br><span class="line">        if node.key == key:</span><br><span class="line">          return node.value</span><br><span class="line">    return NULL // 未找到</span><br></pre></td></tr></table></figure>
 
 <h3 id="Python-实现：dict-和-set"><a href="#Python-实现：dict-和-set" class="headerlink" title="Python 实现：dict 和 set"></a>Python 实现：<code>dict</code> 和 <code>set</code></h3><p>在 Python 中，我们几乎不需要自己实现哈希表，因为内置的 <code>dict</code> (字典) 和 <code>set</code> (集合) 就是基于高度优化的哈希表实现的。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python"># 使用 dict
-student_scores &#x3D; &#123;&#125;
-
-# Put 操作: O(1) on average
-student_scores[&quot;John&quot;] &#x3D; 95
-student_scores[&quot;Lisa&quot;] &#x3D; 98
-
-# Get 操作: O(1) on average
-score &#x3D; student_scores.get(&quot;John&quot;)
-print(f&quot;John&#39;s score is &#123;score&#125;&quot;) # 输出: 95
-
-# Delete 操作: O(1) on average
-del student_scores[&quot;Lisa&quot;]
-
-# 使用 set
-visited &#x3D; set()
-
-# Add 操作: O(1) on average
-visited.add(10)
-visited.add(20)
-
-# &#39;in&#39; 操作 (查找): O(1) on average
-if 10 in visited:
-    print(&quot;10 has been visited.&quot;)</code></pre></div></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 dict</span></span><br><span class="line">student_scores = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Put 操作: O(1) on average</span></span><br><span class="line">student_scores[<span class="string">&quot;John&quot;</span>] = <span class="number">95</span></span><br><span class="line">student_scores[<span class="string">&quot;Lisa&quot;</span>] = <span class="number">98</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Get 操作: O(1) on average</span></span><br><span class="line">score = student_scores.get(<span class="string">&quot;John&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;John&#x27;s score is <span class="subst">&#123;score&#125;</span>&quot;</span>) <span class="comment"># 输出: 95</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Delete 操作: O(1) on average</span></span><br><span class="line"><span class="keyword">del</span> student_scores[<span class="string">&quot;Lisa&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 set</span></span><br><span class="line">visited = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add 操作: O(1) on average</span></span><br><span class="line">visited.add(<span class="number">10</span>)</span><br><span class="line">visited.add(<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># &#x27;in&#x27; 操作 (查找): O(1) on average</span></span><br><span class="line"><span class="keyword">if</span> <span class="number">10</span> <span class="keyword">in</span> visited:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;10 has been visited.&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><ul>
 <li><strong>平均情况</strong>：<code>O(1)</code>。假设哈希函数足够均匀，每个桶里的链表长度是一个很小的常数。</li>
@@ -763,9 +709,6 @@ if 10 in visited:
 
 
 
-  
-
-
 
   
 
@@ -945,12 +888,6 @@ if 10 in visited:
   });
 </script>
 
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
