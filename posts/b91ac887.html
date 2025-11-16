@@ -51,39 +51,6 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
-
   
   <title>Part 6.3：Z-Algorithm - 李国强的技术博客</title>
 
@@ -135,7 +102,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -412,7 +380,12 @@
 <p>当我们计算 <code>Z[i]</code> 时，如果 <code>i</code> 恰好落在了当前的 Z-box <code>[L, R]</code> 内部，我们就<strong>不需要从头开始比较</strong>了！因为我们已经知道 <code>S[L...R]</code> 等于 <code>S[0...R-L]</code>。</p>
 <blockquote>
 <p><strong>图示：Z-box</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">S: [p p p p p p p p p p p p] ...</span><br><span class="line">   |&lt;- Z[L] -&gt;|</span><br><span class="line">   [L         R]</span><br><span class="line"></span><br><span class="line">S[L...R] == S[0...R-L]</span><br></pre></td></tr></table></figure>
+<pre><code>S: [p p p p p p p p p p p p] ...
+   |&lt;- Z[L] -&gt;|
+   [L         R]
+
+S[L...R] == S[0...R-L]
+</code></pre>
 </blockquote>
 <p>既然 <code>S[i]</code> 在 <code>[L, R]</code> 内，那么 <code>S[i]</code> 对应的在 <code>S</code> 前缀中的字符是 <code>S[i-L]</code>。这意味着，以 <code>S[i]</code> 开头的子串，其行为在一定程度上会和以 <code>S[i-L]</code> 开头的子串相似。</p>
 <p>我们已经计算过 <code>Z[i-L]</code> 了！这就是信息复用的关键。</p>
@@ -431,7 +404,14 @@
 <p><strong><code>Z[i] = Z[k]</code></strong></p>
 <blockquote>
 <p><strong>图示：Case 2a</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">S: [p p p p p p p p p p p p] ...</span><br><span class="line">   |&lt;- Z[k] -&gt;|</span><br><span class="line">   [0 k         R-L]</span><br><span class="line"></span><br><span class="line">S: ... [p p p p p p p p p p p p] ...</span><br><span class="line">         |&lt;- Z[k] -&gt;|</span><br><span class="line">         [L i         R]</span><br></pre></td></tr></table></figure>
+<pre><code>S: [p p p p p p p p p p p p] ...
+   |&lt;- Z[k] -&gt;|
+   [0 k         R-L]
+
+S: ... [p p p p p p p p p p p p] ...
+         |&lt;- Z[k] -&gt;|
+         [L i         R]
+</code></pre>
 </blockquote>
 <p><strong>Case 2b: <code>Z[k] &gt;= R - i + 1</code></strong></p>
 <p><code>Z[k]</code> 的长度大于或等于 <code>i</code> 到 <code>R</code> 的剩余长度。这意味着以 <code>S[i]</code> 开头的 LCP 至少能延伸到 <code>R</code>。它<strong>可能还会更长</strong>！</p>
@@ -449,8 +429,46 @@
 <li><strong>判断位置</strong>：<br>a.  如果 <code>i &gt; R</code> (Case 1)：<br>i.  <code>L=i, R=i</code>。<br>ii. <code>while R &lt; n and S[R] == S[R-L]</code>，<code>R++</code>。<br>iii. <code>Z[i] = R - L</code>。<br>iv. <code>R--</code> (因为 <code>while</code> 循环多加了一次)。<br>b.  如果 <code>i &lt;= R</code> (Case 2)：<br>i.  <code>k = i - L</code>。<br>ii. 如果 <code>Z[k] &lt; R - i + 1</code> (Case 2a)，则 <code>Z[i] = Z[k]</code>。<br>iii. 否则 (Case 2b)，<code>L=i</code>，然后从 <code>R+1</code> 开始朴素比较，更新 <code>R</code>，计算 <code>Z[i]</code>。</li>
 <li><strong>返回</strong> <code>Z</code> 数组。</li>
 </ol>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_z_array</span>(<span class="params">s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[<span class="built_in">int</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;计算字符串 s 的 Z-array&quot;&quot;&quot;</span></span><br><span class="line">    n = <span class="built_in">len</span>(s)</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    </span><br><span class="line">    z = [<span class="number">0</span>] * n</span><br><span class="line">    l, r = <span class="number">0</span>, <span class="number">0</span>  <span class="comment"># Z-box 的左右边界</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        <span class="comment"># Case 1: i 在 Z-box 外</span></span><br><span class="line">        <span class="keyword">if</span> i &gt; r:</span><br><span class="line">            l, r = i, i</span><br><span class="line">            <span class="keyword">while</span> r &lt; n <span class="keyword">and</span> s[r] == s[r - l]:</span><br><span class="line">                r += <span class="number">1</span></span><br><span class="line">            z[i] = r - l</span><br><span class="line">            r -= <span class="number">1</span></span><br><span class="line">        <span class="comment"># Case 2: i 在 Z-box 内</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            k = i - l</span><br><span class="line">            <span class="comment"># Case 2a: Z[k] 不会超出 Z-box</span></span><br><span class="line">            <span class="keyword">if</span> z[k] &lt; r - i + <span class="number">1</span>:</span><br><span class="line">                z[i] = z[k]</span><br><span class="line">            <span class="comment"># Case 2b: Z[k] 可能会超出 Z-box</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l = i</span><br><span class="line">                <span class="keyword">while</span> r &lt; n <span class="keyword">and</span> s[r] == s[r - l]:</span><br><span class="line">                    r += <span class="number">1</span></span><br><span class="line">                z[i] = r - l</span><br><span class="line">                r -= <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">    <span class="keyword">return</span> z</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">s = <span class="string">&quot;aabcaabxaaaz&quot;</span></span><br><span class="line">z_values = compute_z_array(s)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;String: <span class="subst">&#123;s&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Z-array: <span class="subst">&#123;z_values&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 预期: [0, 1, 0, 0, 3, 1, 0, 0, 3, 1, 1, 0]</span></span><br></pre></td></tr></table></figure>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">compute_z_array</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> list<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""计算字符串 s 的 Z-array"""</span>
+    n <span class="token operator">=</span> len<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    
+    z <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n
+    l<span class="token punctuation">,</span> r <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>  <span class="token comment" spellcheck="true"># Z-box 的左右边界</span>
 
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># Case 1: i 在 Z-box 外</span>
+        <span class="token keyword">if</span> i <span class="token operator">></span> r<span class="token punctuation">:</span>
+            l<span class="token punctuation">,</span> r <span class="token operator">=</span> i<span class="token punctuation">,</span> i
+            <span class="token keyword">while</span> r <span class="token operator">&lt;</span> n <span class="token operator">and</span> s<span class="token punctuation">[</span>r<span class="token punctuation">]</span> <span class="token operator">==</span> s<span class="token punctuation">[</span>r <span class="token operator">-</span> l<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                r <span class="token operator">+=</span> <span class="token number">1</span>
+            z<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> r <span class="token operator">-</span> l
+            r <span class="token operator">-=</span> <span class="token number">1</span>
+        <span class="token comment" spellcheck="true"># Case 2: i 在 Z-box 内</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            k <span class="token operator">=</span> i <span class="token operator">-</span> l
+            <span class="token comment" spellcheck="true"># Case 2a: Z[k] 不会超出 Z-box</span>
+            <span class="token keyword">if</span> z<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">&lt;</span> r <span class="token operator">-</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">:</span>
+                z<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> z<span class="token punctuation">[</span>k<span class="token punctuation">]</span>
+            <span class="token comment" spellcheck="true"># Case 2b: Z[k] 可能会超出 Z-box</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                l <span class="token operator">=</span> i
+                <span class="token keyword">while</span> r <span class="token operator">&lt;</span> n <span class="token operator">and</span> s<span class="token punctuation">[</span>r<span class="token punctuation">]</span> <span class="token operator">==</span> s<span class="token punctuation">[</span>r <span class="token operator">-</span> l<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                    r <span class="token operator">+=</span> <span class="token number">1</span>
+                z<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> r <span class="token operator">-</span> l
+                r <span class="token operator">-=</span> <span class="token number">1</span>
+                
+    <span class="token keyword">return</span> z
+
+<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
+s <span class="token operator">=</span> <span class="token string">"aabcaabxaaaz"</span>
+z_values <span class="token operator">=</span> compute_z_array<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"String: &amp;#123;s&amp;#125;"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Z-array: &amp;#123;z_values&amp;#125;"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 预期: [0, 1, 0, 0, 3, 1, 0, 0, 3, 1, 1, 0]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><ul>
 <li><strong>时间复杂度</strong>: <code>O(n)</code>。<ul>
 <li>外层 <code>for</code> 循环执行 <code>n-1</code> 次。</li>
@@ -469,8 +487,26 @@
 <li><strong>计算 Z-array</strong>：计算 <code>S</code> 的 Z-array。</li>
 <li><strong>查找匹配</strong>：遍历 Z-array。如果 <code>Z[i]</code> 的值等于模式串 <code>P</code> 的长度 <code>m</code>，那么就意味着从 <code>S</code> 的第 <code>i</code> 个位置开始的后缀，其与 <code>S</code> 的前缀（即 <code>P</code>）的匹配长度为 <code>m</code>。这说明我们在 <code>T</code> 中找到了一个 <code>P</code> 的匹配项。其在原始文本串 <code>T</code> 中的起始位置是 <code>i - m - 1</code>。</li>
 </ol>
-<h3 id="Python-实现-1"><a href="#Python-实现-1" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">z_search</span>(<span class="params">text, pattern</span>):</span><br><span class="line">    m = <span class="built_in">len</span>(pattern)</span><br><span class="line">    <span class="keyword">if</span> m == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    s = pattern + <span class="string">&quot;#&quot;</span> + text</span><br><span class="line">    z_array = compute_z_array(s)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>, <span class="built_in">len</span>(s)):</span><br><span class="line">        <span class="keyword">if</span> z_array[i] == m:</span><br><span class="line">            <span class="keyword">return</span> i - m - <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">text = <span class="string">&quot;ABABDABACDABABCABAB&quot;</span></span><br><span class="line">pattern = <span class="string">&quot;ABABCABAB&quot;</span></span><br><span class="line">start_index = z_search(text, pattern)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;在 text 中找到 pattern, 起始索引为: <span class="subst">&#123;start_index&#125;</span>&quot;</span>) <span class="comment"># 预期: 10</span></span><br></pre></td></tr></table></figure>
+<h3 id="Python-实现-1"><a href="#Python-实现-1" class="headerlink" title="Python 实现"></a>Python 实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">z_search</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> pattern<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    m <span class="token operator">=</span> len<span class="token punctuation">(</span>pattern<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> m <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+    
+    s <span class="token operator">=</span> pattern <span class="token operator">+</span> <span class="token string">"#"</span> <span class="token operator">+</span> text
+    z_array <span class="token operator">=</span> compute_z_array<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+    
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> z_array<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> m<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> i <span class="token operator">-</span> m <span class="token operator">-</span> <span class="token number">1</span>
+            
+    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
 
+<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
+text <span class="token operator">=</span> <span class="token string">"ABABDABACDABABCABAB"</span>
+pattern <span class="token operator">=</span> <span class="token string">"ABABCABAB"</span>
+start_index <span class="token operator">=</span> z_search<span class="token punctuation">(</span>text<span class="token punctuation">,</span> pattern<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"在 text 中找到 pattern, 起始索引为: &amp;#123;start_index&amp;#125;"</span><span class="token punctuation">)</span> # 预期<span class="token punctuation">:</span> <span class="token number">10</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Z-Algorithm 是一个强大而优美的线性时间字符串算法。它通过维护一个动态的“Z-box”，巧妙地复用了已有的匹配信息，避免了不必要的字符比较，从而实现了惊人的效率。</p>
 <h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>核心概念</strong>：Z-array <code>Z[i]</code> 存储字符串 <code>S</code> 与其后缀 <code>S[i:]</code> 的最长公共前缀长度。<br>✅ <strong>核心思想</strong>：维护一个结束位置最靠右的 Z-box <code>[L, R]</code>，利用 Z-box 内的信息来加速计算。<br>✅ <strong>两种情况</strong>：<code>i</code> 在 Z-box 外（朴素比较），<code>i</code> 在 Z-box 内（利用已知的 <code>Z[k]</code> 值）。<br>✅ <strong>复杂度</strong>：时间 <code>O(n)</code>，空间 <code>O(n)</code>。<br>✅ <strong>应用</strong>：可以非常简洁地实现在 <code>O(n+m)</code> 时间内的模式匹配。</p>
 <p>掌握了 Z-Algorithm，你不仅多了一个解决字符串问题的利器，更能深刻体会到算法设计中“信息复用”和“均摊分析”的精髓。在下一篇文章中，我们将学习另一个处理回文串的终极武器——<strong>Manacher 算法</strong>。</p>

@@ -51,39 +51,6 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
-
   
   <title>Part 2.2：栈与队列：两种特殊的线性表 - 李国强的技术博客</title>
 
@@ -135,7 +102,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -417,11 +385,52 @@
 <li><strong>Pop()</strong>: 返回 <code>arr[1]</code> (即 20), <code>top</code> 变为 <code>0</code>。数组本身可以不清空，通过 <code>top</code> 指针控制有效范围。</li>
 </ol>
 <p><strong>伪代码</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">class ArrayStack:</span><br><span class="line">  // 初始化</span><br><span class="line">  constructor(capacity):</span><br><span class="line">    this.items = new Array(capacity)</span><br><span class="line">    this.top = -1</span><br><span class="line">  </span><br><span class="line">  // 入栈</span><br><span class="line">  function push(item):</span><br><span class="line">    if top &gt;= capacity - 1: Error(&quot;Stack Overflow&quot;)</span><br><span class="line">    this.top = this.top + 1</span><br><span class="line">    this.items[this.top] = item</span><br><span class="line">    </span><br><span class="line">  // 出栈</span><br><span class="line">  function pop():</span><br><span class="line">    if isEmpty(): Error(&quot;Stack Underflow&quot;)</span><br><span class="line">    item = this.items[this.top]</span><br><span class="line">    this.top = this.top - 1</span><br><span class="line">    return item</span><br><span class="line">    </span><br><span class="line">  // 查看栈顶</span><br><span class="line">  function peek():</span><br><span class="line">    if isEmpty(): Error(&quot;Stack is empty&quot;)</span><br><span class="line">    return this.items[this.top]</span><br><span class="line">    </span><br><span class="line">  // 判空</span><br><span class="line">  function isEmpty():</span><br><span class="line">    return this.top == -1</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-pseudocode"><code class="language-pseudocode">class ArrayStack:
+  // 初始化
+  constructor(capacity):
+    this.items = new Array(capacity)
+    this.top = -1
+  
+  // 入栈
+  function push(item):
+    if top >= capacity - 1: Error("Stack Overflow")
+    this.top = this.top + 1
+    this.items[this.top] = item
+    
+  // 出栈
+  function pop():
+    if isEmpty(): Error("Stack Underflow")
+    item = this.items[this.top]
+    this.top = this.top - 1
+    return item
+    
+  // 查看栈顶
+  function peek():
+    if isEmpty(): Error("Stack is empty")
+    return this.items[this.top]
+    
+  // 判空
+  function isEmpty():
+    return this.top == -1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Python 实现</strong>：Python 的 <code>list</code> 本身就是动态数组，其 <code>append()</code> 和 <code>pop()</code> 方法天然地实现了栈的 LIFO 特性。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 Python 的 list 模拟栈</span></span><br><span class="line">stack = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 入栈</span></span><br><span class="line">stack.append(<span class="number">10</span>)</span><br><span class="line">stack.append(<span class="number">20</span>)</span><br><span class="line">stack.append(<span class="number">30</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Stack after pushes: <span class="subst">&#123;stack&#125;</span>&quot;</span>)  <span class="comment"># 输出: [10, 20, 30]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看栈顶</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Top element is: <span class="subst">&#123;stack[-<span class="number">1</span>]&#125;</span>&quot;</span>) <span class="comment"># 输出: 30</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 出栈</span></span><br><span class="line">popped_item = stack.pop()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Popped item: <span class="subst">&#123;popped_item&#125;</span>&quot;</span>) <span class="comment"># 输出: 30</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Stack after pop: <span class="subst">&#123;stack&#125;</span>&quot;</span>)   <span class="comment"># 输出: [10, 20]</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 使用 Python 的 list 模拟栈</span>
+stack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
 
+<span class="token comment" spellcheck="true"># 入栈</span>
+stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Stack after pushes: &amp;#123;stack&amp;#125;"</span><span class="token punctuation">)</span>  # 输出<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true"># 查看栈顶</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Top element is: &amp;#123;stack[-1]&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> <span class="token number">30</span>
+
+<span class="token comment" spellcheck="true"># 出栈</span>
+popped_item <span class="token operator">=</span> stack<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Popped item: &amp;#123;popped_item&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> <span class="token number">30</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Stack after pop: &amp;#123;stack&amp;#125;"</span><span class="token punctuation">)</span>   # 输出<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-2-基于链表的实现-Linked-list-based-Stack"><a href="#3-2-基于链表的实现-Linked-list-based-Stack" class="headerlink" title="3.2 基于链表的实现 (Linked-list-based Stack)"></a>3.2 基于链表的实现 (Linked-list-based Stack)</h4><p><strong>思路</strong>：使用一个单向链表，将链表的<strong>头部</strong>作为栈顶。入栈和出栈操作都只在链表头部进行。</p>
 <p><strong>动画式案例</strong>：</p>
 <ol>
@@ -431,8 +440,24 @@
 <li><strong>Pop()</strong>: 返回 <code>head</code> 的数据 (20)，然后让 <code>head</code> 指向 <code>head.next</code> (节点10)。 <code>head -&gt; [10, NULL]</code></li>
 </ol>
 <p><strong>伪代码</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class LinkedListStack:</span><br><span class="line">  // 初始化</span><br><span class="line">  constructor():</span><br><span class="line">    this.head = NULL</span><br><span class="line">  </span><br><span class="line">  // 入栈</span><br><span class="line">  function push(data):</span><br><span class="line">    newNode = new Node(data)</span><br><span class="line">    newNode.next = this.head</span><br><span class="line">    this.head = newNode</span><br><span class="line">    </span><br><span class="line">  // 出栈</span><br><span class="line">  function pop():</span><br><span class="line">    if isEmpty(): Error(&quot;Stack Underflow&quot;)</span><br><span class="line">    data = this.head.data</span><br><span class="line">    this.head = this.head.next</span><br><span class="line">    return data</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-pseudocode"><code class="language-pseudocode">class LinkedListStack:
+  // 初始化
+  constructor():
+    this.head = NULL
+  
+  // 入栈
+  function push(data):
+    newNode = new Node(data)
+    newNode.next = this.head
+    this.head = newNode
+    
+  // 出栈
+  function pop():
+    if isEmpty(): Error("Stack Underflow")
+    data = this.head.data
+    this.head = this.head.next
+    return data
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="4-复杂度分析与对比"><a href="#4-复杂度分析与对比" class="headerlink" title="4. 复杂度分析与对比"></a>4. 复杂度分析与对比</h3><table>
 <thead>
 <tr>
@@ -495,16 +520,55 @@
 <li><strong>判断队满</strong>：当 <code>(tail + 1) % capacity == head</code> 时，队列为满。</li>
 </ol>
 <p><strong>伪代码</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class CircularQueue:</span><br><span class="line">  constructor(capacity):</span><br><span class="line">    this.items = new Array(capacity + 1) // 多一个空间用于区分队满和队空</span><br><span class="line">    this.head = 0</span><br><span class="line">    this.tail = 0</span><br><span class="line">    this.capacity = capacity + 1</span><br><span class="line">    </span><br><span class="line">  function enqueue(item):</span><br><span class="line">    if isFull(): Error(&quot;Queue is full&quot;)</span><br><span class="line">    this.items[this.tail] = item</span><br><span class="line">    this.tail = (this.tail + 1) % this.capacity</span><br><span class="line">    </span><br><span class="line">  function dequeue():</span><br><span class="line">    if isEmpty(): Error(&quot;Queue is empty&quot;)</span><br><span class="line">    item = this.items[this.head]</span><br><span class="line">    this.head = (this.head + 1) % this.capacity</span><br><span class="line">    return item</span><br><span class="line">    </span><br><span class="line">  function isFull():</span><br><span class="line">    return (this.tail + 1) % this.capacity == this.head</span><br><span class="line">    </span><br><span class="line">  function isEmpty():</span><br><span class="line">    return this.head == this.tail</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-pseudocode"><code class="language-pseudocode">class CircularQueue:
+  constructor(capacity):
+    this.items = new Array(capacity + 1) // 多一个空间用于区分队满和队空
+    this.head = 0
+    this.tail = 0
+    this.capacity = capacity + 1
+    
+  function enqueue(item):
+    if isFull(): Error("Queue is full")
+    this.items[this.tail] = item
+    this.tail = (this.tail + 1) % this.capacity
+    
+  function dequeue():
+    if isEmpty(): Error("Queue is empty")
+    item = this.items[this.head]
+    this.head = (this.head + 1) % this.capacity
+    return item
+    
+  function isFull():
+    return (this.tail + 1) % this.capacity == this.head
+    
+  function isEmpty():
+    return this.head == this.tail
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-2-基于链表的实现-Linked-list-based-Queue"><a href="#3-2-基于链表的实现-Linked-list-based-Queue" class="headerlink" title="3.2 基于链表的实现 (Linked-list-based Queue)"></a>3.2 基于链表的实现 (Linked-list-based Queue)</h4><p><strong>思路</strong>：使用一个单向链表，并同时维护 <code>head</code> 和 <code>tail</code> 两个指针，分别指向链表的头部和尾部。</p>
 <ul>
 <li><strong>Enqueue</strong>：在 <code>tail</code> 端添加新节点（<code>O(1)</code>）。</li>
 <li><strong>Dequeue</strong>：在 <code>head</code> 端移除节点（<code>O(1)</code>）。</li>
 </ul>
 <p><strong>Python 实现</strong>：Python 的 <code>collections.deque</code> 是一个双端队列，它提供了高效的、线程安全的队列和栈的实现，其底层是使用双向链表实现的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个队列</span></span><br><span class="line">queue = deque()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 入队</span></span><br><span class="line">queue.append(<span class="number">10</span>)</span><br><span class="line">queue.append(<span class="number">20</span>)</span><br><span class="line">queue.append(<span class="number">30</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Queue after appends: <span class="subst">&#123;queue&#125;</span>&quot;</span>) <span class="comment"># 输出: deque([10, 20, 30])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看队首</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Front element is: <span class="subst">&#123;queue[<span class="number">0</span>]&#125;</span>&quot;</span>) <span class="comment"># 输出: 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 出队</span></span><br><span class="line">popped_item = queue.popleft()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Popped item: <span class="subst">&#123;popped_item&#125;</span>&quot;</span>) <span class="comment"># 输出: 10</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Queue after popleft: <span class="subst">&#123;queue&#125;</span>&quot;</span>) <span class="comment"># 输出: deque([20, 30])</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> deque
 
+<span class="token comment" spellcheck="true"># 创建一个队列</span>
+queue <span class="token operator">=</span> deque<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 入队</span>
+queue<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+queue<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+queue<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Queue after appends: &amp;#123;queue&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> deque<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 查看队首</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Front element is: &amp;#123;queue[0]&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> <span class="token number">10</span>
+
+<span class="token comment" spellcheck="true"># 出队</span>
+popped_item <span class="token operator">=</span> queue<span class="token punctuation">.</span>popleft<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Popped item: &amp;#123;popped_item&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> <span class="token number">10</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Queue after popleft: &amp;#123;queue&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> deque<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="4-复杂度分析与对比-1"><a href="#4-复杂度分析与对比-1" class="headerlink" title="4. 复杂度分析与对比"></a>4. 复杂度分析与对比</h3><table>
 <thead>
 <tr>

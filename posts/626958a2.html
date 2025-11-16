@@ -52,39 +52,6 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
-
   
   <title>Part 7.3：随机化算法——当运气成为一种力量 - 李国强的技术博客</title>
 
@@ -136,7 +103,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -298,7 +266,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.6k 字
+          2.2k 字
         
       </span>
     
@@ -309,7 +277,7 @@
         
         
         
-          30 分钟
+          19 分钟
         
       </span>
     
@@ -458,10 +426,74 @@
 </li>
 </ol>
 <p><strong>效果</strong>：通过第一步的随机化，我们使得主元更有可能选中一个“不好不坏”的值，从而使得分区更加均衡，避免了 <code>O(n²)</code> 的最坏情况。</p>
-<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：随机化快速排序"><a href="#伪代码：随机化快速排序" class="headerlink" title="伪代码：随机化快速排序"></a>伪代码：随机化快速排序</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 对数组 A 的 [p...r] 范围进行排序</span><br><span class="line">function RandomizedQuickSort(A, p, r):</span><br><span class="line">    if p &lt; r:</span><br><span class="line">        // 1. 随机选择主元并交换到末尾</span><br><span class="line">        i = Random(p, r) // 在 [p, r] 中随机选择一个索引</span><br><span class="line">        swap(A[i], A[r])</span><br><span class="line">        </span><br><span class="line">        // 2. 以 A[r] 为主元进行分区</span><br><span class="line">        q = Partition(A, p, r)</span><br><span class="line">        </span><br><span class="line">        // 3. 递归排序</span><br><span class="line">        RandomizedQuickSort(A, p, q - 1)</span><br><span class="line">        RandomizedQuickSort(A, q + 1, r)</span><br><span class="line"></span><br><span class="line">// Partition 函数与标准快排相同</span><br><span class="line">function Partition(A, p, r):</span><br><span class="line">    pivot = A[r]</span><br><span class="line">    i = p - 1</span><br><span class="line">    for j from p to r - 1:</span><br><span class="line">        if A[j] &lt;= pivot:</span><br><span class="line">            i = i + 1</span><br><span class="line">            swap(A[i], A[j])</span><br><span class="line">    swap(A[i + 1], A[r])</span><br><span class="line">    return i + 1</span><br></pre></td></tr></table></figure>
+<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：随机化快速排序"><a href="#伪代码：随机化快速排序" class="headerlink" title="伪代码：随机化快速排序"></a>伪代码：随机化快速排序</h3><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">// 对数组 A 的 [p...r] 范围进行排序
+function RandomizedQuickSort(A, p, r):
+    if p < r:
+        // 1. 随机选择主元并交换到末尾
+        i = Random(p, r) // 在 [p, r] 中随机选择一个索引
+        swap(A[i], A[r])
+        
+        // 2. 以 A[r] 为主元进行分区
+        q = Partition(A, p, r)
+        
+        // 3. 递归排序
+        RandomizedQuickSort(A, p, q - 1)
+        RandomizedQuickSort(A, q + 1, r)
 
-<h3 id="Python-实现：随机化快速排序"><a href="#Python-实现：随机化快速排序" class="headerlink" title="Python 实现：随机化快速排序"></a>Python 实现：随机化快速排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">randomized_quick_sort</span>(<span class="params">arr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;随机化快速排序的入口函数&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_quick_sort</span>(<span class="params">items, low, high</span>):</span><br><span class="line">        <span class="keyword">if</span> low &lt; high:</span><br><span class="line">            <span class="comment"># 递归调用，分区点是关键</span></span><br><span class="line">            split_point = partition(items, low, high)</span><br><span class="line">            _quick_sort(items, low, split_point - <span class="number">1</span>)</span><br><span class="line">            _quick_sort(items, split_point + <span class="number">1</span>, high)</span><br><span class="line"></span><br><span class="line">    _quick_sort(arr, <span class="number">0</span>, <span class="built_in">len</span>(arr) - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">partition</span>(<span class="params">arr, low, high</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;分区操作，包含随机化选择主元&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 随机选择主元，并将其与 high 位置的元素交换</span></span><br><span class="line">    pivot_index = random.randint(low, high)</span><br><span class="line">    arr[pivot_index], arr[high] = arr[high], arr[pivot_index]</span><br><span class="line">    pivot_value = arr[high]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 标准分区的其余部分</span></span><br><span class="line">    i = low - <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(low, high):</span><br><span class="line">        <span class="keyword">if</span> arr[j] &lt;= pivot_value:</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">            arr[i], arr[j] = arr[j], arr[i]</span><br><span class="line">            </span><br><span class="line">    <span class="comment"># 将主元放回正确的位置</span></span><br><span class="line">    arr[i + <span class="number">1</span>], arr[high] = arr[high], arr[i + <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">my_array = [<span class="number">54</span>, <span class="number">26</span>, <span class="number">93</span>, <span class="number">17</span>, <span class="number">77</span>, <span class="number">31</span>, <span class="number">44</span>, <span class="number">55</span>, <span class="number">20</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Original array: <span class="subst">&#123;my_array&#125;</span>&quot;</span>)</span><br><span class="line">randomized_quick_sort(my_array)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Sorted array:   <span class="subst">&#123;my_array&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试已排序数组（标准快排的痛点）</span></span><br><span class="line">sorted_list = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nOriginal sorted array: <span class="subst">&#123;sorted_list&#125;</span>&quot;</span>)</span><br><span class="line">randomized_quick_sort(sorted_list)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Sorted array:          <span class="subst">&#123;sorted_list&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+// Partition 函数与标准快排相同
+function Partition(A, p, r):
+    pivot = A[r]
+    i = p - 1
+    for j from p to r - 1:
+        if A[j] <= pivot:
+            i = i + 1
+            swap(A[i], A[j])
+    swap(A[i + 1], A[r])
+    return i + 1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Python-实现：随机化快速排序"><a href="#Python-实现：随机化快速排序" class="headerlink" title="Python 实现：随机化快速排序"></a>Python 实现：随机化快速排序</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> random
 
+<span class="token keyword">def</span> <span class="token function">randomized_quick_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""随机化快速排序的入口函数"""</span>
+    <span class="token keyword">def</span> <span class="token function">_quick_sort</span><span class="token punctuation">(</span>items<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> low <span class="token operator">&lt;</span> high<span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># 递归调用，分区点是关键</span>
+            split_point <span class="token operator">=</span> partition<span class="token punctuation">(</span>items<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span>
+            _quick_sort<span class="token punctuation">(</span>items<span class="token punctuation">,</span> low<span class="token punctuation">,</span> split_point <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            _quick_sort<span class="token punctuation">(</span>items<span class="token punctuation">,</span> split_point <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> high<span class="token punctuation">)</span>
+
+    _quick_sort<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">partition</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""分区操作，包含随机化选择主元"""</span>
+    <span class="token comment" spellcheck="true"># 1. 随机选择主元，并将其与 high 位置的元素交换</span>
+    pivot_index <span class="token operator">=</span> random<span class="token punctuation">.</span>randint<span class="token punctuation">(</span>low<span class="token punctuation">,</span> high<span class="token punctuation">)</span>
+    arr<span class="token punctuation">[</span>pivot_index<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>pivot_index<span class="token punctuation">]</span>
+    pivot_value <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span>
+    
+    <span class="token comment" spellcheck="true"># 标准分区的其余部分</span>
+    i <span class="token operator">=</span> low <span class="token operator">-</span> <span class="token number">1</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> pivot_value<span class="token punctuation">:</span>
+            i <span class="token operator">+=</span> <span class="token number">1</span>
+            arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+            
+    <span class="token comment" spellcheck="true"># 将主元放回正确的位置</span>
+    arr<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> i <span class="token operator">+</span> <span class="token number">1</span>
+
+<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
+my_array <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">54</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">93</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">,</span> <span class="token number">77</span><span class="token punctuation">,</span> <span class="token number">31</span><span class="token punctuation">,</span> <span class="token number">44</span><span class="token punctuation">,</span> <span class="token number">55</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Original array: &amp;#123;my_array&amp;#125;"</span><span class="token punctuation">)</span>
+randomized_quick_sort<span class="token punctuation">(</span>my_array<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Sorted array:   &amp;#123;my_array&amp;#125;"</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 测试已排序数组（标准快排的痛点）</span>
+sorted_list <span class="token operator">=</span> list<span class="token punctuation">(</span>range<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"\nOriginal sorted array: &amp;#123;sorted_list&amp;#125;"</span><span class="token punctuation">)</span>
+randomized_quick_sort<span class="token punctuation">(</span>sorted_list<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Sorted array:          &amp;#123;sorted_list&amp;#125;"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><h3 id="时间复杂度：期望-O-n-log-n"><a href="#时间复杂度：期望-O-n-log-n" class="headerlink" title="时间复杂度：期望 O(n log n)"></a>时间复杂度：期望 O(n log n)</h3><ul>
 <li><strong>最坏情况</strong>：<code>O(n²)</code>。尽管我们随机化了，但理论上仍然有可能每次都选中最大或最小的元素作为主元。然而，这种情况发生的概率极小（比 <code>1/n!</code> 还小），在实践中可以忽略不计。</li>
 <li><strong>期望情况</strong>：<code>O(n log n)</code>。这是随机化算法分析的核心。我们可以证明，通过随机选择主元，分区操作<strong>期望</strong>会将数组分成两个大小差不多的部分。例如，只要主元落在中间 50% 的范围内（这个概率是 1&#x2F;2），分区就是“好”的。通过概率分析可以得出，其期望运行时间与平均情况下的 <code>O(n log n)</code> 相同。</li>

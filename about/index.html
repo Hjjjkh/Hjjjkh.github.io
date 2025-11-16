@@ -47,39 +47,6 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
-
   
   <title>关于 - 李国强的技术博客</title>
 
@@ -131,7 +98,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -353,7 +321,7 @@
 <h2 id="🎯-博客目标"><a href="#🎯-博客目标" class="headerlink" title="🎯 博客目标"></a>🎯 博客目标</h2><p>这个博客主要用于记录我的学习笔记、项目实践和技术总结。希望通过写作来巩固知识，同时也能帮助到其他学习者。</p>
 <h2 id="📫-联系方式"><a href="#📫-联系方式" class="headerlink" title="📫 联系方式"></a>📫 联系方式</h2><ul>
 <li>GitHub: <a target="_blank" rel="noopener" href="https://github.com/Hjjjkh">Hjjjkh</a></li>
-<li>Email: <a href="mailto:&#51;&#52;&#56;&#48;&#50;&#49;&#x38;&#57;&#x35;&#x36;&#x40;&#x71;&#113;&#x2e;&#99;&#111;&#109;">&#51;&#52;&#56;&#48;&#50;&#49;&#x38;&#57;&#x35;&#x36;&#x40;&#x71;&#113;&#x2e;&#99;&#111;&#109;</a></li>
+<li>Email: <a href="mailto:&#x33;&#x34;&#56;&#48;&#x32;&#49;&#x38;&#x39;&#x35;&#x36;&#64;&#x71;&#x71;&#x2e;&#99;&#111;&#109;">&#x33;&#x34;&#56;&#48;&#x32;&#49;&#x38;&#x39;&#x35;&#x36;&#64;&#x71;&#x71;&#x2e;&#99;&#111;&#109;</a></li>
 </ul>
 <h2 id="🌟-座右铭"><a href="#🌟-座右铭" class="headerlink" title="🌟 座右铭"></a>🌟 座右铭</h2><blockquote>
 <p>代码改变世界，学习成就未来</p>

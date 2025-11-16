@@ -52,39 +52,6 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
-
   
   <title>Part 8.3：大语言模型时代的算法学习——AI 改变了什么，什么不会变 - 李国强的技术博客</title>
 
@@ -136,7 +103,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -400,8 +368,13 @@
 <li><strong>互动式学习</strong>：你可以追问细节，形成一个对话式的学习过程。</li>
 </ul>
 <p><strong>案例</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">你：什么是贪心算法？</span><br><span class="line">AI：贪心算法是一种在每一步都做出局部最优选择的算法，期望最终达到全局最优。</span><br><span class="line">你：能举个例子吗？</span><br><span class="line">AI：当然。比如找零钱问题……</span><br><span class="line">你：贪心算法一定能得到最优解吗？</span><br><span class="line">AI：不一定。贪心算法只有在问题具有&quot;贪心选择性质&quot;时才能保证最优解……</span><br></pre></td></tr></table></figure>
-
+<pre><code>你：什么是贪心算法？
+AI：贪心算法是一种在每一步都做出局部最优选择的算法，期望最终达到全局最优。
+你：能举个例子吗？
+AI：当然。比如找零钱问题……
+你：贪心算法一定能得到最优解吗？
+AI：不一定。贪心算法只有在问题具有&quot;贪心选择性质&quot;时才能保证最优解……
+</code></pre>
 <h3 id="2-代码生成与调试"><a href="#2-代码生成与调试" class="headerlink" title="2. 代码生成与调试"></a>2. 代码生成与调试</h3><p><strong>传统方式</strong>：你需要自己从头写代码，遇到 Bug 要花时间调试。</p>
 <p><strong>LLM 方式</strong>：</p>
 <ul>
@@ -421,8 +394,9 @@
 </ul>
 <h3 id="3-算法可视化与解释"><a href="#3-算法可视化与解释" class="headerlink" title="3. 算法可视化与解释"></a>3. 算法可视化与解释</h3><p><strong>LLM 方式</strong>：要求 AI 用伪代码、步骤分解或文字描述来解释一个算法的执行过程。</p>
 <p><strong>案例</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你：用 Dijkstra 算法求最短路径的步骤是什么？</span><br><span class="line">AI：1. 初始化距离数组……2. 选择未访问节点中距离最小的……</span><br></pre></td></tr></table></figure>
-
+<pre><code>你：用 Dijkstra 算法求最短路径的步骤是什么？
+AI：1. 初始化距离数组……2. 选择未访问节点中距离最小的……
+</code></pre>
 <h3 id="4-生成测试用例"><a href="#4-生成测试用例" class="headerlink" title="4. 生成测试用例"></a>4. 生成测试用例</h3><p><strong>LLM 方式</strong>：”为这个函数生成 5 个测试用例，包括边界情况。”</p>
 <p><strong>优势</strong>：帮助你更全面地测试代码，发现潜在的 Bug。</p>
 <h2 id="Part-B：AI-不能做什么——人类的不可替代性"><a href="#Part-B：AI-不能做什么——人类的不可替代性" class="headerlink" title="Part B：AI 不能做什么——人类的不可替代性"></a>Part B：AI 不能做什么——人类的不可替代性</h2><h3 id="1-问题定义与需求分析"><a href="#1-问题定义与需求分析" class="headerlink" title="1. 问题定义与需求分析"></a>1. 问题定义与需求分析</h3><p>AI 只能回答你提出的问题，但<strong>如何提出正确的问题</strong>，是一项高级技能。</p>

@@ -52,39 +52,6 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
-
   
   <title>Part 7.5：快速傅里叶变换 (FFT)——算法世界的蝶之舞 - 李国强的技术博客</title>
 
@@ -136,7 +103,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -435,8 +403,77 @@
 </li>
 <li>**逆 FFT (IFFT)**：插值过程与 FFT 惊人地相似。只需将 FFT 中的单位复根 <code>ωₙ</code> 换成其共轭 <code>ωₙ⁻¹</code>，然后对结果的每一项再除以 <code>n</code> 即可。</li>
 </ol>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cmath</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fft</span>(<span class="params">a</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;递归实现的快速傅里叶变换&quot;&quot;&quot;</span></span><br><span class="line">    n = <span class="built_in">len</span>(a)</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 分解为奇数项和偶数项</span></span><br><span class="line">    a_even = a[<span class="number">0</span>::<span class="number">2</span>]</span><br><span class="line">    a_odd = a[<span class="number">1</span>::<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 递归解决子问题</span></span><br><span class="line">    y_even = fft(a_even)</span><br><span class="line">    y_odd = fft(a_odd)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 合并</span></span><br><span class="line">    y = [<span class="number">0</span>] * n</span><br><span class="line">    omega_n = cmath.exp(<span class="number">2j</span> * cmath.pi / n)</span><br><span class="line">    omega = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n // <span class="number">2</span>):</span><br><span class="line">        t = omega * y_odd[k]</span><br><span class="line">        y[k] = y_even[k] + t</span><br><span class="line">        y[k + n // <span class="number">2</span>] = y_even[k] - t</span><br><span class="line">        omega *= omega_n</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ifft</span>(<span class="params">y</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;快速傅里叶逆变换&quot;&quot;&quot;</span></span><br><span class="line">    n = <span class="built_in">len</span>(y)</span><br><span class="line">    <span class="comment"># IFFT 等价于对共轭复数做 FFT，再取共轭，最后除以 n</span></span><br><span class="line">    a_conj = [v.conjugate() <span class="keyword">for</span> v <span class="keyword">in</span> y]</span><br><span class="line">    y_conj = fft(a_conj)</span><br><span class="line">    <span class="keyword">return</span> [v.conjugate() / n <span class="keyword">for</span> v <span class="keyword">in</span> y_conj]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">polynomial_multiply</span>(<span class="params">p1, p2</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用 FFT 进行多项式乘法&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 确定 FFT 的长度，必须是 2 的幂，且大于等于结果多项式的阶数</span></span><br><span class="line">    n = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="built_in">len</span>(p1) + <span class="built_in">len</span>(p2):</span><br><span class="line">        n *= <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 补零</span></span><br><span class="line">    p1.extend([<span class="number">0</span>] * (n - <span class="built_in">len</span>(p1)))</span><br><span class="line">    p2.extend([<span class="number">0</span>] * (n - <span class="built_in">len</span>(p2)))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1. 求值 (FFT)</span></span><br><span class="line">    y1 = fft(p1)</span><br><span class="line">    y2 = fft(p2)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 逐点相乘</span></span><br><span class="line">    y_result = [y1[i] * y2[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 插值 (IFFT)</span></span><br><span class="line">    result_coeffs = ifft(y_result)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 转换为整数</span></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">round</span>(c.real) <span class="keyword">for</span> c <span class="keyword">in</span> result_coeffs]</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line"><span class="comment"># A(x) = 1 + 2x + 3x²  =&gt; p1 = [1, 2, 3]</span></span><br><span class="line"><span class="comment"># B(x) = 4 + 5x        =&gt; p2 = [4, 5]</span></span><br><span class="line"><span class="comment"># C(x) = A(x) * B(x) = 4 + 13x + 22x² + 15x³</span></span><br><span class="line">p1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">p2 = [<span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">result = polynomial_multiply(p1, p2)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;多项式乘法结果的系数: <span class="subst">&#123;result&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 期望输出接近 [4, 13, 22, 15, 0, 0, 0, 0]</span></span><br></pre></td></tr></table></figure>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> cmath
 
+<span class="token keyword">def</span> <span class="token function">fft</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""递归实现的快速傅里叶变换"""</span>
+    n <span class="token operator">=</span> len<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> a
+
+    <span class="token comment" spellcheck="true"># 分解为奇数项和偶数项</span>
+    a_even <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span>
+    a_odd <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span>
+
+    <span class="token comment" spellcheck="true"># 递归解决子问题</span>
+    y_even <span class="token operator">=</span> fft<span class="token punctuation">(</span>a_even<span class="token punctuation">)</span>
+    y_odd <span class="token operator">=</span> fft<span class="token punctuation">(</span>a_odd<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true"># 合并</span>
+    y <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n
+    omega_n <span class="token operator">=</span> cmath<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token number">2j</span> <span class="token operator">*</span> cmath<span class="token punctuation">.</span>pi <span class="token operator">/</span> n<span class="token punctuation">)</span>
+    omega <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">for</span> k <span class="token keyword">in</span> range<span class="token punctuation">(</span>n <span class="token operator">//</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        t <span class="token operator">=</span> omega <span class="token operator">*</span> y_odd<span class="token punctuation">[</span>k<span class="token punctuation">]</span>
+        y<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> y_even<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">+</span> t
+        y<span class="token punctuation">[</span>k <span class="token operator">+</span> n <span class="token operator">//</span> <span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> y_even<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">-</span> t
+        omega <span class="token operator">*=</span> omega_n
+    <span class="token keyword">return</span> y
+
+<span class="token keyword">def</span> <span class="token function">ifft</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""快速傅里叶逆变换"""</span>
+    n <span class="token operator">=</span> len<span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># IFFT 等价于对共轭复数做 FFT，再取共轭，最后除以 n</span>
+    a_conj <span class="token operator">=</span> <span class="token punctuation">[</span>v<span class="token punctuation">.</span>conjugate<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> v <span class="token keyword">in</span> y<span class="token punctuation">]</span>
+    y_conj <span class="token operator">=</span> fft<span class="token punctuation">(</span>a_conj<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>v<span class="token punctuation">.</span>conjugate<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> n <span class="token keyword">for</span> v <span class="token keyword">in</span> y_conj<span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">polynomial_multiply</span><span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""使用 FFT 进行多项式乘法"""</span>
+    <span class="token comment" spellcheck="true"># 确定 FFT 的长度，必须是 2 的幂，且大于等于结果多项式的阶数</span>
+    n <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">while</span> n <span class="token operator">&lt;</span> len<span class="token punctuation">(</span>p1<span class="token punctuation">)</span> <span class="token operator">+</span> len<span class="token punctuation">(</span>p2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        n <span class="token operator">*=</span> <span class="token number">2</span>
+
+    <span class="token comment" spellcheck="true"># 补零</span>
+    p1<span class="token punctuation">.</span>extend<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> len<span class="token punctuation">(</span>p1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    p2<span class="token punctuation">.</span>extend<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> len<span class="token punctuation">(</span>p2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true"># 1. 求值 (FFT)</span>
+    y1 <span class="token operator">=</span> fft<span class="token punctuation">(</span>p1<span class="token punctuation">)</span>
+    y2 <span class="token operator">=</span> fft<span class="token punctuation">(</span>p2<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true"># 2. 逐点相乘</span>
+    y_result <span class="token operator">=</span> <span class="token punctuation">[</span>y1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> y2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+    <span class="token comment" spellcheck="true"># 3. 插值 (IFFT)</span>
+    result_coeffs <span class="token operator">=</span> ifft<span class="token punctuation">(</span>y_result<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true"># 转换为整数</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>round<span class="token punctuation">(</span>c<span class="token punctuation">.</span>real<span class="token punctuation">)</span> <span class="token keyword">for</span> c <span class="token keyword">in</span> result_coeffs<span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
+<span class="token comment" spellcheck="true"># A(x) = 1 + 2x + 3x²  => p1 = [1, 2, 3]</span>
+<span class="token comment" spellcheck="true"># B(x) = 4 + 5x        => p2 = [4, 5]</span>
+<span class="token comment" spellcheck="true"># C(x) = A(x) * B(x) = 4 + 13x + 22x² + 15x³</span>
+p1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+p2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
+
+result <span class="token operator">=</span> polynomial_multiply<span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"多项式乘法结果的系数: &amp;#123;result&amp;#125;"</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 期望输出接近 [4, 13, 22, 15, 0, 0, 0, 0]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><h3 id="时间复杂度：O-n-log-n"><a href="#时间复杂度：O-n-log-n" class="headerlink" title="时间复杂度：O(n log n)"></a>时间复杂度：O(n log n)</h3><p>FFT 的时间复杂度分析是分治算法的经典案例。</p>
 <ol>
 <li><p><strong>递归关系式</strong>：<code>T(n) = 2 * T(n/2) + O(n)</code></p>

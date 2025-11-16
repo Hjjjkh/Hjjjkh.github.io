@@ -35,9 +35,9 @@
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="图论">
 <meta property="article:tag" content="最短路径">
+<meta property="article:tag" content="动态规划">
 <meta property="article:tag" content="Bellman-Ford算法">
 <meta property="article:tag" content="Floyd-Warshall算法">
-<meta property="article:tag" content="动态规划">
 <meta property="article:tag" content="负权环">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -51,39 +51,6 @@
 <link rel="dns-prefetch" href="//registry.npmmirror.com">
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
-
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
 
   
   <title>Part 4.4：多源最短路与负权环 (Bellman-Ford &amp; Floyd-Warshall) - 李国强的技术博客</title>
@@ -136,7 +103,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -298,7 +266,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          1.9k 字
         
       </span>
     
@@ -309,7 +277,7 @@
         
         
         
-          17 分钟
+          16 分钟
         
       </span>
     
@@ -404,7 +372,12 @@
 <li><code>dist[i][j]</code> &#x3D; <code>infinity</code>（如果 <code>i</code> 和 <code>j</code> 之间没有边）。</li>
 </ul>
 </li>
-<li>进行三层循环：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for k from 1 to V:</span><br><span class="line">    for i from 1 to V:</span><br><span class="line">        for j from 1 to V:</span><br><span class="line">            dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</span><br></pre></td></tr></table></figure></li>
+<li>进行三层循环：<pre><code>for k from 1 to V:
+    for i from 1 to V:
+        for j from 1 to V:
+            dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+</code></pre>
+</li>
 <li><strong>检测负权环</strong>：算法结束后，如果 <code>dist[i][i] &lt; 0</code>，说明从 <code>i</code> 出发存在负权环。</li>
 </ol>
 <h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><ul>
@@ -414,10 +387,109 @@
 <li>需要计算任意两点之间的最短路径。</li>
 <li>图的规模不大（<code>V</code> 通常小于 500）。</li>
 </ul>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><h3 id="Bellman-Ford-算法实现"><a href="#Bellman-Ford-算法实现" class="headerlink" title="Bellman-Ford 算法实现"></a>Bellman-Ford 算法实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">bellman_ford</span>(<span class="params">graph, nodes, start</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Bellman-Ford 算法求单源最短路径</span></span><br><span class="line"><span class="string">    graph: 边列表，格式为 [(u, v, weight), ...]</span></span><br><span class="line"><span class="string">    nodes: 节点列表</span></span><br><span class="line"><span class="string">    start: 起点</span></span><br><span class="line"><span class="string">    返回: (距离字典, 是否存在负权环)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    dist = &#123;node: <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">for</span> node <span class="keyword">in</span> nodes&#125;</span><br><span class="line">    dist[start] = <span class="number">0</span></span><br><span class="line">    num_nodes = <span class="built_in">len</span>(nodes)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># V-1 轮松弛</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> u, v, weight <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">if</span> dist[u] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">and</span> dist[u] + weight &lt; dist[v]:</span><br><span class="line">                dist[v] = dist[u] + weight</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检测负权环</span></span><br><span class="line">    has_negative_cycle = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> u, v, weight <span class="keyword">in</span> graph:</span><br><span class="line">        <span class="keyword">if</span> dist[u] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">and</span> dist[u] + weight &lt; dist[v]:</span><br><span class="line">            has_negative_cycle = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> dist, has_negative_cycle</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">nodes = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>]</span><br><span class="line">graph_edges = [</span><br><span class="line">    (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, -<span class="number">1</span>), (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">4</span>),</span><br><span class="line">    (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">3</span>), (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="number">2</span>), (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="number">2</span>),</span><br><span class="line">    (<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">1</span>), (<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">5</span>),</span><br><span class="line">    (<span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, -<span class="number">3</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">dist, cycle = bellman_ford(graph_edges, nodes, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Bellman-Ford 算法结果:&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> cycle:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  图中存在负权环&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">for</span> node, d <span class="keyword">in</span> <span class="built_in">sorted</span>(dist.items()):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  A -&gt; <span class="subst">&#123;node&#125;</span>: <span class="subst">&#123;d&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># Bellman-Ford 算法结果:</span></span><br><span class="line"><span class="comment">#   A -&gt; A: 0</span></span><br><span class="line"><span class="comment">#   A -&gt; B: -1</span></span><br><span class="line"><span class="comment">#   A -&gt; C: 2</span></span><br><span class="line"><span class="comment">#   A -&gt; D: -2</span></span><br><span class="line"><span class="comment">#   A -&gt; E: 1</span></span><br></pre></td></tr></table></figure>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><h3 id="Bellman-Ford-算法实现"><a href="#Bellman-Ford-算法实现" class="headerlink" title="Bellman-Ford 算法实现"></a>Bellman-Ford 算法实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">bellman_ford</span><span class="token punctuation">(</span>graph<span class="token punctuation">,</span> nodes<span class="token punctuation">,</span> start<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    Bellman-Ford 算法求单源最短路径
+    graph: 边列表，格式为 [(u, v, weight), ...]
+    nodes: 节点列表
+    start: 起点
+    返回: (距离字典, 是否存在负权环)
+    """</span>
+    dist <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;node: float('inf') for node in nodes&amp;#125;</span>
+    dist<span class="token punctuation">[</span>start<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+    num_nodes <span class="token operator">=</span> len<span class="token punctuation">(</span>nodes<span class="token punctuation">)</span>
+    
+    <span class="token comment" spellcheck="true"># V-1 轮松弛</span>
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>num_nodes <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> u<span class="token punctuation">,</span> v<span class="token punctuation">,</span> weight <span class="token keyword">in</span> graph<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> dist<span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">!=</span> float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span> <span class="token operator">and</span> dist<span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">+</span> weight <span class="token operator">&lt;</span> dist<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                dist<span class="token punctuation">[</span>v<span class="token punctuation">]</span> <span class="token operator">=</span> dist<span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">+</span> weight
+    
+    <span class="token comment" spellcheck="true"># 检测负权环</span>
+    has_negative_cycle <span class="token operator">=</span> <span class="token boolean">False</span>
+    <span class="token keyword">for</span> u<span class="token punctuation">,</span> v<span class="token punctuation">,</span> weight <span class="token keyword">in</span> graph<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> dist<span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">!=</span> float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span> <span class="token operator">and</span> dist<span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">+</span> weight <span class="token operator">&lt;</span> dist<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            has_negative_cycle <span class="token operator">=</span> <span class="token boolean">True</span>
+            <span class="token keyword">break</span>
+            
+    <span class="token keyword">return</span> dist<span class="token punctuation">,</span> has_negative_cycle
 
-<h3 id="Floyd-Warshall-算法实现"><a href="#Floyd-Warshall-算法实现" class="headerlink" title="Floyd-Warshall 算法实现"></a>Floyd-Warshall 算法实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">floyd_warshall</span>(<span class="params">nodes, edges</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Floyd-Warshall 算法求多源最短路径</span></span><br><span class="line"><span class="string">    nodes: 节点列表</span></span><br><span class="line"><span class="string">    edges: 边列表，格式为 [(u, v, weight), ...]</span></span><br><span class="line"><span class="string">    返回: 距离矩阵</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    num_nodes = <span class="built_in">len</span>(nodes)</span><br><span class="line">    node_map = &#123;node: i <span class="keyword">for</span> i, node <span class="keyword">in</span> <span class="built_in">enumerate</span>(nodes)&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 初始化距离矩阵</span></span><br><span class="line">    dist = [[<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)] * num_nodes <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes)]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">        dist[i][i] = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> u, v, weight <span class="keyword">in</span> edges:</span><br><span class="line">        i, j = node_map[u], node_map[v]</span><br><span class="line">        dist[i][j] = weight</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 动态规划</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">                <span class="keyword">if</span> dist[i][k] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">and</span> dist[k][j] != <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>):</span><br><span class="line">                    dist[i][j] = <span class="built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dist</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 案例测试 ---</span></span><br><span class="line">nodes = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>]</span><br><span class="line">edges = [</span><br><span class="line">    (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">3</span>), (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="number">7</span>),</span><br><span class="line">    (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">8</span>), (<span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">2</span>),</span><br><span class="line">    (<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">5</span>), (<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="number">1</span>),</span><br><span class="line">    (<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">2</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">dist_matrix = floyd_warshall(nodes, edges)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\nFloyd-Warshall 算法结果 (距离矩阵):&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> dist_matrix:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  <span class="subst">&#123;row&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出:</span></span><br><span class="line"><span class="comment"># Floyd-Warshall 算法结果 (距离矩阵):</span></span><br><span class="line"><span class="comment">#   [0, 3, 5, 6]</span></span><br><span class="line"><span class="comment">#   [5, 0, 2, 3]</span></span><br><span class="line"><span class="comment">#   [3, 6, 0, 1]</span></span><br><span class="line"><span class="comment">#   [2, 5, 7, 0]</span></span><br></pre></td></tr></table></figure>
+<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
+nodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'E'</span><span class="token punctuation">]</span>
+graph_edges <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'E'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'E'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span>
 
+dist<span class="token punctuation">,</span> cycle <span class="token operator">=</span> bellman_ford<span class="token punctuation">(</span>graph_edges<span class="token punctuation">,</span> nodes<span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Bellman-Ford 算法结果:"</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> cycle<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  图中存在负权环"</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> node<span class="token punctuation">,</span> d <span class="token keyword">in</span> sorted<span class="token punctuation">(</span>dist<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"  A -> &amp;#123;node&amp;#125;: &amp;#123;d&amp;#125;"</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 输出:</span>
+<span class="token comment" spellcheck="true"># Bellman-Ford 算法结果:</span>
+<span class="token comment" spellcheck="true">#   A -> A: 0</span>
+<span class="token comment" spellcheck="true">#   A -> B: -1</span>
+<span class="token comment" spellcheck="true">#   A -> C: 2</span>
+<span class="token comment" spellcheck="true">#   A -> D: -2</span>
+<span class="token comment" spellcheck="true">#   A -> E: 1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Floyd-Warshall-算法实现"><a href="#Floyd-Warshall-算法实现" class="headerlink" title="Floyd-Warshall 算法实现"></a>Floyd-Warshall 算法实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> defaultdict
+
+<span class="token keyword">def</span> <span class="token function">floyd_warshall</span><span class="token punctuation">(</span>nodes<span class="token punctuation">,</span> edges<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    Floyd-Warshall 算法求多源最短路径
+    nodes: 节点列表
+    edges: 边列表，格式为 [(u, v, weight), ...]
+    返回: 距离矩阵
+    """</span>
+    num_nodes <span class="token operator">=</span> len<span class="token punctuation">(</span>nodes<span class="token punctuation">)</span>
+    node_map <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;node: i for i, node in enumerate(nodes)&amp;#125;</span>
+    
+    <span class="token comment" spellcheck="true"># 初始化距离矩阵</span>
+    dist <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">*</span> num_nodes <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>num_nodes<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>num_nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        dist<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+    
+    <span class="token keyword">for</span> u<span class="token punctuation">,</span> v<span class="token punctuation">,</span> weight <span class="token keyword">in</span> edges<span class="token punctuation">:</span>
+        i<span class="token punctuation">,</span> j <span class="token operator">=</span> node_map<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">,</span> node_map<span class="token punctuation">[</span>v<span class="token punctuation">]</span>
+        dist<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> weight
+    
+    <span class="token comment" spellcheck="true"># 动态规划</span>
+    <span class="token keyword">for</span> k <span class="token keyword">in</span> range<span class="token punctuation">(</span>num_nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>num_nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>num_nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> dist<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">!=</span> float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span> <span class="token operator">and</span> dist<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">!=</span> float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    dist<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> min<span class="token punctuation">(</span>dist<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> dist<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">+</span> dist<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword">return</span> dist
+
+<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
+nodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">]</span>
+edges <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span>
+
+dist_matrix <span class="token operator">=</span> floyd_warshall<span class="token punctuation">(</span>nodes<span class="token punctuation">,</span> edges<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\nFloyd-Warshall 算法结果 (距离矩阵):"</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> row <span class="token keyword">in</span> dist_matrix<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"  &amp;#123;row&amp;#125;"</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 输出:</span>
+<span class="token comment" spellcheck="true"># Floyd-Warshall 算法结果 (距离矩阵):</span>
+<span class="token comment" spellcheck="true">#   [0, 3, 5, 6]</span>
+<span class="token comment" spellcheck="true">#   [5, 0, 2, 3]</span>
+<span class="token comment" spellcheck="true">#   [3, 6, 0, 1]</span>
+<span class="token comment" spellcheck="true">#   [2, 5, 7, 0]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><table>
 <thead>
 <tr>
@@ -526,11 +598,11 @@
       
         <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" class="print-no-link">#最短路径</a>
       
+        <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="print-no-link">#动态规划</a>
+      
         <a href="/tags/Bellman-Ford%E7%AE%97%E6%B3%95/" class="print-no-link">#Bellman-Ford算法</a>
       
         <a href="/tags/Floyd-Warshall%E7%AE%97%E6%B3%95/" class="print-no-link">#Floyd-Warshall算法</a>
-      
-        <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="print-no-link">#动态规划</a>
       
         <a href="/tags/%E8%B4%9F%E6%9D%83%E7%8E%AF/" class="print-no-link">#负权环</a>
       

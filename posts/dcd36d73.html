@@ -54,39 +54,6 @@
 <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
 <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
-<!-- Manually injected PrismJS for code highlighting -->
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-dark-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/themes/prism.min.css" id="prism-light-manual" media="none">
-<link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<script>
-  // Auto switch PrismJS theme based on dark mode
-  (function() {
-    const darkTheme = document.getElementById('prism-dark-manual');
-    const lightTheme = document.getElementById('prism-light-manual');
-    
-    function updateTheme() {
-      const isDark = document.documentElement.getAttribute('data-user-color-scheme') === 'dark';
-      if (isDark) {
-        darkTheme.media = 'all';
-        lightTheme.media = 'none';
-      } else {
-        darkTheme.media = 'none';
-        lightTheme.media = 'all';
-      }
-    }
-    
-    // Initial theme
-    updateTheme();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-user-color-scheme']
-    });
-  })();
-</script>
-
   
   <title>为 Hexo 博客添加 Gitalk 评论系统——从零到一的完整指南 - 李国强的技术博客</title>
 
@@ -138,7 +105,8 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -300,7 +268,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.9k 字
+          2.8k 字
         
       </span>
     
@@ -398,11 +366,11 @@
 <hr>
 <h2 id="🚀-集成步骤"><a href="#🚀-集成步骤" class="headerlink" title="🚀 集成步骤"></a>🚀 集成步骤</h2><h3 id="第一步：创建-GitHub-OAuth-App"><a href="#第一步：创建-GitHub-OAuth-App" class="headerlink" title="第一步：创建 GitHub OAuth App"></a>第一步：创建 GitHub OAuth App</h3><p>Gitalk 需要通过 GitHub OAuth App 来实现用户登录功能。</p>
 <h4 id="1-1-访问-GitHub-设置页面"><a href="#1-1-访问-GitHub-设置页面" class="headerlink" title="1.1 访问 GitHub 设置页面"></a>1.1 访问 GitHub 设置页面</h4><p>登录你的 GitHub 账号，然后访问：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/settings/applications/new</span><br></pre></td></tr></table></figure>
-
+<pre><code>https://github.com/settings/applications/new
+</code></pre>
 <p>或者通过以下路径进入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GitHub 头像 → Settings → Developer settings → OAuth Apps → New OAuth App</span><br></pre></td></tr></table></figure>
-
+<pre><code>GitHub 头像 → Settings → Developer settings → OAuth Apps → New OAuth App
+</code></pre>
 <h4 id="1-2-填写应用信息"><a href="#1-2-填写应用信息" class="headerlink" title="1.2 填写应用信息"></a>1.2 填写应用信息</h4><p>在创建页面中，填写以下信息：</p>
 <table>
 <thead>
@@ -448,14 +416,37 @@
 <hr>
 <h3 id="第二步：配置-Hexo-主题"><a href="#第二步：配置-Hexo-主题" class="headerlink" title="第二步：配置 Hexo 主题"></a>第二步：配置 Hexo 主题</h3><p>不同的 Hexo 主题配置方式略有不同，这里以 <strong>Fluid 主题</strong>为例。</p>
 <h4 id="2-1-找到主题配置文件"><a href="#2-1-找到主题配置文件" class="headerlink" title="2.1 找到主题配置文件"></a>2.1 找到主题配置文件</h4><p>主题配置文件通常位于：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog/themes/fluid/_config.yml</span><br></pre></td></tr></table></figure>
-
+<pre><code>blog/themes/fluid/_config.yml
+</code></pre>
 <h4 id="2-2-启用评论功能"><a href="#2-2-启用评论功能" class="headerlink" title="2.2 启用评论功能"></a>2.2 启用评论功能</h4><p>在配置文件中找到 <code>comments</code> 部分，修改如下：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 评论插件</span></span><br><span class="line"><span class="comment"># Comment plugin</span></span><br><span class="line"><span class="attr">post:</span></span><br><span class="line">  <span class="attr">comments:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>  <span class="comment"># 将 false 改为 true</span></span><br><span class="line">    <span class="comment"># 指定的插件，需要同时设置对应插件的必要参数</span></span><br><span class="line">    <span class="comment"># The specified plugin needs to set the necessary parameters at the same time</span></span><br><span class="line">    <span class="comment"># Options: utterances | disqus | gitalk | valine | waline | changyan | livere | remark42 | twikoo | cusdis | giscus | discuss</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">gitalk</span>  <span class="comment"># 将 disqus 改为 gitalk</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token comment" spellcheck="true"># 评论插件</span>
+<span class="token comment" spellcheck="true"># Comment plugin</span>
+<span class="token key atrule">post</span><span class="token punctuation">:</span>
+  <span class="token key atrule">comments</span><span class="token punctuation">:</span>
+    <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true  </span><span class="token comment" spellcheck="true"># 将 false 改为 true</span>
+    <span class="token comment" spellcheck="true"># 指定的插件，需要同时设置对应插件的必要参数</span>
+    <span class="token comment" spellcheck="true"># The specified plugin needs to set the necessary parameters at the same time</span>
+    <span class="token comment" spellcheck="true"># Options: utterances | disqus | gitalk | valine | waline | changyan | livere | remark42 | twikoo | cusdis | giscus | discuss</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> gitalk  <span class="token comment" spellcheck="true"># 将 disqus 改为 gitalk</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-3-配置-Gitalk-参数"><a href="#2-3-配置-Gitalk-参数" class="headerlink" title="2.3 配置 Gitalk 参数"></a>2.3 配置 Gitalk 参数</h4><p>在同一个配置文件中，找到 <code>gitalk</code> 部分，填入你的信息：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Gitalk</span></span><br><span class="line"><span class="comment"># 基于 GitHub Issues</span></span><br><span class="line"><span class="comment"># Based on GitHub Issues</span></span><br><span class="line"><span class="comment"># https://github.com/gitalk/gitalk</span></span><br><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">clientID:</span> <span class="string">&#x27;Ov23liXXXXXXXXXXXXXX&#x27;</span>  <span class="comment"># 填入你的 Client ID</span></span><br><span class="line">  <span class="attr">clientSecret:</span> <span class="string">&#x27;你的Client Secret&#x27;</span>   <span class="comment"># 填入你的 Client Secret</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">&#x27;yourusername.github.io&#x27;</span>      <span class="comment"># 填入你的博客仓库名</span></span><br><span class="line">  <span class="attr">owner:</span> <span class="string">&#x27;yourusername&#x27;</span>                <span class="comment"># 填入你的 GitHub 用户名</span></span><br><span class="line">  <span class="attr">admin:</span> [<span class="string">&#x27;yourusername&#x27;</span>]              <span class="comment"># 填入管理员的 GitHub 用户名（可以是多个）</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">&#x27;zh-CN&#x27;</span>                    <span class="comment"># 语言设置（可选）</span></span><br><span class="line">  <span class="attr">labels:</span> [<span class="string">&#x27;Gitalk&#x27;</span>, <span class="string">&#x27;Comment&#x27;</span>]        <span class="comment"># Issue 标签（可选）</span></span><br><span class="line">  <span class="attr">perPage:</span> <span class="number">10</span>                          <span class="comment"># 每页评论数（可选）</span></span><br><span class="line">  <span class="attr">pagerDirection:</span> <span class="string">&#x27;last&#x27;</span>               <span class="comment"># 排序方式（可选）</span></span><br><span class="line">  <span class="attr">distractionFreeMode:</span> <span class="literal">false</span>           <span class="comment"># 是否启用无干扰模式（可选）</span></span><br><span class="line">  <span class="attr">createIssueManually:</span> <span class="literal">false</span>           <span class="comment"># 是否手动创建 Issue（可选）</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token comment" spellcheck="true"># Gitalk</span>
+<span class="token comment" spellcheck="true"># 基于 GitHub Issues</span>
+<span class="token comment" spellcheck="true"># Based on GitHub Issues</span>
+<span class="token comment" spellcheck="true"># https://github.com/gitalk/gitalk</span>
+<span class="token key atrule">gitalk</span><span class="token punctuation">:</span>
+  <span class="token key atrule">clientID</span><span class="token punctuation">:</span> <span class="token string">'Ov23liXXXXXXXXXXXXXX'</span>  <span class="token comment" spellcheck="true"># 填入你的 Client ID</span>
+  <span class="token key atrule">clientSecret</span><span class="token punctuation">:</span> <span class="token string">'你的Client Secret'</span>   <span class="token comment" spellcheck="true"># 填入你的 Client Secret</span>
+  <span class="token key atrule">repo</span><span class="token punctuation">:</span> <span class="token string">'yourusername.github.io'</span>      <span class="token comment" spellcheck="true"># 填入你的博客仓库名</span>
+  <span class="token key atrule">owner</span><span class="token punctuation">:</span> <span class="token string">'yourusername'</span>                <span class="token comment" spellcheck="true"># 填入你的 GitHub 用户名</span>
+  <span class="token key atrule">admin</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'yourusername'</span><span class="token punctuation">]</span>              <span class="token comment" spellcheck="true"># 填入管理员的 GitHub 用户名（可以是多个）</span>
+  <span class="token key atrule">language</span><span class="token punctuation">:</span> <span class="token string">'zh-CN'</span>                    <span class="token comment" spellcheck="true"># 语言设置（可选）</span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Gitalk'</span><span class="token punctuation">,</span> <span class="token string">'Comment'</span><span class="token punctuation">]</span>        <span class="token comment" spellcheck="true"># Issue 标签（可选）</span>
+  <span class="token key atrule">perPage</span><span class="token punctuation">:</span> <span class="token number">10                          </span><span class="token comment" spellcheck="true"># 每页评论数（可选）</span>
+  <span class="token key atrule">pagerDirection</span><span class="token punctuation">:</span> <span class="token string">'last'</span>               <span class="token comment" spellcheck="true"># 排序方式（可选）</span>
+  <span class="token key atrule">distractionFreeMode</span><span class="token punctuation">:</span> <span class="token boolean important">false           </span><span class="token comment" spellcheck="true"># 是否启用无干扰模式（可选）</span>
+  <span class="token key atrule">createIssueManually</span><span class="token punctuation">:</span> <span class="token boolean important">false           </span><span class="token comment" spellcheck="true"># 是否手动创建 Issue（可选）</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>参数说明：</strong></p>
 <ul>
 <li><code>clientID</code> 和 <code>clientSecret</code>：从第一步获取的 OAuth App 凭证</li>
@@ -468,26 +459,27 @@
 </blockquote>
 <hr>
 <h3 id="第三步：部署博客"><a href="#第三步：部署博客" class="headerlink" title="第三步：部署博客"></a>第三步：部署博客</h3><p>配置完成后，需要重新生成并部署博客。</p>
-<h4 id="3-1-清理旧文件"><a href="#3-1-清理旧文件" class="headerlink" title="3.1 清理旧文件"></a>3.1 清理旧文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-生成静态文件"><a href="#3-2-生成静态文件" class="headerlink" title="3.2 生成静态文件"></a>3.2 生成静态文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
-
+<h4 id="3-1-清理旧文件"><a href="#3-1-清理旧文件" class="headerlink" title="3.1 清理旧文件"></a>3.1 清理旧文件</h4><pre class="line-numbers language-bash"><code class="language-bash">hexo clean
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="3-2-生成静态文件"><a href="#3-2-生成静态文件" class="headerlink" title="3.2 生成静态文件"></a>3.2 生成静态文件</h4><pre class="line-numbers language-bash"><code class="language-bash">hexo generate
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>或简写为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-3-部署到-GitHub-Pages"><a href="#3-3-部署到-GitHub-Pages" class="headerlink" title="3.3 部署到 GitHub Pages"></a>3.3 部署到 GitHub Pages</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">hexo g
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="3-3-部署到-GitHub-Pages"><a href="#3-3-部署到-GitHub-Pages" class="headerlink" title="3.3 部署到 GitHub Pages"></a>3.3 部署到 GitHub Pages</h4><pre class="line-numbers language-bash"><code class="language-bash">hexo deploy
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>或简写为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">hexo d
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <blockquote>
 <p>💡 <strong>快捷命令</strong>：你也可以一次性执行：<code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code></p>
 </blockquote>
 <hr>
 <h3 id="第四步：初始化评论"><a href="#第四步：初始化评论" class="headerlink" title="第四步：初始化评论"></a>第四步：初始化评论</h3><p>部署完成后，访问你的博客文章页面。</p>
 <h4 id="4-1-首次访问"><a href="#4-1-首次访问" class="headerlink" title="4.1 首次访问"></a>4.1 首次访问</h4><p>第一次访问文章时，你会看到 Gitalk 评论区显示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">未找到相关的 Issues 进行评论</span><br><span class="line">请联系 @yourusername 初始化创建</span><br></pre></td></tr></table></figure>
-
+<pre><code>未找到相关的 Issues 进行评论
+请联系 @yourusername 初始化创建
+</code></pre>
 <h4 id="4-2-初始化评论"><a href="#4-2-初始化评论" class="headerlink" title="4.2 初始化评论"></a>4.2 初始化评论</h4><p>作为博客管理员，你需要：</p>
 <ol>
 <li>点击 <strong>使用 GitHub 登录</strong> 按钮</li>
@@ -496,13 +488,22 @@
 </ol>
 <p>此时，Gitalk 会自动在你的 GitHub 仓库中创建一个对应的 Issue。</p>
 <h4 id="4-3-验证成功"><a href="#4-3-验证成功" class="headerlink" title="4.3 验证成功"></a>4.3 验证成功</h4><p>初始化成功后，评论区会显示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">暂无评论</span><br></pre></td></tr></table></figure>
-
+<pre><code>暂无评论
+</code></pre>
 <p>现在，你和你的读者都可以在这里发表评论了！</p>
 <hr>
 <h2 id="🎨-效果展示"><a href="#🎨-效果展示" class="headerlink" title="🎨 效果展示"></a>🎨 效果展示</h2><p>成功集成后，你的博客文章底部会出现如下评论区：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────┐</span><br><span class="line">│  使用 GitHub 登录                        │</span><br><span class="line">├─────────────────────────────────────────┤</span><br><span class="line">│  [头像] 用户名                           │</span><br><span class="line">│  这是一条测试评论，支持 **Markdown** 语法 │</span><br><span class="line">│  ```python                               │</span><br><span class="line">│  print(&quot;Hello, Gitalk!&quot;)                 │</span><br><span class="line">│  ```                                     │</span><br><span class="line">│  2 小时前                                │</span><br><span class="line">└─────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
-
+<pre><code>┌─────────────────────────────────────────┐
+│  使用 GitHub 登录                        │
+├─────────────────────────────────────────┤
+│  [头像] 用户名                           │
+│  这是一条测试评论，支持 **Markdown** 语法 │
+│  ```python                               │
+│  print(&quot;Hello, Gitalk!&quot;)                 │
+│  ```                                     │
+│  2 小时前                                │
+└─────────────────────────────────────────┘
+</code></pre>
 <hr>
 <h2 id="🔧-常见问题与解决方案"><a href="#🔧-常见问题与解决方案" class="headerlink" title="🔧 常见问题与解决方案"></a>🔧 常见问题与解决方案</h2><h3 id="问题-1：评论区显示-“Error-Not-Found”"><a href="#问题-1：评论区显示-“Error-Not-Found”" class="headerlink" title="问题 1：评论区显示 “Error: Not Found”"></a>问题 1：评论区显示 “Error: Not Found”</h3><p><strong>原因</strong>：仓库名称或用户名配置错误。</p>
 <p><strong>解决方案</strong>：</p>
@@ -547,8 +548,15 @@
 <p><strong>解决方案</strong>：</p>
 <p>在你的 <code>.md</code> 文章文件的 <strong>Front-matter</strong>（文件头部的 <code>---</code> 包围的区域）中，手动添加一行 <code>comments: true</code>。</p>
 <p><strong>示例</strong>：</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 我的第一篇文章</span><br><span class="line">date: 2025-11-16 10:00:00</span><br><span class="line">tags: [Hexo, Blog]</span><br><span class="line"><span class="section">comments: true  # &lt;--- 添加这一行来开启评论</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">这是文章的正文部分...</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-markdown"><code class="language-markdown"><span class="token hr punctuation">---</span>
+title: 我的第一篇文章
+date: 2025-11-16 10:00:00
+tags: [Hexo, Blog]
+<span class="token title important">comments: true  # &lt;--- 添加这一行来开启评论
+<span class="token punctuation">---</span></span>
 
+这是文章的正文部分...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>排查过程回顾</strong>：</p>
 <p>就以本文为例，在排查过程中，我们确认了以下所有配置均无误：</p>
 <ol>
@@ -563,16 +571,21 @@
 <p><strong>步骤如下</strong>：</p>
 <ol>
 <li><p>找到主题的评论模板文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog/themes/fluid/layout/_partials/comments.ejs</span><br></pre></td></tr></table></figure>
+<pre><code>blog/themes/fluid/layout/_partials/comments.ejs
+</code></pre>
 </li>
 <li><p>打开文件，找到第一行代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if ((!is_post() &amp;&amp; !is_page()) || (is_post() &amp;&amp; theme.post.comments.enable &amp;&amp; page.comments) || (is_page() &amp;&amp; page.comments)) &#123; %&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-ejs"><code class="language-ejs"><% if ((!is_post() && !is_page()) || (is_post() && theme.post.comments.enable && page.comments) || (is_page() && page.comments)) &#123; %>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>将 <code>&amp;&amp; page.comments</code> 条件移除，修改为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if ((!is_post() &amp;&amp; !is_page()) || (is_post() &amp;&amp; theme.post.comments.enable) || (is_page() &amp;&amp; page.comments)) &#123; %&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-ejs"><code class="language-ejs"><% if ((!is_post() && !is_page()) || (is_post() && theme.post.comments.enable) || (is_page() && page.comments)) &#123; %>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>保存文件，重新生成并部署博客：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure></li>
+<pre class="line-numbers language-bash"><code class="language-bash">hexo clean <span class="token operator">&amp;&amp;</span> hexo g <span class="token operator">&amp;&amp;</span> hexo d
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
 </ol>
 <p><strong>修改说明</strong>：</p>
 <ul>
@@ -600,12 +613,23 @@
 </blockquote>
 <hr>
 <h2 id="💡-进阶技巧"><a href="#💡-进阶技巧" class="headerlink" title="💡 进阶技巧"></a>💡 进阶技巧</h2><h3 id="技巧-1：自定义评论区样式"><a href="#技巧-1：自定义评论区样式" class="headerlink" title="技巧 1：自定义评论区样式"></a>技巧 1：自定义评论区样式</h3><p>你可以通过自定义 CSS 来调整 Gitalk 的外观。在主题的自定义样式文件中添加：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 自定义 Gitalk 样式 */</span></span><br><span class="line"><span class="selector-class">.gt-container</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;Microsoft YaHei&#x27;</span>, sans-serif;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.gt-header-textarea</span> &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">8px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.gt-btn-public</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#0084ff</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css"><code class="language-css"><span class="token comment" spellcheck="true">/* 自定义 Gitalk 样式 */</span>
+<span class="token number">.</span>gt-container &amp;<span class="token hexcode">#123</span><span class="token punctuation">;</span>
+  <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">'Microsoft YaHei'</span>, sans-serif<span class="token punctuation">;</span>
+&amp;<span class="token hexcode">#125</span><span class="token punctuation">;</span>
 
+<span class="token number">.</span>gt-header-textarea &amp;<span class="token hexcode">#123</span><span class="token punctuation">;</span>
+  <span class="token property">border-radius</span><span class="token punctuation">:</span> <span class="token number">8</span>px<span class="token punctuation">;</span>
+&amp;<span class="token hexcode">#125</span><span class="token punctuation">;</span>
+
+<span class="token number">.</span>gt-btn-public &amp;<span class="token hexcode">#123</span><span class="token punctuation">;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> <span class="token hexcode">#0084ff</span><span class="token punctuation">;</span>
+&amp;<span class="token hexcode">#125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 <h3 id="技巧-2：设置评论通知"><a href="#技巧-2：设置评论通知" class="headerlink" title="技巧 2：设置评论通知"></a>技巧 2：设置评论通知</h3><p>当有新评论时，你会收到 GitHub 的邮件通知。你可以在 GitHub 设置中调整通知偏好：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GitHub 头像 → Settings → Notifications → Email notification preferences</span><br></pre></td></tr></table></figure>
-
+<pre><code>GitHub 头像 → Settings → Notifications → Email notification preferences
+</code></pre>
 <hr>
 <h3 id="技巧-3：批量初始化评论"><a href="#技巧-3：批量初始化评论" class="headerlink" title="技巧 3：批量初始化评论"></a>技巧 3：批量初始化评论</h3><p>如果你有很多文章需要初始化评论，可以使用自动化脚本。访问每篇文章并登录一次即可自动创建 Issue。</p>
 <hr>
