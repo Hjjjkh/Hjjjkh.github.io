@@ -102,13 +102,13 @@
       
       <tag>图论</tag>
       
-      <tag>算法进阶</tag>
-      
       <tag>强连通分量</tag>
       
       <tag>SCC</tag>
       
       <tag>Tarjan算法</tag>
+      
+      <tag>算法进阶</tag>
       
     </tags>
     
@@ -213,13 +213,13 @@
       
       <tag>图论</tag>
       
-      <tag>贪心算法</tag>
-      
       <tag>最短路径</tag>
       
       <tag>Dijkstra算法</tag>
       
       <tag>SPFA算法</tag>
+      
+      <tag>贪心算法</tag>
       
       <tag>动态规划</tag>
       
@@ -250,6 +250,10 @@
       
       <tag>图论</tag>
       
+      <tag>贪心算法</tag>
+      
+      <tag>算法进阶</tag>
+      
       <tag>最小生成树</tag>
       
       <tag>MST</tag>
@@ -257,10 +261,6 @@
       <tag>Kruskal</tag>
       
       <tag>Prim</tag>
-      
-      <tag>贪心算法</tag>
-      
-      <tag>算法进阶</tag>
       
     </tags>
     
@@ -287,9 +287,9 @@
     
     <tags>
       
-      <tag>数据结构</tag>
-      
       <tag>算法基础</tag>
+      
+      <tag>数据结构</tag>
       
       <tag>DFS</tag>
       
@@ -814,15 +814,15 @@
       
       <tag>递归</tag>
       
-      <tag>快速排序</tag>
-      
       <tag>归并排序</tag>
       
-      <tag>算法思想</tag>
+      <tag>快速排序</tag>
       
       <tag>分治算法</tag>
       
       <tag>Divide and Conquer</tag>
+      
+      <tag>算法思想</tag>
       
     </tags>
     
@@ -1026,11 +1026,11 @@
       
       <tag>算法</tag>
       
-      <tag>分治</tag>
-      
       <tag>归并排序</tag>
       
       <tag>Merge Sort</tag>
+      
+      <tag>分治</tag>
       
       <tag>稳定排序</tag>
       
@@ -1094,11 +1094,11 @@
       
       <tag>算法</tag>
       
+      <tag>分治</tag>
+      
       <tag>快速排序</tag>
       
       <tag>Quick Sort</tag>
-      
-      <tag>分治</tag>
       
       <tag>O(n log n)</tag>
       
@@ -1491,11 +1491,11 @@
       
       <tag>贪心算法</tag>
       
+      <tag>算法思想</tag>
+      
       <tag>Greedy Algorithm</tag>
       
       <tag>算法设计</tag>
-      
-      <tag>算法思想</tag>
       
       <tag>面试算法</tag>
       
