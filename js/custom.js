@@ -1,124 +1,131 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Create MetingJS element
-  var meting = document.createElement('meting-js');
-  meting.setAttribute('server', 'netease');
-  meting.setAttribute('type', 'playlist');
-  meting.setAttribute('id', '2829883282');
-  meting.setAttribute('fixed', 'true');
-  meting.setAttribute('mini', 'true');
-  meting.setAttribute('autoplay', 'false');
-  meting.setAttribute('loop', 'all');
-  meting.setAttribute('order', 'random');
-  meting.setAttribute('preload', 'auto');
-  meting.setAttribute('list-folded', 'true');
-  meting.setAttribute('lrc-type', '3');
-  meting.setAttribute('theme', '#49b1f5');
-
-  document.body.appendChild(meting);
-
-  // Use MutationObserver to wait for the aplayer element to be created
-  var observer = new MutationObserver(function(mutations) {
-    var aplayer = document.querySelector('.aplayer.aplayer-fixed');
-    if (aplayer) {
-      observer.disconnect(); // Stop observing once the player is found
-
-      var isDragging = false;
-      var offsetX, offsetY;
-
-      // Set initial position
-      aplayer.style.left = '15px';
-      aplayer.style.bottom = '15px';
-      aplayer.style.right = 'auto';
-      aplayer.style.top = 'auto';
-
-      // Use the entire player as the drag handle for simplicity
-      aplayer.addEventListener('mousedown', function(e) {
-        // Prevent dragging when clicking on interactive elements
-        if (e.target.closest('.aplayer-list') || e.target.closest('.aplayer-bar-wrap') || e.target.closest('.aplayer-button')) {
-          return;
-        }
-
-        // Prevent default browser drag behavior which causes the 'ghost image'
-        e.preventDefault();
-
-        isDragging = true;
-        offsetX = e.clientX - aplayer.getBoundingClientRect().left;
-        offsetY = e.clientY - aplayer.getBoundingClientRect().top;
-        aplayer.style.transition = 'none';
-        aplayer.style.cursor = 'grabbing';
-        aplayer.classList.add('dragging');
-      });
-
-      document.addEventListener('mousemove', function(e) {
-        if (isDragging) {
-          var x = e.clientX - offsetX;
-          var y = e.clientY - offsetY;
-
-          aplayer.style.left = x + 'px';
-          aplayer.style.top = y + 'px';
-          aplayer.style.bottom = 'auto';
-          aplayer.style.right = 'auto';
-        }
-      });
-
-      document.addEventListener('mouseup', function(e) {
-        if (isDragging) {
-          isDragging = false;
-          aplayer.style.transition = 'all 0.3s ease';
-          aplayer.style.cursor = 'grab';
-          aplayer.classList.remove('dragging');
-
-          var screenWidth = window.innerWidth;
-          var screenHeight = window.innerHeight;
-          var playerWidth = aplayer.offsetWidth;
-          var playerHeight = aplayer.offsetHeight;
-          var rect = aplayer.getBoundingClientRect();
-
-          // Snap to the nearest edge (left or right)
-          if (rect.left + playerWidth / 2 > screenWidth / 2) {
-            aplayer.style.left = (screenWidth - playerWidth - 15) + 'px';
-          } else {
-            aplayer.style.left = '15px';
-          }
-
-          // Ensure player stays within viewport vertically
-          var currentTop = rect.top;
-          if (currentTop < 15) {
-            aplayer.style.top = '15px';
-          } else if (currentTop + playerHeight > screenHeight - 15) {
-            aplayer.style.top = (screenHeight - playerHeight - 15) + 'px';
-          }
-        }
-      });
+  // --- MetingJS Player Initialization ---
+  function initMetingPlayer() {
+    if (document.querySelector('meting-js')) {
+      return;
     }
-  });
 
-  observer.observe(document.body, { childList: true, subtree: true });
+    var meting = document.createElement('meting-js');
+    meting.setAttribute('server', 'netease');
+    meting.setAttribute('type', 'playlist');
+    meting.setAttribute('id', '2829883282');
+    meting.setAttribute('fixed', 'true');
+    meting.setAttribute('mini', 'true');
+    meting.setAttribute('autoplay', 'false');
+    meting.setAttribute('loop', 'all');
+    meting.setAttribute('order', 'random');
+    meting.setAttribute('preload', 'auto');
+    meting.setAttribute('list-folded', 'true');
+    meting.setAttribute('lrc-type', '3');
+    meting.setAttribute('theme', '#49b1f5');
 
-  // --- Code Highlight Theme Toggler ---
-  const lightTheme = document.getElementById('prism-theme-light');
-  const darkTheme = document.getElementById('prism-theme-dark');
-
-  function toggleHighlightTheme(isDark) {
-    lightTheme.disabled = isDark;
-    darkTheme.disabled = !isDark;
+    document.body.appendChild(meting);
   }
 
-  const htmlEl = document.documentElement;
+  // --- Draggable APlayer Logic ---
+  function makePlayerDraggable() {
+    const observer = new MutationObserver(function(mutations) {
+      const aplayer = document.querySelector('.aplayer.aplayer-fixed');
+      if (aplayer) {
+        observer.disconnect(); // Player found, stop observing
 
-  // Initial check
-  toggleHighlightTheme(htmlEl.getAttribute('data-user-color-scheme') === 'dark');
+        let isDragging = false;
+        let offsetX, offsetY;
 
-  // Observe for theme changes
-  const themeObserver = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'data-user-color-scheme') {
-        toggleHighlightTheme(htmlEl.getAttribute('data-user-color-scheme') === 'dark');
+        // Set initial position using top and left for consistency
+        aplayer.style.left = '15px';
+        aplayer.style.top = (window.innerHeight - aplayer.offsetHeight - 15) + 'px';
+        aplayer.style.bottom = 'auto';
+        aplayer.style.right = 'auto';
+
+        const onMouseDown = (e) => {
+          if (e.target.closest('.aplayer-list, .aplayer-bar-wrap, .aplayer-button, .aplayer-volume-wrap, .aplayer-lrc')) {
+            return;
+          }
+          e.preventDefault();
+          isDragging = true;
+          offsetX = e.clientX - aplayer.getBoundingClientRect().left;
+          offsetY = e.clientY - aplayer.getBoundingClientRect().top;
+          aplayer.style.transition = 'none';
+          aplayer.classList.add('dragging');
+        };
+
+        const onMouseMove = (e) => {
+          if (!isDragging) return;
+          let x = e.clientX - offsetX;
+          let y = e.clientY - offsetY;
+          aplayer.style.left = x + 'px';
+          aplayer.style.top = y + 'px';
+        };
+
+        const onMouseUp = () => {
+          if (!isDragging) return;
+          isDragging = false;
+          aplayer.style.transition = 'all 0.3s ease';
+          aplayer.classList.remove('dragging');
+
+          const rect = aplayer.getBoundingClientRect();
+          const screenWidth = window.innerWidth;
+          const screenHeight = window.innerHeight;
+
+          let finalLeft = rect.left;
+          let finalTop = rect.top;
+
+          // Snap to left/right edge
+          if (rect.left + rect.width / 2 > screenWidth / 2) {
+            finalLeft = screenWidth - rect.width - 15;
+          } else {
+            finalLeft = 15;
+          }
+
+          // Boundary check for top/bottom
+          if (finalTop < 15) {
+            finalTop = 15;
+          } else if (finalTop + rect.height > screenHeight - 15) {
+            finalTop = screenHeight - rect.height - 15;
+          }
+
+          aplayer.style.left = finalLeft + 'px';
+          aplayer.style.top = finalTop + 'px';
+        };
+
+        aplayer.addEventListener('mousedown', onMouseDown);
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
       }
     });
-  });
 
-  themeObserver.observe(htmlEl, {
-    attributes: true
-  });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // --- Code Highlight Theme Toggler ---
+  function initHighlightThemeToggler() {
+    const lightTheme = document.getElementById('prism-theme-light');
+    const darkTheme = document.getElementById('prism-theme-dark');
+    if (!lightTheme || !darkTheme) return;
+
+    const htmlEl = document.documentElement;
+
+    function toggleHighlightTheme(isDark) {
+      lightTheme.disabled = isDark;
+      darkTheme.disabled = !isDark;
+    }
+
+    toggleHighlightTheme(htmlEl.getAttribute('data-user-color-scheme') === 'dark');
+
+    const themeObserver = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.attributeName === 'data-user-color-scheme') {
+          toggleHighlightTheme(htmlEl.getAttribute('data-user-color-scheme') === 'dark');
+        }
+      });
+    });
+
+    themeObserver.observe(htmlEl, { attributes: true });
+  }
+
+  // --- Main Execution ---
+  initMetingPlayer();
+  makePlayerDraggable();
+  initHighlightThemeToggler();
 });
