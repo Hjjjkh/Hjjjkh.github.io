@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.closest('.aplayer-list') || e.target.closest('.aplayer-bar-wrap') || e.target.closest('.aplayer-button')) {
           return;
         }
+
+        // Prevent default browser drag behavior which causes the 'ghost image'
+        e.preventDefault();
+
         isDragging = true;
         offsetX = e.clientX - aplayer.getBoundingClientRect().left;
         offsetY = e.clientY - aplayer.getBoundingClientRect().top;
