@@ -94,4 +94,31 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
+
+  // --- Code Highlight Theme Toggler ---
+  const lightTheme = document.getElementById('prism-theme-light');
+  const darkTheme = document.getElementById('prism-theme-dark');
+
+  function toggleHighlightTheme(isDark) {
+    lightTheme.disabled = isDark;
+    darkTheme.disabled = !isDark;
+  }
+
+  const htmlEl = document.documentElement;
+
+  // Initial check
+  toggleHighlightTheme(htmlEl.getAttribute('data-user-color-scheme') === 'dark');
+
+  // Observe for theme changes
+  const themeObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-user-color-scheme') {
+        toggleHighlightTheme(htmlEl.getAttribute('data-user-color-scheme') === 'dark');
+      }
+    });
+  });
+
+  themeObserver.observe(htmlEl, {
+    attributes: true
+  });
 });
