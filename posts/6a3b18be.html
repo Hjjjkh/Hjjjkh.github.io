@@ -31,7 +31,7 @@
 <meta property="og:description" content="字符串哈希是一种将任意长度的字符串映射为固定长度整数的强大技术。通过巧妙的滚动哈希（Rabin-Karp 算法核心），它能实现 O(1) 时间复杂度的子串比较，在处理大规模字符串问题时展现出惊人的效率。本文将带你从零开始，深入理解字符串哈希的原理、实现、冲突处理（双哈希），以及在子串搜索、重复子串查找等问题中的经典应用。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-16T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.657Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.867Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法基础">
 <meta property="article:tag" content="字符串">
@@ -79,6 +79,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -102,8 +107,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -327,7 +331,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -361,63 +365,8 @@
 <h3 id="终极对策：双哈希-Double-Hashing"><a href="#终极对策：双哈希-Double-Hashing" class="headerlink" title="终极对策：双哈希 (Double Hashing)"></a>终极对策：双哈希 (Double Hashing)</h3><p>即便我们精心挑选了 <code>base</code> 和 <code>mod</code>，在面对精心构造的数据时，依然可能发生冲突。为了让哈希几乎不可能被卡掉，我们可以采用<strong>双哈希</strong>或<strong>多哈希</strong>策略。</p>
 <p>方法很简单：<strong>使用两组不同的 <code>(base, mod)</code> 来计算两个独立的哈希值</strong>。当且仅当两个字符串的<strong>两组哈希值都完全相等</strong>时，我们才认为这两个字符串是相同的。这极大地降低了冲突的概率。</p>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面是一个使用双哈希实现的字符串哈希模板，它可以 <code>O(1)</code> 查询任意子串的哈希值。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">StringHasher</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>s <span class="token operator">=</span> s
-        n <span class="token operator">=</span> len<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StringHasher</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, s: <span class="hljs-built_in">str</span></span>):<br>        <span class="hljs-variable language_">self</span>.s = s<br>        n = <span class="hljs-built_in">len</span>(s)<br><br>        <span class="hljs-comment"># --- 双哈希配置 ---</span><br>        <span class="hljs-variable language_">self</span>.BASE1, <span class="hljs-variable language_">self</span>.MOD1 = <span class="hljs-number">131</span>, <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span><br>        <span class="hljs-variable language_">self</span>.BASE2, <span class="hljs-variable language_">self</span>.MOD2 = <span class="hljs-number">13331</span>, <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">9</span><br><br>        <span class="hljs-comment"># --- 预计算幂次方 ---</span><br>        <span class="hljs-variable language_">self</span>.pow1 = [<span class="hljs-number">1</span>] * (n + <span class="hljs-number">1</span>)<br>        <span class="hljs-variable language_">self</span>.pow2 = [<span class="hljs-number">1</span>] * (n + <span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):<br>            <span class="hljs-variable language_">self</span>.pow1[i] = (<span class="hljs-variable language_">self</span>.pow1[i-<span class="hljs-number">1</span>] * <span class="hljs-variable language_">self</span>.BASE1) % <span class="hljs-variable language_">self</span>.MOD1<br>            <span class="hljs-variable language_">self</span>.pow2[i] = (<span class="hljs-variable language_">self</span>.pow2[i-<span class="hljs-number">1</span>] * <span class="hljs-variable language_">self</span>.BASE2) % <span class="hljs-variable language_">self</span>.MOD2<br><br>        <span class="hljs-comment"># --- 预计算前缀哈希 ---</span><br>        <span class="hljs-variable language_">self</span>.h1 = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)<br>        <span class="hljs-variable language_">self</span>.h2 = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>            <span class="hljs-comment"># 将字符映射为 1-26</span><br>            char_val = <span class="hljs-built_in">ord</span>(s[i]) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>) + <span class="hljs-number">1</span> <br>            <span class="hljs-variable language_">self</span>.h1[i+<span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.h1[i] * <span class="hljs-variable language_">self</span>.BASE1 + char_val) % <span class="hljs-variable language_">self</span>.MOD1<br>            <span class="hljs-variable language_">self</span>.h2[i+<span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.h2[i] * <span class="hljs-variable language_">self</span>.BASE2 + char_val) % <span class="hljs-variable language_">self</span>.MOD2<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_hash</span>(<span class="hljs-params">self, l: <span class="hljs-built_in">int</span>, r: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>]:<br>        <span class="hljs-string">&quot;&quot;&quot;获取闭区间 [l, r] 的子串哈希值 (0-indexed)&quot;&quot;&quot;</span><br>        length = r - l + <span class="hljs-number">1</span><br>        <span class="hljs-comment"># 计算第一组哈希值</span><br>        hash1 = (<span class="hljs-variable language_">self</span>.h1[r+<span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.h1[l] * <span class="hljs-variable language_">self</span>.pow1[length] % <span class="hljs-variable language_">self</span>.MOD1 + <span class="hljs-variable language_">self</span>.MOD1) % <span class="hljs-variable language_">self</span>.MOD1<br>        <span class="hljs-comment"># 计算第二组哈希值</span><br>        hash2 = (<span class="hljs-variable language_">self</span>.h2[r+<span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.h2[l] * <span class="hljs-variable language_">self</span>.pow2[length] % <span class="hljs-variable language_">self</span>.MOD2 + <span class="hljs-variable language_">self</span>.MOD2) % <span class="hljs-variable language_">self</span>.MOD2<br>        <span class="hljs-keyword">return</span> (hash1, hash2)<br><br><span class="hljs-comment"># --- 案例：查找字符串中所有长度为 L 的重复子串 ---</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_duplicate_substrings</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span>, L: <span class="hljs-built_in">int</span></span>):<br>    n = <span class="hljs-built_in">len</span>(s)<br>    <span class="hljs-keyword">if</span> n &lt; L:<br>        <span class="hljs-keyword">return</span><br><br>    hasher = StringHasher(s)<br>    seen = &#123;&#125;<br>    result = <span class="hljs-built_in">set</span>()<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - L + <span class="hljs-number">1</span>):<br>        sub_hash = hasher.get_hash(i, i + L - <span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">if</span> sub_hash <span class="hljs-keyword">in</span> seen:<br>            result.add(s[i : i + L])<br>        seen[sub_hash] = i<br>    <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;在 &#x27;<span class="hljs-subst">&#123;s&#125;</span>&#x27; 中找到长度为 <span class="hljs-subst">&#123;L&#125;</span> 的重复子串: <span class="hljs-subst">&#123;result&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># --- 测试 ---</span><br>find_duplicate_substrings(<span class="hljs-string">&quot;abacaba&quot;</span>, <span class="hljs-number">3</span>)  <span class="hljs-comment"># &#123;&#x27;aba&#x27;&#125;</span><br>find_duplicate_substrings(<span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-number">2</span>)   <span class="hljs-comment"># &#123;&#x27;an&#x27;, &#x27;na&#x27;&#125;</span><br>find_duplicate_substrings(<span class="hljs-string">&quot;mississippi&quot;</span>, <span class="hljs-number">4</span>) <span class="hljs-comment"># &#123;&#x27;issi&#x27;&#125;</span><br></code></pre></td></tr></table></figure>
 
-        <span class="token comment" spellcheck="true"># --- 双哈希配置 ---</span>
-        self<span class="token punctuation">.</span>BASE1<span class="token punctuation">,</span> self<span class="token punctuation">.</span>MOD1 <span class="token operator">=</span> <span class="token number">131</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token operator">**</span><span class="token number">9</span> <span class="token operator">+</span> <span class="token number">7</span>
-        self<span class="token punctuation">.</span>BASE2<span class="token punctuation">,</span> self<span class="token punctuation">.</span>MOD2 <span class="token operator">=</span> <span class="token number">13331</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token operator">**</span><span class="token number">9</span> <span class="token operator">+</span> <span class="token number">9</span>
-
-        <span class="token comment" spellcheck="true"># --- 预计算幂次方 ---</span>
-        self<span class="token punctuation">.</span>pow1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>pow2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            self<span class="token punctuation">.</span>pow1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>pow1<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span> <span class="token operator">*</span> self<span class="token punctuation">.</span>BASE1<span class="token punctuation">)</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD1
-            self<span class="token punctuation">.</span>pow2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>pow2<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span> <span class="token operator">*</span> self<span class="token punctuation">.</span>BASE2<span class="token punctuation">)</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD2
-
-        <span class="token comment" spellcheck="true"># --- 预计算前缀哈希 ---</span>
-        self<span class="token punctuation">.</span>h1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>h2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true"># 将字符映射为 1-26</span>
-            char_val <span class="token operator">=</span> ord<span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span> ord<span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span> 
-            self<span class="token punctuation">.</span>h1<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>h1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> self<span class="token punctuation">.</span>BASE1 <span class="token operator">+</span> char_val<span class="token punctuation">)</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD1
-            self<span class="token punctuation">.</span>h2<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>h2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> self<span class="token punctuation">.</span>BASE2 <span class="token operator">+</span> char_val<span class="token punctuation">)</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD2
-
-    <span class="token keyword">def</span> <span class="token function">get_hash</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> l<span class="token punctuation">:</span> int<span class="token punctuation">,</span> r<span class="token punctuation">:</span> int<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> tuple<span class="token punctuation">[</span>int<span class="token punctuation">,</span> int<span class="token punctuation">]</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""获取闭区间 [l, r] 的子串哈希值 (0-indexed)"""</span>
-        length <span class="token operator">=</span> r <span class="token operator">-</span> l <span class="token operator">+</span> <span class="token number">1</span>
-        <span class="token comment" spellcheck="true"># 计算第一组哈希值</span>
-        hash1 <span class="token operator">=</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>h1<span class="token punctuation">[</span>r<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">-</span> self<span class="token punctuation">.</span>h1<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">*</span> self<span class="token punctuation">.</span>pow1<span class="token punctuation">[</span>length<span class="token punctuation">]</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD1 <span class="token operator">+</span> self<span class="token punctuation">.</span>MOD1<span class="token punctuation">)</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD1
-        <span class="token comment" spellcheck="true"># 计算第二组哈希值</span>
-        hash2 <span class="token operator">=</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>h2<span class="token punctuation">[</span>r<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">-</span> self<span class="token punctuation">.</span>h2<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">*</span> self<span class="token punctuation">.</span>pow2<span class="token punctuation">[</span>length<span class="token punctuation">]</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD2 <span class="token operator">+</span> self<span class="token punctuation">.</span>MOD2<span class="token punctuation">)</span> <span class="token operator">%</span> self<span class="token punctuation">.</span>MOD2
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>hash1<span class="token punctuation">,</span> hash2<span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># --- 案例：查找字符串中所有长度为 L 的重复子串 ---</span>
-<span class="token keyword">def</span> <span class="token function">find_duplicate_substrings</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> str<span class="token punctuation">,</span> L<span class="token punctuation">:</span> int<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    n <span class="token operator">=</span> len<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-    <span class="token keyword">if</span> n <span class="token operator">&lt;</span> L<span class="token punctuation">:</span>
-        <span class="token keyword">return</span>
-
-    hasher <span class="token operator">=</span> StringHasher<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-    seen <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;&amp;#125;</span>
-    result <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n <span class="token operator">-</span> L <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        sub_hash <span class="token operator">=</span> hasher<span class="token punctuation">.</span>get_hash<span class="token punctuation">(</span>i<span class="token punctuation">,</span> i <span class="token operator">+</span> L <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        <span class="token keyword">if</span> sub_hash <span class="token keyword">in</span> seen<span class="token punctuation">:</span>
-            result<span class="token punctuation">.</span>add<span class="token punctuation">(</span>s<span class="token punctuation">[</span>i <span class="token punctuation">:</span> i <span class="token operator">+</span> L<span class="token punctuation">]</span><span class="token punctuation">)</span>
-        seen<span class="token punctuation">[</span>sub_hash<span class="token punctuation">]</span> <span class="token operator">=</span> i
-    
-    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"在 '&amp;#123;s&amp;#125;' 中找到长度为 &amp;#123;L&amp;#125; 的重复子串: &amp;#123;result&amp;#125;"</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># --- 测试 ---</span>
-find_duplicate_substrings<span class="token punctuation">(</span><span class="token string">"abacaba"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># &amp;#123;'aba'&amp;#125;</span>
-find_duplicate_substrings<span class="token punctuation">(</span><span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true"># &amp;#123;'an', 'na'&amp;#125;</span>
-find_duplicate_substrings<span class="token punctuation">(</span><span class="token string">"mississippi"</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># &amp;#123;'issi'&amp;#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><ul>
 <li><strong>预处理时间复杂度</strong>: <code>O(N)</code>，其中 <code>N</code> 是字符串的长度。我们需要遍历一次字符串来计算前缀哈希和幂次方。</li>
 <li><strong>查询时间复杂度</strong>: <code>O(1)</code>。计算任意子串的哈希值只需要几次数学运算。</li>
@@ -548,9 +497,9 @@ find_duplicate_substrings<span class="token punctuation">(</span><span class="to
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/5c507bf8" title="Part 7.4：数论算法——从质数到密码学的基石">
+                      <a href="/posts/4a17b156" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Part 7.4：数论算法——从质数到密码学的基石</span>
+                        <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -570,50 +519,6 @@ find_duplicate_substrings<span class="token punctuation">(</span><span class="to
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -641,6 +546,9 @@ find_duplicate_substrings<span class="token punctuation">(</span><span class="to
 
 
 
+
+
+  
 
 
 

@@ -31,7 +31,7 @@
 <meta property="og:description" content="动态规划是算法学习中的重要一环，也是面试的高频考点。本文将对整个 DP 系列进行总结，为你提炼出学习和解决 DP 问题的通用方法论，包括如何识别 DP 问题、如何定义状态、如何推导状态转移方程，以及常见的 DP 优化技巧，帮助你建立起系统化的 DP 思维框架。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-15T15:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.840Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.858Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="动态规划">
 <meta property="article:tag" content="DP">
@@ -78,6 +78,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -101,8 +106,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -326,7 +330,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -448,58 +452,28 @@
 </ul>
 <h2 id="三、DP-的常见分类与模板"><a href="#三、DP-的常见分类与模板" class="headerlink" title="三、DP 的常见分类与模板"></a>三、DP 的常见分类与模板</h2><h3 id="1-线性-DP"><a href="#1-线性-DP" class="headerlink" title="1. 线性 DP"></a>1. 线性 DP</h3><p><strong>特点</strong>：状态在一维或二维的线性空间上转移。</p>
 <p><strong>模板</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 一维线性 DP</span>
-dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-dp<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> base_case
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> f<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token keyword">for</span> j <span class="token operator">&lt;</span> i<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 一维线性 DP</span><br>dp = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)<br>dp[<span class="hljs-number">0</span>] = base_case<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):<br>    dp[i] = f(dp[j] <span class="hljs-keyword">for</span> j &lt; i)<br></code></pre></td></tr></table></figure>
+
 <p><strong>代表问题</strong>：LIS、爬楼梯、打家劫舍。</p>
 <h3 id="2-背包-DP"><a href="#2-背包-DP" class="headerlink" title="2. 背包 DP"></a>2. 背包 DP</h3><p><strong>特点</strong>：涉及”选或不选”的决策，通常有容量限制。</p>
 <p><strong>模板</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 0-1 背包</span>
-dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>W <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> W <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> j <span class="token operator">&lt;</span> weight<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-            dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> dp<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> max<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> dp<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span>weight<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">+</span> value<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 0-1 背包</span><br>dp = [[<span class="hljs-number">0</span>] * (W + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>)]<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):<br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, W + <span class="hljs-number">1</span>):<br>        <span class="hljs-keyword">if</span> j &lt; weight[i-<span class="hljs-number">1</span>]:<br>            dp[i][j] = dp[i-<span class="hljs-number">1</span>][j]<br>        <span class="hljs-keyword">else</span>:<br>            dp[i][j] = <span class="hljs-built_in">max</span>(dp[i-<span class="hljs-number">1</span>][j], dp[i-<span class="hljs-number">1</span>][j-weight[i-<span class="hljs-number">1</span>]] + value[i-<span class="hljs-number">1</span>])<br></code></pre></td></tr></table></figure>
+
 <p><strong>代表问题</strong>：0-1 背包、完全背包、多重背包。</p>
 <h3 id="3-区间-DP"><a href="#3-区间-DP" class="headerlink" title="3. 区间 DP"></a>3. 区间 DP</h3><p><strong>特点</strong>：状态定义在一个区间 <code>[i, j]</code> 上，通过枚举分割点 <code>k</code> 来转移。</p>
 <p><strong>模板</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python">dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token comment" spellcheck="true"># 初始化 dp[i][i]</span>
-<span class="token keyword">for</span> length <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n <span class="token operator">-</span> length <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        j <span class="token operator">=</span> i <span class="token operator">+</span> length <span class="token operator">-</span> <span class="token number">1</span>
-        dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> min<span class="token operator">/</span>max<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">+</span> dp<span class="token punctuation">[</span>k<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> cost <span class="token keyword">for</span> k <span class="token keyword">in</span> range<span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python">dp = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]<br><span class="hljs-comment"># 初始化 dp[i][i]</span><br><span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n + <span class="hljs-number">1</span>):<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - length + <span class="hljs-number">1</span>):<br>        j = i + length - <span class="hljs-number">1</span><br>        dp[i][j] = <span class="hljs-built_in">min</span>/<span class="hljs-built_in">max</span>(dp[i][k] + dp[k+<span class="hljs-number">1</span>][j] + cost <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, j))<br></code></pre></td></tr></table></figure>
+
 <p><strong>代表问题</strong>：石子合并、矩阵链乘法、最长回文子序列。</p>
 <h3 id="4-树形-DP"><a href="#4-树形-DP" class="headerlink" title="4. 树形 DP"></a>4. 树形 DP</h3><p><strong>特点</strong>：在树形结构上进行 DP，通过 DFS（后序遍历）实现状态转移。</p>
 <p><strong>模板</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">dfs</span><span class="token punctuation">(</span>u<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    dp<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    dp<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    <span class="token keyword">for</span> v <span class="token keyword">in</span> children<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">:</span>
-        dfs<span class="token punctuation">(</span>v<span class="token punctuation">)</span>
-        dp<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+=</span> f<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">)</span>
-        dp<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+=</span> g<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">u</span>):<br>    dp[u][<span class="hljs-number">0</span>] = ...<br>    dp[u][<span class="hljs-number">1</span>] = ...<br>    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> children[u]:<br>        dfs(v)<br>        dp[u][<span class="hljs-number">0</span>] += f(dp[v])<br>        dp[u][<span class="hljs-number">1</span>] += g(dp[v])<br></code></pre></td></tr></table></figure>
+
 <p><strong>代表问题</strong>：树的最大独立集、树的直径、树的重心。</p>
 <h3 id="5-状态压缩-DP"><a href="#5-状态压缩-DP" class="headerlink" title="5. 状态压缩 DP"></a>5. 状态压缩 DP</h3><p><strong>特点</strong>：用二进制位表示集合状态，适用于 <code>n &lt;= 20</code> 的组合优化问题。</p>
 <p><strong>模板</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python">dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>inf<span class="token punctuation">]</span> <span class="token operator">*</span> n <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> n<span class="token punctuation">)</span><span class="token punctuation">]</span>
-dp<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
-<span class="token keyword">for</span> mask <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>mask <span class="token operator">>></span> i<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">:</span>
-            <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-                <span class="token keyword">if</span> j <span class="token operator">!=</span> i <span class="token operator">and</span> <span class="token punctuation">(</span>mask <span class="token operator">>></span> j<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">:</span>
-                    prev_mask <span class="token operator">=</span> mask <span class="token operator">^</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> i<span class="token punctuation">)</span>
-                    dp<span class="token punctuation">[</span>mask<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> min<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>mask<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> dp<span class="token punctuation">[</span>prev_mask<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> cost<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python">dp = [[inf] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span> &lt;&lt; n)]<br>dp[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> mask <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span> &lt;&lt; n):<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        <span class="hljs-keyword">if</span> (mask &gt;&gt; i) &amp; <span class="hljs-number">1</span>:<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>                <span class="hljs-keyword">if</span> j != i <span class="hljs-keyword">and</span> (mask &gt;&gt; j) &amp; <span class="hljs-number">1</span>:<br>                    prev_mask = mask ^ (<span class="hljs-number">1</span> &lt;&lt; i)<br>                    dp[mask][i] = <span class="hljs-built_in">min</span>(dp[mask][i], dp[prev_mask][j] + cost[j][i])<br></code></pre></td></tr></table></figure>
+
 <p><strong>代表问题</strong>：TSP、哈密顿路径、任务分配。</p>
 <h2 id="四、DP-的常见优化技巧"><a href="#四、DP-的常见优化技巧" class="headerlink" title="四、DP 的常见优化技巧"></a>四、DP 的常见优化技巧</h2><h3 id="1-空间优化：滚动数组"><a href="#1-空间优化：滚动数组" class="headerlink" title="1. 空间优化：滚动数组"></a>1. 空间优化：滚动数组</h3><p>如果 <code>dp[i]</code> 只依赖于 <code>dp[i-1]</code>，可以用两个一维数组交替使用，或者直接用一维数组（注意遍历顺序）。</p>
 <p><strong>例</strong>：0-1 背包的一维优化。</p>
@@ -697,50 +671,6 @@ dp<span class="token punctuation">[</span><span class="token number">1</span><sp
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -768,6 +698,9 @@ dp<span class="token punctuation">[</span><span class="token number">1</span><sp
 
 
 
+
+
+  
 
 
 

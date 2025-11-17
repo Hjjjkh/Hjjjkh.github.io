@@ -31,7 +31,7 @@
 <meta property="og:description" content="最长公共子序列（LCS）是动态规划在字符串问题上的经典应用。本文将从“代码比对”的直观场景入手，为你剖析 LCS 问题的二维 DP 解法，手把手推导状态转移方程，并展示如何通过回溯 DP 表找到具体的子序列，助你掌握这一面试高频题。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-15T13:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.843Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.853Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="动态规划">
 <meta property="article:tag" content="DP">
@@ -79,6 +79,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -102,8 +107,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -327,7 +331,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -387,12 +391,8 @@
 </ol>
 <h2 id="动画式案例"><a href="#动画式案例" class="headerlink" title="动画式案例"></a>动画式案例</h2><p><code>s1 = &quot;ace&quot;</code>, <code>s2 = &quot;abcde&quot;</code></p>
 <p><strong>1. 初始化 <code>dp</code> 表 (4x6)</strong></p>
-<pre><code>      &quot;&quot;  a  b  c  d  e
-&quot;&quot;   [ 0, 0, 0, 0, 0, 0 ]
-a    [ 0, 0, 0, 0, 0, 0 ]
-c    [ 0, 0, 0, 0, 0, 0 ]
-e    [ 0, 0, 0, 0, 0, 0 ]
-</code></pre>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">      <span class="hljs-string">&quot;&quot;</span>  <span class="hljs-selector-tag">a</span>  <span class="hljs-selector-tag">b</span>  c  d  e<br><span class="hljs-string">&quot;&quot;</span>   <span class="hljs-selector-attr">[ 0, 0, 0, 0, 0, 0 ]</span><br><span class="hljs-selector-tag">a</span>    <span class="hljs-selector-attr">[ 0, 0, 0, 0, 0, 0 ]</span><br>c    <span class="hljs-selector-attr">[ 0, 0, 0, 0, 0, 0 ]</span><br>e    <span class="hljs-selector-attr">[ 0, 0, 0, 0, 0, 0 ]</span><br></code></pre></td></tr></table></figure>
+
 <p><strong>2. 填表过程 (i&#x3D;1, s1[0]&#x3D;’a’)</strong></p>
 <ul>
 <li><code>dp[1][1]</code>: <code>s1[0]==&#39;a&#39;</code>, <code>s2[0]==&#39;a&#39;</code>. <code>dp[1][1] = dp[0][0] + 1 = 1</code></li>
@@ -407,37 +407,11 @@ e    [ 0, 0, 0, 0, 0, 0 ]
 <li>…</li>
 </ul>
 <p><strong>最终 DP 表</strong></p>
-<pre><code>      &quot;&quot;  a  b  c  d  e
-&quot;&quot;   [ 0, 0, 0, 0, 0, 0 ]
-a    [ 0, 1, 1, 1, 1, 1 ]
-c    [ 0, 1, 1, 2, 2, 2 ]
-e    [ 0, 1, 1, 2, 2, 3 ]
-</code></pre>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">      <span class="hljs-string">&quot;&quot;</span>  <span class="hljs-selector-tag">a</span>  <span class="hljs-selector-tag">b</span>  c  d  e<br><span class="hljs-string">&quot;&quot;</span>   <span class="hljs-selector-attr">[ 0, 0, 0, 0, 0, 0 ]</span><br><span class="hljs-selector-tag">a</span>    <span class="hljs-selector-attr">[ 0, 1, 1, 1, 1, 1 ]</span><br>c    <span class="hljs-selector-attr">[ 0, 1, 1, 2, 2, 2 ]</span><br>e    <span class="hljs-selector-attr">[ 0, 1, 1, 2, 2, 3 ]</span><br></code></pre></td></tr></table></figure>
+
 <p>最终答案是 <code>dp[3][5] = 3</code>。</p>
-<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">longest_common_subsequence</span><span class="token punctuation">(</span>s1<span class="token punctuation">:</span> str<span class="token punctuation">,</span> s2<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> int<span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""
-    计算两个字符串的最长公共子序列的长度。
-    """</span>
-    m<span class="token punctuation">,</span> n <span class="token operator">=</span> len<span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>s2<span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># dp[i][j]: s1 的前 i 个字符和 s2 的前 j 个字符的 LCS 长度</span>
-    dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_common_subsequence</span>(<span class="hljs-params">s1: <span class="hljs-built_in">str</span>, s2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    计算两个字符串的最长公共子序列的长度。</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    m, n = <span class="hljs-built_in">len</span>(s1), <span class="hljs-built_in">len</span>(s2)<br>    <span class="hljs-comment"># dp[i][j]: s1 的前 i 个字符和 s2 的前 j 个字符的 LCS 长度</span><br>    dp = [[<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m + <span class="hljs-number">1</span>):<br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):<br>            <span class="hljs-keyword">if</span> s1[i - <span class="hljs-number">1</span>] == s2[j - <span class="hljs-number">1</span>]:<br>                <span class="hljs-comment"># 末尾字符相同，LCS 长度加 1</span><br>                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-comment"># 末尾字符不同，取两种情况的最大值</span><br>                dp[i][j] = <span class="hljs-built_in">max</span>(dp[i - <span class="hljs-number">1</span>][j], dp[i][j - <span class="hljs-number">1</span>])<br><br>    <span class="hljs-keyword">return</span> dp[m][n]<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>s1 = <span class="hljs-string">&quot;ABCBDAB&quot;</span><br>s2 = <span class="hljs-string">&quot;BDCAB&quot;</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;LCS 的长度是: <span class="hljs-subst">&#123;longest_common_subsequence(s1, s2)&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: 4</span><br></code></pre></td></tr></table></figure>
 
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> s1<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> s2<span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-                <span class="token comment" spellcheck="true"># 末尾字符相同，LCS 长度加 1</span>
-                dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> dp<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                <span class="token comment" spellcheck="true"># 末尾字符不同，取两种情况的最大值</span>
-                dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> max<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">return</span> dp<span class="token punctuation">[</span>m<span class="token punctuation">]</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span>
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-s1 <span class="token operator">=</span> <span class="token string">"ABCBDAB"</span>
-s2 <span class="token operator">=</span> <span class="token string">"BDCAB"</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"LCS 的长度是: &amp;#123;longest_common_subsequence(s1, s2)&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> <span class="token number">4</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><ul>
 <li><strong>时间复杂度</strong>: <code>O(m * n)</code>。我们需要填充一个 <code>m x n</code> 的二维 <code>dp</code> 表，每个单元格的计算是 <code>O(1)</code> 的。</li>
 <li><strong>空间复杂度</strong>: <code>O(m * n)</code>。我们需要一个 <code>(m+1) x (n+1)</code> 的二维 <code>dp</code> 表。</li>
@@ -455,38 +429,8 @@ s2 <span class="token operator">=</span> <span class="token string">"BDCAB"</spa
 </li>
 <li>重复此过程，直到 <code>i</code> 或 <code>j</code> 为 0。</li>
 </ol>
-<h3 id="Python-实现-回溯"><a href="#Python-实现-回溯" class="headerlink" title="Python 实现 (回溯)"></a>Python 实现 (回溯)</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">get_lcs_sequence</span><span class="token punctuation">(</span>s1<span class="token punctuation">:</span> str<span class="token punctuation">,</span> s2<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> str<span class="token punctuation">:</span>
-    m<span class="token punctuation">,</span> n <span class="token operator">=</span> len<span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>s2<span class="token punctuation">)</span>
-    dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<h3 id="Python-实现-回溯"><a href="#Python-实现-回溯" class="headerlink" title="Python 实现 (回溯)"></a>Python 实现 (回溯)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_lcs_sequence</span>(<span class="hljs-params">s1: <span class="hljs-built_in">str</span>, s2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:<br>    m, n = <span class="hljs-built_in">len</span>(s1), <span class="hljs-built_in">len</span>(s2)<br>    dp = [[<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m + <span class="hljs-number">1</span>):<br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):<br>            <span class="hljs-keyword">if</span> s1[i - <span class="hljs-number">1</span>] == s2[j - <span class="hljs-number">1</span>]:<br>                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                dp[i][j] = <span class="hljs-built_in">max</span>(dp[i - <span class="hljs-number">1</span>][j], dp[i][j - <span class="hljs-number">1</span>])<br><br>    <span class="hljs-comment"># 从 dp 表的右下角开始回溯</span><br>    lcs_str = []<br>    i, j = m, n<br>    <span class="hljs-keyword">while</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt; <span class="hljs-number">0</span>:<br>        <span class="hljs-keyword">if</span> s1[i - <span class="hljs-number">1</span>] == s2[j - <span class="hljs-number">1</span>]:<br>            lcs_str.append(s1[i - <span class="hljs-number">1</span>])<br>            i -= <span class="hljs-number">1</span><br>            j -= <span class="hljs-number">1</span><br>        <span class="hljs-keyword">elif</span> dp[i - <span class="hljs-number">1</span>][j] &gt; dp[i][j - <span class="hljs-number">1</span>]:<br>            i -= <span class="hljs-number">1</span><br>        <span class="hljs-keyword">else</span>:<br>            j -= <span class="hljs-number">1</span><br>    <br>    <span class="hljs-comment"># 因为是倒序添加的，所以需要反转</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">reversed</span>(lcs_str))<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>s1 = <span class="hljs-string">&quot;ABCBDAB&quot;</span><br>s2 = <span class="hljs-string">&quot;BDCAB&quot;</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;LCS 序列是: <span class="hljs-subst">&#123;get_lcs_sequence(s1, s2)&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: BCAB 或 BDAB (取决于 max 的选择)</span><br></code></pre></td></tr></table></figure>
 
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> m <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> s1<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> s2<span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-                dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> dp<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> max<span class="token punctuation">(</span>dp<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-    <span class="token comment" spellcheck="true"># 从 dp 表的右下角开始回溯</span>
-    lcs_str <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    i<span class="token punctuation">,</span> j <span class="token operator">=</span> m<span class="token punctuation">,</span> n
-    <span class="token keyword">while</span> i <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">and</span> j <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> s1<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> s2<span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-            lcs_str<span class="token punctuation">.</span>append<span class="token punctuation">(</span>s1<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-            i <span class="token operator">-=</span> <span class="token number">1</span>
-            j <span class="token operator">-=</span> <span class="token number">1</span>
-        <span class="token keyword">elif</span> dp<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-            i <span class="token operator">-=</span> <span class="token number">1</span>
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            j <span class="token operator">-=</span> <span class="token number">1</span>
-    
-    <span class="token comment" spellcheck="true"># 因为是倒序添加的，所以需要反转</span>
-    <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>reversed<span class="token punctuation">(</span>lcs_str<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-s1 <span class="token operator">=</span> <span class="token string">"ABCBDAB"</span>
-s2 <span class="token operator">=</span> <span class="token string">"BDCAB"</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"LCS 序列是: &amp;#123;get_lcs_sequence(s1, s2)&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> BCAB 或 BDAB <span class="token punctuation">(</span>取决于 max 的选择<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最长公共子序列 (LCS) 是二维动态规划的一个完美范例。它教会我们如何处理涉及两个序列的匹配问题，其思想是许多更复杂字符串 DP 问题的基础。</p>
 <h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>核心思想</strong>：通过比较两个序列的末尾字符，将问题分解为更小的子问题。<br>✅ <strong>状态定义</strong>：<code>dp[i][j]</code> 是 <code>s1</code> 前 <code>i</code> 个字符和 <code>s2</code> 前 <code>j</code> 个字符的 LCS 长度。<br>✅ <strong>状态转移方程</strong>：</p>
 <ul>
@@ -621,8 +565,8 @@ s2 <span class="token operator">=</span> <span class="token string">"BDCAB"</spa
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/633a1b38" title="Part 2.6：堆与优先队列：O(log n) 的动态极值查找">
-                        <span class="hidden-mobile">Part 2.6：堆与优先队列：O(log n) 的动态极值查找</span>
+                      <a href="/posts/bc5c719c" title="Part 5.2：最长上升子序列 (LIS)">
+                        <span class="hidden-mobile">Part 5.2：最长上升子序列 (LIS)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -633,50 +577,6 @@ s2 <span class="token operator">=</span> <span class="token string">"BDCAB"</spa
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -704,6 +604,9 @@ s2 <span class="token operator">=</span> <span class="token string">"BDCAB"</spa
 
 
 
+
+
+  
 
 
 

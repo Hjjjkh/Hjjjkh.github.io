@@ -67,6 +67,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -90,8 +95,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -100,7 +104,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 80vh;">
+<div class="header-inner" style="height: 100vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -226,7 +230,7 @@
 <div id="banner" class="banner" parallax=true
      style="background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
@@ -254,13 +258,89 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          >
+          style="margin-top: 0">
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/2b8a6ba5" target="_self">
+          Part 2.7：并查集：高效处理“朋友圈”问题
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/2b8a6ba5" target="_self">
+        <div>
+          并查集（Disjoint Set Union）是处理动态连通性问题的利器。本文将通过“朋友圈”的生动比喻，深入剖析其 find 和 union 两大核心操作，并讲解路径压缩和按秩合并两大关键优化，让你彻底掌握这个查询效率近乎 O(1) 的高效数据结构。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-15 21:00" pubdate>
+              2025-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+            
+              <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/">#并查集</a>
+            
+              <a href="/tags/Union-Find/">#Union-Find</a>
+            
+              <a href="/tags/%E8%B7%AF%E5%BE%84%E5%8E%8B%E7%BC%A9/">#路径压缩</a>
+            
+              <a href="/tags/%E6%8C%89%E7%A7%A9%E5%90%88%E5%B9%B6/">#按秩合并</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
   <div class="row mx-auto index-card">
     
@@ -331,82 +411,6 @@
               <a href="/tags/LCS/">#LCS</a>
             
               <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/">#字符串算法</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/633a1b38" target="_self">
-          Part 2.6：堆与优先队列：O(log n) 的动态极值查找
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/633a1b38" target="_self">
-        <div>
-          堆是一种特殊的完全二叉树，能在 O(log n) 时间内完成插入和删除最值操作。本文将深入剖析大顶堆和小顶堆的原理、堆化过程、数组实现，以及其在优先队列、Top-K 问题、堆排序等场景中的经典应用。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 20:30" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
-            
-              <a href="/tags/%E5%A0%86/">#堆</a>
-            
-              <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">#优先队列</a>
-            
-              <a href="/tags/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91/">#完全二叉树</a>
-            
-              <a href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/">#堆排序</a>
             
           </div>
         
@@ -712,11 +716,11 @@
             
               <a href="/tags/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">#贪心算法</a>
             
-              <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">#算法思想</a>
-            
               <a href="/tags/Greedy-Algorithm/">#Greedy Algorithm</a>
             
               <a href="/tags/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/">#算法设计</a>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">#算法思想</a>
             
               <a href="/tags/%E9%9D%A2%E8%AF%95%E7%AE%97%E6%B3%95/">#面试算法</a>
             
@@ -792,9 +796,9 @@
             
               <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
             
-              <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">#树的遍历</a>
-            
               <a href="/tags/%E6%A0%91/">#树</a>
+            
+              <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">#树的遍历</a>
             
           </div>
         
@@ -960,6 +964,82 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/posts/633a1b38" target="_self">
+          Part 2.6：堆与优先队列：O(log n) 的动态极值查找
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/633a1b38" target="_self">
+        <div>
+          如何在动态变化的数据集中快速找到最大值或最小值？堆（Heap）和优先队列（Priority Queue）为此而生。本文将深入讲解堆的结构特性、核心操作（上浮与下沉），以及如何用它实现高效的优先队列，助你掌握这一在调度、排序等领域至关重要的数据结构。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-11-15 18:30" pubdate>
+              2025-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-2%EF%BC%9A%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">Part 2：基础数据结构</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+            
+              <a href="/tags/%E5%A0%86/">#堆</a>
+            
+              <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">#优先队列</a>
+            
+              <a href="/tags/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91/">#完全二叉树</a>
+            
+              <a href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/">#堆排序</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/posts/a3b18b6d" target="_self">
           Part 2.1：数组与链表：相爱相杀的线性双雄
         </a>
@@ -1099,90 +1179,6 @@
               <a href="/tags/Big-O/">#Big O</a>
             
               <a href="/tags/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95/">#原地算法</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/posts/dcd36d73" target="_self">
-          <img src="https://cdn.jsdelivr.net/gh/gitalk/gitalk/dist/gitalk.css" srcset="/img/loading.gif" lazyload alt="为 Hexo 博客添加 Gitalk 评论系统——从零到一的完整指南">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/posts/dcd36d73" target="_self">
-          为 Hexo 博客添加 Gitalk 评论系统——从零到一的完整指南
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/posts/dcd36d73" target="_self">
-        <div>
-          一篇详尽的教程，教你如何为 Hexo 博客集成基于 GitHub Issues 的 Gitalk 评论系统，让你的博客更具互动性。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-11-15 17:00" pubdate>
-              2025-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="category-chain-item">博客搭建</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/Hexo-%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95/" class="category-chain-item">Hexo 功能扩展</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Hexo/">#Hexo</a>
-            
-              <a href="/tags/Gitalk/">#Gitalk</a>
-            
-              <a href="/tags/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/">#评论系统</a>
-            
-              <a href="/tags/GitHub/">#GitHub</a>
-            
-              <a href="/tags/OAuth/">#OAuth</a>
-            
-              <a href="/tags/%E5%8D%9A%E5%AE%A2%E4%BC%98%E5%8C%96/">#博客优化</a>
             
           </div>
         

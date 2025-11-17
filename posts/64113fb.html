@@ -31,7 +31,7 @@
 <meta property="og:description" content="Trie 树，又称字典树或前缀树，是处理字符串前缀问题的终极数据结构。它通过将字符串集合的公共前缀进行复用，实现了对词频统计、自动补全、敏感词过滤等场景的极速查询。本文将从 Trie 的节点结构入手，通过图解和 Python 代码，带你一步步实现一个完整的 Trie，并深入探讨其在各类问题中的应用。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-17T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.659Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.868Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="字符串">
@@ -79,6 +79,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -102,8 +107,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -327,7 +331,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -347,71 +351,13 @@
 </ol>
 <blockquote>
 <p><strong>图示：插入 <code>&quot;sea&quot;</code>, <code>&quot;sell&quot;</code>, <code>&quot;see&quot;</code></strong></p>
-<pre><code>     (root)
-       | &#39;s&#39;
-       (s)
-      /   \
-  &#39;e&#39; /     \ &#39;o&#39;
-    (se)      (so)
-   /    \
-&#39;a&#39;/      \&#39;e&#39;
-(sea)*      (see)*
-  | &#39;l&#39;
-  (sel)
-    | &#39;l&#39;
-    (sell)*
-</code></pre>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs livescript">     (root)<br>       | <span class="hljs-string">&#x27;s&#x27;</span><br>       (s)<br>      /   <span class="hljs-string">\</span><br>  <span class="hljs-string">&#x27;e&#x27;</span> /     <span class="hljs-string">\</span> <span class="hljs-string">&#x27;o&#x27;</span><br>    (se)      (so)<br>   /    <span class="hljs-string">\</span><br><span class="hljs-string">&#x27;a&#x27;</span>/      <span class="hljs-string">\&#x27;e&#x27;</span><br>(sea)*      (see)*<br>  | <span class="hljs-string">&#x27;l&#x27;</span><br>  (sel)<br>    | <span class="hljs-string">&#x27;l&#x27;</span><br>    (sell)*<br></code></pre></td></tr></table></figure>
 <p><code>*</code> 标记表示一个单词的结尾。</p>
 </blockquote>
 <p>从图中可以看出，<code>&quot;sea&quot;</code>, <code>&quot;sell&quot;</code>, <code>&quot;see&quot;</code> 复用了共同的前缀 <code>&quot;se&quot;</code>，从而节省了存储空间，并为快速前缀查询打下了基础。</p>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面我们用 Python 来实现一个 Trie。每个节点 <code>TrieNode</code> 包含两个核心部分：<code>children</code>（子节点）和一个 <code>is_end_of_word</code>（单词结束标记）。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TrieNode</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 使用字典存储子节点，键是字符，值是 TrieNode</span>
-        self<span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;&amp;#125;</span>
-        self<span class="token punctuation">.</span>is_end_of_word <span class="token operator">=</span> <span class="token boolean">False</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 使用字典存储子节点，键是字符，值是 TrieNode</span><br>        <span class="hljs-variable language_">self</span>.children = &#123;&#125;<br>        <span class="hljs-variable language_">self</span>.is_end_of_word = <span class="hljs-literal">False</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;初始化一个空的 Trie 树&quot;&quot;&quot;</span><br>        <span class="hljs-variable language_">self</span>.root = TrieNode()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-literal">None</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;向 Trie 树中插入一个单词&quot;&quot;&quot;</span><br>        node = <span class="hljs-variable language_">self</span>.root<br>        <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> word:<br>            <span class="hljs-keyword">if</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:<br>                node.children[char] = TrieNode()<br>            node = node.children[char]<br>        node.is_end_of_word = <span class="hljs-literal">True</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;查找一个单词是否在 Trie 树中&quot;&quot;&quot;</span><br>        node = <span class="hljs-variable language_">self</span>.root<br>        <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> word:<br>            <span class="hljs-keyword">if</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>            node = node.children[char]<br>        <span class="hljs-keyword">return</span> node.is_end_of_word<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">starts_with</span>(<span class="hljs-params">self, prefix: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;查找 Trie 树中是否存在以指定前缀开头的单词&quot;&quot;&quot;</span><br>        node = <span class="hljs-variable language_">self</span>.root<br>        <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> prefix:<br>            <span class="hljs-keyword">if</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>            node = node.children[char]<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>trie = Trie()<br>trie.insert(<span class="hljs-string">&quot;apple&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Search &#x27;apple&#x27;: <span class="hljs-subst">&#123;trie.search(<span class="hljs-string">&#x27;apple&#x27;</span>)&#125;</span>&quot;</span>)     <span class="hljs-comment"># True</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Search &#x27;app&#x27;: <span class="hljs-subst">&#123;trie.search(<span class="hljs-string">&#x27;app&#x27;</span>)&#125;</span>&quot;</span>)         <span class="hljs-comment"># False</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Starts with &#x27;app&#x27;: <span class="hljs-subst">&#123;trie.starts_with(<span class="hljs-string">&#x27;app&#x27;</span>)&#125;</span>&quot;</span>) <span class="hljs-comment"># True</span><br>trie.insert(<span class="hljs-string">&quot;app&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Search &#x27;app&#x27; after insert: <span class="hljs-subst">&#123;trie.search(<span class="hljs-string">&#x27;app&#x27;</span>)&#125;</span>&quot;</span>) <span class="hljs-comment"># True</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Trie</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""初始化一个空的 Trie 树"""</span>
-        self<span class="token punctuation">.</span>root <span class="token operator">=</span> TrieNode<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">def</span> <span class="token function">insert</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> word<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""向 Trie 树中插入一个单词"""</span>
-        node <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-        <span class="token keyword">for</span> char <span class="token keyword">in</span> word<span class="token punctuation">:</span>
-            <span class="token keyword">if</span> char <span class="token operator">not</span> <span class="token keyword">in</span> node<span class="token punctuation">.</span>children<span class="token punctuation">:</span>
-                node<span class="token punctuation">.</span>children<span class="token punctuation">[</span>char<span class="token punctuation">]</span> <span class="token operator">=</span> TrieNode<span class="token punctuation">(</span><span class="token punctuation">)</span>
-            node <span class="token operator">=</span> node<span class="token punctuation">.</span>children<span class="token punctuation">[</span>char<span class="token punctuation">]</span>
-        node<span class="token punctuation">.</span>is_end_of_word <span class="token operator">=</span> <span class="token boolean">True</span>
-
-    <span class="token keyword">def</span> <span class="token function">search</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> word<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> bool<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""查找一个单词是否在 Trie 树中"""</span>
-        node <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-        <span class="token keyword">for</span> char <span class="token keyword">in</span> word<span class="token punctuation">:</span>
-            <span class="token keyword">if</span> char <span class="token operator">not</span> <span class="token keyword">in</span> node<span class="token punctuation">.</span>children<span class="token punctuation">:</span>
-                <span class="token keyword">return</span> <span class="token boolean">False</span>
-            node <span class="token operator">=</span> node<span class="token punctuation">.</span>children<span class="token punctuation">[</span>char<span class="token punctuation">]</span>
-        <span class="token keyword">return</span> node<span class="token punctuation">.</span>is_end_of_word
-
-    <span class="token keyword">def</span> <span class="token function">starts_with</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> prefix<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> bool<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""查找 Trie 树中是否存在以指定前缀开头的单词"""</span>
-        node <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-        <span class="token keyword">for</span> char <span class="token keyword">in</span> prefix<span class="token punctuation">:</span>
-            <span class="token keyword">if</span> char <span class="token operator">not</span> <span class="token keyword">in</span> node<span class="token punctuation">.</span>children<span class="token punctuation">:</span>
-                <span class="token keyword">return</span> <span class="token boolean">False</span>
-            node <span class="token operator">=</span> node<span class="token punctuation">.</span>children<span class="token punctuation">[</span>char<span class="token punctuation">]</span>
-        <span class="token keyword">return</span> <span class="token boolean">True</span>
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-trie <span class="token operator">=</span> Trie<span class="token punctuation">(</span><span class="token punctuation">)</span>
-trie<span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token string">"apple"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f"Search <span class="token string">'apple'</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;trie.search('apple')&amp;#125;")     # True</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f"Search <span class="token string">'app'</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;trie.search('app')&amp;#125;")         # False</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f"Starts <span class="token keyword">with</span> <span class="token string">'app'</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;trie.starts_with('app')&amp;#125;") # True</span>
-trie<span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token string">"app"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f"Search <span class="token string">'app'</span> after insert<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;trie.search('app')&amp;#125;") # True</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>假设 <code>L</code> 是我们操作的字符串（单词或前缀）的长度。</p>
 <ul>
 <li><strong>插入 (Insert)</strong>: 时间复杂度 <code>O(L)</code>。我们需要遍历字符串的每一个字符，并在 Trie 中移动或创建节点。</li>
@@ -581,50 +527,6 @@ trie<span class="token punctuation">.</span>insert<span class="token punctuation
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -652,6 +554,9 @@ trie<span class="token punctuation">.</span>insert<span class="token punctuation
 
 
 
+
+
+  
 
 
 

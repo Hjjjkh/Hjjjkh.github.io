@@ -30,8 +30,9 @@
 <meta property="og:site_name" content="李国强的技术博客">
 <meta property="og:description" content="哈希表为何能实现近乎 O(1) 的查找速度？本文将为你揭开这层“黑魔法”的面纱，从哈希函数的设计到哈希冲突的经典解决方案（链地址法、开放地址法），通过图示、动画式案例和代码实战，让你彻底掌握这个在面试和工程中都至关重要的时间换空间利器。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/hash-table-workflow.png">
 <meta property="article:published_time" content="2025-11-15T11:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.800Z">
+<meta property="article:modified_time" content="2025-11-17T05:23:36.166Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="哈希表">
@@ -39,6 +40,7 @@
 <meta property="article:tag" content="哈希冲突">
 <meta property="article:tag" content="散列表">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/hash-table-workflow.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -79,6 +81,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -102,8 +109,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -265,7 +271,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k 字
+          3.1k 字
         
       </span>
     
@@ -276,7 +282,7 @@
         
         
         
-          28 分钟
+          27 分钟
         
       </span>
     
@@ -327,7 +333,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 下午
                   
                 
               </p>
@@ -370,15 +376,7 @@
 <li>**存储 (Put)**：<code>index = hash_function(key)</code>，然后将 <code>value</code> 存储在数组的 <code>index</code> 位置。</li>
 <li>**查找 (Get)**：<code>index = hash_function(key)</code>，然后从数组的 <code>index</code> 位置取出 <code>value</code>。</li>
 </ol>
-<h3 id="关键图示：哈希表工作流程"><a href="#关键图示：哈希表工作流程" class="headerlink" title="关键图示：哈希表工作流程"></a>关键图示：哈希表工作流程</h3><blockquote>
-<p><strong>图示标题：哈希表的基本工作原理</strong></p>
-<p><strong>图示描述</strong>：<br>左侧是几个 Key-Value 对：<code>(&quot;John&quot;, 18)</code>, <code>(&quot;Lisa&quot;, 20)</code>, <code>(&quot;Sam&quot;, 22)</code>。<br>中间是一个名为 “Hash Function” 的黑盒子。<br>右侧是一个长度为 10 的数组（桶 Bucket）。</p>
-<ul>
-<li><code>&quot;John&quot;</code> -&gt; Hash Function -&gt; <code>2</code>。于是 <code>(&quot;John&quot;, 18)</code> 存入数组索引 <code>2</code> 的位置。</li>
-<li><code>&quot;Lisa&quot;</code> -&gt; Hash Function -&gt; <code>5</code>。于是 <code>(&quot;Lisa&quot;, 20)</code> 存入数组索引 <code>5</code> 的位置。</li>
-<li><code>&quot;Sam&quot;</code> -&gt; Hash Function -&gt; <code>8</code>。于是 <code>(&quot;Sam&quot;, 22)</code> 存入数组索引 <code>8</code> 的位置。</li>
-</ul>
-</blockquote>
+<h3 id="关键图示：哈希表工作流程"><a href="#关键图示：哈希表工作流程" class="headerlink" title="关键图示：哈希表工作流程"></a>关键图示：哈希表工作流程</h3><p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/hash-table-workflow.png" srcset="/img/loading.gif" lazyload alt="哈希表的基本工作原理"><br><em>哈希表通过哈希函数将 Key 映射到数组索引</em></p>
 <h2 id="2-核心要素一：哈希函数"><a href="#2-核心要素一：哈希函数" class="headerlink" title="2. 核心要素一：哈希函数"></a>2. 核心要素一：哈希函数</h2><p>一个好的哈希函数是哈希表高性能的关键。它必须具备以下特点：</p>
 <ol>
 <li><strong>确定性</strong>：相同的 Key 每次必须生成相同的哈希值。</li>
@@ -441,62 +439,11 @@
 </li>
 </ol>
 <p><strong>删除问题</strong>：开放寻址法在删除元素时不能直接置空，否则会截断探测路径。通常使用一个特殊的“已删除”标记。</p>
-<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：基于链地址法的哈希表"><a href="#伪代码：基于链地址法的哈希表" class="headerlink" title="伪代码：基于链地址法的哈希表"></a>伪代码：基于链地址法的哈希表</h3><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">class HashTable:
-  constructor(size):
-    this.size = size
-    this.table = new Array(size) // 每个元素是一个链表
+<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：基于链地址法的哈希表"><a href="#伪代码：基于链地址法的哈希表" class="headerlink" title="伪代码：基于链地址法的哈希表"></a>伪代码：基于链地址法的哈希表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">class HashTable:<br>  constructor(size):<br>    this.size = size<br>    this.table = new Array(size) // 每个元素是一个链表<br><br>  function _hash(key):<br>    return hash(key) % this.size<br><br>  function put(key, value):<br>    index = this._hash(key)<br>    if this.table[index] is NULL:<br>      this.table[index] = new LinkedList()<br>    <br>    // 检查 key 是否已存在，若存在则更新<br>    for node in this.table[index]:<br>      if node.key == key:<br>        node.value = value<br>        return<br>    <br>    // 若不存在，则添加到链表<br>    this.table[index].append(new Node(key, value))<br><br>  function get(key):<br>    index = this._hash(key)<br>    if this.table[index] is NOT NULL:<br>      for node in this.table[index]:<br>        if node.key == key:<br>          return node.value<br>    return NULL // 未找到<br></code></pre></td></tr></table></figure>
 
-  function _hash(key):
-    return hash(key) % this.size
-
-  function put(key, value):
-    index = this._hash(key)
-    if this.table[index] is NULL:
-      this.table[index] = new LinkedList()
-    
-    // 检查 key 是否已存在，若存在则更新
-    for node in this.table[index]:
-      if node.key == key:
-        node.value = value
-        return
-    
-    // 若不存在，则添加到链表
-    this.table[index].append(new Node(key, value))
-
-  function get(key):
-    index = this._hash(key)
-    if this.table[index] is NOT NULL:
-      for node in this.table[index]:
-        if node.key == key:
-          return node.value
-    return NULL // 未找到
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="Python-实现：dict-和-set"><a href="#Python-实现：dict-和-set" class="headerlink" title="Python 实现：dict 和 set"></a>Python 实现：<code>dict</code> 和 <code>set</code></h3><p>在 Python 中，我们几乎不需要自己实现哈希表，因为内置的 <code>dict</code> (字典) 和 <code>set</code> (集合) 就是基于高度优化的哈希表实现的。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 使用 dict</span>
-student_scores <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;&amp;#125;</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 使用 dict</span><br>student_scores = &#123;&#125;<br><br><span class="hljs-comment"># Put 操作: O(1) on average</span><br>student_scores[<span class="hljs-string">&quot;John&quot;</span>] = <span class="hljs-number">95</span><br>student_scores[<span class="hljs-string">&quot;Lisa&quot;</span>] = <span class="hljs-number">98</span><br><br><span class="hljs-comment"># Get 操作: O(1) on average</span><br>score = student_scores.get(<span class="hljs-string">&quot;John&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;John&#x27;s score is <span class="hljs-subst">&#123;score&#125;</span>&quot;</span>) <span class="hljs-comment"># 输出: 95</span><br><br><span class="hljs-comment"># Delete 操作: O(1) on average</span><br><span class="hljs-keyword">del</span> student_scores[<span class="hljs-string">&quot;Lisa&quot;</span>]<br><br><span class="hljs-comment"># 使用 set</span><br>visited = <span class="hljs-built_in">set</span>()<br><br><span class="hljs-comment"># Add 操作: O(1) on average</span><br>visited.add(<span class="hljs-number">10</span>)<br>visited.add(<span class="hljs-number">20</span>)<br><br><span class="hljs-comment"># &#x27;in&#x27; 操作 (查找): O(1) on average</span><br><span class="hljs-keyword">if</span> <span class="hljs-number">10</span> <span class="hljs-keyword">in</span> visited:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;10 has been visited.&quot;</span>)<br></code></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># Put 操作: O(1) on average</span>
-student_scores<span class="token punctuation">[</span><span class="token string">"John"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">95</span>
-student_scores<span class="token punctuation">[</span><span class="token string">"Lisa"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">98</span>
-
-<span class="token comment" spellcheck="true"># Get 操作: O(1) on average</span>
-score <span class="token operator">=</span> student_scores<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"John"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"John's score is &amp;#123;score&amp;#125;"</span><span class="token punctuation">)</span> # 输出<span class="token punctuation">:</span> <span class="token number">95</span>
-
-<span class="token comment" spellcheck="true"># Delete 操作: O(1) on average</span>
-<span class="token keyword">del</span> student_scores<span class="token punctuation">[</span><span class="token string">"Lisa"</span><span class="token punctuation">]</span>
-
-<span class="token comment" spellcheck="true"># 使用 set</span>
-visited <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># Add 操作: O(1) on average</span>
-visited<span class="token punctuation">.</span>add<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
-visited<span class="token punctuation">.</span>add<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 'in' 操作 (查找): O(1) on average</span>
-<span class="token keyword">if</span> <span class="token number">10</span> <span class="token keyword">in</span> visited<span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"10 has been visited."</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><ul>
 <li><strong>平均情况</strong>：<code>O(1)</code>。假设哈希函数足够均匀，每个桶里的链表长度是一个很小的常数。</li>
 <li><strong>最坏情况</strong>：<code>O(n)</code>。在极端情况下（例如，所有 Key 都哈希到同一个索引），哈希表退化成一个链表，查找、插入、删除都需要遍历整个链表。</li>
@@ -683,50 +630,6 @@ visited<span class="token punctuation">.</span>add<span class="token punctuation
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -754,6 +657,9 @@ visited<span class="token punctuation">.</span>add<span class="token punctuation
 
 
 
+
+
+  
 
 
 

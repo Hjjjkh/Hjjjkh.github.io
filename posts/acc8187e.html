@@ -31,7 +31,7 @@
 <meta property="og:description" content="如何为两组不同的资源找到最优的配对方案？这就是二分图匹配要解决的问题。从任务分配、婚姻匹配，到在线广告的精准投放，二分图匹配在资源优化配置中扮演着关键角色。本文将从二分图的定义出发，深入讲解求解最大匹配的经典算法——匈牙利算法，通过“寻找增广路”的核心思想和 Python 代码，带你掌握这一优雅的图论算法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-27T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.646Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.848Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="图论">
 <meta property="article:tag" content="算法应用">
@@ -80,6 +80,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -103,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -266,7 +270,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          1.7k 字
         
       </span>
     
@@ -328,7 +332,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -365,62 +369,8 @@
 <li>在 <code>dfs(u, visited, match)</code> 函数中：<br>a.  遍历 <code>u</code> 的所有邻居 <code>v</code>（<code>v</code> 在 <code>V</code> 集合中）。<br>b.  如果 <code>v</code> 在本次 DFS 中未被访问：<br>i.  标记 <code>v</code> 为已访问。<br>ii. 如果 <code>v</code> 是一个未匹配点，或者我们可以为 <code>v</code> 当前的匹配点 <code>match[v]</code> 找到一条新的增广路（递归调用 <code>dfs(match[v], ...)</code>），那么我们就找到了一条从 <code>u</code> 开始的增广路。<br>iii. 更新匹配：<code>match[v] = u</code>，并返回 <code>True</code>。<br>c.  如果遍历完所有邻居都无法找到增广路，返回 <code>False</code>。</li>
 <li>统计 <code>match</code> 数组中有效的匹配数量，即为最大匹配数。</li>
 </ol>
-<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> defaultdict
+<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">hungarian_dfs</span>(<span class="hljs-params">u, graph, <span class="hljs-keyword">match</span>, visited</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;为顶点 u 寻找增广路&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> graph[u]:<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> visited[v]:<br>            visited[v] = <span class="hljs-literal">True</span><br>            <span class="hljs-comment"># 如果 v 未被匹配，或者 v 的匹配对象可以找到新的匹配</span><br>            <span class="hljs-keyword">if</span> v <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">match</span> <span class="hljs-keyword">or</span> hungarian_dfs(<span class="hljs-keyword">match</span>[v], graph, <span class="hljs-keyword">match</span>, visited):<br>                <span class="hljs-keyword">match</span>[v] = u<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">maximum_bipartite_matching</span>(<span class="hljs-params">graph, u_nodes, v_nodes</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    匈牙利算法求解二分图最大匹配</span><br><span class="hljs-string">    graph: 邻接表，只包含从 U 到 V 的边</span><br><span class="hljs-string">    u_nodes: U 集合的节点列表</span><br><span class="hljs-string">    v_nodes: V 集合的节点列表</span><br><span class="hljs-string">    返回: 最大匹配数和匹配对</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-keyword">match</span> = &#123;&#125;  <span class="hljs-comment"># 存储 V -&gt; U 的匹配关系</span><br>    max_matching = <span class="hljs-number">0</span><br>    <br>    <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> u_nodes:<br>        <span class="hljs-comment"># 每次为新的 u 寻找增广路时，都要重置 visited 数组</span><br>        visited = &#123;v: <span class="hljs-literal">False</span> <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> v_nodes&#125;<br>        <span class="hljs-keyword">if</span> hungarian_dfs(u, graph, <span class="hljs-keyword">match</span>, visited):<br>            max_matching += <span class="hljs-number">1</span><br>            <br>    <span class="hljs-comment"># 整理匹配对 (U, V)</span><br>    matching_pairs = [(v, u) <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> <span class="hljs-keyword">match</span>.items()]<br>    <span class="hljs-keyword">return</span> max_matching, matching_pairs<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br><span class="hljs-comment"># U 集合: 男生, V 集合: 女生</span><br>u_nodes = [<span class="hljs-string">&#x27;M1&#x27;</span>, <span class="hljs-string">&#x27;M2&#x27;</span>, <span class="hljs-string">&#x27;M3&#x27;</span>, <span class="hljs-string">&#x27;M4&#x27;</span>]<br>v_nodes = [<span class="hljs-string">&#x27;F1&#x27;</span>, <span class="hljs-string">&#x27;F2&#x27;</span>, <span class="hljs-string">&#x27;F3&#x27;</span>, <span class="hljs-string">&#x27;F4&#x27;</span>]<br><br><span class="hljs-comment"># 表示好感关系 (U -&gt; V)</span><br>graph = &#123;<br>    <span class="hljs-string">&#x27;M1&#x27;</span>: [<span class="hljs-string">&#x27;F1&#x27;</span>, <span class="hljs-string">&#x27;F2&#x27;</span>],<br>    <span class="hljs-string">&#x27;M2&#x27;</span>: [<span class="hljs-string">&#x27;F1&#x27;</span>],<br>    <span class="hljs-string">&#x27;M3&#x27;</span>: [<span class="hljs-string">&#x27;F2&#x27;</span>, <span class="hljs-string">&#x27;F3&#x27;</span>],<br>    <span class="hljs-string">&#x27;M4&#x27;</span>: [<span class="hljs-string">&#x27;F4&#x27;</span>]<br>&#125;<br><br>max_count, pairs = maximum_bipartite_matching(graph, u_nodes, v_nodes)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;最大匹配数: <span class="hljs-subst">&#123;max_count&#125;</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;匹配结果: <span class="hljs-subst">&#123;<span class="hljs-built_in">sorted</span>(pairs)&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># 输出:</span><br><span class="hljs-comment"># 最大匹配数: 4</span><br><span class="hljs-comment"># 匹配结果: [(&#x27;F1&#x27;, &#x27;M2&#x27;), (&#x27;F2&#x27;, &#x27;M1&#x27;), (&#x27;F3&#x27;, &#x27;M3&#x27;), (&#x27;F4&#x27;, &#x27;M4&#x27;)]</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">def</span> <span class="token function">hungarian_dfs</span><span class="token punctuation">(</span>u<span class="token punctuation">,</span> graph<span class="token punctuation">,</span> match<span class="token punctuation">,</span> visited<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""为顶点 u 寻找增广路"""</span>
-    <span class="token keyword">for</span> v <span class="token keyword">in</span> graph<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> <span class="token operator">not</span> visited<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            visited<span class="token punctuation">[</span>v<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">True</span>
-            <span class="token comment" spellcheck="true"># 如果 v 未被匹配，或者 v 的匹配对象可以找到新的匹配</span>
-            <span class="token keyword">if</span> v <span class="token operator">not</span> <span class="token keyword">in</span> match <span class="token operator">or</span> hungarian_dfs<span class="token punctuation">(</span>match<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">,</span> graph<span class="token punctuation">,</span> match<span class="token punctuation">,</span> visited<span class="token punctuation">)</span><span class="token punctuation">:</span>
-                match<span class="token punctuation">[</span>v<span class="token punctuation">]</span> <span class="token operator">=</span> u
-                <span class="token keyword">return</span> <span class="token boolean">True</span>
-    <span class="token keyword">return</span> <span class="token boolean">False</span>
-
-<span class="token keyword">def</span> <span class="token function">maximum_bipartite_matching</span><span class="token punctuation">(</span>graph<span class="token punctuation">,</span> u_nodes<span class="token punctuation">,</span> v_nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""
-    匈牙利算法求解二分图最大匹配
-    graph: 邻接表，只包含从 U 到 V 的边
-    u_nodes: U 集合的节点列表
-    v_nodes: V 集合的节点列表
-    返回: 最大匹配数和匹配对
-    """</span>
-    match <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;&amp;#125;  # 存储 V -> U 的匹配关系</span>
-    max_matching <span class="token operator">=</span> <span class="token number">0</span>
-    
-    <span class="token keyword">for</span> u <span class="token keyword">in</span> u_nodes<span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 每次为新的 u 寻找增广路时，都要重置 visited 数组</span>
-        visited <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;v: False for v in v_nodes&amp;#125;</span>
-        <span class="token keyword">if</span> hungarian_dfs<span class="token punctuation">(</span>u<span class="token punctuation">,</span> graph<span class="token punctuation">,</span> match<span class="token punctuation">,</span> visited<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            max_matching <span class="token operator">+=</span> <span class="token number">1</span>
-            
-    <span class="token comment" spellcheck="true"># 整理匹配对 (U, V)</span>
-    matching_pairs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> u<span class="token punctuation">)</span> <span class="token keyword">for</span> u<span class="token punctuation">,</span> v <span class="token keyword">in</span> match<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-    <span class="token keyword">return</span> max_matching<span class="token punctuation">,</span> matching_pairs
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-<span class="token comment" spellcheck="true"># U 集合: 男生, V 集合: 女生</span>
-u_nodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'M1'</span><span class="token punctuation">,</span> <span class="token string">'M2'</span><span class="token punctuation">,</span> <span class="token string">'M3'</span><span class="token punctuation">,</span> <span class="token string">'M4'</span><span class="token punctuation">]</span>
-v_nodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'F1'</span><span class="token punctuation">,</span> <span class="token string">'F2'</span><span class="token punctuation">,</span> <span class="token string">'F3'</span><span class="token punctuation">,</span> <span class="token string">'F4'</span><span class="token punctuation">]</span>
-
-<span class="token comment" spellcheck="true"># 表示好感关系 (U -> V)</span>
-graph <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
-    <span class="token string">'M1'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'F1'</span><span class="token punctuation">,</span> <span class="token string">'F2'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token string">'M2'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'F1'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token string">'M3'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'F2'</span><span class="token punctuation">,</span> <span class="token string">'F3'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token string">'M4'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'F4'</span><span class="token punctuation">]</span>
-<span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;</span>
-
-max_count<span class="token punctuation">,</span> pairs <span class="token operator">=</span> maximum_bipartite_matching<span class="token punctuation">(</span>graph<span class="token punctuation">,</span> u_nodes<span class="token punctuation">,</span> v_nodes<span class="token punctuation">)</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"最大匹配数: &amp;#123;max_count&amp;#125;"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"匹配结果: &amp;#123;sorted(pairs)&amp;#125;"</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 输出:</span>
-<span class="token comment" spellcheck="true"># 最大匹配数: 4</span>
-<span class="token comment" spellcheck="true"># 匹配结果: [('F1', 'M2'), ('F2', 'M1'), ('F3', 'M3'), ('F4', 'M4')]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><ul>
 <li><strong>时间复杂度</strong>: <code>O(V * E)</code>，其中 <code>V</code> 是顶点总数，<code>E</code> 是边数。外层循环遍历 <code>U</code> 中的每个顶点（最多 <code>V</code> 次），内层 DFS 最多访问所有边一次（<code>E</code> 次）。</li>
 <li><strong>空间复杂度</strong>: <code>O(V + E)</code>，用于存储图和 <code>match</code>、<code>visited</code> 数组。</li>
@@ -574,50 +524,6 @@ max_count<span class="token punctuation">,</span> pairs <span class="token opera
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -645,6 +551,9 @@ max_count<span class="token punctuation">,</span> pairs <span class="token opera
 
 
 
+
+
+  
 
 
 

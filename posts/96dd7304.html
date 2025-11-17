@@ -31,7 +31,7 @@
 <meta property="og:description" content="后缀数组（Suffix Array）是处理字符串子串问题的瑞士军刀。它通过对字符串的所有后缀进行排序，将许多看似复杂的子串问题转化为简单的数组操作。配合 LCP（最长公共前缀）数组，后缀数组能够高效解决最长重复子串、不同子串计数、字符串匹配等一系列经典问题。本文将从后缀数组的定义出发，详细讲解倍增算法的构建过程，并通过 Python 代码和实际案例，带你掌握这一强大的字符串工具。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-19T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.660Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.871Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法进阶">
 <meta property="article:tag" content="字符串">
@@ -80,6 +80,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -103,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -328,7 +332,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -346,22 +350,12 @@
 <p>答案是**后缀数组 (Suffix Array)**。它是一种空间高效、功能强大的数据结构，通过对字符串的所有后缀进行排序，将许多复杂的子串问题转化为简单的数组操作。</p>
 <h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="什么是后缀？"><a href="#什么是后缀？" class="headerlink" title="什么是后缀？"></a>什么是后缀？</h3><p>对于一个字符串 <code>S</code>，它的<strong>后缀 (Suffix)</strong> 是指从某个位置开始到字符串末尾的子串。</p>
 <p>例如，字符串 <code>&quot;banana&quot;</code> 的所有后缀为：</p>
-<pre><code>0: banana
-1: anana
-2: nana
-3: ana
-4: na
-5: a
-</code></pre>
+<figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ldif"><span class="hljs-attribute">0</span>: banana<br><span class="hljs-attribute">1</span>: anana<br><span class="hljs-attribute">2</span>: nana<br><span class="hljs-attribute">3</span>: ana<br><span class="hljs-attribute">4</span>: na<br><span class="hljs-attribute">5</span>: a<br></code></pre></td></tr></table></figure>
+
 <h3 id="什么是后缀数组？"><a href="#什么是后缀数组？" class="headerlink" title="什么是后缀数组？"></a>什么是后缀数组？</h3><p><strong>后缀数组 (Suffix Array, SA)</strong> 是一个整数数组，它存储了字符串所有后缀的<strong>起始位置</strong>，并且这些后缀是按照<strong>字典序排序</strong>的。</p>
 <p>对于 <code>&quot;banana&quot;</code>，我们先列出所有后缀及其字典序排序：</p>
-<pre><code>5: a
-3: ana
-1: anana
-0: banana
-4: na
-2: nana
-</code></pre>
+<figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ldif"><span class="hljs-attribute">5</span>: a<br><span class="hljs-attribute">3</span>: ana<br><span class="hljs-attribute">1</span>: anana<br><span class="hljs-attribute">0</span>: banana<br><span class="hljs-attribute">4</span>: na<br><span class="hljs-attribute">2</span>: nana<br></code></pre></td></tr></table></figure>
+
 <p>因此，后缀数组 <code>SA = [5, 3, 1, 0, 4, 2]</code>。</p>
 <blockquote>
 <p><strong>关键洞察</strong>：字符串的任意子串都是某个后缀的前缀。因此，通过对后缀排序，我们可以快速定位和比较子串。</p>
@@ -376,126 +370,21 @@
 </ol>
 <p>由于每次排序都可以利用上一次排序的结果，我们可以用<strong>基数排序</strong>在 <code>O(N)</code> 时间内完成每一轮排序，总共需要 <code>O(log N)</code> 轮，因此总时间复杂度为 <code>O(N log N)</code>。</p>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面是一个使用倍增算法构建后缀数组的 Python 实现。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">build_suffix_array</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> list<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""
-    使用倍增算法构建后缀数组
-    时间复杂度: O(N log N)
-    """</span>
-    n <span class="token operator">=</span> len<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># 将字符串转换为整数数组（方便排序）</span>
-    s <span class="token operator">=</span> <span class="token punctuation">[</span>ord<span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token keyword">for</span> c <span class="token keyword">in</span> s<span class="token punctuation">]</span>
-    
-    <span class="token comment" spellcheck="true"># sa[i] 表示排名第 i 的后缀的起始位置</span>
-    sa <span class="token operator">=</span> list<span class="token punctuation">(</span>range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># rank[i] 表示从位置 i 开始的后缀的排名</span>
-    rank <span class="token operator">=</span> s<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
-    <span class="token comment" spellcheck="true"># tmp 用于存储新的 rank</span>
-    tmp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n
-    
-    k <span class="token operator">=</span> <span class="token number">1</span>  <span class="token comment" spellcheck="true"># 当前比较的长度</span>
-    <span class="token keyword">while</span> k <span class="token operator">&lt;</span> n<span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 按照 (rank[i], rank[i+k]) 进行排序</span>
-        <span class="token comment" spellcheck="true"># 使用 Python 的稳定排序</span>
-        sa<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span><span class="token keyword">lambda</span> i<span class="token punctuation">:</span> <span class="token punctuation">(</span>rank<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> rank<span class="token punctuation">[</span>i <span class="token operator">+</span> k<span class="token punctuation">]</span> <span class="token keyword">if</span> i <span class="token operator">+</span> k <span class="token operator">&lt;</span> n <span class="token keyword">else</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        
-        <span class="token comment" spellcheck="true"># 更新 rank</span>
-        tmp<span class="token punctuation">[</span>sa<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
-        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true"># 如果两个后缀的前 2k 个字符相同，rank 相同</span>
-            prev <span class="token operator">=</span> sa<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
-            curr <span class="token operator">=</span> sa<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-            <span class="token keyword">if</span> rank<span class="token punctuation">[</span>prev<span class="token punctuation">]</span> <span class="token operator">==</span> rank<span class="token punctuation">[</span>curr<span class="token punctuation">]</span> <span class="token operator">and</span> \
-               <span class="token punctuation">(</span>rank<span class="token punctuation">[</span>prev <span class="token operator">+</span> k<span class="token punctuation">]</span> <span class="token keyword">if</span> prev <span class="token operator">+</span> k <span class="token operator">&lt;</span> n <span class="token keyword">else</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token punctuation">(</span>rank<span class="token punctuation">[</span>curr <span class="token operator">+</span> k<span class="token punctuation">]</span> <span class="token keyword">if</span> curr <span class="token operator">+</span> k <span class="token operator">&lt;</span> n <span class="token keyword">else</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-                tmp<span class="token punctuation">[</span>curr<span class="token punctuation">]</span> <span class="token operator">=</span> tmp<span class="token punctuation">[</span>prev<span class="token punctuation">]</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                tmp<span class="token punctuation">[</span>curr<span class="token punctuation">]</span> <span class="token operator">=</span> tmp<span class="token punctuation">[</span>prev<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span>
-        
-        rank <span class="token operator">=</span> tmp<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
-        k <span class="token operator">*=</span> <span class="token number">2</span>
-    
-    <span class="token keyword">return</span> sa
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_suffix_array</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    使用倍增算法构建后缀数组</span><br><span class="hljs-string">    时间复杂度: O(N log N)</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    n = <span class="hljs-built_in">len</span>(s)<br>    <span class="hljs-comment"># 将字符串转换为整数数组（方便排序）</span><br>    s = [<span class="hljs-built_in">ord</span>(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s]<br>    <br>    <span class="hljs-comment"># sa[i] 表示排名第 i 的后缀的起始位置</span><br>    sa = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))<br>    <span class="hljs-comment"># rank[i] 表示从位置 i 开始的后缀的排名</span><br>    rank = s[:]<br>    <span class="hljs-comment"># tmp 用于存储新的 rank</span><br>    tmp = [<span class="hljs-number">0</span>] * n<br>    <br>    k = <span class="hljs-number">1</span>  <span class="hljs-comment"># 当前比较的长度</span><br>    <span class="hljs-keyword">while</span> k &lt; n:<br>        <span class="hljs-comment"># 按照 (rank[i], rank[i+k]) 进行排序</span><br>        <span class="hljs-comment"># 使用 Python 的稳定排序</span><br>        sa.sort(key=<span class="hljs-keyword">lambda</span> i: (rank[i], rank[i + k] <span class="hljs-keyword">if</span> i + k &lt; n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>))<br>        <br>        <span class="hljs-comment"># 更新 rank</span><br>        tmp[sa[<span class="hljs-number">0</span>]] = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):<br>            <span class="hljs-comment"># 如果两个后缀的前 2k 个字符相同，rank 相同</span><br>            prev = sa[i - <span class="hljs-number">1</span>]<br>            curr = sa[i]<br>            <span class="hljs-keyword">if</span> rank[prev] == rank[curr] <span class="hljs-keyword">and</span> \<br>               (rank[prev + k] <span class="hljs-keyword">if</span> prev + k &lt; n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>) == (rank[curr + k] <span class="hljs-keyword">if</span> curr + k &lt; n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>):<br>                tmp[curr] = tmp[prev]<br>            <span class="hljs-keyword">else</span>:<br>                tmp[curr] = tmp[prev] + <span class="hljs-number">1</span><br>        <br>        rank = tmp[:]<br>        k *= <span class="hljs-number">2</span><br>    <br>    <span class="hljs-keyword">return</span> sa<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>s = <span class="hljs-string">&quot;banana&quot;</span><br>sa = build_suffix_array(s)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;字符串: <span class="hljs-subst">&#123;s&#125;</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;后缀数组: <span class="hljs-subst">&#123;sa&#125;</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n排序后的后缀:&quot;</span>)<br><span class="hljs-keyword">for</span> i, pos <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sa):<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;i&#125;</span>: <span class="hljs-subst">&#123;s[pos:]&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># 输出:</span><br><span class="hljs-comment"># 字符串: banana</span><br><span class="hljs-comment"># 后缀数组: [5, 3, 1, 0, 4, 2]</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># 排序后的后缀:</span><br><span class="hljs-comment"># 0: a</span><br><span class="hljs-comment"># 1: ana</span><br><span class="hljs-comment"># 2: anana</span><br><span class="hljs-comment"># 3: banana</span><br><span class="hljs-comment"># 4: na</span><br><span class="hljs-comment"># 5: nana</span><br></code></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-s <span class="token operator">=</span> <span class="token string">"banana"</span>
-sa <span class="token operator">=</span> build_suffix_array<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"字符串: &amp;#123;s&amp;#125;"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"后缀数组: &amp;#123;sa&amp;#125;"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\n排序后的后缀:"</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> i<span class="token punctuation">,</span> pos <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>sa<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"&amp;#123;i&amp;#125;: &amp;#123;s[pos:]&amp;#125;"</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 输出:</span>
-<span class="token comment" spellcheck="true"># 字符串: banana</span>
-<span class="token comment" spellcheck="true"># 后缀数组: [5, 3, 1, 0, 4, 2]</span>
-<span class="token comment" spellcheck="true">#</span>
-<span class="token comment" spellcheck="true"># 排序后的后缀:</span>
-<span class="token comment" spellcheck="true"># 0: a</span>
-<span class="token comment" spellcheck="true"># 1: ana</span>
-<span class="token comment" spellcheck="true"># 2: anana</span>
-<span class="token comment" spellcheck="true"># 3: banana</span>
-<span class="token comment" spellcheck="true"># 4: na</span>
-<span class="token comment" spellcheck="true"># 5: nana</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="LCP-数组：后缀数组的黄金搭档"><a href="#LCP-数组：后缀数组的黄金搭档" class="headerlink" title="LCP 数组：后缀数组的黄金搭档"></a>LCP 数组：后缀数组的黄金搭档</h2><p>有了后缀数组，我们还需要一个辅助数组来解决更多问题，那就是 **LCP 数组 (Longest Common Prefix Array)**。</p>
 <p><strong>LCP[i]</strong> 表示排序后第 <code>i</code> 个后缀和第 <code>i-1</code> 个后缀的<strong>最长公共前缀的长度</strong>。</p>
 <p>对于 <code>&quot;banana&quot;</code> 的后缀数组：</p>
-<pre><code>0: a        LCP[0] = 0 (没有前一个)
-1: ana      LCP[1] = 1 (与 &quot;a&quot; 的 LCP 是 &quot;a&quot;)
-2: anana    LCP[2] = 3 (与 &quot;ana&quot; 的 LCP 是 &quot;ana&quot;)
-3: banana   LCP[3] = 0 (与 &quot;anana&quot; 的 LCP 是 &quot;&quot;)
-4: na       LCP[4] = 0 (与 &quot;banana&quot; 的 LCP 是 &quot;&quot;)
-5: nana     LCP[5] = 2 (与 &quot;na&quot; 的 LCP 是 &quot;na&quot;)
-</code></pre>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">0</span>: a        LCP[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span> (没有前一个)<br><span class="hljs-attribute">1</span>: ana      LCP[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span> (与 <span class="hljs-string">&quot;a&quot;</span> 的 LCP 是 <span class="hljs-string">&quot;a&quot;</span>)<br><span class="hljs-attribute">2</span>: anana    LCP[<span class="hljs-number">2</span>] = <span class="hljs-number">3</span> (与 <span class="hljs-string">&quot;ana&quot;</span> 的 LCP 是 <span class="hljs-string">&quot;ana&quot;</span>)<br><span class="hljs-attribute">3</span>: banana   LCP[<span class="hljs-number">3</span>] = <span class="hljs-number">0</span> (与 <span class="hljs-string">&quot;anana&quot;</span> 的 LCP 是 <span class="hljs-string">&quot;&quot;</span>)<br><span class="hljs-attribute">4</span>: na       LCP[<span class="hljs-number">4</span>] = <span class="hljs-number">0</span> (与 <span class="hljs-string">&quot;banana&quot;</span> 的 LCP 是 <span class="hljs-string">&quot;&quot;</span>)<br><span class="hljs-attribute">5</span>: nana     LCP[<span class="hljs-number">5</span>] = <span class="hljs-number">2</span> (与 <span class="hljs-string">&quot;na&quot;</span> 的 LCP 是 <span class="hljs-string">&quot;na&quot;</span>)<br></code></pre></td></tr></table></figure>
+
 <p>因此，<code>LCP = [0, 1, 3, 0, 0, 2]</code>。</p>
 <h3 id="构建-LCP-数组：Kasai-算法"><a href="#构建-LCP-数组：Kasai-算法" class="headerlink" title="构建 LCP 数组：Kasai 算法"></a>构建 LCP 数组：Kasai 算法</h3><p>Kasai 算法可以在 <code>O(N)</code> 时间内构建 LCP 数组。它的核心观察是：如果后缀 <code>i</code> 和它在排序中的前一个后缀的 LCP 长度为 <code>h</code>，那么后缀 <code>i+1</code> 和它的前一个后缀的 LCP 长度至少为 <code>h-1</code>。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">build_lcp_array</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> str<span class="token punctuation">,</span> sa<span class="token punctuation">:</span> list<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> list<span class="token punctuation">[</span>int<span class="token punctuation">]</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""
-    使用 Kasai 算法构建 LCP 数组
-    时间复杂度: O(N)
-    """</span>
-    n <span class="token operator">=</span> len<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># rank[i] 表示从位置 i 开始的后缀在 SA 中的排名</span>
-    rank <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        rank<span class="token punctuation">[</span>sa<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> i
-    
-    lcp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n
-    h <span class="token operator">=</span> <span class="token number">0</span>  <span class="token comment" spellcheck="true"># 当前 LCP 长度</span>
-    
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> rank<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
-            j <span class="token operator">=</span> sa<span class="token punctuation">[</span>rank<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>  <span class="token comment" spellcheck="true"># 前一个后缀的起始位置</span>
-            <span class="token comment" spellcheck="true"># 计算 s[i:] 和 s[j:] 的 LCP</span>
-            <span class="token keyword">while</span> i <span class="token operator">+</span> h <span class="token operator">&lt;</span> n <span class="token operator">and</span> j <span class="token operator">+</span> h <span class="token operator">&lt;</span> n <span class="token operator">and</span> s<span class="token punctuation">[</span>i <span class="token operator">+</span> h<span class="token punctuation">]</span> <span class="token operator">==</span> s<span class="token punctuation">[</span>j <span class="token operator">+</span> h<span class="token punctuation">]</span><span class="token punctuation">:</span>
-                h <span class="token operator">+=</span> <span class="token number">1</span>
-            lcp<span class="token punctuation">[</span>rank<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> h
-            <span class="token keyword">if</span> h <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
-                h <span class="token operator">-=</span> <span class="token number">1</span>
-    
-    <span class="token keyword">return</span> lcp
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_lcp_array</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span>, sa: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    使用 Kasai 算法构建 LCP 数组</span><br><span class="hljs-string">    时间复杂度: O(N)</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    n = <span class="hljs-built_in">len</span>(s)<br>    <span class="hljs-comment"># rank[i] 表示从位置 i 开始的后缀在 SA 中的排名</span><br>    rank = [<span class="hljs-number">0</span>] * n<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        rank[sa[i]] = i<br>    <br>    lcp = [<span class="hljs-number">0</span>] * n<br>    h = <span class="hljs-number">0</span>  <span class="hljs-comment"># 当前 LCP 长度</span><br>    <br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        <span class="hljs-keyword">if</span> rank[i] &gt; <span class="hljs-number">0</span>:<br>            j = sa[rank[i] - <span class="hljs-number">1</span>]  <span class="hljs-comment"># 前一个后缀的起始位置</span><br>            <span class="hljs-comment"># 计算 s[i:] 和 s[j:] 的 LCP</span><br>            <span class="hljs-keyword">while</span> i + h &lt; n <span class="hljs-keyword">and</span> j + h &lt; n <span class="hljs-keyword">and</span> s[i + h] == s[j + h]:<br>                h += <span class="hljs-number">1</span><br>            lcp[rank[i]] = h<br>            <span class="hljs-keyword">if</span> h &gt; <span class="hljs-number">0</span>:<br>                h -= <span class="hljs-number">1</span><br>    <br>    <span class="hljs-keyword">return</span> lcp<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>s = <span class="hljs-string">&quot;banana&quot;</span><br>sa = build_suffix_array(s)<br>lcp = build_lcp_array(s, sa)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;LCP 数组: <span class="hljs-subst">&#123;lcp&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># 输出:</span><br><span class="hljs-comment"># LCP 数组: [0, 1, 3, 0, 0, 2]</span><br></code></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-s <span class="token operator">=</span> <span class="token string">"banana"</span>
-sa <span class="token operator">=</span> build_suffix_array<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-lcp <span class="token operator">=</span> build_lcp_array<span class="token punctuation">(</span>s<span class="token punctuation">,</span> sa<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"LCP 数组: &amp;#123;lcp&amp;#125;"</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 输出:</span>
-<span class="token comment" spellcheck="true"># LCP 数组: [0, 1, 3, 0, 0, 2]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="经典应用"><a href="#经典应用" class="headerlink" title="经典应用"></a>经典应用</h2><h3 id="1-最长重复子串"><a href="#1-最长重复子串" class="headerlink" title="1. 最长重复子串"></a>1. 最长重复子串</h3><p><strong>问题</strong>：找出字符串中最长的重复子串（至少出现两次）。</p>
 <p><strong>解法</strong>：最长重复子串一定是某两个后缀的最长公共前缀。因此，答案就是 <code>max(LCP)</code>。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">longest_repeated_substring</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> str<span class="token punctuation">:</span>
-    sa <span class="token operator">=</span> build_suffix_array<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-    lcp <span class="token operator">=</span> build_lcp_array<span class="token punctuation">(</span>s<span class="token punctuation">,</span> sa<span class="token punctuation">)</span>
-    max_lcp <span class="token operator">=</span> max<span class="token punctuation">(</span>lcp<span class="token punctuation">)</span>
-    <span class="token keyword">if</span> max_lcp <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token string">""</span>
-    idx <span class="token operator">=</span> lcp<span class="token punctuation">.</span>index<span class="token punctuation">(</span>max_lcp<span class="token punctuation">)</span>
-    <span class="token keyword">return</span> s<span class="token punctuation">[</span>sa<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">:</span>sa<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">+</span> max_lcp<span class="token punctuation">]</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_repeated_substring</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:<br>    sa = build_suffix_array(s)<br>    lcp = build_lcp_array(s, sa)<br>    max_lcp = <span class="hljs-built_in">max</span>(lcp)<br>    <span class="hljs-keyword">if</span> max_lcp == <span class="hljs-number">0</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span><br>    idx = lcp.index(max_lcp)<br>    <span class="hljs-keyword">return</span> s[sa[idx]:sa[idx] + max_lcp]<br><br><span class="hljs-built_in">print</span>(longest_repeated_substring(<span class="hljs-string">&quot;banana&quot;</span>))  <span class="hljs-comment"># &quot;ana&quot;</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>longest_repeated_substring<span class="token punctuation">(</span><span class="token string">"banana"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># "ana"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="2-不同子串的数量"><a href="#2-不同子串的数量" class="headerlink" title="2. 不同子串的数量"></a>2. 不同子串的数量</h3><p><strong>问题</strong>：统计字符串中有多少个不同的子串。</p>
 <p><strong>解法</strong>：</p>
 <ul>
@@ -503,15 +392,8 @@ lcp <span class="token operator">=</span> build_lcp_array<span class="token punc
 <li>但其中有重复的子串，重复的数量等于所有 LCP 值的和。</li>
 <li>因此，不同子串的数量 &#x3D; <code>N * (N + 1) / 2 - sum(LCP)</code>。</li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">count_distinct_substrings</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> int<span class="token punctuation">:</span>
-    n <span class="token operator">=</span> len<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-    sa <span class="token operator">=</span> build_suffix_array<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-    lcp <span class="token operator">=</span> build_lcp_array<span class="token punctuation">(</span>s<span class="token punctuation">,</span> sa<span class="token punctuation">)</span>
-    total <span class="token operator">=</span> n <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">2</span>
-    <span class="token keyword">return</span> total <span class="token operator">-</span> sum<span class="token punctuation">(</span>lcp<span class="token punctuation">)</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_distinct_substrings</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>    n = <span class="hljs-built_in">len</span>(s)<br>    sa = build_suffix_array(s)<br>    lcp = build_lcp_array(s, sa)<br>    total = n * (n + <span class="hljs-number">1</span>) // <span class="hljs-number">2</span><br>    <span class="hljs-keyword">return</span> total - <span class="hljs-built_in">sum</span>(lcp)<br><br><span class="hljs-built_in">print</span>(count_distinct_substrings(<span class="hljs-string">&quot;banana&quot;</span>))  <span class="hljs-comment"># 15</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>count_distinct_substrings<span class="token punctuation">(</span><span class="token string">"banana"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 15</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="3-字符串匹配"><a href="#3-字符串匹配" class="headerlink" title="3. 字符串匹配"></a>3. 字符串匹配</h3><p><strong>问题</strong>：判断模式串 <code>P</code> 是否在文本串 <code>T</code> 中出现。</p>
 <p><strong>解法</strong>：在 <code>T</code> 的后缀数组中进行<strong>二分查找</strong>。由于后缀是排序的，我们可以在 <code>O(M log N)</code> 时间内找到所有匹配位置，其中 <code>M</code> 是模式串的长度。</p>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><ul>
@@ -663,50 +545,6 @@ lcp <span class="token operator">=</span> build_lcp_array<span class="token punc
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -734,6 +572,9 @@ lcp <span class="token operator">=</span> build_lcp_array<span class="token punc
 
 
 
+
+
+  
 
 
 

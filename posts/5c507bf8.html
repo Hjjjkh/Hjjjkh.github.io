@@ -31,7 +31,7 @@
 <meta property="og:description" content="数论，这个古老而纯粹的数学分支，在计算机科学中扮演着意想不到的关键角色。从质数判定、最大公约数计算，到现代密码学的基石 RSA 算法，数论无处不在。本文将带你探索计算机科学中的基础数论算法，包括高效的质数筛法、优雅的欧几里得算法和处理大数幂运算的快速幂，为你揭示数字世界背后的深刻秩序。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-17T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.669Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.877Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法思想">
 <meta property="article:tag" content="数论">
@@ -80,6 +80,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -103,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -328,7 +332,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -368,13 +372,7 @@
 <h2 id="Part-A：质数-Prime-Number-构建数字世界的原子"><a href="#Part-A：质数-Prime-Number-构建数字世界的原子" class="headerlink" title="Part A：质数 (Prime Number) - 构建数字世界的原子"></a>Part A：质数 (Prime Number) - 构建数字世界的原子</h2><p>质数是只能被 1 和自身整除的正整数。它们是数论的基石，就像化学中的元素一样。</p>
 <h3 id="1-质数判定：试除法"><a href="#1-质数判定：试除法" class="headerlink" title="1. 质数判定：试除法"></a>1. 质数判定：试除法</h3><p><strong>原理</strong>：一个数 <code>n</code> 如果是合数，那么它必然有一个小于或等于 <code>√n</code> 的质因子。</p>
 <p><strong>步骤</strong>：要判断 <code>n</code> 是否为质数，只需检查从 <code>2</code> 到 <code>√n</code> 的所有整数是否能整除 <code>n</code>。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">is_prime</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token boolean">False</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> int<span class="token punctuation">(</span>n<span class="token operator">**</span><span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> n <span class="token operator">%</span> i <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> <span class="token boolean">False</span>
-    <span class="token keyword">return</span> <span class="token boolean">True</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_prime</span>(<span class="hljs-params">n</span>):<br>    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-built_in">int</span>(n**<span class="hljs-number">0.5</span>) + <span class="hljs-number">1</span>):<br>        <span class="hljs-keyword">if</span> n % i == <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br></code></pre></td></tr></table></figure>
 <p><strong>时间复杂度</strong>：<code>O(√n)</code>。</p>
 <h3 id="2-质数筛选：埃拉托斯特尼筛法-Sieve-of-Eratosthenes"><a href="#2-质数筛选：埃拉托斯特尼筛法-Sieve-of-Eratosthenes" class="headerlink" title="2. 质数筛选：埃拉托斯特尼筛法 (Sieve of Eratosthenes)"></a>2. 质数筛选：埃拉托斯特尼筛法 (Sieve of Eratosthenes)</h3><p><strong>场景</strong>：如果需要找出从 2 到 <code>n</code> 之间的所有质数，对每个数都进行一次试除法太慢了。我们需要一种更高效的“筛选”方法。</p>
 <p><strong>直觉</strong>：想象一个数字列表。我们从第一个质数 2 开始，把所有 2 的倍数（4, 6, 8…）都划掉。然后找到下一个没被划掉的数 3（它一定是质数），再把所有 3 的倍数（6, 9, 12…）划掉。不断重复这个过程。</p>
@@ -387,17 +385,7 @@
 <li>继续寻找下一个 <code>p</code>，重复 3-4 步，直到 <code>p² &gt; n</code>。</li>
 </ol>
 <p><strong>Python 实现</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sieve_of_eratosthenes</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    is_prime <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token boolean">True</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    is_prime<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> is_prime<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
-    <span class="token keyword">for</span> p <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> int<span class="token punctuation">(</span>n<span class="token operator">**</span><span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> is_prime<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            <span class="token keyword">for</span> multiple <span class="token keyword">in</span> range<span class="token punctuation">(</span>p<span class="token operator">*</span>p<span class="token punctuation">,</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">:</span>
-                is_prime<span class="token punctuation">[</span>multiple<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
-    
-    primes <span class="token operator">=</span> <span class="token punctuation">[</span>i <span class="token keyword">for</span> i<span class="token punctuation">,</span> is_p <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>is_prime<span class="token punctuation">)</span> <span class="token keyword">if</span> is_p<span class="token punctuation">]</span>
-    <span class="token keyword">return</span> primes
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sieve_of_eratosthenes</span>(<span class="hljs-params">n</span>):<br>    is_prime = [<span class="hljs-literal">True</span>] * (n + <span class="hljs-number">1</span>)<br>    is_prime[<span class="hljs-number">0</span>] = is_prime[<span class="hljs-number">1</span>] = <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-built_in">int</span>(n**<span class="hljs-number">0.5</span>) + <span class="hljs-number">1</span>):<br>        <span class="hljs-keyword">if</span> is_prime[p]:<br>            <span class="hljs-keyword">for</span> multiple <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(p*p, n + <span class="hljs-number">1</span>, p):<br>                is_prime[multiple] = <span class="hljs-literal">False</span><br>    <br>    primes = [i <span class="hljs-keyword">for</span> i, is_p <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(is_prime) <span class="hljs-keyword">if</span> is_p]<br>    <span class="hljs-keyword">return</span> primes<br></code></pre></td></tr></table></figure>
 <p><strong>时间复杂度</strong>：<code>O(n log log n)</code>，非常接近线性。</p>
 <h2 id="Part-B：最大公约数-GCD-欧几里得算法的永恒之美"><a href="#Part-B：最大公约数-GCD-欧几里得算法的永恒之美" class="headerlink" title="Part B：最大公约数 (GCD) - 欧几里得算法的永恒之美"></a>Part B：最大公约数 (GCD) - 欧几里得算法的永恒之美</h2><p><strong>最大公约数 (Greatest Common Divisor)</strong> 是指能同时整除两个或多个整数的最大正整数。</p>
 <h3 id="欧几里得算法-Euclidean-Algorithm"><a href="#欧几里得算法-Euclidean-Algorithm" class="headerlink" title="欧几里得算法 (Euclidean Algorithm)"></a>欧几里得算法 (Euclidean Algorithm)</h3><p>这是人类历史上最古老的算法之一，至今仍在广泛使用，其优雅和高效令人惊叹。</p>
@@ -411,11 +399,7 @@
 <li>当 <code>b=0</code> 时，<code>a</code> 就是最大公约数。所以 <code>gcd(48, 18) = 6</code>。</li>
 </ol>
 <p><strong>Python 实现</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">gcd</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">while</span> b<span class="token punctuation">:</span>
-        a<span class="token punctuation">,</span> b <span class="token operator">=</span> b<span class="token punctuation">,</span> a <span class="token operator">%</span> b
-    <span class="token keyword">return</span> a
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">gcd</span>(<span class="hljs-params">a, b</span>):<br>    <span class="hljs-keyword">while</span> b:<br>        a, b = b, a % b<br>    <span class="hljs-keyword">return</span> a<br></code></pre></td></tr></table></figure>
 <p><strong>时间复杂度</strong>：<code>O(log(min(a, b)))</code>。每次迭代，数字规模至少减半，因此复杂度是对数级的。</p>
 <h2 id="Part-C：模幂运算-快速幂算法"><a href="#Part-C：模幂运算-快速幂算法" class="headerlink" title="Part C：模幂运算 - 快速幂算法"></a>Part C：模幂运算 - 快速幂算法</h2><p><strong>场景</strong>：在密码学和组合数学中，我们经常需要计算 <code>(a^b) mod m</code>。如果 <code>a</code> 和 <code>b</code> 都很大，直接计算 <code>a^b</code> 会导致数据溢出，而且非常慢。</p>
 <h3 id="快速幂算法-Exponentiation-by-Squaring"><a href="#快速幂算法-Exponentiation-by-Squaring" class="headerlink" title="快速幂算法 (Exponentiation by Squaring)"></a>快速幂算法 (Exponentiation by Squaring)</h3><p><strong>核心思想</strong>：利用指数的二进制表示来加速计算。</p>
@@ -467,19 +451,7 @@
 </tbody></table>
 <p>最终结果是 3。</p>
 <p><strong>Python 实现</strong>：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">fast_power</span><span class="token punctuation">(</span>base<span class="token punctuation">,</span> power<span class="token punctuation">,</span> mod<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    result <span class="token operator">=</span> <span class="token number">1</span>
-    base <span class="token operator">%=</span> mod
-    <span class="token keyword">while</span> power <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 如果 power 是奇数，需要乘上当前的 base</span>
-        <span class="token keyword">if</span> power <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
-            result <span class="token operator">=</span> <span class="token punctuation">(</span>result <span class="token operator">*</span> base<span class="token punctuation">)</span> <span class="token operator">%</span> mod
-        <span class="token comment" spellcheck="true"># base 自我平方</span>
-        base <span class="token operator">=</span> <span class="token punctuation">(</span>base <span class="token operator">*</span> base<span class="token punctuation">)</span> <span class="token operator">%</span> mod
-        <span class="token comment" spellcheck="true"># power 整除 2</span>
-        power <span class="token operator">//=</span> <span class="token number">2</span>
-    <span class="token keyword">return</span> result
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fast_power</span>(<span class="hljs-params">base, power, mod</span>):<br>    result = <span class="hljs-number">1</span><br>    base %= mod<br>    <span class="hljs-keyword">while</span> power &gt; <span class="hljs-number">0</span>:<br>        <span class="hljs-comment"># 如果 power 是奇数，需要乘上当前的 base</span><br>        <span class="hljs-keyword">if</span> power % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>:<br>            result = (result * base) % mod<br>        <span class="hljs-comment"># base 自我平方</span><br>        base = (base * base) % mod<br>        <span class="hljs-comment"># power 整除 2</span><br>        power //= <span class="hljs-number">2</span><br>    <span class="hljs-keyword">return</span> result<br></code></pre></td></tr></table></figure>
 <p><strong>时间复杂度</strong>：<code>O(log b)</code>。循环次数取决于 <code>b</code> 的二进制位数。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>数论算法是计算机科学的“内功心法”，它虽然抽象，但应用极其广泛。掌握基础的数论算法，能让你在解决问题时拥有更广阔的思路和更深刻的洞察力。</p>
 <h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>质数</strong>：<br>    - <strong>试除法</strong>：<code>O(√n)</code> 判定单个质数。<br>    - <strong>埃氏筛</strong>：<code>O(n log log n)</code> 筛选出一定范围内的所有质数。</p>
@@ -621,8 +593,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/6a3b18be" title="Part 6.5：字符串哈希——O(1) 比较子串的利器">
-                        <span class="hidden-mobile">Part 6.5：字符串哈希——O(1) 比较子串的利器</span>
+                      <a href="/posts/4a17b156" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -633,50 +605,6 @@
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -704,6 +632,9 @@
 
 
 
+
+
+  
 
 
 

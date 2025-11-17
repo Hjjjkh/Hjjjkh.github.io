@@ -31,14 +31,14 @@
 <meta property="og:description" content="分治算法，一种源自古罗马统治策略的强大算法思想，是解决复杂问题的利器。本文将深入剖析分治法的三大核心步骤——分解、解决、合并，通过经典的归并排序案例，带你掌握这一优雅且高效的算法设计范式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-15T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.664Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.875Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="递归">
 <meta property="article:tag" content="快速排序">
 <meta property="article:tag" content="归并排序">
+<meta property="article:tag" content="算法思想">
 <meta property="article:tag" content="分治算法">
 <meta property="article:tag" content="Divide and Conquer">
-<meta property="article:tag" content="算法思想">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -80,6 +80,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -103,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -266,7 +270,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          3.4k 字
         
       </span>
     
@@ -277,7 +281,7 @@
         
         
         
-          17 分钟
+          29 分钟
         
       </span>
     
@@ -328,7 +332,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -443,96 +447,10 @@
 </li>
 </ul>
 <p>最终得到完全有序的数组。</p>
-<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：归并排序"><a href="#伪代码：归并排序" class="headerlink" title="伪代码：归并排序"></a>伪代码：归并排序</h3><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">// 对数组 A 的 [p...r] 范围进行排序
-function MergeSort(A, p, r):
-    // 1. 基本情况：如果范围只有一个或没有元素，则已有序
-    if p >= r:
-        return
-    
-    // 2. 分解：找到中点 q
-    q = floor((p + r) / 2)
-    
-    // 3. 解决：递归排序左右两部分
-    MergeSort(A, p, q)
-    MergeSort(A, q + 1, r)
-    
-    // 4. 合并：将已排序的 A[p...q] 和 A[q+1...r] 合并
-    Merge(A, p, q, r)
+<h2 id="伪代码与-Python-实现"><a href="#伪代码与-Python-实现" class="headerlink" title="伪代码与 Python 实现"></a>伪代码与 Python 实现</h2><h3 id="伪代码：归并排序"><a href="#伪代码：归并排序" class="headerlink" title="伪代码：归并排序"></a>伪代码：归并排序</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">// 对数组 A 的 [p...r] 范围进行排序<br>function MergeSort(A, p, r):<br>    // 1. 基本情况：如果范围只有一个或没有元素，则已有序<br>    if p &gt;= r:<br>        return<br>    <br>    // 2. 分解：找到中点 q<br>    q = floor((p + r) / 2)<br>    <br>    // 3. 解决：递归排序左右两部分<br>    MergeSort(A, p, q)<br>    MergeSort(A, q + 1, r)<br>    <br>    // 4. 合并：将已排序的 A[p...q] 和 A[q+1...r] 合并<br>    Merge(A, p, q, r)<br><br>// 合并函数<br>function Merge(A, p, q, r):<br>    // 创建临时数组 L 和 R，分别拷贝 A[p...q] 和 A[q+1...r]<br>    L = copy(A[p...q])<br>    R = copy(A[q+1...r])<br>    <br>    // 使用双指针 i, j, k 分别指向 L, R 和 A<br>    i = 0, j = 0, k = p<br>    <br>    // 比较 L 和 R 的元素，将较小的放入 A<br>    while i &lt; length(L) and j &lt; length(R):<br>        if L[i] &lt;= R[j]:<br>            A[k] = L[i]<br>            i = i + 1<br>        else:<br>            A[k] = R[j]<br>            j = j + 1<br>        k = k + 1<br>        <br>    // 将 L 或 R 中剩余的元素拷贝回 A<br>    while i &lt; length(L):<br>        A[k] = L[i]<br>        i = i + 1, k = k + 1<br>    while j &lt; length(R):<br>        A[k] = R[j]<br>        j = j + 1, k = k + 1<br></code></pre></td></tr></table></figure>
 
-// 合并函数
-function Merge(A, p, q, r):
-    // 创建临时数组 L 和 R，分别拷贝 A[p...q] 和 A[q+1...r]
-    L = copy(A[p...q])
-    R = copy(A[q+1...r])
-    
-    // 使用双指针 i, j, k 分别指向 L, R 和 A
-    i = 0, j = 0, k = p
-    
-    // 比较 L 和 R 的元素，将较小的放入 A
-    while i < length(L) and j < length(R):
-        if L[i] <= R[j]:
-            A[k] = L[i]
-            i = i + 1
-        else:
-            A[k] = R[j]
-            j = j + 1
-        k = k + 1
-        
-    // 将 L 或 R 中剩余的元素拷贝回 A
-    while i < length(L):
-        A[k] = L[i]
-        i = i + 1, k = k + 1
-    while j < length(R):
-        A[k] = R[j]
-        j = j + 1, k = k + 1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="Python-实现：归并排序"><a href="#Python-实现：归并排序" class="headerlink" title="Python 实现：归并排序"></a>Python 实现：归并排序</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">merge_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""使用分治法实现归并排序"""</span>
-    <span class="token comment" spellcheck="true"># 1. 基本情况</span>
-    <span class="token keyword">if</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> arr
-    
-    <span class="token comment" spellcheck="true"># 2. 分解</span>
-    mid <span class="token operator">=</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">2</span>
-    left_half <span class="token operator">=</span> arr<span class="token punctuation">[</span><span class="token punctuation">:</span>mid<span class="token punctuation">]</span>
-    right_half <span class="token operator">=</span> arr<span class="token punctuation">[</span>mid<span class="token punctuation">:</span><span class="token punctuation">]</span>
-    
-    <span class="token comment" spellcheck="true"># 3. 解决 (递归)</span>
-    sorted_left <span class="token operator">=</span> merge_sort<span class="token punctuation">(</span>left_half<span class="token punctuation">)</span>
-    sorted_right <span class="token operator">=</span> merge_sort<span class="token punctuation">(</span>right_half<span class="token punctuation">)</span>
-    
-    <span class="token comment" spellcheck="true"># 4. 合并</span>
-    <span class="token keyword">return</span> merge<span class="token punctuation">(</span>sorted_left<span class="token punctuation">,</span> sorted_right<span class="token punctuation">)</span>
+<h3 id="Python-实现：归并排序"><a href="#Python-实现：归并排序" class="headerlink" title="Python 实现：归并排序"></a>Python 实现：归并排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_sort</span>(<span class="hljs-params">arr</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;使用分治法实现归并排序&quot;&quot;&quot;</span><br>    <span class="hljs-comment"># 1. 基本情况</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= <span class="hljs-number">1</span>:<br>        <span class="hljs-keyword">return</span> arr<br>    <br>    <span class="hljs-comment"># 2. 分解</span><br>    mid = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span><br>    left_half = arr[:mid]<br>    right_half = arr[mid:]<br>    <br>    <span class="hljs-comment"># 3. 解决 (递归)</span><br>    sorted_left = merge_sort(left_half)<br>    sorted_right = merge_sort(right_half)<br>    <br>    <span class="hljs-comment"># 4. 合并</span><br>    <span class="hljs-keyword">return</span> merge(sorted_left, sorted_right)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">left, right</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;合并两个已排序的数组&quot;&quot;&quot;</span><br>    result = []<br>    i, j = <span class="hljs-number">0</span>, <span class="hljs-number">0</span><br>    <br>    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(right):<br>        <span class="hljs-keyword">if</span> left[i] &lt;= right[j]:<br>            result.append(left[i])<br>            i += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">else</span>:<br>            result.append(right[j])<br>            j += <span class="hljs-number">1</span><br>            <br>    <span class="hljs-comment"># 将剩余的元素追加到结果末尾</span><br>    result.extend(left[i:])<br>    result.extend(right[j:])<br>    <br>    <span class="hljs-keyword">return</span> result<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>my_array = [<span class="hljs-number">38</span>, <span class="hljs-number">27</span>, <span class="hljs-number">43</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">82</span>, <span class="hljs-number">10</span>]<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Original array: <span class="hljs-subst">&#123;my_array&#125;</span>&quot;</span>)<br>sorted_array = merge_sort(my_array)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Sorted array:   <span class="hljs-subst">&#123;sorted_array&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># 输出:</span><br><span class="hljs-comment"># Original array: [38, 27, 43, 3, 9, 82, 10]</span><br><span class="hljs-comment"># Sorted array:   [3, 9, 10, 27, 38, 43, 82]</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">def</span> <span class="token function">merge</span><span class="token punctuation">(</span>left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""合并两个已排序的数组"""</span>
-    result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    i<span class="token punctuation">,</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
-    
-    <span class="token keyword">while</span> i <span class="token operator">&lt;</span> len<span class="token punctuation">(</span>left<span class="token punctuation">)</span> <span class="token operator">and</span> j <span class="token operator">&lt;</span> len<span class="token punctuation">(</span>right<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> left<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> right<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>left<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-            i <span class="token operator">+=</span> <span class="token number">1</span>
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>right<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
-            j <span class="token operator">+=</span> <span class="token number">1</span>
-            
-    <span class="token comment" spellcheck="true"># 将剩余的元素追加到结果末尾</span>
-    result<span class="token punctuation">.</span>extend<span class="token punctuation">(</span>left<span class="token punctuation">[</span>i<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-    result<span class="token punctuation">.</span>extend<span class="token punctuation">(</span>right<span class="token punctuation">[</span>j<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-    
-    <span class="token keyword">return</span> result
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-my_array <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">38</span><span class="token punctuation">,</span> <span class="token number">27</span><span class="token punctuation">,</span> <span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">82</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Original array: &amp;#123;my_array&amp;#125;"</span><span class="token punctuation">)</span>
-sorted_array <span class="token operator">=</span> merge_sort<span class="token punctuation">(</span>my_array<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Sorted array:   &amp;#123;sorted_array&amp;#125;"</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 输出:</span>
-<span class="token comment" spellcheck="true"># Original array: [38, 27, 43, 3, 9, 82, 10]</span>
-<span class="token comment" spellcheck="true"># Sorted array:   [3, 9, 10, 27, 38, 43, 82]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><h3 id="时间复杂度：O-n-log-n"><a href="#时间复杂度：O-n-log-n" class="headerlink" title="时间复杂度：O(n log n)"></a>时间复杂度：O(n log n)</h3><p>我们使用<strong>递归树法</strong>进行分析，这在 <strong>Part 1.2</strong> 中已有详细介绍。</p>
 <ol>
 <li><p><strong>递归关系式</strong>：<code>T(n) = 2 * T(n/2) + O(n)</code></p>
@@ -633,11 +551,11 @@ sorted_array <span class="token operator">=</span> merge_sort<span class="token 
       
         <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="print-no-link">#归并排序</a>
       
+        <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/" class="print-no-link">#算法思想</a>
+      
         <a href="/tags/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/" class="print-no-link">#分治算法</a>
       
         <a href="/tags/Divide-and-Conquer/" class="print-no-link">#Divide and Conquer</a>
-      
-        <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/" class="print-no-link">#算法思想</a>
       
     </div>
   
@@ -728,50 +646,6 @@ sorted_array <span class="token operator">=</span> merge_sort<span class="token 
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -799,6 +673,9 @@ sorted_array <span class="token operator">=</span> merge_sort<span class="token 
 
 
 
+
+
+  
 
 
 

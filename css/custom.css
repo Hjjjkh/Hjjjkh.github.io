@@ -1,159 +1,61 @@
 /* ========================================
-   评论区优化样式
-   Comment Section Optimization Styles
+   全局字体与排版优化 - 舒适阅读方案
    ======================================== */
 
-/* 评论区容器优化 - 针对外层容器 */
-#comments {
-  margin-top: 3rem;
-  padding: 2.5rem 0;
-  border-top: 2px solid #e8e8e8;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-}
-
-/* Giscus 容器样式 */
-.giscus, 
-#giscus {
-  width: 100% !important;
-  max-width: 100% !important;
-  padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-}
-
-.giscus:hover,
-#giscus:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
-}
-
-/* Giscus iframe 样式 */
-.giscus-frame {
-  width: 100% !important;
-  border-radius: 8px !important;
-  border: none !important;
-}
-
-/* 响应式优化 */
-@media (max-width: 768px) {
-  #comments {
-    padding: 1.5rem 0;
-    margin-top: 2rem;
-    border-radius: 8px;
-  }
-  
-  .giscus,
-  #giscus {
-    padding: 1rem;
-  }
-}
-
-/* 暗色模式适配 */
-[data-user-color-scheme="dark"] #comments {
-  border-top-color: rgba(255, 255, 255, 0.15);
-  background: linear-gradient(135deg, #1a1f2e 0%, #252d38 100%);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-[data-user-color-scheme="dark"] .giscus,
-[data-user-color-scheme="dark"] #giscus {
-  background: #2a3240;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-}
-
-[data-user-color-scheme="dark"] .giscus:hover,
-[data-user-color-scheme="dark"] #giscus:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-/* 加载动画优化 */
-.giscus-loading {
-  text-align: center;
-  padding: 2rem;
-  color: #718096;
-  font-size: 0.95rem;
-}
-
-/* 评论数量显示优化 */
-.giscus-comment-count {
-  font-size: 0.9rem;
-  color: #718096;
-  margin-left: 0.5rem;
-}
+/* ... (previous font styles) ... */
 
 /* ========================================
-   代码高亮优化（确保与 Prism 兼容）
-   Code Highlight Optimization
+   文章列表卡片化美化
    ======================================== */
 
-/* 代码块整体样式 */
-pre[class*="language-"] {
-  border-radius: 6px;
-  margin: 1.5rem 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.index-card {
+  background-color: var(--board-color);
+  border-radius: 12px; /* 增加圆角 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 添加柔和阴影 */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 平滑过渡效果 */
+  margin-bottom: 2.5rem; /* 加大卡片间距 */
+  padding: 2rem; /* 增加内边距 */
 }
 
-/* 行内代码样式 */
-code:not([class*="language-"]) {
-  background-color: rgba(27, 31, 35, 0.05);
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
-  font-size: 0.9em;
-  color: #e83e8c;
-  }
-  
-[data-user-color-scheme="dark"] code:not([class*="language-"]) {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ff7b72;
+.dark-mode .index-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* 代码块行号优化 */
-.line-numbers .line-numbers-rows {
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+/* 鼠标悬浮上浮效果 */
+.index-card:hover {
+  transform: translateY(-8px); /* 向上移动8像素 */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); /* 阴影加深 */
 }
 
-[data-user-color-scheme="dark"] .line-numbers .line-numbers-rows {
-  border-right-color: rgba(255, 255, 255, 0.1);
+.dark-mode .index-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* 复制按钮优化 */
-.code-copy-btn {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* 移除默认的边框和背景 */
+.index-card {
+  border: none;
 }
 
-pre:hover .code-copy-btn {
-  opacity: 1;
+/* 文章标题 */
+.index-card .index-header a {
+  color: var(--post-heading-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-/* ========================================
-   页面整体优化
-   Overall Page Optimization
-   ======================================== */
-
-/* 平滑滚动 */
-html {
-  scroll-behavior: smooth;
+.index-card .index-header a:hover {
+  color: var(--link-hover-color);
 }
 
-/* 链接悬停效果优化 */
-a {
-  transition: color 0.2s ease, border-color 0.2s ease;
-  }
-  
-/* 图片加载优化 */
-img {
-  transition: opacity 0.3s ease;
-  }
-  
-img[loading="lazy"] {
-  opacity: 0;
-  }
+/* 文章摘要 */
+.index-excerpt {
+  color: var(--sec-text-color);
+  margin-top: 1rem;
+}
 
-img[loading="lazy"].loaded {
-  opacity: 1;
+/* 文章元信息（日期、分类等） */
+.index-btm.post-metas {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line-color);
+  padding-top: 1rem;
 }

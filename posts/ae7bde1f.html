@@ -31,7 +31,7 @@
 <meta property="og:description" content="后缀自动机（Suffix Automaton, SAM）是字符串算法领域的皇冠明珠，它是一个能够识别一个字符串所有子串的最小确定性有限自动机（DFA）。SAM 不仅能解决后缀数组能解决的所有问题，还能处理更复杂的在线查询、动态添加字符等场景。本文将从自动机的基本概念出发，深入讲解 SAM 的构建原理、状态转移、后缀链接等核心机制，并通过 Python 代码和实际案例，带你征服这座字符串算法的最高峰">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-20T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.661Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.873Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法进阶">
 <meta property="article:tag" content="字符串">
@@ -80,6 +80,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -103,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -328,7 +332,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -392,129 +396,8 @@
 </ol>
 <p>这个算法的正确性证明较为复杂，但它的实现却非常简洁。</p>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面是一个完整的后缀自动机实现，包括构建和一些基本应用。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">SAMNode</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>trans <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;&amp;#125;  # 转移字典: char -> SAMNode</span>
-        self<span class="token punctuation">.</span>link <span class="token operator">=</span> None  <span class="token comment" spellcheck="true"># 后缀链接</span>
-        self<span class="token punctuation">.</span>len <span class="token operator">=</span> <span class="token number">0</span>      <span class="token comment" spellcheck="true"># 最长子串的长度</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SAMNode</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-variable language_">self</span>.trans = &#123;&#125;  <span class="hljs-comment"># 转移字典: char -&gt; SAMNode</span><br>        <span class="hljs-variable language_">self</span>.link = <span class="hljs-literal">None</span>  <span class="hljs-comment"># 后缀链接</span><br>        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">len</span> = <span class="hljs-number">0</span>      <span class="hljs-comment"># 最长子串的长度</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SuffixAutomaton</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-variable language_">self</span>.root = SAMNode()<br>        <span class="hljs-variable language_">self</span>.last = <span class="hljs-variable language_">self</span>.root<br>        <span class="hljs-variable language_">self</span>.nodes = [<span class="hljs-variable language_">self</span>.root]  <span class="hljs-comment"># 所有节点的列表</span><br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">extend</span>(<span class="hljs-params">self, c: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-literal">None</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;向 SAM 中添加一个字符&quot;&quot;&quot;</span><br>        cur = SAMNode()<br>        cur.<span class="hljs-built_in">len</span> = <span class="hljs-variable language_">self</span>.last.<span class="hljs-built_in">len</span> + <span class="hljs-number">1</span><br>        <span class="hljs-variable language_">self</span>.nodes.append(cur)<br>        <br>        p = <span class="hljs-variable language_">self</span>.last<br>        <span class="hljs-comment"># 沿着后缀链接向上，添加转移</span><br>        <span class="hljs-keyword">while</span> p <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> c <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> p.trans:<br>            p.trans[c] = cur<br>            p = p.link<br>        <br>        <span class="hljs-keyword">if</span> p <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>            <span class="hljs-comment"># 没有找到已有的转移，cur 的后缀链接指向根</span><br>            cur.link = <span class="hljs-variable language_">self</span>.root<br>        <span class="hljs-keyword">else</span>:<br>            q = p.trans[c]<br>            <span class="hljs-keyword">if</span> q.<span class="hljs-built_in">len</span> == p.<span class="hljs-built_in">len</span> + <span class="hljs-number">1</span>:<br>                <span class="hljs-comment"># q 正好是我们需要的状态</span><br>                cur.link = q<br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-comment"># 需要克隆 q</span><br>                clone = SAMNode()<br>                clone.<span class="hljs-built_in">len</span> = p.<span class="hljs-built_in">len</span> + <span class="hljs-number">1</span><br>                clone.trans = q.trans.copy()<br>                clone.link = q.link<br>                <span class="hljs-variable language_">self</span>.nodes.append(clone)<br>                <br>                <span class="hljs-comment"># 更新后缀链接</span><br>                <span class="hljs-keyword">while</span> p <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> p.trans.get(c) == q:<br>                    p.trans[c] = clone<br>                    p = p.link<br>                <br>                q.link = clone<br>                cur.link = clone<br>        <br>        <span class="hljs-variable language_">self</span>.last = cur<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">self, s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-literal">None</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;构建字符串 s 的后缀自动机&quot;&quot;&quot;</span><br>        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:<br>            <span class="hljs-variable language_">self</span>.extend(c)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">contains</span>(<span class="hljs-params">self, t: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;判断子串 t 是否在原字符串中出现&quot;&quot;&quot;</span><br>        node = <span class="hljs-variable language_">self</span>.root<br>        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> t:<br>            <span class="hljs-keyword">if</span> c <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.trans:<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>            node = node.trans[c]<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_distinct_substrings</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;统计不同子串的数量&quot;&quot;&quot;</span><br>        <span class="hljs-comment"># 每个状态代表的不同子串数量 = len[s] - len[link[s]]</span><br>        count = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.nodes:<br>            <span class="hljs-keyword">if</span> node != <span class="hljs-variable language_">self</span>.root:<br>                link_len = node.link.<span class="hljs-built_in">len</span> <span class="hljs-keyword">if</span> node.link <span class="hljs-keyword">else</span> <span class="hljs-number">0</span><br>                count += node.<span class="hljs-built_in">len</span> - link_len<br>        <span class="hljs-keyword">return</span> count<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_common_substring</span>(<span class="hljs-params">self, t: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;找出原字符串和 t 的最长公共子串&quot;&quot;&quot;</span><br>        node = <span class="hljs-variable language_">self</span>.root<br>        length = <span class="hljs-number">0</span><br>        max_length = <span class="hljs-number">0</span><br>        max_pos = <span class="hljs-number">0</span><br>        <br>        <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(t):<br>            <span class="hljs-comment"># 尝试沿着转移走</span><br>            <span class="hljs-keyword">while</span> node != <span class="hljs-variable language_">self</span>.root <span class="hljs-keyword">and</span> c <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.trans:<br>                node = node.link<br>                length = node.<span class="hljs-built_in">len</span><br>            <br>            <span class="hljs-keyword">if</span> c <span class="hljs-keyword">in</span> node.trans:<br>                node = node.trans[c]<br>                length += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                node = <span class="hljs-variable language_">self</span>.root<br>                length = <span class="hljs-number">0</span><br>            <br>            <span class="hljs-keyword">if</span> length &gt; max_length:<br>                max_length = length<br>                max_pos = i<br>        <br>        <span class="hljs-keyword">return</span> t[max_pos - max_length + <span class="hljs-number">1</span> : max_pos + <span class="hljs-number">1</span>]<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>sam = SuffixAutomaton()<br>s = <span class="hljs-string">&quot;abcbc&quot;</span><br>sam.build(s)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;字符串: <span class="hljs-subst">&#123;s&#125;</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;状态数: <span class="hljs-subst">&#123;<span class="hljs-built_in">len</span>(sam.nodes)&#125;</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;不同子串数量: <span class="hljs-subst">&#123;sam.count_distinct_substrings()&#125;</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;是否包含 &#x27;bcb&#x27;: <span class="hljs-subst">&#123;sam.contains(<span class="hljs-string">&#x27;bcb&#x27;</span>)&#125;</span>&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;是否包含 &#x27;bcd&#x27;: <span class="hljs-subst">&#123;sam.contains(<span class="hljs-string">&#x27;bcd&#x27;</span>)&#125;</span>&quot;</span>)<br><br>t = <span class="hljs-string">&quot;xbcbcy&quot;</span><br>lcs = sam.longest_common_substring(t)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;与 &#x27;<span class="hljs-subst">&#123;t&#125;</span>&#x27; 的最长公共子串: &#x27;<span class="hljs-subst">&#123;lcs&#125;</span>&#x27;&quot;</span>)<br><br><span class="hljs-comment"># 输出:</span><br><span class="hljs-comment"># 字符串: abcbc</span><br><span class="hljs-comment"># 状态数: 8</span><br><span class="hljs-comment"># 不同子串数量: 12</span><br><span class="hljs-comment"># 是否包含 &#x27;bcb&#x27;: True</span><br><span class="hljs-comment"># 是否包含 &#x27;bcd&#x27;: False</span><br><span class="hljs-comment"># 与 &#x27;xbcbcy&#x27; 的最长公共子串: &#x27;bcbc&#x27;</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">SuffixAutomaton</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>root <span class="token operator">=</span> SAMNode<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>last <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-        self<span class="token punctuation">.</span>nodes <span class="token operator">=</span> <span class="token punctuation">[</span>self<span class="token punctuation">.</span>root<span class="token punctuation">]</span>  <span class="token comment" spellcheck="true"># 所有节点的列表</span>
-    
-    <span class="token keyword">def</span> <span class="token function">extend</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> c<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""向 SAM 中添加一个字符"""</span>
-        cur <span class="token operator">=</span> SAMNode<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        cur<span class="token punctuation">.</span>len <span class="token operator">=</span> self<span class="token punctuation">.</span>last<span class="token punctuation">.</span>len <span class="token operator">+</span> <span class="token number">1</span>
-        self<span class="token punctuation">.</span>nodes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>cur<span class="token punctuation">)</span>
-        
-        p <span class="token operator">=</span> self<span class="token punctuation">.</span>last
-        <span class="token comment" spellcheck="true"># 沿着后缀链接向上，添加转移</span>
-        <span class="token keyword">while</span> p <span class="token keyword">is</span> <span class="token operator">not</span> None <span class="token operator">and</span> c <span class="token operator">not</span> <span class="token keyword">in</span> p<span class="token punctuation">.</span>trans<span class="token punctuation">:</span>
-            p<span class="token punctuation">.</span>trans<span class="token punctuation">[</span>c<span class="token punctuation">]</span> <span class="token operator">=</span> cur
-            p <span class="token operator">=</span> p<span class="token punctuation">.</span>link
-        
-        <span class="token keyword">if</span> p <span class="token keyword">is</span> None<span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true"># 没有找到已有的转移，cur 的后缀链接指向根</span>
-            cur<span class="token punctuation">.</span>link <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            q <span class="token operator">=</span> p<span class="token punctuation">.</span>trans<span class="token punctuation">[</span>c<span class="token punctuation">]</span>
-            <span class="token keyword">if</span> q<span class="token punctuation">.</span>len <span class="token operator">==</span> p<span class="token punctuation">.</span>len <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">:</span>
-                <span class="token comment" spellcheck="true"># q 正好是我们需要的状态</span>
-                cur<span class="token punctuation">.</span>link <span class="token operator">=</span> q
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                <span class="token comment" spellcheck="true"># 需要克隆 q</span>
-                clone <span class="token operator">=</span> SAMNode<span class="token punctuation">(</span><span class="token punctuation">)</span>
-                clone<span class="token punctuation">.</span>len <span class="token operator">=</span> p<span class="token punctuation">.</span>len <span class="token operator">+</span> <span class="token number">1</span>
-                clone<span class="token punctuation">.</span>trans <span class="token operator">=</span> q<span class="token punctuation">.</span>trans<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-                clone<span class="token punctuation">.</span>link <span class="token operator">=</span> q<span class="token punctuation">.</span>link
-                self<span class="token punctuation">.</span>nodes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>clone<span class="token punctuation">)</span>
-                
-                <span class="token comment" spellcheck="true"># 更新后缀链接</span>
-                <span class="token keyword">while</span> p <span class="token keyword">is</span> <span class="token operator">not</span> None <span class="token operator">and</span> p<span class="token punctuation">.</span>trans<span class="token punctuation">.</span>get<span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token operator">==</span> q<span class="token punctuation">:</span>
-                    p<span class="token punctuation">.</span>trans<span class="token punctuation">[</span>c<span class="token punctuation">]</span> <span class="token operator">=</span> clone
-                    p <span class="token operator">=</span> p<span class="token punctuation">.</span>link
-                
-                q<span class="token punctuation">.</span>link <span class="token operator">=</span> clone
-                cur<span class="token punctuation">.</span>link <span class="token operator">=</span> clone
-        
-        self<span class="token punctuation">.</span>last <span class="token operator">=</span> cur
-    
-    <span class="token keyword">def</span> <span class="token function">build</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> None<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""构建字符串 s 的后缀自动机"""</span>
-        <span class="token keyword">for</span> c <span class="token keyword">in</span> s<span class="token punctuation">:</span>
-            self<span class="token punctuation">.</span>extend<span class="token punctuation">(</span>c<span class="token punctuation">)</span>
-    
-    <span class="token keyword">def</span> <span class="token function">contains</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> t<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> bool<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""判断子串 t 是否在原字符串中出现"""</span>
-        node <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-        <span class="token keyword">for</span> c <span class="token keyword">in</span> t<span class="token punctuation">:</span>
-            <span class="token keyword">if</span> c <span class="token operator">not</span> <span class="token keyword">in</span> node<span class="token punctuation">.</span>trans<span class="token punctuation">:</span>
-                <span class="token keyword">return</span> <span class="token boolean">False</span>
-            node <span class="token operator">=</span> node<span class="token punctuation">.</span>trans<span class="token punctuation">[</span>c<span class="token punctuation">]</span>
-        <span class="token keyword">return</span> <span class="token boolean">True</span>
-    
-    <span class="token keyword">def</span> <span class="token function">count_distinct_substrings</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> int<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""统计不同子串的数量"""</span>
-        <span class="token comment" spellcheck="true"># 每个状态代表的不同子串数量 = len[s] - len[link[s]]</span>
-        count <span class="token operator">=</span> <span class="token number">0</span>
-        <span class="token keyword">for</span> node <span class="token keyword">in</span> self<span class="token punctuation">.</span>nodes<span class="token punctuation">:</span>
-            <span class="token keyword">if</span> node <span class="token operator">!=</span> self<span class="token punctuation">.</span>root<span class="token punctuation">:</span>
-                link_len <span class="token operator">=</span> node<span class="token punctuation">.</span>link<span class="token punctuation">.</span>len <span class="token keyword">if</span> node<span class="token punctuation">.</span>link <span class="token keyword">else</span> <span class="token number">0</span>
-                count <span class="token operator">+=</span> node<span class="token punctuation">.</span>len <span class="token operator">-</span> link_len
-        <span class="token keyword">return</span> count
-    
-    <span class="token keyword">def</span> <span class="token function">longest_common_substring</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> t<span class="token punctuation">:</span> str<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> str<span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""找出原字符串和 t 的最长公共子串"""</span>
-        node <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-        length <span class="token operator">=</span> <span class="token number">0</span>
-        max_length <span class="token operator">=</span> <span class="token number">0</span>
-        max_pos <span class="token operator">=</span> <span class="token number">0</span>
-        
-        <span class="token keyword">for</span> i<span class="token punctuation">,</span> c <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true"># 尝试沿着转移走</span>
-            <span class="token keyword">while</span> node <span class="token operator">!=</span> self<span class="token punctuation">.</span>root <span class="token operator">and</span> c <span class="token operator">not</span> <span class="token keyword">in</span> node<span class="token punctuation">.</span>trans<span class="token punctuation">:</span>
-                node <span class="token operator">=</span> node<span class="token punctuation">.</span>link
-                length <span class="token operator">=</span> node<span class="token punctuation">.</span>len
-            
-            <span class="token keyword">if</span> c <span class="token keyword">in</span> node<span class="token punctuation">.</span>trans<span class="token punctuation">:</span>
-                node <span class="token operator">=</span> node<span class="token punctuation">.</span>trans<span class="token punctuation">[</span>c<span class="token punctuation">]</span>
-                length <span class="token operator">+=</span> <span class="token number">1</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                node <span class="token operator">=</span> self<span class="token punctuation">.</span>root
-                length <span class="token operator">=</span> <span class="token number">0</span>
-            
-            <span class="token keyword">if</span> length <span class="token operator">></span> max_length<span class="token punctuation">:</span>
-                max_length <span class="token operator">=</span> length
-                max_pos <span class="token operator">=</span> i
-        
-        <span class="token keyword">return</span> t<span class="token punctuation">[</span>max_pos <span class="token operator">-</span> max_length <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">:</span> max_pos <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span>
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-sam <span class="token operator">=</span> SuffixAutomaton<span class="token punctuation">(</span><span class="token punctuation">)</span>
-s <span class="token operator">=</span> <span class="token string">"abcbc"</span>
-sam<span class="token punctuation">.</span>build<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"字符串: &amp;#123;s&amp;#125;"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"状态数: &amp;#123;len(sam.nodes)&amp;#125;"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"不同子串数量: &amp;#123;sam.count_distinct_substrings()&amp;#125;"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"是否包含 'bcb': &amp;#123;sam.contains('bcb')&amp;#125;"</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"是否包含 'bcd': &amp;#123;sam.contains('bcd')&amp;#125;"</span><span class="token punctuation">)</span>
-
-t <span class="token operator">=</span> <span class="token string">"xbcbcy"</span>
-lcs <span class="token operator">=</span> sam<span class="token punctuation">.</span>longest_common_substring<span class="token punctuation">(</span>t<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"与 '&amp;#123;t&amp;#125;' 的最长公共子串: '&amp;#123;lcs&amp;#125;'"</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 输出:</span>
-<span class="token comment" spellcheck="true"># 字符串: abcbc</span>
-<span class="token comment" spellcheck="true"># 状态数: 8</span>
-<span class="token comment" spellcheck="true"># 不同子串数量: 12</span>
-<span class="token comment" spellcheck="true"># 是否包含 'bcb': True</span>
-<span class="token comment" spellcheck="true"># 是否包含 'bcd': False</span>
-<span class="token comment" spellcheck="true"># 与 'xbcbcy' 的最长公共子串: 'bcbc'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><ul>
 <li><strong>构建时间复杂度</strong>: <code>O(N)</code>，其中 <code>N</code> 是字符串的长度。虽然有嵌套循环，但每条边最多被访问常数次。</li>
 <li><strong>状态数</strong>: 最多 <code>2N - 1</code> 个状态。</li>
@@ -724,50 +607,6 @@ lcs <span class="token operator">=</span> sam<span class="token punctuation">.</
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -795,6 +634,9 @@ lcs <span class="token operator">=</span> sam<span class="token punctuation">.</
 
 
 
+
+
+  
 
 
 

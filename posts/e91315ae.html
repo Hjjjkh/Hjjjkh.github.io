@@ -31,7 +31,7 @@
 <meta property="og:description" content="快速排序是实际应用中最常用的排序算法之一。本文将深入剖析其分治思想、分区（Partition）过程、三种优化策略（随机化、三路快排、尾递归），并讲解其平均 O(n log n)、最坏 O(n²) 的复杂度特性。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-15T14:30:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.811Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.837Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="快速排序">
@@ -79,6 +79,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -102,8 +107,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -327,7 +331,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -352,15 +356,7 @@
 </ol>
 <h3 id="关键图示：快速排序的分治过程"><a href="#关键图示：快速排序的分治过程" class="headerlink" title="关键图示：快速排序的分治过程"></a>关键图示：快速排序的分治过程</h3><blockquote>
 <p><strong>图示</strong>：</p>
-<pre><code>初始数组: [3, 7, 8, 5, 2, 1, 9, 5, 4]
-
-选择基准: 4 (最后一个元素)
-分区后:  [3, 2, 1, 4, 7, 8, 9, 5, 5]
-                  ↑ 基准在正确位置
-
-递归左边: [3, 2, 1]
-递归右边: [7, 8, 9, 5, 5]
-</code></pre>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">初始数组: [3, 7, 8, 5, 2, 1, 9, 5, 4]</span><br><br><span class="hljs-section">选择基准: 4 (最后一个元素)</span><br><span class="hljs-section">分区后:  [3, 2, 1, 4, 7, 8, 9, 5, 5]</span><br>                  ↑ 基准在正确位置<br><br><span class="hljs-section">递归左边: [3, 2, 1]</span><br><span class="hljs-section">递归右边: [7, 8, 9, 5, 5]</span><br></code></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="2-核心操作：分区-Partition"><a href="#2-核心操作：分区-Partition" class="headerlink" title="2. 核心操作：分区 (Partition)"></a>2. 核心操作：分区 (Partition)</h2><p>分区是快速排序的核心，也是面试中最常考的部分。</p>
 <h3 id="Lomuto-分区方案（最常用）"><a href="#Lomuto-分区方案（最常用）" class="headerlink" title="Lomuto 分区方案（最常用）"></a>Lomuto 分区方案（最常用）</h3><p><strong>思路</strong>：</p>
@@ -382,45 +378,10 @@
 <li>遍历结束，交换 <code>arr[i+1]</code> 和 <code>pivot</code> → <code>[3, 2, 1, 4, 7, 8, 9, 5, 5]</code></li>
 </ol>
 <p><strong>结果</strong>：基准 4 在索引 3 的正确位置。</p>
-<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">function partition(arr, low, high):
-  pivot = arr[high]
-  i = low - 1
-  
-  for j from low to high-1:
-    if arr[j] < pivot:
-      i = i + 1
-      swap(arr[i], arr[j])
-  
-  swap(arr[i+1], arr[high])
-  return i + 1
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">function partition(arr, low, high):<br>  pivot = arr[high]<br>  i = low - 1<br>  <br>  for j from low to high-1:<br>    if arr[j] &lt; pivot:<br>      i = i + 1<br>      swap(arr[i], arr[j])<br>  <br>  swap(arr[i+1], arr[high])<br>  return i + 1<br><br>function quickSort(arr, low, high):<br>  if low &lt; high:<br>    pi = partition(arr, low, high)<br>    quickSort(arr, low, pi - 1)<br>    quickSort(arr, pi + 1, high)<br></code></pre></td></tr></table></figure>
 
-function quickSort(arr, low, high):
-  if low < high:
-    pi = partition(arr, low, high)
-    quickSort(arr, low, pi - 1)
-    quickSort(arr, pi + 1, high)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">quick_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> low <span class="token operator">&lt;</span> high<span class="token punctuation">:</span>
-        pi <span class="token operator">=</span> partition<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span>
-        quick_sort<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> pi <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        quick_sort<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> pi <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> high<span class="token punctuation">)</span>
+<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">quick_sort</span>(<span class="hljs-params">arr, low, high</span>):<br>    <span class="hljs-keyword">if</span> low &lt; high:<br>        pi = partition(arr, low, high)<br>        quick_sort(arr, low, pi - <span class="hljs-number">1</span>)<br>        quick_sort(arr, pi + <span class="hljs-number">1</span>, high)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">arr, low, high</span>):<br>    pivot = arr[high]<br>    i = low - <span class="hljs-number">1</span><br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(low, high):<br>        <span class="hljs-keyword">if</span> arr[j] &lt; pivot:<br>            i += <span class="hljs-number">1</span><br>            arr[i], arr[j] = arr[j], arr[i]<br>    arr[i + <span class="hljs-number">1</span>], arr[high] = arr[high], arr[i + <span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span><br><br><span class="hljs-comment"># 使用</span><br>arr = [<span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>]<br>quick_sort(arr, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span>(arr) <span class="hljs-comment"># 输出: [1, 2, 3, 4, 5, 5, 7, 8, 9]</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">def</span> <span class="token function">partition</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    pivot <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span>
-    i <span class="token operator">=</span> low <span class="token operator">-</span> <span class="token number">1</span>
-    <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> pivot<span class="token punctuation">:</span>
-            i <span class="token operator">+=</span> <span class="token number">1</span>
-            arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-    arr<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span>
-    <span class="token keyword">return</span> i <span class="token operator">+</span> <span class="token number">1</span>
-
-<span class="token comment" spellcheck="true"># 使用</span>
-arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
-quick_sort<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 输出: [1, 2, 3, 4, 5, 5, 7, 8, 9]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="3-复杂度分析"><a href="#3-复杂度分析" class="headerlink" title="3. 复杂度分析"></a>3. 复杂度分析</h2><h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><ul>
 <li><strong>最好情况</strong>：<code>O(n log n)</code>。每次分区都能将数组平分。</li>
 <li><strong>平均情况</strong>：<code>O(n log n)</code>。</li>
@@ -433,13 +394,8 @@ quick_sort<span class="token punctuation">(</span>arr<span class="token punctuat
 <h3 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h3><p><strong>不稳定</strong>。分区过程中的交换可能改变相等元素的相对位置。</p>
 <h2 id="4-三大优化策略"><a href="#4-三大优化策略" class="headerlink" title="4. 三大优化策略"></a>4. 三大优化策略</h2><h3 id="4-1-随机化基准-Randomized-Pivot"><a href="#4-1-随机化基准-Randomized-Pivot" class="headerlink" title="4.1 随机化基准 (Randomized Pivot)"></a>4.1 随机化基准 (Randomized Pivot)</h3><p><strong>问题</strong>：固定选择最后一个元素作为基准，在数组已排序或接近排序时，会导致最坏情况 <code>O(n²)</code>。</p>
 <p><strong>解决</strong>：随机选择一个元素作为基准，然后将其与最后一个元素交换。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> random
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_randomized</span>(<span class="hljs-params">arr, low, high</span>):<br>    random_index = random.randint(low, high)<br>    arr[random_index], arr[high] = arr[high], arr[random_index]<br>    <span class="hljs-keyword">return</span> partition(arr, low, high)<br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">def</span> <span class="token function">partition_randomized</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    random_index <span class="token operator">=</span> random<span class="token punctuation">.</span>randint<span class="token punctuation">(</span>low<span class="token punctuation">,</span> high<span class="token punctuation">)</span>
-    arr<span class="token punctuation">[</span>random_index<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>random_index<span class="token punctuation">]</span>
-    <span class="token keyword">return</span> partition<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>效果</strong>：将最坏情况的概率降到极低，平均性能更稳定。</p>
 <h3 id="4-2-三路快排-3-Way-Quick-Sort"><a href="#4-2-三路快排-3-Way-Quick-Sort" class="headerlink" title="4.2 三路快排 (3-Way Quick Sort)"></a>4.2 三路快排 (3-Way Quick Sort)</h3><p><strong>问题</strong>：当数组中有大量重复元素时，普通快速排序效率低下。</p>
 <p><strong>解决</strong>：将数组分成三部分：小于基准、等于基准、大于基准。</p>
@@ -632,50 +588,6 @@ quick_sort<span class="token punctuation">(</span>arr<span class="token punctuat
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -703,6 +615,9 @@ quick_sort<span class="token punctuation">(</span>arr<span class="token punctuat
 
 
 
+
+
+  
 
 
 

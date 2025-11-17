@@ -30,15 +30,20 @@
 <meta property="og:site_name" content="李国强的技术博客">
 <meta property="og:description" content="告别线性结构，进入非线性的树世界！本文将为你系统梳理树的核心概念与术语（节点、根、深度、高度等），介绍二叉树、满二叉树、完全二叉树等重要分类，并讲解树的两种主要存储方式（链式与数组），为后续深入学习树的遍历和高级树结构打下坚实基础。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/tree-terminology.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/full-binary-tree.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/complete-binary-tree.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/complete-binary-tree-array.png">
 <meta property="article:published_time" content="2025-11-15T11:30:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.801Z">
+<meta property="article:modified_time" content="2025-11-17T05:25:03.585Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="二叉树">
 <meta property="article:tag" content="递归">
 <meta property="article:tag" content="数据结构">
-<meta property="article:tag" content="树的遍历">
 <meta property="article:tag" content="树">
+<meta property="article:tag" content="树的遍历">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/tree-terminology.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -79,6 +84,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -102,8 +112,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -265,7 +274,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.6k 字
+          2k 字
         
       </span>
     
@@ -276,7 +285,7 @@
         
         
         
-          22 分钟
+          17 分钟
         
       </span>
     
@@ -327,7 +336,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 下午
                   
                 
               </p>
@@ -357,46 +366,15 @@
 <li>当 <code>n &gt; 1</code> 时，其余节点可分为 <code>m</code> (<code>m&gt;0</code>) 个互不相交的有限集合 <code>T₁</code>, <code>T₂</code>, …, <code>Tₘ</code>，其中每一个集合本身又是一棵树，并被称为根的**子树 (Subtree)**。</li>
 </ol>
 <p>这个定义是<strong>递归</strong>的，也是理解树相关算法（尤其是递归算法）的关键。</p>
-<h3 id="关键图示与术语大全"><a href="#关键图示与术语大全" class="headerlink" title="关键图示与术语大全"></a>关键图示与术语大全</h3><blockquote>
-<p><strong>图示标题：一棵典型的树及其关键术语</strong></p>
-<p><strong>图示描述</strong>：<br>一棵以节点 A 为根的树。</p>
-<ul>
-<li>A 连接着 B, C, D。</li>
-<li>B 连接着 E, F。</li>
-<li>D 连接着 G。</li>
-<li>C, E, F, G 没有子节点。</li>
-</ul>
-<p><strong>术语标注</strong>：</p>
-<ul>
-<li>**节点 (Node)**：图中的 A, B, C, D, E, F, G 都是节点。</li>
-<li>**根节点 (Root)**：最顶层的节点，即 <strong>A</strong>。</li>
-<li><strong>父节点 (Parent)</strong> &amp; **子节点 (Child)**：A 是 B 的父节点，B 是 A 的子节点。</li>
-<li>**兄弟节点 (Siblings)**：拥有相同父节点的节点。B, C, D 是兄弟节点。</li>
-<li>**叶子节点 (Leaf Node)**：没有子节点的节点。C, E, F, G 是叶子节点。</li>
-<li>**内部节点 (Internal Node)**：非叶子节点。A, B, D 是内部节点。</li>
-<li>**节点的度 (Degree)**：一个节点拥有的子树数量。A 的度是 3，B 的度是 2。</li>
-<li><strong>树的度</strong>：树中所有节点度的最大值。这棵树的度是 3。</li>
-<li>**路径 (Path)**：从一个节点到另一个节点所经过的节点序列。从 A 到 F 的路径是 A -&gt; B -&gt; F。</li>
-<li>**边的权重 (Edge Weight)**：边上可以带有关联的数值，用于表示距离、成本等。</li>
-<li>**节点的层次 (Level)**：根节点在第 1 层，其子节点在第 2 层，以此类推。</li>
-<li>**节点的深度 (Depth)**：从根节点到该节点所经过的唯一路径的长度（边数）。根节点的深度为 0。</li>
-<li>**节点的高度 (Height)**：从该节点到其最远叶子节点的最长路径的长度。叶子节点的高度为 0。</li>
-<li><strong>树的高度</strong>：根节点的高度，也就是整棵树的最大层数。</li>
-<li>**子树 (Subtree)**：以某个节点为根的树。以 B 为根，包含 E, F 的部分就是 A 的一棵子树。</li>
-</ul>
-</blockquote>
+<h3 id="关键图示与术语大全"><a href="#关键图示与术语大全" class="headerlink" title="关键图示与术语大全"></a>关键图示与术语大全</h3><p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/tree-terminology.png" srcset="/img/loading.gif" lazyload alt="一棵典型的树及其关键术语"><br><em>以上是学习树结构必须掌握的核心术语</em></p>
 <h2 id="2-树的重要分类"><a href="#2-树的重要分类" class="headerlink" title="2. 树的重要分类"></a>2. 树的重要分类</h2><h3 id="2-1-二叉树-Binary-Tree"><a href="#2-1-二叉树-Binary-Tree" class="headerlink" title="2.1 二叉树 (Binary Tree)"></a>2.1 二叉树 (Binary Tree)</h3><p><strong>二叉树是树结构中最重要、最常用的一种</strong>，是后续学习所有高级树结构的基础。</p>
 <p><strong>定义</strong>：每个节点<strong>最多</strong>有两个子节点，分别称为<strong>左子节点 (Left Child)</strong> 和 <strong>右子节点 (Right Child)<strong>。这两个子节点是</strong>有序的</strong>，不能互换。</p>
 <h4 id="特殊的二叉树"><a href="#特殊的二叉树" class="headerlink" title="特殊的二叉树"></a>特殊的二叉树</h4><ol>
 <li><p>**满二叉树 (Full Binary Tree)**：一棵深度为 <code>k</code> 且有 <code>2^k - 1</code> 个节点的二叉树。除了叶子节点，每个节点的度都为 2。</p>
-<blockquote>
-<p><strong>图示</strong>：一个三层的完美三角形树结构。</p>
-</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/full-binary-tree.png" srcset="/img/loading.gif" lazyload alt="满二叉树"></p>
 </li>
 <li><p><strong>完全二叉树 (Complete Binary Tree)<strong>：深度为 <code>k</code>，除了第 <code>k</code> 层外，其他各层 (<code>1</code> 到 <code>k-1</code>) 的节点数都达到最大个数，第 <code>k</code> 层所有的节点都</strong>连续集中在最左边</strong>。</p>
-<blockquote>
-<p><strong>图示</strong>：一个三层的树，最后一层的叶子节点从左到右排列，但右侧有空缺。</p>
-</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/complete-binary-tree.png" srcset="/img/loading.gif" lazyload alt="完全二叉树"></p>
 <p><strong>重要特性</strong>：满二叉树一定是完全二叉树，但反之不成立。完全二叉树非常适合用<strong>数组</strong>来存储。</p>
 </li>
 <li><p>**二叉搜索树 (Binary Search Tree, BST)**：一种特殊的二叉树，满足：</p>
@@ -415,31 +393,10 @@
 <li><strong>B 树 &#x2F; B+ 树</strong>：多路搜索树，常用于数据库和文件系统的索引。</li>
 </ul>
 <h2 id="3-树的存储方式"><a href="#3-树的存储方式" class="headerlink" title="3. 树的存储方式"></a>3. 树的存储方式</h2><h3 id="3-1-链式存储法"><a href="#3-1-链式存储法" class="headerlink" title="3.1 链式存储法"></a>3.1 链式存储法</h3><p>这是最直观、最常用的存储方式。每个节点是一个对象，包含数据域和指向其子节点的指针。</p>
-<h4 id="伪代码：二叉树节点"><a href="#伪代码：二叉树节点" class="headerlink" title="伪代码：二叉树节点"></a>伪代码：二叉树节点</h4><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">class TreeNode:
-  data // 节点存储的数据
-  leftChild // 指向左子节点的指针
-  rightChild // 指向右子节点的指针
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TreeNode</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>value <span class="token operator">=</span> value
-        self<span class="token punctuation">.</span>left <span class="token operator">=</span> None
-        self<span class="token punctuation">.</span>right <span class="token operator">=</span> None
+<h4 id="伪代码：二叉树节点"><a href="#伪代码：二叉树节点" class="headerlink" title="伪代码：二叉树节点"></a>伪代码：二叉树节点</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">class TreeNode:<br>  data // 节点存储的数据<br>  leftChild // 指向左子节点的指针<br>  rightChild // 指向右子节点的指针<br></code></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 手动构建一棵树</span>
-<span class="token comment" spellcheck="true">#      1</span>
-<span class="token comment" spellcheck="true">#     / \</span>
-<span class="token comment" spellcheck="true">#    2   3</span>
-<span class="token comment" spellcheck="true">#   /   / \</span>
-<span class="token comment" spellcheck="true">#  4   5   6</span>
+<h4 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, value</span>):<br>        <span class="hljs-variable language_">self</span>.value = value<br>        <span class="hljs-variable language_">self</span>.left = <span class="hljs-literal">None</span><br>        <span class="hljs-variable language_">self</span>.right = <span class="hljs-literal">None</span><br><br><span class="hljs-comment"># 手动构建一棵树</span><br><span class="hljs-comment">#      1</span><br><span class="hljs-comment">#     / \</span><br><span class="hljs-comment">#    2   3</span><br><span class="hljs-comment">#   /   / \</span><br><span class="hljs-comment">#  4   5   6</span><br><br>root = TreeNode(<span class="hljs-number">1</span>)<br>root.left = TreeNode(<span class="hljs-number">2</span>)<br>root.right = TreeNode(<span class="hljs-number">3</span>)<br>root.left.left = TreeNode(<span class="hljs-number">4</span>)<br>root.right.left = TreeNode(<span class="hljs-number">5</span>)<br>root.right.right = TreeNode(<span class="hljs-number">6</span>)<br></code></pre></td></tr></table></figure>
 
-root <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-root<span class="token punctuation">.</span>left <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-root<span class="token punctuation">.</span>right <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-root<span class="token punctuation">.</span>left<span class="token punctuation">.</span>left <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
-root<span class="token punctuation">.</span>right<span class="token punctuation">.</span>left <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
-root<span class="token punctuation">.</span>right<span class="token punctuation">.</span>right <span class="token operator">=</span> TreeNode<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>优点</strong>：空间利用率高，增删节点灵活。<br><strong>缺点</strong>：无法快速访问特定节点，需要遍历。</p>
 <h3 id="3-2-数组（顺序）存储法"><a href="#3-2-数组（顺序）存储法" class="headerlink" title="3.2 数组（顺序）存储法"></a>3.2 数组（顺序）存储法</h3><p>这种方法通常只适用于<strong>完全二叉树</strong>，因为它能完美地利用数组索引的数学关系，不浪费空间。</p>
 <p><strong>原理</strong>：将树的节点按层序遍历的顺序存入一个数组中。</p>
@@ -449,14 +406,7 @@ root<span class="token punctuation">.</span>right<span class="token punctuation"
 <li>节点 <code>i</code> 的左子节点索引：<code>2 * i + 1</code></li>
 <li>节点 <code>i</code> 的右子节点索引：<code>2 * i + 2</code></li>
 </ul>
-<h4 id="关键图示：完全二叉树的数组表示"><a href="#关键图示：完全二叉树的数组表示" class="headerlink" title="关键图示：完全二叉树的数组表示"></a>关键图示：完全二叉树的数组表示</h4><blockquote>
-<p><strong>图示标题：完全二叉树与数组的映射</strong></p>
-<p><strong>左侧</strong>：一棵三层的完全二叉树，节点值从上到下、从左到右依次为 1, 2, 3, 4, 5, 6。<br><strong>右侧</strong>：一个数组 <code>[1, 2, 3, 4, 5, 6]</code>。</p>
-<ul>
-<li>节点 1 (索引 0) 的左子是节点 2 (索引 1)，右子是节点 3 (索引 2)。<code>2*0+1=1</code>, <code>2*0+2=2</code>。</li>
-<li>节点 3 (索引 2) 的左子是节点 5 (索引 4)，右子是节点 6 (索引 5)。<code>2*2+1=5</code>, <code>2*2+2=6</code>。</li>
-</ul>
-</blockquote>
+<h4 id="关键图示：完全二叉树的数组表示"><a href="#关键图示：完全二叉树的数组表示" class="headerlink" title="关键图示：完全二叉树的数组表示"></a>关键图示：完全二叉树的数组表示</h4><p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/complete-binary-tree-array.png" srcset="/img/loading.gif" lazyload alt="完全二叉树的数组表示"><br><em>完全二叉树的层序遍历序列与其数组表示完全对应</em></p>
 <p><strong>优点</strong>：</p>
 <ul>
 <li>节省了存储指针的额外空间。</li>
@@ -540,9 +490,9 @@ root<span class="token punctuation">.</span>right<span class="token punctuation"
       
         <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
       
-        <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/" class="print-no-link">#树的遍历</a>
-      
         <a href="/tags/%E6%A0%91/" class="print-no-link">#树</a>
+      
+        <a href="/tags/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/" class="print-no-link">#树的遍历</a>
       
     </div>
   
@@ -633,50 +583,6 @@ root<span class="token punctuation">.</span>right<span class="token punctuation"
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -704,6 +610,9 @@ root<span class="token punctuation">.</span>right<span class="token punctuation"
 
 
 
+
+
+  
 
 
 

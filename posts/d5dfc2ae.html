@@ -31,7 +31,7 @@
 <meta property="og:description" content="欢迎来到图论的世界！图是描述“连接”关系的强大数学模型，从社交网络到地图导航，无处不在。本文是图论系列的开篇，将带你学习图论的两块基石：如何在代码中表示一个图（邻接矩阵与邻接表），以及如何系统地访问图中的每一个节点——广度优先搜索（BFS）和深度优先搜索（DFS）。掌握它们，是开启所有高级图论算法大门的钥匙。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-21T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.635Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.842Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="算法基础">
@@ -81,6 +81,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -104,8 +109,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -278,7 +282,7 @@
         
         
         
-          14 分钟
+          15 分钟
         
       </span>
     
@@ -329,7 +333,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -412,80 +416,8 @@
 <li><strong>拓扑排序</strong>。</li>
 </ul>
 <h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><p>下面我们使用邻接表来实现 BFS 和 DFS。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> deque<span class="token punctuation">,</span> defaultdict
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque, defaultdict<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 使用邻接表表示图</span><br>        <span class="hljs-variable language_">self</span>.adj = defaultdict(<span class="hljs-built_in">list</span>)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_edge</span>(<span class="hljs-params">self, u, v</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;添加一条从 u 到 v 的边 (对于无向图，应双向添加)&quot;&quot;&quot;</span><br>        <span class="hljs-variable language_">self</span>.adj[u].append(v)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">self, start_node</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;从 start_node 开始进行广度优先搜索&quot;&quot;&quot;</span><br>        <span class="hljs-keyword">if</span> start_node <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;起始节点不存在&quot;</span>)<br>            <span class="hljs-keyword">return</span><br><br>        visited = <span class="hljs-built_in">set</span>()<br>        queue = deque([start_node])<br>        visited.add(start_node)<br>        <br>        result = []<br>        <span class="hljs-keyword">while</span> queue:<br>            node = queue.popleft()<br>            result.append(node)<br>            <br>            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj[node]:<br>                <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:<br>                    visited.add(neighbor)<br>                    queue.append(neighbor)<br>        <br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;BFS 遍历结果: <span class="hljs-subst">&#123;result&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span> result<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, start_node</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;从 start_node 开始进行深度优先搜索&quot;&quot;&quot;</span><br>        <span class="hljs-keyword">if</span> start_node <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;起始节点不存在&quot;</span>)<br>            <span class="hljs-keyword">return</span><br>        <br>        visited = <span class="hljs-built_in">set</span>()<br>        result = []<br>        <br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">_dfs_recursive</span>(<span class="hljs-params">node</span>):<br>            visited.add(node)<br>            result.append(node)<br>            <br>            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj[node]:<br>                <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:<br>                    _dfs_recursive(neighbor)<br>        <br>        _dfs_recursive(start_node)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;DFS 遍历结果: <span class="hljs-subst">&#123;result&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span> result<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br><span class="hljs-comment"># 创建一个有向图</span><br>g = Graph()<br>g.add_edge(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>)<br>g.add_edge(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>)<br>g.add_edge(<span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>)<br>g.add_edge(<span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>)<br>g.add_edge(<span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;F&#x27;</span>)<br><br><span class="hljs-comment">#      A</span><br><span class="hljs-comment">#     / \</span><br><span class="hljs-comment">#    B   C</span><br><span class="hljs-comment">#   / \   \</span><br><span class="hljs-comment">#  D   E   F</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;从 &#x27;A&#x27; 开始遍历:&quot;</span>)<br>g.bfs(<span class="hljs-string">&#x27;A&#x27;</span>)  <span class="hljs-comment"># BFS 遍历结果: [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, &#x27;D&#x27;, &#x27;E&#x27;, &#x27;F&#x27;]</span><br>g.dfs(<span class="hljs-string">&#x27;A&#x27;</span>)  <span class="hljs-comment"># DFS 遍历结果: [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;D&#x27;, &#x27;E&#x27;, &#x27;C&#x27;, &#x27;F&#x27;] (可能因邻接表顺序而异)</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Graph</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 使用邻接表表示图</span>
-        self<span class="token punctuation">.</span>adj <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span>list<span class="token punctuation">)</span>
-    
-    <span class="token keyword">def</span> <span class="token function">add_edge</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> u<span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""添加一条从 u 到 v 的边 (对于无向图，应双向添加)"""</span>
-        self<span class="token punctuation">.</span>adj<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>v<span class="token punctuation">)</span>
-
-    <span class="token keyword">def</span> <span class="token function">bfs</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> start_node<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""从 start_node 开始进行广度优先搜索"""</span>
-        <span class="token keyword">if</span> start_node <span class="token operator">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>adj<span class="token punctuation">:</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"起始节点不存在"</span><span class="token punctuation">)</span>
-            <span class="token keyword">return</span>
-
-        visited <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        queue <span class="token operator">=</span> deque<span class="token punctuation">(</span><span class="token punctuation">[</span>start_node<span class="token punctuation">]</span><span class="token punctuation">)</span>
-        visited<span class="token punctuation">.</span>add<span class="token punctuation">(</span>start_node<span class="token punctuation">)</span>
-        
-        result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-        <span class="token keyword">while</span> queue<span class="token punctuation">:</span>
-            node <span class="token operator">=</span> queue<span class="token punctuation">.</span>popleft<span class="token punctuation">(</span><span class="token punctuation">)</span>
-            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
-            
-            <span class="token keyword">for</span> neighbor <span class="token keyword">in</span> self<span class="token punctuation">.</span>adj<span class="token punctuation">[</span>node<span class="token punctuation">]</span><span class="token punctuation">:</span>
-                <span class="token keyword">if</span> neighbor <span class="token operator">not</span> <span class="token keyword">in</span> visited<span class="token punctuation">:</span>
-                    visited<span class="token punctuation">.</span>add<span class="token punctuation">(</span>neighbor<span class="token punctuation">)</span>
-                    queue<span class="token punctuation">.</span>append<span class="token punctuation">(</span>neighbor<span class="token punctuation">)</span>
-        
-        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"BFS 遍历结果: &amp;#123;result&amp;#125;"</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> result
-
-    <span class="token keyword">def</span> <span class="token function">dfs</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> start_node<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""从 start_node 开始进行深度优先搜索"""</span>
-        <span class="token keyword">if</span> start_node <span class="token operator">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>adj<span class="token punctuation">:</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"起始节点不存在"</span><span class="token punctuation">)</span>
-            <span class="token keyword">return</span>
-        
-        visited <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-        
-        <span class="token keyword">def</span> <span class="token function">_dfs_recursive</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            visited<span class="token punctuation">.</span>add<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
-            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
-            
-            <span class="token keyword">for</span> neighbor <span class="token keyword">in</span> self<span class="token punctuation">.</span>adj<span class="token punctuation">[</span>node<span class="token punctuation">]</span><span class="token punctuation">:</span>
-                <span class="token keyword">if</span> neighbor <span class="token operator">not</span> <span class="token keyword">in</span> visited<span class="token punctuation">:</span>
-                    _dfs_recursive<span class="token punctuation">(</span>neighbor<span class="token punctuation">)</span>
-        
-        _dfs_recursive<span class="token punctuation">(</span>start_node<span class="token punctuation">)</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"DFS 遍历结果: &amp;#123;result&amp;#125;"</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> result
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-<span class="token comment" spellcheck="true"># 创建一个有向图</span>
-g <span class="token operator">=</span> Graph<span class="token punctuation">(</span><span class="token punctuation">)</span>
-g<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">)</span>
-g<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">)</span>
-g<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">)</span>
-g<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'E'</span><span class="token punctuation">)</span>
-g<span class="token punctuation">.</span>add_edge<span class="token punctuation">(</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token string">'F'</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true">#      A</span>
-<span class="token comment" spellcheck="true">#     / \</span>
-<span class="token comment" spellcheck="true">#    B   C</span>
-<span class="token comment" spellcheck="true">#   / \   \</span>
-<span class="token comment" spellcheck="true">#  D   E   F</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"从 'A' 开始遍历:"</span><span class="token punctuation">)</span>
-g<span class="token punctuation">.</span>bfs<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># BFS 遍历结果: ['A', 'B', 'C', 'D', 'E', 'F']</span>
-g<span class="token punctuation">.</span>dfs<span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># DFS 遍历结果: ['A', 'B', 'D', 'E', 'C', 'F'] (可能因邻接表顺序而异)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>图的表示和遍历是整个图论算法的基石。几乎所有高级的图论算法，都是在 BFS 或 DFS 的框架上进行扩展和修改的。</p>
 <h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>图的表示</strong>：邻接矩阵（<code>O(V²)</code> 空间，<code>O(1)</code> 查边）和邻接表（<code>O(V+E)</code> 空间，更常用）。<br>✅ <strong>广度优先搜索 (BFS)<strong>：使用</strong>队列</strong>，按层次遍历，常用于求解无权图的<strong>最短路径</strong>。<br>✅ <strong>深度优先搜索 (DFS)<strong>：使用</strong>递归</strong>或<strong>栈</strong>，一条路走到底，常用于<strong>路径查找</strong>、<strong>环检测</strong>和<strong>连通性</strong>问题。</p>
 <p>掌握了这两种基本的遍历方法，你就拿到了开启图论算法大门的钥匙。在下一篇文章中，我们将学习图论中的一个经典问题——<strong>最小生成树</strong>，看看如何用最少的成本连接所有顶点。</p>
@@ -632,50 +564,6 @@ g<span class="token punctuation">.</span>dfs<span class="token punctuation">(</s
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -703,6 +591,9 @@ g<span class="token punctuation">.</span>dfs<span class="token punctuation">(</s
 
 
 
+
+
+  
 
 
 

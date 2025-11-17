@@ -31,7 +31,7 @@
 <meta property="og:description" content="排序是算法学习的经典起点。本文将深入讲解三种最基础的 O(n²) 排序算法——冒泡、选择和插入排序，通过动画式案例剖析其执行过程、优化技巧和适用场景，为学习高级排序算法打下坚实基础。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-15T14:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.808Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.836Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="排序">
@@ -80,6 +80,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -103,8 +108,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -328,7 +332,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -365,25 +369,10 @@
 <li><code>[3, 4, 5, 2, 8]</code> → <code>[3, 4, 2, 5, 8]</code></li>
 </ul>
 <p><strong>第 3 轮</strong>：<code>[3, 2, 4, 5, 8]</code><br><strong>第 4 轮</strong>：<code>[2, 3, 4, 5, 8]</code> ✅ 完成</p>
-<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">function bubbleSort(arr):
-  n = len(arr)
-  for i from 0 to n-1:
-    for j from 0 to n-i-2:
-      if arr[j] > arr[j+1]:
-        swap(arr[j], arr[j+1])
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="Python-实现（带优化）"><a href="#Python-实现（带优化）" class="headerlink" title="Python 实现（带优化）"></a>Python 实现（带优化）</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">bubble_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    n <span class="token operator">=</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        swapped <span class="token operator">=</span> <span class="token boolean">False</span> <span class="token comment" spellcheck="true"># 优化：检测是否发生交换</span>
-        <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>n <span class="token operator">-</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-                arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span>
-                swapped <span class="token operator">=</span> <span class="token boolean">True</span>
-        <span class="token keyword">if</span> <span class="token operator">not</span> swapped<span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 如果本轮没有交换，说明已经有序</span>
-            <span class="token keyword">break</span>
-    <span class="token keyword">return</span> arr
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">function bubbleSort(arr):<br>  n = len(arr)<br>  for i from 0 to n-1:<br>    for j from 0 to n-i-2:<br>      if arr[j] &gt; arr[j+1]:<br>        swap(arr[j], arr[j+1])<br></code></pre></td></tr></table></figure>
+
+<h3 id="Python-实现（带优化）"><a href="#Python-实现（带优化）" class="headerlink" title="Python 实现（带优化）"></a>Python 实现（带优化）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bubble_sort</span>(<span class="hljs-params">arr</span>):<br>    n = <span class="hljs-built_in">len</span>(arr)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        swapped = <span class="hljs-literal">False</span> <span class="hljs-comment"># 优化：检测是否发生交换</span><br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - i - <span class="hljs-number">1</span>):<br>            <span class="hljs-keyword">if</span> arr[j] &gt; arr[j + <span class="hljs-number">1</span>]:<br>                arr[j], arr[j + <span class="hljs-number">1</span>] = arr[j + <span class="hljs-number">1</span>], arr[j]<br>                swapped = <span class="hljs-literal">True</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> swapped: <span class="hljs-comment"># 如果本轮没有交换，说明已经有序</span><br>            <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">return</span> arr<br></code></pre></td></tr></table></figure>
+
 <h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
 <li><strong>时间复杂度</strong>：<ul>
 <li>最坏情况：<code>O(n²)</code>（逆序）</li>
@@ -403,25 +392,10 @@
 </ol>
 <h3 id="动画式案例-1"><a href="#动画式案例-1" class="headerlink" title="动画式案例"></a>动画式案例</h3><p><strong>初始数组</strong>：<code>[5, 3, 8, 4, 2]</code></p>
 <p><strong>第 1 轮</strong>：在 <code>[5, 3, 8, 4, 2]</code> 中找到最小值 2，与第 1 个元素 5 交换 → <code>[2, 3, 8, 4, 5]</code><br><strong>第 2 轮</strong>：在 <code>[3, 8, 4, 5]</code> 中找到最小值 3，已在正确位置 → <code>[2, 3, 8, 4, 5]</code><br><strong>第 3 轮</strong>：在 <code>[8, 4, 5]</code> 中找到最小值 4，与 8 交换 → <code>[2, 3, 4, 8, 5]</code><br><strong>第 4 轮</strong>：在 <code>[8, 5]</code> 中找到最小值 5，与 8 交换 → <code>[2, 3, 4, 5, 8]</code> ✅</p>
-<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">function selectionSort(arr):
-  n = len(arr)
-  for i from 0 to n-1:
-    min_index = i
-    for j from i+1 to n-1:
-      if arr[j] < arr[min_index]:
-        min_index = j
-    swap(arr[i], arr[min_index])
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">selection_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    n <span class="token operator">=</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        min_idx <span class="token operator">=</span> i
-        <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> arr<span class="token punctuation">[</span>min_idx<span class="token punctuation">]</span><span class="token punctuation">:</span>
-                min_idx <span class="token operator">=</span> j
-        arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>min_idx<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>min_idx<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-    <span class="token keyword">return</span> arr
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">function selectionSort(arr):<br>  n = len(arr)<br>  for i from 0 to n-1:<br>    min_index = i<br>    for j from i+1 to n-1:<br>      if arr[j] &lt; arr[min_index]:<br>        min_index = j<br>    swap(arr[i], arr[min_index])<br></code></pre></td></tr></table></figure>
+
+<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">selection_sort</span>(<span class="hljs-params">arr</span>):<br>    n = <span class="hljs-built_in">len</span>(arr)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        min_idx = i<br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, n):<br>            <span class="hljs-keyword">if</span> arr[j] &lt; arr[min_idx]:<br>                min_idx = j<br>        arr[i], arr[min_idx] = arr[min_idx], arr[i]<br>    <span class="hljs-keyword">return</span> arr<br></code></pre></td></tr></table></figure>
+
 <h3 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
 <li><strong>时间复杂度</strong>：<code>O(n²)</code>（无论什么情况都需要 <code>n²/2</code> 次比较）</li>
 <li><strong>空间复杂度</strong>：<code>O(1)</code></li>
@@ -436,25 +410,10 @@
 </ol>
 <h3 id="动画式案例-2"><a href="#动画式案例-2" class="headerlink" title="动画式案例"></a>动画式案例</h3><p><strong>初始数组</strong>：<code>[5, 3, 8, 4, 2]</code></p>
 <p><strong>第 1 轮</strong>：取出 3，插入到 5 前面 → <code>[3, 5, 8, 4, 2]</code><br><strong>第 2 轮</strong>：取出 8，已在正确位置 → <code>[3, 5, 8, 4, 2]</code><br><strong>第 3 轮</strong>：取出 4，插入到 5 和 8 之间 → <code>[3, 4, 5, 8, 2]</code><br><strong>第 4 轮</strong>：取出 2，插入到最前面 → <code>[2, 3, 4, 5, 8]</code> ✅</p>
-<h3 id="伪代码-2"><a href="#伪代码-2" class="headerlink" title="伪代码"></a>伪代码</h3><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">function insertionSort(arr):
-  for i from 1 to n-1:
-    key = arr[i]
-    j = i - 1
-    while j >= 0 and arr[j] > key:
-      arr[j+1] = arr[j]
-      j = j - 1
-    arr[j+1] = key
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="Python-实现-1"><a href="#Python-实现-1" class="headerlink" title="Python 实现"></a>Python 实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">insertion_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        key <span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-        j <span class="token operator">=</span> i <span class="token operator">-</span> <span class="token number">1</span>
-        <span class="token keyword">while</span> j <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">and</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> key<span class="token punctuation">:</span>
-            arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span>
-            j <span class="token operator">-=</span> <span class="token number">1</span>
-        arr<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> key
-    <span class="token keyword">return</span> arr
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="伪代码-2"><a href="#伪代码-2" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">function insertionSort(arr):<br>  for i from 1 to n-1:<br>    key = arr[i]<br>    j = i - 1<br>    while j &gt;= 0 and arr[j] &gt; key:<br>      arr[j+1] = arr[j]<br>      j = j - 1<br>    arr[j+1] = key<br></code></pre></td></tr></table></figure>
+
+<h3 id="Python-实现-1"><a href="#Python-实现-1" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">insertion_sort</span>(<span class="hljs-params">arr</span>):<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):<br>        key = arr[i]<br>        j = i - <span class="hljs-number">1</span><br>        <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] &gt; key:<br>            arr[j + <span class="hljs-number">1</span>] = arr[j]<br>            j -= <span class="hljs-number">1</span><br>        arr[j + <span class="hljs-number">1</span>] = key<br>    <span class="hljs-keyword">return</span> arr<br></code></pre></td></tr></table></figure>
+
 <h3 id="复杂度分析-2"><a href="#复杂度分析-2" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
 <li><strong>时间复杂度</strong>：<ul>
 <li>最坏情况：<code>O(n²)</code>（逆序）</li>
@@ -650,50 +609,6 @@
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -721,6 +636,9 @@
 
 
 
+
+
+  
 
 
 

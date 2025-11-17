@@ -31,7 +31,7 @@
 <meta property="og:description" content="如何用最低的成本连接一个网络中的所有节点？这就是最小生成树（Minimum Spanning Tree, MST）问题。无论是铺设电缆、设计交通网络，还是优化网络路由，MST 都是核心算法。本文将深入探讨解决 MST 问题的两大经典贪心算法：Kruskal 算法和 Prim 算法。我们将通过图解、代码实现和复杂度分析，带你彻底掌握这两种方法的精髓。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-22T17:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T16:30:37.640Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.843Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="图论">
 <meta property="article:tag" content="最小生成树">
@@ -81,6 +81,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -104,8 +109,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -329,7 +333,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 凌晨
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -359,58 +363,8 @@
 <li>初始化一个空的 MST 边集，计数器 <code>edge_count = 0</code>。</li>
 <li>遍历排序后的边 <code>(u, v)</code>，权重为 <code>w</code>：<br>a.  如果 <code>find(u) != find(v)</code>：<br>i.  将这条边加入 MST。<br>ii. 调用 <code>union(u, v)</code>。<br>iii. <code>edge_count</code> 加一。<br>b.  如果 <code>edge_count</code> 达到 <code>V-1</code>，算法结束。</li>
 </ol>
-<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">DSU</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>parent <span class="token operator">=</span> list<span class="token punctuation">(</span>range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<h3 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DSU</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):<br>        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, i</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[i] == i:<br>            <span class="hljs-keyword">return</span> i<br>        <span class="hljs-variable language_">self</span>.parent[i] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[i]) <span class="hljs-comment"># 路径压缩</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[i]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, i, j</span>):<br>        root_i = <span class="hljs-variable language_">self</span>.find(i)<br>        root_j = <span class="hljs-variable language_">self</span>.find(j)<br>        <span class="hljs-keyword">if</span> root_i != root_j:<br>            <span class="hljs-variable language_">self</span>.parent[root_i] = root_j<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">kruskal</span>(<span class="hljs-params">n, edges</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    n: 顶点数</span><br><span class="hljs-string">    edges: 边列表，格式为 (weight, u, v)</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-comment"># 1. 按权重排序边</span><br>    edges.sort()<br>    <br>    dsu = DSU(n)<br>    mst_cost = <span class="hljs-number">0</span><br>    mst_edges = []<br>    edge_count = <span class="hljs-number">0</span><br>    <br>    <span class="hljs-comment"># 2. 遍历边</span><br>    <span class="hljs-keyword">for</span> weight, u, v <span class="hljs-keyword">in</span> edges:<br>        <span class="hljs-keyword">if</span> dsu.union(u, v):<br>            mst_cost += weight<br>            mst_edges.append((u, v, weight))<br>            edge_count += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">if</span> edge_count == n - <span class="hljs-number">1</span>:<br>                <span class="hljs-keyword">break</span><br>    <br>    <span class="hljs-keyword">return</span> mst_cost, mst_edges<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br><span class="hljs-comment"># 顶点数</span><br>n = <span class="hljs-number">4</span> <br><span class="hljs-comment"># 边 (weight, u, v)</span><br>edges = [(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">6</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">15</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)]<br><br>cost, mst = kruskal(n, edges)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Kruskal&#x27;s MST Cost: <span class="hljs-subst">&#123;cost&#125;</span>&quot;</span>) <span class="hljs-comment"># 19</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Kruskal&#x27;s MST Edges: <span class="hljs-subst">&#123;mst&#125;</span>&quot;</span>) <span class="hljs-comment"># [(4, 2, 3), (5, 0, 3), (10, 0, 1)]</span><br></code></pre></td></tr></table></figure>
 
-    <span class="token keyword">def</span> <span class="token function">find</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> self<span class="token punctuation">.</span>parent<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> i<span class="token punctuation">:</span>
-            <span class="token keyword">return</span> i
-        self<span class="token punctuation">.</span>parent<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>find<span class="token punctuation">(</span>self<span class="token punctuation">.</span>parent<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 路径压缩</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>parent<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-
-    <span class="token keyword">def</span> <span class="token function">union</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        root_i <span class="token operator">=</span> self<span class="token punctuation">.</span>find<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
-        root_j <span class="token operator">=</span> self<span class="token punctuation">.</span>find<span class="token punctuation">(</span>j<span class="token punctuation">)</span>
-        <span class="token keyword">if</span> root_i <span class="token operator">!=</span> root_j<span class="token punctuation">:</span>
-            self<span class="token punctuation">.</span>parent<span class="token punctuation">[</span>root_i<span class="token punctuation">]</span> <span class="token operator">=</span> root_j
-            <span class="token keyword">return</span> <span class="token boolean">True</span>
-        <span class="token keyword">return</span> <span class="token boolean">False</span>
-
-<span class="token keyword">def</span> <span class="token function">kruskal</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> edges<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""
-    n: 顶点数
-    edges: 边列表，格式为 (weight, u, v)
-    """</span>
-    <span class="token comment" spellcheck="true"># 1. 按权重排序边</span>
-    edges<span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    
-    dsu <span class="token operator">=</span> DSU<span class="token punctuation">(</span>n<span class="token punctuation">)</span>
-    mst_cost <span class="token operator">=</span> <span class="token number">0</span>
-    mst_edges <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    edge_count <span class="token operator">=</span> <span class="token number">0</span>
-    
-    <span class="token comment" spellcheck="true"># 2. 遍历边</span>
-    <span class="token keyword">for</span> weight<span class="token punctuation">,</span> u<span class="token punctuation">,</span> v <span class="token keyword">in</span> edges<span class="token punctuation">:</span>
-        <span class="token keyword">if</span> dsu<span class="token punctuation">.</span>union<span class="token punctuation">(</span>u<span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            mst_cost <span class="token operator">+=</span> weight
-            mst_edges<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>u<span class="token punctuation">,</span> v<span class="token punctuation">,</span> weight<span class="token punctuation">)</span><span class="token punctuation">)</span>
-            edge_count <span class="token operator">+=</span> <span class="token number">1</span>
-            <span class="token keyword">if</span> edge_count <span class="token operator">==</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">:</span>
-                <span class="token keyword">break</span>
-    
-    <span class="token keyword">return</span> mst_cost<span class="token punctuation">,</span> mst_edges
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-<span class="token comment" spellcheck="true"># 顶点数</span>
-n <span class="token operator">=</span> <span class="token number">4</span> 
-<span class="token comment" spellcheck="true"># 边 (weight, u, v)</span>
-edges <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-
-cost<span class="token punctuation">,</span> mst <span class="token operator">=</span> kruskal<span class="token punctuation">(</span>n<span class="token punctuation">,</span> edges<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Kruskal's MST Cost: &amp;#123;cost&amp;#125;"</span><span class="token punctuation">)</span> # <span class="token number">19</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Kruskal's MST Edges: &amp;#123;mst&amp;#125;"</span><span class="token punctuation">)</span> # <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-Prim-算法：点的贪心"><a href="#2-Prim-算法：点的贪心" class="headerlink" title="2. Prim 算法：点的贪心"></a>2. Prim 算法：点的贪心</h2><p>Prim 算法的贪心策略是从一个顶点开始，逐步“扩张”生成树。</p>
 <p><strong>核心思想</strong>：维护一个已经在 MST 中的顶点集合 <code>S</code>。每次都选择一条权重最小的边 <code>(u, v)</code>，其中 <code>u</code> 在 <code>S</code> 中，而 <code>v</code> 不在 <code>S</code> 中。然后将 <code>v</code> 加入 <code>S</code>，并将这条边加入 MST。重复这个过程，直到所有顶点都在 <code>S</code> 中。</p>
 <h3 id="如何高效找到最小权重的边？"><a href="#如何高效找到最小权重的边？" class="headerlink" title="如何高效找到最小权重的边？"></a>如何高效找到最小权重的边？</h3><p>这个问题可以使用<strong>优先队列 (Min-Heap)</strong> 来解决。优先队列中存储所有连接 <code>S</code> 内外顶点的“横切边”，并以权重作为优先级。</p>
@@ -419,53 +373,8 @@ cost<span class="token punctuation">,</span> mst <span class="token operator">=<
 <li>创建一个优先队列 <code>pq</code>，将 <code>s</code> 的所有邻接边 <code>(weight, s, neighbor)</code> 加入 <code>pq</code>。</li>
 <li>当 <code>pq</code> 不为空且 MST 边数小于 <code>V-1</code> 时，循环执行：<br>a.  从 <code>pq</code> 中取出权重最小的边 <code>(w, u, v)</code>。<br>b.  如果 <code>v</code> 已经被访问过，跳过。<br>c.  否则，将 <code>v</code> 标记为已访问，将边 <code>(u, v)</code> 加入 MST。<br>d.  将 <code>v</code> 的所有未被访问过的邻居的边加入 <code>pq</code>。</li>
 </ol>
-<h3 id="Python-实现-1"><a href="#Python-实现-1" class="headerlink" title="Python 实现"></a>Python 实现</h3><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> heapq
-<span class="token keyword">from</span> collections <span class="token keyword">import</span> defaultdict
+<h3 id="Python-实现-1"><a href="#Python-实现-1" class="headerlink" title="Python 实现"></a>Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> heapq<br><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">prim</span>(<span class="hljs-params">n, adj, start_node=<span class="hljs-number">0</span></span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    n: 顶点数</span><br><span class="hljs-string">    adj: 邻接表, 格式为 &#123;u: [(weight, v), ...]&#125;</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    visited = &#123;start_node&#125;<br>    pq = []<br>    <br>    <span class="hljs-comment"># 将起始节点的所有边加入优先队列</span><br>    <span class="hljs-keyword">for</span> weight, neighbor <span class="hljs-keyword">in</span> adj[start_node]:<br>        heapq.heappush(pq, (weight, start_node, neighbor))<br>        <br>    mst_cost = <span class="hljs-number">0</span><br>    mst_edges = []<br>    <br>    <span class="hljs-keyword">while</span> pq <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(visited) &lt; n:<br>        weight, u, v = heapq.heappop(pq)<br>        <br>        <span class="hljs-keyword">if</span> v <span class="hljs-keyword">in</span> visited:<br>            <span class="hljs-keyword">continue</span><br>            <br>        visited.add(v)<br>        mst_cost += weight<br>        mst_edges.append((u, v, weight))<br>        <br>        <span class="hljs-comment"># 将新加入节点的所有边加入优先队列</span><br>        <span class="hljs-keyword">for</span> neighbor_weight, neighbor <span class="hljs-keyword">in</span> adj[v]:<br>            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:<br>                heapq.heappush(pq, (neighbor_weight, v, neighbor))<br>                <br>    <span class="hljs-keyword">return</span> mst_cost, mst_edges<br><br><span class="hljs-comment"># --- 案例测试 ---</span><br>n = <span class="hljs-number">4</span><br>adj = defaultdict(<span class="hljs-built_in">list</span>)<br>edges = [(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">6</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">15</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)]<br><span class="hljs-keyword">for</span> w, u, v <span class="hljs-keyword">in</span> edges:<br>    adj[u].append((w, v))<br>    adj[v].append((w, u))<br><br>cost, mst = prim(n, adj)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Prim&#x27;s MST Cost: <span class="hljs-subst">&#123;cost&#125;</span>&quot;</span>) <span class="hljs-comment"># 19</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Prim&#x27;s MST Edges: <span class="hljs-subst">&#123;mst&#125;</span>&quot;</span>) <span class="hljs-comment"># [(5, 0, 3), (4, 3, 2), (10, 0, 1)]</span><br></code></pre></td></tr></table></figure>
 
-<span class="token keyword">def</span> <span class="token function">prim</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> adj<span class="token punctuation">,</span> start_node<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">"""
-    n: 顶点数
-    adj: 邻接表, 格式为 &amp;#123;u: [(weight, v), ...]&amp;#125;
-    """</span>
-    visited <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;start_node&amp;#125;</span>
-    pq <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    
-    <span class="token comment" spellcheck="true"># 将起始节点的所有边加入优先队列</span>
-    <span class="token keyword">for</span> weight<span class="token punctuation">,</span> neighbor <span class="token keyword">in</span> adj<span class="token punctuation">[</span>start_node<span class="token punctuation">]</span><span class="token punctuation">:</span>
-        heapq<span class="token punctuation">.</span>heappush<span class="token punctuation">(</span>pq<span class="token punctuation">,</span> <span class="token punctuation">(</span>weight<span class="token punctuation">,</span> start_node<span class="token punctuation">,</span> neighbor<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        
-    mst_cost <span class="token operator">=</span> <span class="token number">0</span>
-    mst_edges <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    
-    <span class="token keyword">while</span> pq <span class="token operator">and</span> len<span class="token punctuation">(</span>visited<span class="token punctuation">)</span> <span class="token operator">&lt;</span> n<span class="token punctuation">:</span>
-        weight<span class="token punctuation">,</span> u<span class="token punctuation">,</span> v <span class="token operator">=</span> heapq<span class="token punctuation">.</span>heappop<span class="token punctuation">(</span>pq<span class="token punctuation">)</span>
-        
-        <span class="token keyword">if</span> v <span class="token keyword">in</span> visited<span class="token punctuation">:</span>
-            <span class="token keyword">continue</span>
-            
-        visited<span class="token punctuation">.</span>add<span class="token punctuation">(</span>v<span class="token punctuation">)</span>
-        mst_cost <span class="token operator">+=</span> weight
-        mst_edges<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>u<span class="token punctuation">,</span> v<span class="token punctuation">,</span> weight<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        
-        <span class="token comment" spellcheck="true"># 将新加入节点的所有边加入优先队列</span>
-        <span class="token keyword">for</span> neighbor_weight<span class="token punctuation">,</span> neighbor <span class="token keyword">in</span> adj<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> neighbor <span class="token operator">not</span> <span class="token keyword">in</span> visited<span class="token punctuation">:</span>
-                heapq<span class="token punctuation">.</span>heappush<span class="token punctuation">(</span>pq<span class="token punctuation">,</span> <span class="token punctuation">(</span>neighbor_weight<span class="token punctuation">,</span> v<span class="token punctuation">,</span> neighbor<span class="token punctuation">)</span><span class="token punctuation">)</span>
-                
-    <span class="token keyword">return</span> mst_cost<span class="token punctuation">,</span> mst_edges
-
-<span class="token comment" spellcheck="true"># --- 案例测试 ---</span>
-n <span class="token operator">=</span> <span class="token number">4</span>
-adj <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span>list<span class="token punctuation">)</span>
-edges <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token keyword">for</span> w<span class="token punctuation">,</span> u<span class="token punctuation">,</span> v <span class="token keyword">in</span> edges<span class="token punctuation">:</span>
-    adj<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>w<span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    adj<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>w<span class="token punctuation">,</span> u<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-cost<span class="token punctuation">,</span> mst <span class="token operator">=</span> prim<span class="token punctuation">(</span>n<span class="token punctuation">,</span> adj<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Prim's MST Cost: &amp;#123;cost&amp;#125;"</span><span class="token punctuation">)</span> # <span class="token number">19</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Prim's MST Edges: &amp;#123;mst&amp;#125;"</span><span class="token punctuation">)</span> # <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="Kruskal-vs-Prim"><a href="#Kruskal-vs-Prim" class="headerlink" title="Kruskal vs. Prim"></a>Kruskal vs. Prim</h2><table>
 <thead>
 <tr>
@@ -651,50 +560,6 @@ cost<span class="token punctuation">,</span> mst <span class="token operator">=<
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -722,6 +587,9 @@ cost<span class="token punctuation">,</span> mst <span class="token operator">=<
 
 
 
+
+
+  
 
 
 

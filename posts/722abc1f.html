@@ -30,8 +30,12 @@
 <meta property="og:site_name" content="李国强的技术博客">
 <meta property="og:description" content="二叉搜索树（BST）通过巧妙的有序性，将查找、插入、删除的平均时间复杂度降至 O(log n)。本文将深入剖析 BST 的核心性质、三大操作的实现细节（尤其是复杂的删除操作），并讲解其退化问题及平衡树的引入，为你打开有序数据结构的大门。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/binary-search-tree-example.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/bst-insertion.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/bst-deletion.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/bst-degenerated-tree.png">
 <meta property="article:published_time" content="2025-11-15T13:30:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.806Z">
+<meta property="article:modified_time" content="2025-11-17T05:34:24.640Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="二叉搜索树">
@@ -40,6 +44,7 @@
 <meta property="article:tag" content="插入">
 <meta property="article:tag" content="删除">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/binary-search-tree-example.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -80,6 +85,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -103,8 +113,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -266,7 +275,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          2.1k 字
         
       </span>
     
@@ -277,7 +286,7 @@
         
         
         
-          17 分钟
+          18 分钟
         
       </span>
     
@@ -328,7 +337,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 下午
                   
                 
               </p>
@@ -353,74 +362,24 @@
 <li>左右子树也分别为二叉搜索树（递归定义）。</li>
 </ul>
 <p>这个性质保证了：<strong>BST 的中序遍历结果是一个有序序列</strong>。</p>
-<h3 id="关键图示：一棵-BST"><a href="#关键图示：一棵-BST" class="headerlink" title="关键图示：一棵 BST"></a>关键图示：一棵 BST</h3><blockquote>
-<p><strong>图示标题：二叉搜索树示例</strong></p>
-<pre><code>      50
-     /  \
-   30    70
-  / \    / \
- 20  40 60  80
-</code></pre>
-<p>对于根节点 50：左子树 (30, 20, 40) 都小于 50，右子树 (70, 60, 80) 都大于 50。<br>中序遍历结果：20, 30, 40, 50, 60, 70, 80（有序）。</p>
-</blockquote>
+<h3 id="关键图示：一棵-BST"><a href="#关键图示：一棵-BST" class="headerlink" title="关键图示：一棵 BST"></a>关键图示：一棵 BST</h3><p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/binary-search-tree-example.png" srcset="/img/loading.gif" lazyload alt="二叉搜索树示例"><br><em>对于任意节点，其左子树所有节点的值都小于它，右子树所有节点的值都大于它。</em></p>
 <h2 id="2-核心操作"><a href="#2-核心操作" class="headerlink" title="2. 核心操作"></a>2. 核心操作</h2><h3 id="2-1-查找-Search"><a href="#2-1-查找-Search" class="headerlink" title="2.1 查找 (Search)"></a>2.1 查找 (Search)</h3><p><strong>思路</strong>：从根节点开始，如果目标值小于当前节点，就去左子树找；如果大于，就去右子树找；如果相等，就找到了。</p>
 <p>这个过程类似于二分查找。</p>
-<h4 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h4><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">function search(root, target):
-  if root is NULL or root.value == target:
-    return root
-  
-  if target < root.value:
-    return search(root.left, target)
-  else:
-    return search(root.right, target)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Python-实现-迭代版本"><a href="#Python-实现-迭代版本" class="headerlink" title="Python 实现 (迭代版本)"></a>Python 实现 (迭代版本)</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">search_bst</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">while</span> root<span class="token punctuation">:</span>
-        <span class="token keyword">if</span> target <span class="token operator">==</span> root<span class="token punctuation">.</span>value<span class="token punctuation">:</span>
-            <span class="token keyword">return</span> root
-        <span class="token keyword">elif</span> target <span class="token operator">&lt;</span> root<span class="token punctuation">.</span>value<span class="token punctuation">:</span>
-            root <span class="token operator">=</span> root<span class="token punctuation">.</span>left
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            root <span class="token operator">=</span> root<span class="token punctuation">.</span>right
-    <span class="token keyword">return</span> None <span class="token comment" spellcheck="true"># 未找到</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">function search(root, target):<br>  if root is NULL or root.value == target:<br>    return root<br>  <br>  if target &lt; root.value:<br>    return search(root.left, target)<br>  else:<br>    return search(root.right, target)<br></code></pre></td></tr></table></figure>
+
+<h4 id="Python-实现-迭代版本"><a href="#Python-实现-迭代版本" class="headerlink" title="Python 实现 (迭代版本)"></a>Python 实现 (迭代版本)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">search_bst</span>(<span class="hljs-params">root, target</span>):<br>    <span class="hljs-keyword">while</span> root:<br>        <span class="hljs-keyword">if</span> target == root.value:<br>            <span class="hljs-keyword">return</span> root<br>        <span class="hljs-keyword">elif</span> target &lt; root.value:<br>            root = root.left<br>        <span class="hljs-keyword">else</span>:<br>            root = root.right<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <span class="hljs-comment"># 未找到</span><br></code></pre></td></tr></table></figure>
+
 <p><strong>时间复杂度</strong>：<code>O(h)</code>，其中 <code>h</code> 是树的高度。平衡时 <code>h = log n</code>，退化时 <code>h = n</code>。</p>
 <h3 id="2-2-插入-Insert"><a href="#2-2-插入-Insert" class="headerlink" title="2.2 插入 (Insert)"></a>2.2 插入 (Insert)</h3><p><strong>思路</strong>：先像查找一样找到应该插入的位置（叶子节点的下方），然后创建新节点并连接。</p>
-<h4 id="动画式案例：向-BST-插入-25"><a href="#动画式案例：向-BST-插入-25" class="headerlink" title="动画式案例：向 BST 插入 25"></a>动画式案例：向 BST 插入 25</h4><p><strong>初始 BST</strong>：</p>
-<pre><code>       50
-      /  \
-    30    70
-   / \
-  20  40
-</code></pre>
-<p><strong>插入 25 的过程</strong>：</p>
+<h4 id="动画式案例：向-BST-插入-25"><a href="#动画式案例：向-BST-插入-25" class="headerlink" title="动画式案例：向 BST 插入 25"></a>动画式案例：向 BST 插入 25</h4><p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/bst-insertion.gif" srcset="/img/loading.gif" lazyload alt="BST 插入操作"><br><em>图片来源: visualgo.net</em></p>
+<p><strong>过程解析</strong>：</p>
 <ol>
-<li>从根节点 50 开始。<code>25 &lt; 50</code>，进入左子树。</li>
-<li>到达节点 30。<code>25 &lt; 30</code>，进入左子树。</li>
-<li>到达节点 20。<code>25 &gt; 20</code>，应该在右子树，但右子树为空。</li>
-<li>在节点 20 的右子位置创建新节点 25。</li>
+<li><strong>查找路径</strong>：从根节点 <code>50</code> 开始，根据“左小右大”的原则向下查找，路径为 <code>50 -&gt; 30 -&gt; 20</code>。</li>
+<li><strong>找到插入点</strong>：在 <code>20</code> 节点，因为 <code>25 &gt; 20</code>，所以应该插入到其右子位置。</li>
+<li><strong>插入新节点</strong>：在 <code>20</code> 的右侧插入新节点 <code>25</code>。</li>
 </ol>
-<p><strong>最终 BST</strong>：</p>
-<pre><code>       50
-      /  \
-    30    70
-   / \
-  20  40
-    \
-    25
-</code></pre>
-<h4 id="伪代码-递归"><a href="#伪代码-递归" class="headerlink" title="伪代码 (递归)"></a>伪代码 (递归)</h4><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">function insert(root, value):
-  if root is NULL:
-    return new TreeNode(value)
-  
-  if value < root.value:
-    root.left = insert(root.left, value)
-  else if value > root.value:
-    root.right = insert(root.right, value)
-  // 如果 value == root.value，通常不插入（BST 不允许重复值）
-  
-  return root
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="伪代码-递归"><a href="#伪代码-递归" class="headerlink" title="伪代码 (递归)"></a>伪代码 (递归)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">function insert(root, value):<br>  if root is NULL:<br>    return new TreeNode(value)<br>  <br>  if value &lt; root.value:<br>    root.left = insert(root.left, value)<br>  else if value &gt; root.value:<br>    root.right = insert(root.right, value)<br>  // 如果 value == root.value，通常不插入（BST 不允许重复值）<br>  <br>  return root<br></code></pre></td></tr></table></figure>
+
 <p><strong>时间复杂度</strong>：<code>O(h)</code>。</p>
 <h3 id="2-3-删除-Delete"><a href="#2-3-删除-Delete" class="headerlink" title="2.3 删除 (Delete)"></a>2.3 删除 (Delete)</h3><p>删除是 BST 中最复杂的操作，因为需要考虑三种情况。</p>
 <h4 id="三种情况"><a href="#三种情况" class="headerlink" title="三种情况"></a>三种情况</h4><ol>
@@ -433,56 +392,15 @@
 </ul>
 </li>
 </ol>
-<h4 id="动画式案例：删除节点-30"><a href="#动画式案例：删除节点-30" class="headerlink" title="动画式案例：删除节点 30"></a>动画式案例：删除节点 30</h4><p><strong>初始 BST</strong>：</p>
-<pre><code>       50
-      /  \
-    30    70
-   / \    / \
-  20  40 60  80
-</code></pre>
-<p><strong>删除 30 的过程</strong>（30 有两个子节点）：</p>
+<h4 id="动画式案例：删除有两个子节点的节点"><a href="#动画式案例：删除有两个子节点的节点" class="headerlink" title="动画式案例：删除有两个子节点的节点"></a>动画式案例：删除有两个子节点的节点</h4><p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/bst-deletion.gif" srcset="/img/loading.gif" lazyload alt="BST 删除操作"><br><em>图片来源: visualgo.net</em></p>
+<p><strong>过程解析</strong> (以删除值为 <code>30</code> 的节点为例)：</p>
 <ol>
-<li>找到 30 的后继节点：右子树 (40) 中的最小节点，就是 40 本身。</li>
-<li>用 40 的值替换 30 的值。</li>
-<li>删除原来的节点 40（它是叶子节点，直接删除）。</li>
+<li><strong>找到后继节点</strong>：在被删除节点的<strong>右子树</strong>中，找到值最小的节点。在这个例子中，是 <code>40</code>。</li>
+<li><strong>值替换</strong>：将后继节点的值 <code>40</code> 覆盖掉被删除节点的值 <code>30</code>。</li>
+<li><strong>删除后继节点</strong>：现在问题转化为删除原来的后继节点 <code>40</code>。由于后继节点最多只有一个右子节点，删除它就变得简单了。</li>
 </ol>
-<p><strong>最终 BST</strong>：</p>
-<pre><code>       50
-      /  \
-    40    70
-   /     / \
-  20    60  80
-</code></pre>
-<h4 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h4><pre class="line-numbers language-pseudocode"><code class="language-pseudocode">function delete(root, value):
-  if root is NULL:
-    return NULL
-  
-  if value < root.value:
-    root.left = delete(root.left, value)
-  else if value > root.value:
-    root.right = delete(root.right, value)
-  else: // 找到了要删除的节点
-    // 情况1: 叶子节点或只有一个子节点
-    if root.left is NULL:
-      return root.right
-    else if root.right is NULL:
-      return root.left
-    
-    // 情况2: 有两个子节点
-    // 找到右子树的最小节点
-    min_node = find_min(root.right)
-    // 用后继节点的值替换当前节点的值
-    root.value = min_node.value
-    // 递归删除后继节点
-    root.right = delete(root.right, min_node.value)
-  
-  return root
+<h4 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">function delete(root, value):<br>  if root is NULL:<br>    return NULL<br>  <br>  if value &lt; root.value:<br>    root.left = delete(root.left, value)<br>  else if value &gt; root.value:<br>    root.right = delete(root.right, value)<br>  else: // 找到了要删除的节点<br>    // 情况1: 叶子节点或只有一个子节点<br>    if root.left is NULL:<br>      return root.right<br>    else if root.right is NULL:<br>      return root.left<br>    <br>    // 情况2: 有两个子节点<br>    // 找到右子树的最小节点<br>    min_node = find_min(root.right)<br>    // 用后继节点的值替换当前节点的值<br>    root.value = min_node.value<br>    // 递归删除后继节点<br>    root.right = delete(root.right, min_node.value)<br>  <br>  return root<br><br>function find_min(node):<br>  while node.left is not NULL:<br>    node = node.left<br>  return node<br></code></pre></td></tr></table></figure>
 
-function find_min(node):
-  while node.left is not NULL:
-    node = node.left
-  return node
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>时间复杂度</strong>：<code>O(h)</code>。</p>
 <h2 id="3-BST-的优势与劣势"><a href="#3-BST-的优势与劣势" class="headerlink" title="3. BST 的优势与劣势"></a>3. BST 的优势与劣势</h2><h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
 <li><strong>有序性</strong>：中序遍历可得有序序列。</li>
@@ -490,17 +408,7 @@ function find_min(node):
 <li><strong>灵活性</strong>：支持动态插入和删除，比静态的有序数组更灵活。</li>
 </ul>
 <h3 id="劣势：退化问题"><a href="#劣势：退化问题" class="headerlink" title="劣势：退化问题"></a>劣势：退化问题</h3><p>BST 最大的问题是：<strong>在最坏情况下，它会退化成一条链表</strong>。</p>
-<p><strong>场景</strong>：如果按<strong>有序序列</strong>插入元素（如 1, 2, 3, 4, 5），BST 会变成：</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-</code></pre>
+<p><strong>场景</strong>：如果按<strong>有序序列</strong>插入元素（如 1, 2, 3, 4, 5），BST 会变成：<br><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/bst-degenerated-tree.png" srcset="/img/loading.gif" lazyload alt="退化成链表的BST"><br><em>按顺序插入元素会导致二叉搜索树退化成链表，失去性能优势。</em></p>
 <p>此时，所有操作的时间复杂度都退化为 <code>O(n)</code>，失去了树结构的优势。</p>
 <h3 id="解决方案：平衡树"><a href="#解决方案：平衡树" class="headerlink" title="解决方案：平衡树"></a>解决方案：平衡树</h3><p>为了避免退化，人们发明了<strong>自平衡二叉搜索树</strong>，如：</p>
 <ul>
@@ -703,50 +611,6 @@ function find_min(node):
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -774,6 +638,9 @@ function find_min(node):
 
 
 
+
+
+  
 
 
 

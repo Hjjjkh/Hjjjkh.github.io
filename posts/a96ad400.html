@@ -30,8 +30,10 @@
 <meta property="og:site_name" content="李国强的技术博客">
 <meta property="og:description" content="空间复杂度是衡量算法效率的另一把关键标尺。本文将带你系统学习如何分析算法的内存占用，从变量、数据结构到递归调用栈，通过丰富的案例剖析 O(1)、O(n) 和 O(log n) 等常见空间复杂度的计算方法，助你写出更高效、更节省内存的代码。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.cs.usfca.edu/~galles/visualization/RecFact.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/space-complexity-mindmap.png">
 <meta property="article:published_time" content="2025-11-15T09:30:00.000Z">
-<meta property="article:modified_time" content="2025-11-15T08:52:21.794Z">
+<meta property="article:modified_time" content="2025-11-17T05:19:46.710Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="空间复杂度">
 <meta property="article:tag" content="算法基础">
@@ -39,6 +41,7 @@
 <meta property="article:tag" content="Big O">
 <meta property="article:tag" content="原地算法">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.cs.usfca.edu/~galles/visualization/RecFact.gif">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -79,6 +82,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -102,8 +110,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -265,7 +272,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          2.4k 字
         
       </span>
     
@@ -276,7 +283,7 @@
         
         
         
-          21 分钟
+          20 分钟
         
       </span>
     
@@ -327,7 +334,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月15日 下午
+                    本文最后更新于 2025年11月17日 下午
                   
                 
               </p>
@@ -357,41 +364,24 @@
 </ul>
 </li>
 </ol>
-<blockquote>
-<p>💡 <strong>核心</strong>：我们通常所说的“空间复杂度”，指的就是<strong>额外空间复杂度</strong> (Auxiliary Space Complexity)。</p>
-</blockquote>
+<div class="note info" style="padding: 15px; border-left: 5px solid #42b983; background-color: #f3f5f7; margin: 1.5em 0;">
+<strong>💡 核心</strong>：我们通常所说的“空间复杂度”，指的就是<strong>额外空间复杂度</strong> (Auxiliary Space Complexity)。
+</div>
+
 <h2 id="2-常见空间复杂度分析"><a href="#2-常见空间复杂度分析" class="headerlink" title="2. 常见空间复杂度分析"></a>2. 常见空间复杂度分析</h2><h3 id="2-1-O-1-常数空间复杂度"><a href="#2-1-O-1-常数空间复杂度" class="headerlink" title="2.1 O(1) - 常数空间复杂度"></a>2.1 O(1) - 常数空间复杂度</h3><p><strong>关键特征</strong>：算法所需的额外空间不随输入规模 <code>n</code> 的变化而变化。无论 <code>n</code> 是 10 还是 100 万，算法占用的临时空间都是一个固定的常量。</p>
 <p>这类算法通常被称为**原地算法 (In-place Algorithm)**。</p>
-<h4 id="案例-1：变量交换"><a href="#案例-1：变量交换" class="headerlink" title="案例 1：变量交换"></a>案例 1：变量交换</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">swap</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    temp <span class="token operator">=</span> a  <span class="token comment" spellcheck="true"># 额外分配一个变量 temp</span>
-    a <span class="token operator">=</span> b
-    b <span class="token operator">=</span> temp
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="案例-1：变量交换"><a href="#案例-1：变量交换" class="headerlink" title="案例 1：变量交换"></a>案例 1：变量交换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">swap</span>(<span class="hljs-params">a, b</span>):<br>    temp = a  <span class="hljs-comment"># 额外分配一个变量 temp</span><br>    a = b<br>    b = temp<br></code></pre></td></tr></table></figure>
+
 <p><strong>分析</strong>：无论 <code>a</code> 和 <code>b</code> 是什么，我们都只额外使用了一个 <code>temp</code> 变量。所需空间是固定的。因此，空间复杂度为 <code>O(1)</code>。</p>
-<h4 id="案例-2：原地反转数组"><a href="#案例-2：原地反转数组" class="headerlink" title="案例 2：原地反转数组"></a>案例 2：原地反转数组</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">reverse_array</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    left<span class="token punctuation">,</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>
-    <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right<span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 只使用了 left, right, 加上隐式的 temp 变量</span>
-        arr<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>left<span class="token punctuation">]</span>
-        left <span class="token operator">+=</span> <span class="token number">1</span>
-        right <span class="token operator">-=</span> <span class="token number">1</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="案例-2：原地反转数组"><a href="#案例-2：原地反转数组" class="headerlink" title="案例 2：原地反转数组"></a>案例 2：原地反转数组</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse_array</span>(<span class="hljs-params">arr</span>):<br>    left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span><br>    <span class="hljs-keyword">while</span> left &lt; right:<br>        <span class="hljs-comment"># 只使用了 left, right, 加上隐式的 temp 变量</span><br>        arr[left], arr[right] = arr[right], arr[left]<br>        left += <span class="hljs-number">1</span><br>        right -= <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
 <p><strong>分析</strong>：我们只使用了 <code>left</code> 和 <code>right</code> 两个指针变量，以及在交换元素时的一个临时存储空间。这些变量的数量与数组的长度 <code>n</code> 无关。因此，空间复杂度为 <code>O(1)</code>。</p>
 <h3 id="2-2-O-n-线性空间复杂度"><a href="#2-2-O-n-线性空间复杂度" class="headerlink" title="2.2 O(n) - 线性空间复杂度"></a>2.2 O(n) - 线性空间复杂度</h3><p><strong>关键特征</strong>：算法所需的额外空间与输入规模 <code>n</code> 成线性关系。当 <code>n</code> 扩大一倍时，额外空间也大致扩大一倍。</p>
-<h4 id="案例-1：创建数组副本"><a href="#案例-1：创建数组副本" class="headerlink" title="案例 1：创建数组副本"></a>案例 1：创建数组副本</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">copy_array</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    n <span class="token operator">=</span> len<span class="token punctuation">(</span>arr<span class="token punctuation">)</span>
-    new_arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n  <span class="token comment" spellcheck="true"># 额外创建了一个长度为 n 的数组</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        new_arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-    <span class="token keyword">return</span> new_arr
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="案例-1：创建数组副本"><a href="#案例-1：创建数组副本" class="headerlink" title="案例 1：创建数组副本"></a>案例 1：创建数组副本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">copy_array</span>(<span class="hljs-params">arr</span>):<br>    n = <span class="hljs-built_in">len</span>(arr)<br>    new_arr = [<span class="hljs-number">0</span>] * n  <span class="hljs-comment"># 额外创建了一个长度为 n 的数组</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        new_arr[i] = arr[i]<br>    <span class="hljs-keyword">return</span> new_arr<br></code></pre></td></tr></table></figure>
+
 <p><strong>分析</strong>：算法的核心是创建了一个与输入数组 <code>arr</code> 等长的新数组 <code>new_arr</code>。这个新数组占用的空间大小为 <code>n</code>。因此，空间复杂度为 <code>O(n)</code>。</p>
-<h4 id="案例-2：简单的递归（非尾递归）"><a href="#案例-2：简单的递归（非尾递归）" class="headerlink" title="案例 2：简单的递归（非尾递归）"></a>案例 2：简单的递归（非尾递归）</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sum_recursive</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> n <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token number">0</span>
-    <span class="token comment" spellcheck="true"># 每次调用都会在调用栈上保存当前状态 (n)</span>
-    <span class="token keyword">return</span> n <span class="token operator">+</span> sum_recursive<span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="案例-2：简单的递归（非尾递归）"><a href="#案例-2：简单的递归（非尾递归）" class="headerlink" title="案例 2：简单的递归（非尾递归）"></a>案例 2：简单的递归（非尾递归）</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_recursive</span>(<span class="hljs-params">n</span>):<br>    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">0</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-comment"># 每次调用都会在调用栈上保存当前状态 (n)</span><br>    <span class="hljs-keyword">return</span> n + sum_recursive(n - <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
 <p><strong>分析</strong>：这是一个非常重要的知识点——<strong>递归的函数调用栈</strong>。</p>
 <ul>
 <li><code>sum_recursive(n)</code> 调用 <code>sum_recursive(n-1)</code></li>
@@ -400,33 +390,13 @@
 <li><code>sum_recursive(1)</code> 调用 <code>sum_recursive(0)</code></li>
 </ul>
 <p>在 <code>sum_recursive(0)</code> 返回之前，所有 <code>sum_recursive(1)</code> 到 <code>sum_recursive(n)</code> 的调用信息（如参数、返回地址）都必须保存在<strong>函数调用栈 (Call Stack)</strong> 上。这个调用栈的深度是 <code>n</code>。因此，空间复杂度为 <code>O(n)</code>。</p>
+<p><img src="https://www.cs.usfca.edu/~galles/visualization/RecFact.gif" srcset="/img/loading.gif" lazyload alt="函数调用栈图示"></p>
 <blockquote>
-<p><strong>图示：<code>sum_recursive(3)</code> 的调用栈</strong></p>
-<pre><code>| ...          |
-|--------------|
-| sum_recursive(1) | &lt;-- Stack Top
-|--------------|
-| sum_recursive(2) |
-|--------------|
-| sum_recursive(3) |
-|--------------|
-</code></pre>
+<p><em>一个递归阶乘函数 <code>fact(4)</code> 的调用栈动态图示，原理与 <code>sum_recursive</code> 相同</em></p>
 </blockquote>
 <h3 id="2-3-O-log-n-对数空间复杂度"><a href="#2-3-O-log-n-对数空间复杂度" class="headerlink" title="2.3 O(log n) - 对数空间复杂度"></a>2.3 O(log n) - 对数空间复杂度</h3><p><strong>关键特征</strong>：通常出现在递归算法中，但递归深度与 <code>log n</code> 成正比，而不是 <code>n</code>。</p>
-<h4 id="案例：二分查找的递归实现"><a href="#案例：二分查找的递归实现" class="headerlink" title="案例：二分查找的递归实现"></a>案例：二分查找的递归实现</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">binary_search_recursive</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> target<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> left <span class="token operator">></span> right<span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
-    
-    mid <span class="token operator">=</span> <span class="token punctuation">(</span>left <span class="token operator">+</span> right<span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">2</span>
-    <span class="token keyword">if</span> arr<span class="token punctuation">[</span>mid<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">:</span>
-        <span class="token keyword">return</span> mid
-    <span class="token keyword">elif</span> arr<span class="token punctuation">[</span>mid<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 递归调用，进入右半部分</span>
-        <span class="token keyword">return</span> binary_search_recursive<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> target<span class="token punctuation">,</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># 递归调用，进入左半部分</span>
-        <span class="token keyword">return</span> binary_search_recursive<span class="token punctuation">(</span>arr<span class="token punctuation">,</span> target<span class="token punctuation">,</span> left<span class="token punctuation">,</span> mid <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="案例：二分查找的递归实现"><a href="#案例：二分查找的递归实现" class="headerlink" title="案例：二分查找的递归实现"></a>案例：二分查找的递归实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_recursive</span>(<span class="hljs-params">arr, target, left, right</span>):<br>    <span class="hljs-keyword">if</span> left &gt; right:<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span><br>    <br>    mid = (left + right) // <span class="hljs-number">2</span><br>    <span class="hljs-keyword">if</span> arr[mid] == target:<br>        <span class="hljs-keyword">return</span> mid<br>    <span class="hljs-keyword">elif</span> arr[mid] &lt; target:<br>        <span class="hljs-comment"># 递归调用，进入右半部分</span><br>        <span class="hljs-keyword">return</span> binary_search_recursive(arr, target, mid + <span class="hljs-number">1</span>, right)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-comment"># 递归调用，进入左半部分</span><br>        <span class="hljs-keyword">return</span> binary_search_recursive(arr, target, left, mid - <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
 <p><strong>分析</strong>：</p>
 <ol>
 <li><strong>递归深度</strong>：与 <code>O(log n)</code> 时间复杂度的分析类似，每次递归调用，问题的规模 <code>(right - left)</code> 都会减半。</li>
@@ -434,15 +404,8 @@
 <li><strong>结论</strong>：每次函数调用在栈上只保存了几个变量（<code>arr</code>, <code>target</code>, <code>left</code>, <code>right</code>, <code>mid</code>），这是 <code>O(1)</code> 的。总的空间复杂度由栈的深度决定，即 <code>O(log n)</code>。</li>
 </ol>
 <h3 id="2-4-O-n²-平方空间复杂度"><a href="#2-4-O-n²-平方空间复杂度" class="headerlink" title="2.4 O(n²) - 平方空间复杂度"></a>2.4 O(n²) - 平方空间复杂度</h3><p><strong>关键特征</strong>：算法需要一个二维的数据结构，其维度都与输入规模 <code>n</code> 相关。</p>
-<h4 id="案例：创建邻接矩阵"><a href="#案例：创建邻接矩阵" class="headerlink" title="案例：创建邻接矩阵"></a>案例：创建邻接矩阵</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">create_adjacency_matrix</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> edges<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># 创建一个 n x n 的二维数组</span>
-    matrix <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
-    
-    <span class="token keyword">for</span> u<span class="token punctuation">,</span> v <span class="token keyword">in</span> edges<span class="token punctuation">:</span>
-        matrix<span class="token punctuation">[</span>u<span class="token punctuation">]</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
-        matrix<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token comment" spellcheck="true"># 无向图</span>
-    <span class="token keyword">return</span> matrix
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="案例：创建邻接矩阵"><a href="#案例：创建邻接矩阵" class="headerlink" title="案例：创建邻接矩阵"></a>案例：创建邻接矩阵</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_adjacency_matrix</span>(<span class="hljs-params">n, edges</span>):<br>    <span class="hljs-comment"># 创建一个 n x n 的二维数组</span><br>    matrix = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]<br>    <br>    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:<br>        matrix[u][v] = <span class="hljs-number">1</span><br>        matrix[v][u] = <span class="hljs-number">1</span> <span class="hljs-comment"># 无向图</span><br>    <span class="hljs-keyword">return</span> matrix<br></code></pre></td></tr></table></figure>
+
 <p><strong>分析</strong>：算法创建了一个 <code>n x n</code> 的矩阵来存储图的信息。这个矩阵需要 <code>n * n = n²</code> 个存储单元。因此，空间复杂度为 <code>O(n²)</code>。</p>
 <h2 id="3-时间与空间的权衡-Trade-off"><a href="#3-时间与空间的权衡-Trade-off" class="headerlink" title="3. 时间与空间的权衡 (Trade-off)"></a>3. 时间与空间的权衡 (Trade-off)</h2><p>在算法设计中，时间和空间往往是一对“矛盾体”。我们常常需要在这两者之间做出权衡。</p>
 <p><strong>“空间换时间”</strong>：使用更多的内存来换取更快的运行时间。</p>
@@ -465,41 +428,7 @@
 <li><strong>递归空间</strong>：递归算法的空间复杂度由<strong>递归调用栈的最大深度</strong>决定。</li>
 <li><strong>权衡之术</strong>：时间和空间往往可以相互转换，理解这种 trade-off 是高级工程师必备的思维。</li>
 </ol>
-<h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><blockquote>
-<p><strong>图示：空间复杂度推导方法</strong></p>
-<ul>
-<li><strong>根节点</strong>: 空间复杂度分析<ul>
-<li><strong>核心</strong>: 分析额外空间 (Auxiliary Space)</li>
-<li><strong>分支 1</strong>: O(1) - 常数空间<ul>
-<li>特征: 变量数量固定</li>
-<li>别名: 原地算法 (In-place)</li>
-<li>案例: 数组反转, 变量交换</li>
-</ul>
-</li>
-<li><strong>分支 2</strong>: O(n) - 线性空间<ul>
-<li>特征: 额外空间与 n 成正比</li>
-<li>案例: 创建数组副本, 线性递归</li>
-</ul>
-</li>
-<li><strong>分支 3</strong>: O(log n) - 对数空间<ul>
-<li>特征: 递归深度为 log n</li>
-<li>案例: 二分查找递归实现</li>
-</ul>
-</li>
-<li><strong>分支 4</strong>: O(n²) - 平方空间<ul>
-<li>特征: 创建 n x n 二维结构</li>
-<li>案例: 邻接矩阵</li>
-</ul>
-</li>
-<li><strong>分支 5</strong>: 核心概念<ul>
-<li>递归: 空间取决于调用栈深度</li>
-<li>权衡: 时间 vs. 空间 (Trade-off)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
+<h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://cdn.jsdelivr.net/gh/Hjjjkh/blog-images/space-complexity-mindmap.png" srcset="/img/loading.gif" lazyload alt="空间复杂度分析思维导图"><br><em>思维导图：总结了本文的核心分析方法</em></p>
 <p>至此，我们已经系统地学习了时间和空间复杂度的分析方法。这是整个算法学习的基石。从下一篇文章开始，我们将进入算法世界的核心——<strong>数据结构</strong>，首先从最基础的<strong>数组和链表</strong>开始。</p>
 <hr>
 
@@ -641,50 +570,6 @@
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -712,6 +597,9 @@
 
 
 
+
+
+  
 
 
 

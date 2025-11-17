@@ -31,7 +31,7 @@
 <meta property="og:description" content="前言在使用 Hexo + GitHub Pages 搭建博客时，我们经常会遇到一个问题：如何同时管理源代码和部署文件？传统的做法是将源代码和生成的静态文件混在一起，或者使用两个仓库分别管理。今天，我将分享一个更优雅的解决方案：使用双分支策略，实现源码与部署的完美分离。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-15T06:20:23.000Z">
-<meta property="article:modified_time" content="2025-11-16T01:32:13.058Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.815Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="GitHub Pages">
@@ -78,6 +78,11 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
 
 
   
@@ -101,8 +106,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -326,7 +330,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年11月16日 上午
+                    本文最后更新于 2025年11月17日 中午
                   
                 
               </p>
@@ -360,15 +364,8 @@
 <li>✅ <strong>历史记录清晰</strong>：源码和部署的提交历史互不干扰</li>
 </ul>
 <h2 id="实施步骤"><a href="#实施步骤" class="headerlink" title="实施步骤"></a>实施步骤</h2><h3 id="1-创建-source-分支"><a href="#1-创建-source-分支" class="headerlink" title="1. 创建 source 分支"></a>1. 创建 source 分支</h3><p>首先，我们需要创建一个新分支来存放源代码：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 确保在博客根目录</span>
-<span class="token function">cd</span> your-blog-directory
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 确保在博客根目录</span><br><span class="hljs-built_in">cd</span> your-blog-directory<br><br><span class="hljs-comment"># 创建并切换到 source 分支</span><br>git checkout -b <span class="hljs-built_in">source</span><br><br><span class="hljs-comment"># 推送到远程仓库</span><br>git push -u origin <span class="hljs-built_in">source</span><br></code></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 创建并切换到 source 分支</span>
-<span class="token function">git</span> checkout -b <span class="token function">source</span>
-
-<span class="token comment" spellcheck="true"># 推送到远程仓库</span>
-<span class="token function">git</span> push -u origin <span class="token function">source</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="2-修改-GitHub-仓库默认分支"><a href="#2-修改-GitHub-仓库默认分支" class="headerlink" title="2. 修改 GitHub 仓库默认分支"></a>2. 修改 GitHub 仓库默认分支</h3><p>这一步很重要！我们需要将仓库的默认分支改为 <code>source</code>，这样：</p>
 <ul>
 <li>克隆仓库时会自动获取源代码</li>
@@ -383,120 +380,11 @@
 <li>点击 <code>Update</code> 并确认</li>
 </ol>
 <h3 id="3-清理-main-分支"><a href="#3-清理-main-分支" class="headerlink" title="3. 清理 main 分支"></a>3. 清理 main 分支</h3><p>现在我们需要清理 main 分支，让它成为一个纯净的部署分支：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 切换到 main 分支</span>
-<span class="token function">git</span> checkout main
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 切换到 main 分支</span><br>git checkout main<br><br><span class="hljs-comment"># 删除所有文件（保留 .git）</span><br>git <span class="hljs-built_in">rm</span> -rf .<br><br><span class="hljs-comment"># 从 public 目录复制部署文件</span><br><span class="hljs-comment"># Windows PowerShell</span><br>Copy-Item -Path <span class="hljs-string">&quot;public\*&quot;</span> -Destination <span class="hljs-string">&quot;.&quot;</span> -Recurse -Force<br><br><span class="hljs-comment"># Linux/Mac</span><br><span class="hljs-built_in">cp</span> -r public/* .<br><br><span class="hljs-comment"># 移除不需要的文件</span><br>git <span class="hljs-built_in">rm</span> --cached -rf .deploy_git public db.json node_modules<br><br><span class="hljs-comment"># 创建新的 .gitignore</span><br><span class="hljs-built_in">cat</span> &gt; .gitignore &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">.DS_Store</span><br><span class="hljs-string">Thumbs.db</span><br><span class="hljs-string">db.json</span><br><span class="hljs-string">*.log</span><br><span class="hljs-string">node_modules/</span><br><span class="hljs-string">public/</span><br><span class="hljs-string">.deploy*/</span><br><span class="hljs-string">.deploy_git*/</span><br><span class="hljs-string">.idea</span><br><span class="hljs-string">*.iml</span><br><span class="hljs-string">.vscode</span><br><span class="hljs-string">EOF</span><br><br><span class="hljs-comment"># 提交更改</span><br>git add -A<br>git commit -m <span class="hljs-string">&quot;Clean main branch - keep only deployment files&quot;</span><br><br><span class="hljs-comment"># 强制推送到远程（覆盖原有内容）</span><br>git push -f origin main<br></code></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 删除所有文件（保留 .git）</span>
-<span class="token function">git</span> <span class="token function">rm</span> -rf <span class="token keyword">.</span>
-
-<span class="token comment" spellcheck="true"># 从 public 目录复制部署文件</span>
-<span class="token comment" spellcheck="true"># Windows PowerShell</span>
-Copy-Item -Path <span class="token string">"public\*"</span> -Destination <span class="token string">"."</span> -Recurse -Force
-
-<span class="token comment" spellcheck="true"># Linux/Mac</span>
-<span class="token function">cp</span> -r public/* <span class="token keyword">.</span>
-
-<span class="token comment" spellcheck="true"># 移除不需要的文件</span>
-<span class="token function">git</span> <span class="token function">rm</span> --cached -rf .deploy_git public db.json node_modules
-
-<span class="token comment" spellcheck="true"># 创建新的 .gitignore</span>
-<span class="token function">cat</span> <span class="token operator">></span> .gitignore <span class="token operator">&lt;&lt;</span> <span class="token string">EOF
-.DS_Store
-Thumbs.db
-db.json
-*.log
-node_modules/
-public/
-.deploy*/
-.deploy_git*/
-.idea
-*.iml
-.vscode
-EOF</span>
-
-<span class="token comment" spellcheck="true"># 提交更改</span>
-<span class="token function">git</span> add -A
-<span class="token function">git</span> commit -m <span class="token string">"Clean main branch - keep only deployment files"</span>
-
-<span class="token comment" spellcheck="true"># 强制推送到远程（覆盖原有内容）</span>
-<span class="token function">git</span> push -f origin main
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="4-配置-GitHub-Actions"><a href="#4-配置-GitHub-Actions" class="headerlink" title="4. 配置 GitHub Actions"></a>4. 配置 GitHub Actions</h3><p>创建或修改 <code>.github/workflows/deploy.yml</code> 文件：</p>
-<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy Hexo Blog to GitHub Pages
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">Hexo</span> <span class="hljs-string">Blog</span> <span class="hljs-string">to</span> <span class="hljs-string">GitHub</span> <span class="hljs-string">Pages</span><br><br><span class="hljs-attr">on:</span><br>  <span class="hljs-attr">push:</span><br>    <span class="hljs-attr">branches:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">source</span>  <span class="hljs-comment"># 当推送到 source 分支时触发</span><br><br>  <span class="hljs-comment"># 允许手动触发工作流</span><br>  <span class="hljs-attr">workflow_dispatch:</span><br><br><span class="hljs-comment"># 设置 GITHUB_TOKEN 的权限</span><br><span class="hljs-attr">permissions:</span><br>  <span class="hljs-attr">contents:</span> <span class="hljs-string">write</span><br>  <span class="hljs-attr">pages:</span> <span class="hljs-string">write</span><br>  <span class="hljs-attr">id-token:</span> <span class="hljs-string">write</span><br><br><span class="hljs-comment"># 只允许一个并发部署</span><br><span class="hljs-attr">concurrency:</span><br>  <span class="hljs-attr">group:</span> <span class="hljs-string">&quot;pages&quot;</span><br>  <span class="hljs-attr">cancel-in-progress:</span> <span class="hljs-literal">true</span><br><br><span class="hljs-attr">jobs:</span><br>  <span class="hljs-attr">build-and-deploy:</span><br>    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span><br>    <br>    <span class="hljs-attr">steps:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span> <span class="hljs-string">代码</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v4</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">fetch-depth:</span> <span class="hljs-number">0</span>  <span class="hljs-comment"># 获取所有历史记录</span><br>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">设置</span> <span class="hljs-string">Node.js</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v4</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">node-version:</span> <span class="hljs-string">&#x27;20&#x27;</span><br>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">安装</span> <span class="hljs-string">pnpm</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">pnpm/action-setup@v2</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">version:</span> <span class="hljs-number">8</span><br>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">获取</span> <span class="hljs-string">pnpm</span> <span class="hljs-string">store</span> <span class="hljs-string">目录</span><br>        <span class="hljs-attr">id:</span> <span class="hljs-string">pnpm-cache</span><br>        <span class="hljs-attr">shell:</span> <span class="hljs-string">bash</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br><span class="hljs-string">          echo &quot;STORE_PATH=$(pnpm store path)&quot; &gt;&gt; $GITHUB_OUTPUT</span><br><span class="hljs-string"></span>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">设置</span> <span class="hljs-string">pnpm</span> <span class="hljs-string">缓存</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/cache@v3</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">path:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">steps.pnpm-cache.outputs.STORE_PATH</span> <span class="hljs-string">&#125;&#125;</span><br>          <span class="hljs-attr">key:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">runner.os</span> <span class="hljs-string">&#125;&#125;-pnpm-store-$&#123;&#123;</span> <span class="hljs-string">hashFiles(&#x27;**/pnpm-lock.yaml&#x27;)</span> <span class="hljs-string">&#125;&#125;</span><br>          <span class="hljs-attr">restore-keys:</span> <span class="hljs-string">|</span><br><span class="hljs-string">            $&#123;&#123; runner.os &#125;&#125;-pnpm-store-</span><br><span class="hljs-string"></span>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">安装依赖</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">pnpm</span> <span class="hljs-string">install</span> <span class="hljs-string">--frozen-lockfile</span><br>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">清理缓存</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">pnpm</span> <span class="hljs-string">hexo</span> <span class="hljs-string">clean</span><br>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">生成静态文件</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">pnpm</span> <span class="hljs-string">hexo</span> <span class="hljs-string">generate</span><br>      <br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">部署到</span> <span class="hljs-string">GitHub</span> <span class="hljs-string">Pages</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">peaceiris/actions-gh-pages@v3</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">github_token:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">&#125;&#125;</span><br>          <span class="hljs-attr">publish_dir:</span> <span class="hljs-string">./public</span><br>          <span class="hljs-attr">publish_branch:</span> <span class="hljs-string">main</span>  <span class="hljs-comment"># 部署到 main 分支</span><br>          <span class="hljs-attr">force_orphan:</span> <span class="hljs-literal">true</span>  <span class="hljs-comment"># 使用孤立分支，每次全新部署</span><br>          <span class="hljs-attr">user_name:</span> <span class="hljs-string">&#x27;github-actions[bot]&#x27;</span><br>          <span class="hljs-attr">user_email:</span> <span class="hljs-string">&#x27;github-actions[bot]@users.noreply.github.com&#x27;</span><br>          <span class="hljs-attr">commit_message:</span> <span class="hljs-string">&#x27;Deploy: $&#123;&#123; github.event.head_commit.message &#125;&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
 
-<span class="token key atrule">on</span><span class="token punctuation">:</span>
-  <span class="token key atrule">push</span><span class="token punctuation">:</span>
-    <span class="token key atrule">branches</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> source  <span class="token comment" spellcheck="true"># 当推送到 source 分支时触发</span>
-
-  <span class="token comment" spellcheck="true"># 允许手动触发工作流</span>
-  <span class="token key atrule">workflow_dispatch</span><span class="token punctuation">:</span>
-
-<span class="token comment" spellcheck="true"># 设置 GITHUB_TOKEN 的权限</span>
-<span class="token key atrule">permissions</span><span class="token punctuation">:</span>
-  <span class="token key atrule">contents</span><span class="token punctuation">:</span> write
-  <span class="token key atrule">pages</span><span class="token punctuation">:</span> write
-  <span class="token key atrule">id-token</span><span class="token punctuation">:</span> write
-
-<span class="token comment" spellcheck="true"># 只允许一个并发部署</span>
-<span class="token key atrule">concurrency</span><span class="token punctuation">:</span>
-  <span class="token key atrule">group</span><span class="token punctuation">:</span> <span class="token string">"pages"</span>
-  <span class="token key atrule">cancel-in-progress</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-
-<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
-  <span class="token key atrule">build-and-deploy</span><span class="token punctuation">:</span>
-    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
-    
-    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Checkout 代码
-        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4
-        <span class="token key atrule">with</span><span class="token punctuation">:</span>
-          <span class="token key atrule">fetch-depth</span><span class="token punctuation">:</span> <span class="token number">0  </span><span class="token comment" spellcheck="true"># 获取所有历史记录</span>
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 设置 Node.js
-        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>node@v4
-        <span class="token key atrule">with</span><span class="token punctuation">:</span>
-          <span class="token key atrule">node-version</span><span class="token punctuation">:</span> <span class="token string">'20'</span>
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 安装 pnpm
-        <span class="token key atrule">uses</span><span class="token punctuation">:</span> pnpm/action<span class="token punctuation">-</span>setup@v2
-        <span class="token key atrule">with</span><span class="token punctuation">:</span>
-          <span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token number">8</span>
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 获取 pnpm store 目录
-        <span class="token key atrule">id</span><span class="token punctuation">:</span> pnpm<span class="token punctuation">-</span>cache
-        <span class="token key atrule">shell</span><span class="token punctuation">:</span> bash
-        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT</span>
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 设置 pnpm 缓存
-        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/cache@v3
-        <span class="token key atrule">with</span><span class="token punctuation">:</span>
-          <span class="token key atrule">path</span><span class="token punctuation">:</span> $&amp;<span class="token comment" spellcheck="true">#123;&amp;#123; steps.pnpm-cache.outputs.STORE_PATH &amp;#125;&amp;#125;</span>
-          <span class="token key atrule">key</span><span class="token punctuation">:</span> $&amp;<span class="token comment" spellcheck="true">#123;&amp;#123; runner.os &amp;#125;&amp;#125;-pnpm-store-$&amp;#123;&amp;#123; hashFiles('**/pnpm-lock.yaml') &amp;#125;&amp;#125;</span>
-          <span class="token key atrule">restore-keys</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
-            $&amp;#123;&amp;#123; runner.os &amp;#125;&amp;#125;-pnpm-store-</span>
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 安装依赖
-        <span class="token key atrule">run</span><span class="token punctuation">:</span> pnpm install <span class="token punctuation">-</span><span class="token punctuation">-</span>frozen<span class="token punctuation">-</span>lockfile
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 清理缓存
-        <span class="token key atrule">run</span><span class="token punctuation">:</span> pnpm hexo clean
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 生成静态文件
-        <span class="token key atrule">run</span><span class="token punctuation">:</span> pnpm hexo generate
-      
-      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 部署到 GitHub Pages
-        <span class="token key atrule">uses</span><span class="token punctuation">:</span> peaceiris/actions<span class="token punctuation">-</span>gh<span class="token punctuation">-</span>pages@v3
-        <span class="token key atrule">with</span><span class="token punctuation">:</span>
-          <span class="token key atrule">github_token</span><span class="token punctuation">:</span> $&amp;<span class="token comment" spellcheck="true">#123;&amp;#123; secrets.GITHUB_TOKEN &amp;#125;&amp;#125;</span>
-          <span class="token key atrule">publish_dir</span><span class="token punctuation">:</span> ./public
-          <span class="token key atrule">publish_branch</span><span class="token punctuation">:</span> main  <span class="token comment" spellcheck="true"># 部署到 main 分支</span>
-          <span class="token key atrule">force_orphan</span><span class="token punctuation">:</span> <span class="token boolean important">true  </span><span class="token comment" spellcheck="true"># 使用孤立分支，每次全新部署</span>
-          <span class="token key atrule">user_name</span><span class="token punctuation">:</span> <span class="token string">'github-actions[bot]'</span>
-          <span class="token key atrule">user_email</span><span class="token punctuation">:</span> <span class="token string">'github-actions[bot]@users.noreply.github.com'</span>
-          <span class="token key atrule">commit_message</span><span class="token punctuation">:</span> <span class="token key atrule">'Deploy</span><span class="token punctuation">:</span> $&amp;<span class="token comment" spellcheck="true">#123;&amp;#123; github.event.head_commit.message &amp;#125;&amp;#125;'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="5-配置-GitHub-Pages"><a href="#5-配置-GitHub-Pages" class="headerlink" title="5. 配置 GitHub Pages"></a>5. 配置 GitHub Pages</h3><p>最后，确保 GitHub Pages 设置正确：</p>
 <ol>
 <li>访问仓库的 <code>Settings</code> → <code>Pages</code></li>
@@ -507,8 +395,8 @@ EOF</span>
 <h2 id="常见问题与解决方案"><a href="#常见问题与解决方案" class="headerlink" title="常见问题与解决方案"></a>常见问题与解决方案</h2><h3 id="问题-1：GitHub-Actions-部署失败"><a href="#问题-1：GitHub-Actions-部署失败" class="headerlink" title="问题 1：GitHub Actions 部署失败"></a>问题 1：GitHub Actions 部署失败</h3><p><strong>错误信息：</strong> <code>Error: Action failed with &quot;The process &#39;/usr/bin/git&#39; failed with exit code 1&quot;</code></p>
 <p><strong>原因：</strong> 当设置 <code>force_orphan: false</code> 时，如果 main 分支已有内容，可能会产生冲突。</p>
 <p><strong>解决方案：</strong> 将 <code>force_orphan</code> 设置为 <code>true</code>，这样每次都会创建一个全新的提交，避免冲突。</p>
-<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">force_orphan</span><span class="token punctuation">:</span> <span class="token boolean important">true  </span><span class="token comment" spellcheck="true"># 使用孤立分支，每次全新部署</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">force_orphan:</span> <span class="hljs-literal">true</span>  <span class="hljs-comment"># 使用孤立分支，每次全新部署</span><br></code></pre></td></tr></table></figure>
+
 <h3 id="问题-2：推送后没有触发部署"><a href="#问题-2：推送后没有触发部署" class="headerlink" title="问题 2：推送后没有触发部署"></a>问题 2：推送后没有触发部署</h3><p><strong>检查清单：</strong></p>
 <ol>
 <li>确认工作流文件在 <code>.github/workflows/</code> 目录下</li>
@@ -523,22 +411,8 @@ EOF</span>
 <li>DNS 缓存：清除浏览器缓存</li>
 </ol>
 <h2 id="新的工作流程"><a href="#新的工作流程" class="headerlink" title="新的工作流程"></a>新的工作流程</h2><p>配置完成后，你的日常工作流程将变得非常简单：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 1. 确保在 source 分支</span>
-<span class="token function">git</span> checkout <span class="token function">source</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 确保在 source 分支</span><br>git checkout <span class="hljs-built_in">source</span><br><br><span class="hljs-comment"># 2. 创建新文章</span><br>hexo new post <span class="hljs-string">&quot;my-new-post&quot;</span><br><br><span class="hljs-comment"># 3. 本地预览（可选）</span><br>hexo server<br><br><span class="hljs-comment"># 4. 提交更改</span><br>git add .<br>git commit -m <span class="hljs-string">&quot;Add new post: my-new-post&quot;</span><br><br><span class="hljs-comment"># 5. 推送到远程，自动触发部署</span><br>git push origin <span class="hljs-built_in">source</span><br></code></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 2. 创建新文章</span>
-hexo new post <span class="token string">"my-new-post"</span>
-
-<span class="token comment" spellcheck="true"># 3. 本地预览（可选）</span>
-hexo server
-
-<span class="token comment" spellcheck="true"># 4. 提交更改</span>
-<span class="token function">git</span> add <span class="token keyword">.</span>
-<span class="token function">git</span> commit -m <span class="token string">"Add new post: my-new-post"</span>
-
-<span class="token comment" spellcheck="true"># 5. 推送到远程，自动触发部署</span>
-<span class="token function">git</span> push origin <span class="token function">source</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>就这么简单！推送后，GitHub Actions 会自动：</p>
 <ol>
 <li>检出 source 分支代码</li>
@@ -569,26 +443,14 @@ hexo server
 <li><strong>操作：</strong> 由 GitHub Actions 自动更新，<strong>不要手动修改</strong></li>
 </ul>
 <h2 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h2><h3 id="1-添加部署状态徽章"><a href="#1-添加部署状态徽章" class="headerlink" title="1. 添加部署状态徽章"></a>1. 添加部署状态徽章</h3><p>在 README.md 中添加部署状态徽章，实时显示部署状态：</p>
-<pre class="line-numbers language-markdown"><code class="language-markdown"><span class="token url">![Deploy Status](https://github.com/username/username.github.io/workflows/Deploy%20Hexo%20Blog%20to%20GitHub%20Pages/badge.svg)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown">![<span class="hljs-string">Deploy Status</span>](<span class="hljs-link">https://github.com/username/username.github.io/workflows/Deploy%20Hexo%20Blog%20to%20GitHub%20Pages/badge.svg</span>)<br></code></pre></td></tr></table></figure>
+
 <h3 id="2-配置-gitignore"><a href="#2-配置-gitignore" class="headerlink" title="2. 配置 .gitignore"></a>2. 配置 .gitignore</h3><p>确保 source 分支的 <code>.gitignore</code> 包含：</p>
-<pre class="line-numbers language-gitignore"><code class="language-gitignore">.DS_Store
-Thumbs.db
-db.json
-*.log
-node_modules/
-public/
-.deploy*/
-.deploy_git*/
-.idea
-*.iml
-.vscode
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs gitignore">.DS_Store<br>Thumbs.db<br>db.json<br>*.log<br>node_modules/<br>public/<br>.deploy*/<br>.deploy_git*/<br>.idea<br>*.iml<br>.vscode<br></code></pre></td></tr></table></figure>
+
 <h3 id="3-使用-pnpm-加速构建"><a href="#3-使用-pnpm-加速构建" class="headerlink" title="3. 使用 pnpm 加速构建"></a>3. 使用 pnpm 加速构建</h3><p>相比 npm，pnpm 可以显著减少安装时间和磁盘占用：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 本地切换到 pnpm</span>
-<span class="token function">npm</span> <span class="token function">install</span> -g pnpm
-pnpm <span class="token function">install</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 本地切换到 pnpm</span><br>npm install -g pnpm<br>pnpm install<br></code></pre></td></tr></table></figure>
+
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过双分支策略，我们实现了：</p>
 <ol>
 <li><strong>源码与部署的完美分离</strong>：各司其职，互不干扰</li>
@@ -605,9 +467,9 @@ pnpm <span class="token function">install</span>
 <hr>
 <p><strong>相关文章推荐：</strong></p>
 <ul>
-<li><a href="/posts/b5c66293.html">Hexo 博客性能优化完全指南</a></li>
-<li><a href="/posts/10403972.html">Hexo SEO 优化实战指南</a></li>
-<li><a href="/posts/c6983b5.html">Fluid 主题深度定制指南</a></li>
+<li><a href="/posts/hexo-performance-optimization/">Hexo 博客性能优化完全指南</a></li>
+<li><a href="/posts/hexo-seo-optimization-guide/">Hexo SEO 优化实战指南</a></li>
+<li><a href="/posts/fluid-theme-customization/">Fluid 主题深度定制指南</a></li>
 </ul>
 <p>如果你在实施过程中遇到任何问题，欢迎在评论区留言讨论！</p>
 
@@ -735,8 +597,8 @@ pnpm <span class="token function">install</span>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/4a17b156" title="Hello World">
-                        <span class="hidden-mobile">Hello World</span>
+                      <a href="/posts/10403972" title="Hexo 博客 SEO 优化实践指南">
+                        <span class="hidden-mobile">Hexo 博客 SEO 优化实践指南</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -747,50 +609,6 @@ pnpm <span class="token function">install</span>
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
-    <div id="giscus" class="giscus"></div>
-    <script type="text/javascript">
-      Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","loading":"lazy"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
-        }
-        var light = 'light';
-        var dark = 'dark';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
-        }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-    </article>
-  
-
-
           </article>
         </div>
       </div>
@@ -818,6 +636,9 @@ pnpm <span class="token function">install</span>
 
 
 
+
+
+  
 
 
 
