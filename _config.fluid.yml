@@ -388,9 +388,10 @@ navbar:
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
     - { name: "算法专栏", link: "/algorithm-series/", icon: "iconfont icon-book" }
-    - { name: "应用", key: "apps", icon: "iconfont icon-app",
+    - { name: "应用", icon: "iconfont icon-app",
         children: [
-          { name: "学习导航", link: "/apps/" }
+          { name: "学习导航", link: "/apps/" },
+          { name: "在线工具", link: "/tools/" }
         ]
       }
     - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }

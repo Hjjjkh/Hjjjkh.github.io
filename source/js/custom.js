@@ -31,14 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
       aplayer.style.right = 'auto';
       aplayer.style.top = 'auto';
 
-      var playerBody = aplayer.querySelector('.aplayer-body');
-
-      playerBody.addEventListener('mousedown', function(e) {
-        // Prevent dragging when clicking on buttons or progress bar
-        if (e.target.tagName === 'BUTTON' || 
-            e.target.classList.contains('aplayer-bar-wrap') ||
-            e.target.closest('.aplayer-bar-wrap') ||
-            e.target.closest('button')) {
+      // Use the entire player as the drag handle for simplicity
+      aplayer.addEventListener('mousedown', function(e) {
+        // Prevent dragging when clicking on interactive elements
+        if (e.target.closest('.aplayer-list') || e.target.closest('.aplayer-bar-wrap') || e.target.closest('.aplayer-button')) {
           return;
         }
         isDragging = true;

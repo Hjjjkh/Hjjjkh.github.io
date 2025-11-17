@@ -79,37 +79,27 @@
    音乐播放器样式优化
    ======================================== */
 
-/* 播放器拖拽样式 */
+/* 播放器容器 - 默认可拖拽 */
 .aplayer.aplayer-fixed {
-  z-index: 99 !important;
+  z-index: 1031 !important; /* 高于大多数UI元素 */
   cursor: grab;
   transition: all 0.3s ease;
-}
-
-.aplayer.aplayer-fixed:active {
-  cursor: grabbing;
-}
-
-/* 播放器主体拖拽区域 */
-.aplayer.aplayer-fixed .aplayer-body {
-  cursor: grab;
-  user-select: none;
-}
-
-.aplayer.aplayer-fixed .aplayer-body:active {
-  cursor: grabbing;
-}
-
-/* 确保按钮和进度条可点击 */
-.aplayer.aplayer-fixed .aplayer-body button,
-.aplayer.aplayer-fixed .aplayer-body .aplayer-bar-wrap {
-  cursor: pointer !important;
+  user-select: none; /* 防止拖动时选中文本 */
 }
 
 /* 播放器在拖动时的视觉反馈 */
 .aplayer.aplayer-fixed.dragging {
+  cursor: grabbing;
   opacity: 0.9;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* 确保内部可交互元素的鼠标样式正确 */
+.aplayer.aplayer-fixed .aplayer-list,
+.aplayer.aplayer-fixed .aplayer-bar-wrap,
+.aplayer.aplayer-fixed .aplayer-button,
+.aplayer.aplayer-fixed .aplayer-volume-wrap {
+  cursor: pointer !important;
 }
 
 /* 暗色模式下的播放器优化 */
