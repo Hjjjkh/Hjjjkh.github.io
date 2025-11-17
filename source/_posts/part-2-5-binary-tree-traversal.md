@@ -14,6 +14,7 @@ tags:
   - 队列
 description: >-
   树的遍历是所有树相关算法的基石。本文将深入讲解前序、中序、后序和层序这四种核心遍历方式，不仅提供递归和迭代（非递归）两种实现，还通过动画式案例剖析其执行流程和适用场景，让你真正掌握从不同视角“阅读”一棵树的能力。
+cover: 'https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/part-2-5-cover.jpg'
 abbrlink: add23264
 date: 2025-11-15 20:00:00
 ---
@@ -51,16 +52,7 @@ date: 2025-11-15 20:00:00
 
 #### 动画式案例
 
-> **图示**：一棵二叉树
-> ```
->      F
->     / \
->    B   G
->   / \   \
->  A   D   I
->     / \   /
->    C   E H
-> ```
+![用于遍历示例的二叉树](https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/binary-tree-for-traversal.png)
 
 **遍历过程**：
 

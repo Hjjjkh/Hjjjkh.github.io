@@ -12,6 +12,7 @@ tags:
 description: >-
   哈希表为何能实现近乎 O(1)
   的查找速度？本文将为你揭开这层“黑魔法”的面纱，从哈希函数的设计到哈希冲突的经典解决方案（链地址法、开放地址法），通过图示、动画式案例和代码实战，让你彻底掌握这个在面试和工程中都至关重要的时间换空间利器。
+cover: 'https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/part-2-3-cover.jpg'
 abbrlink: 4ef8a3b7
 date: 2025-11-15 19:00:00
 ---
@@ -71,15 +72,8 @@ date: 2025-11-15 19:00:00
 
 ### 关键图示：哈希表工作流程
 
-> **图示标题：哈希表的基本工作原理**
->
-> **图示描述**：
-> 左侧是几个 Key-Value 对：`("John", 18)`, `("Lisa", 20)`, `("Sam", 22)`。
-> 中间是一个名为 “Hash Function” 的黑盒子。
-> 右侧是一个长度为 10 的数组（桶 Bucket）。
-> - `"John"` -> Hash Function -> `2`。于是 `("John", 18)` 存入数组索引 `2` 的位置。
-> - `"Lisa"` -> Hash Function -> `5`。于是 `("Lisa", 20)` 存入数组索引 `5` 的位置。
-> - `"Sam"` -> Hash Function -> `8`。于是 `("Sam", 22)` 存入数组索引 `8` 的位置。
+![哈希表的基本工作原理](https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/hash-table-workflow.png)
+*哈希表通过哈希函数将 Key 映射到数组索引*
 
 ## 2. 核心要素一：哈希函数
 

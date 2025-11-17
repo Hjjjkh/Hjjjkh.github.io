@@ -11,6 +11,7 @@ tags:
   - 主定理
 description: >-
   掌握时间复杂度分析是算法学习的内功心法。本文将为你提供一套完整的时间复杂度推导工具箱，从循环、分支到复杂的递归，通过丰富的案例、图示和公式，带你系统性地攻克复杂度分析的难点。
+cover: 'https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/part-1-2-cover.jpg'
 abbrlink: de782670
 date: 2025-11-15 16:30:00
 ---
@@ -211,7 +212,8 @@ function merge_sort(arr):
 
 2.  **画出递归树**：
 
-    > **图示：归并排序的递归树**
+    ![归并排序的递归树](https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/merge-sort-recursion-tree.png)
+*图片来源：Stack Overflow*
     >
     > **Level 0 (Root)**: 根节点代表整个问题，规模为 `n`。本层 `merge` 开销为 `c*n`。
     > **Level 1**: 根节点分裂成 2 个子节点，每个子问题规模为 `n/2`。本层总开销为 `2 * c*(n/2) = c*n`。
@@ -269,7 +271,8 @@ function merge_sort(arr):
 
 ### 思维导图
 
-> **图示：时间复杂度推导方法**
+
+*思维导图：总结了本文的核心分析方法*
 >
 > *   **根节点**: 复杂度分析
 >     *   **分支 1**: 基本法则

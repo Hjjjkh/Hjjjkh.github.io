@@ -59,3 +59,64 @@
   border-top: 1px solid var(--line-color);
   padding-top: 1rem;
 }
+
+/* ========================================
+   Giscus 评论区美化
+   ======================================== */
+
+.giscus,
+.giscus-frame {
+  margin-top: 2rem;
+}
+
+/* 移除 Giscus 容器的边框和背景 */
+#giscus-comment {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* ========================================
+   音乐播放器样式优化
+   ======================================== */
+
+/* 播放器拖拽样式 */
+.aplayer.aplayer-fixed {
+  z-index: 99 !important;
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+.aplayer.aplayer-fixed:active {
+  cursor: grabbing;
+}
+
+/* 播放器主体拖拽区域 */
+.aplayer.aplayer-fixed .aplayer-body {
+  cursor: grab;
+  user-select: none;
+}
+
+.aplayer.aplayer-fixed .aplayer-body:active {
+  cursor: grabbing;
+}
+
+/* 确保按钮和进度条可点击 */
+.aplayer.aplayer-fixed .aplayer-body button,
+.aplayer.aplayer-fixed .aplayer-body .aplayer-bar-wrap {
+  cursor: pointer !important;
+}
+
+/* 播放器在拖动时的视觉反馈 */
+.aplayer.aplayer-fixed.dragging {
+  opacity: 0.9;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* 暗色模式下的播放器优化 */
+[data-user-color-scheme="dark"] .aplayer.aplayer-fixed {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+[data-user-color-scheme="dark"] .aplayer.aplayer-fixed.dragging {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}

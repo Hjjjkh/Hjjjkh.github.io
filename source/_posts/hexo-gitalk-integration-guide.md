@@ -82,9 +82,9 @@ GitHub 头像 → Settings → Developer settings → OAuth Apps → New OAuth A
 | 字段 | 填写内容 | 示例 |
 |------|----------|------|
 | **Application name** | 应用名称（任意） | `My Blog Comments` |
-| **Homepage URL** | 你的博客首页地址 | `https://yourusername.github.io` |
+| **Homepage URL** | 你的博客首页地址 | `https://Hjjjkh.github.io` |
 | **Application description** | 应用描述（可选） | `Gitalk comment system for my blog` |
-| **Authorization callback URL** | 回调地址（与首页地址相同） | `https://yourusername.github.io` |
+| **Authorization callback URL** | 回调地址（与首页地址相同） | `https://Hjjjkh.github.io` |
 
 > ⚠️ **重要提示**：`Homepage URL` 和 `Authorization callback URL` 必须填写你的**实际博客地址**，否则评论系统将无法正常工作。
 
@@ -141,9 +141,9 @@ post:
 gitalk:
   clientID: 'Ov23liXXXXXXXXXXXXXX'  # 填入你的 Client ID
   clientSecret: '你的Client Secret'   # 填入你的 Client Secret
-  repo: 'yourusername.github.io'      # 填入你的博客仓库名
-  owner: 'yourusername'                # 填入你的 GitHub 用户名
-  admin: ['yourusername']              # 填入管理员的 GitHub 用户名（可以是多个）
+  repo: 'Hjjjkh.github.io'      # 填入你的博客仓库名
+  owner: 'Hjjjkh'                # 填入你的 GitHub 用户名
+  admin: ['Hjjjkh']              # 填入管理员的 GitHub 用户名（可以是多个）
   language: 'zh-CN'                    # 语言设置（可选）
   labels: ['Gitalk', 'Comment']        # Issue 标签（可选）
   perPage: 10                          # 每页评论数（可选）
@@ -211,7 +211,7 @@ hexo d
 
 ```
 未找到相关的 Issues 进行评论
-请联系 @yourusername 初始化创建
+请联系 @Hjjjkh 初始化创建
 ```
 
 #### 4.2 初始化评论

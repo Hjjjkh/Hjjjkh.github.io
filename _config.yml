@@ -146,26 +146,31 @@ robotstxt:
 # HTML/CSS/JS 压缩优化 (hexo-neat)
 # 更稳定的压缩插件，自动压缩生成的 HTML、CSS 和 JS 文件
 # 暂时禁用以确保正常生成
-neat_enable: false
+neat_enable: true
 
 # HTML 压缩配置
 neat_html:
-  enable: false
+  enable: true
   exclude:
 
 # CSS 压缩配置
 neat_css:
-  enable: false
+  enable: true
   exclude:
     - '*.min.css'
 
 # JavaScript 压缩配置
 neat_js:
-  enable: false
+  enable: true
   mangle: true
   compress:
   exclude:
     - '*.min.js'
+
+# APlayer 音乐播放器配置
+aplayer:
+  meting: true
+  asset_inject: false
 
 # 本地搜索
 search:

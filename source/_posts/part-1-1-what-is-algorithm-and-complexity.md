@@ -10,7 +10,7 @@ tags:
   - 空间复杂度
   - 算法基础
 description: 从零开始理解算法的本质，掌握时间复杂度和空间复杂度的核心概念，为后续学习打下坚实基础。
-cover: 'https://cdn.jsdelivr.net/gh/yourusername/blog-images/algorithm-complexity.jpg'
+cover: 'https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/algorithm-complexity.jpg'
 abbrlink: 369e89b6
 date: 2025-11-15 15:20:00
 ---
@@ -80,7 +80,9 @@ date: 2025-11-15 15:20:00
 - **算法**：二分查找的思想（每次排除一半数据）
 - **程序**：用 Python/Java/C++ 实现二分查找的代码
 
-> 💡 **记住**：算法是思想，程序是实现。同一个算法可以用不同语言实现。
+<div class="note info" style="padding: 15px; border-left: 5px solid #42b983; background-color: #f3f5f7; margin: 1.5em 0;">
+<strong>💡 记住</strong>：算法是思想，程序是实现。同一个算法可以用不同语言实现。
+</div>
 
 ---
 
@@ -225,23 +227,8 @@ def binary_search(arr, target):
 
 #### 📈 复杂度增长趋势图
 
-```
-执行次数
-  ↑
-  |                                    O(2ⁿ)
-  |                                  /
-  |                               /
-  |                            /  O(n²)
-  |                         /   /
-  |                      /    /
-  |                   /     /  O(n log n)
-  |                /      /   O(n)
-  |             /       /   /
-  |          /        /   /  O(log n)
-  |       /         /   /  /
-  |    /          /   /  /  O(1)
-  |_/_________/__/__/__/____________→ 数据规模 n
-```
+![时间复杂度增长趋势图](https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/time-complexity-graph.png)
+*图片来源：Wikipedia* 
 
 ---
 
@@ -353,7 +340,9 @@ def linear_search(arr, target):
 - **最坏情况**：目标在最后或不存在 → O(n)
 - **平均情况**：目标在中间位置 → O(n)
 
->[object Object]常我们说的时间复杂度指的是最坏情况**。
+<div class="note warning" style="padding: 15px; border-left: 5px solid #ff9800; background-color: #fff8e1; margin: 1.5em 0;">
+<strong>📢 注意</strong>：通常我们说的时间复杂度指的是<strong>最坏情况</strong>。
+</div>
 
 ---
 

@@ -12,6 +12,7 @@ tags:
 description: >-
   空间复杂度是衡量算法效率的另一把关键标尺。本文将带你系统学习如何分析算法的内存占用，从变量、数据结构到递归调用栈，通过丰富的案例剖析 O(1)、O(n) 和
   O(log n) 等常见空间复杂度的计算方法，助你写出更高效、更节省内存的代码。
+cover: 'https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/part-1-3-cover.jpg'
 abbrlink: a96ad400
 date: 2025-11-15 17:30:00
 ---
@@ -46,7 +47,9 @@ date: 2025-11-15 17:30:00
     *   为了计算而使用的数据结构（如数组、哈希表）。
     *   函数调用栈（特别是递归）。
 
-> 💡 **核心**：我们通常所说的“空间复杂度”，指的就是**额外空间复杂度** (Auxiliary Space Complexity)。
+<div class="note info" style="padding: 15px; border-left: 5px solid #42b983; background-color: #f3f5f7; margin: 1.5em 0;">
+<strong>💡 核心</strong>：我们通常所说的“空间复杂度”，指的就是<strong>额外空间复杂度</strong> (Auxiliary Space Complexity)。
+</div>
 
 ## 2. 常见空间复杂度分析
 
@@ -117,18 +120,8 @@ def sum_recursive(n):
 
 在 `sum_recursive(0)` 返回之前，所有 `sum_recursive(1)` 到 `sum_recursive(n)` 的调用信息（如参数、返回地址）都必须保存在**函数调用栈 (Call Stack)** 上。这个调用栈的深度是 `n`。因此，空间复杂度为 `O(n)`。
 
-> **图示：`sum_recursive(3)` 的调用栈**
->
-> ```
-> | ...          |
-> |--------------|
-> | sum_recursive(1) | <-- Stack Top
-> |--------------|
-> | sum_recursive(2) |
-> |--------------|
-> | sum_recursive(3) |
-> |--------------|
-> ```
+![函数调用栈图示](https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/recursion-stack.gif)
+>*一个递归阶乘函数 `fact(4)` 的调用栈动态图示，原理与 `sum_recursive` 相同*
 
 ### 2.3 O(log n) - 对数空间复杂度
 
@@ -205,26 +198,8 @@ def create_adjacency_matrix(n, edges):
 
 ### 思维导图
 
-> **图示：空间复杂度推导方法**
->
-> *   **根节点**: 空间复杂度分析
->     *   **核心**: 分析额外空间 (Auxiliary Space)
->     *   **分支 1**: O(1) - 常数空间
->         *   特征: 变量数量固定
->         *   别名: 原地算法 (In-place)
->         *   案例: 数组反转, 变量交换
->     *   **分支 2**: O(n) - 线性空间
->         *   特征: 额外空间与 n 成正比
->         *   案例: 创建数组副本, 线性递归
->     *   **分支 3**: O(log n) - 对数空间
->         *   特征: 递归深度为 log n
->         *   案例: 二分查找递归实现
->     *   **分支 4**: O(n²) - 平方空间
->         *   特征: 创建 n x n 二维结构
->         *   案例: 邻接矩阵
->     *   **分支 5**: 核心概念
->         *   递归: 空间取决于调用栈深度
->         *   权衡: 时间 vs. 空间 (Trade-off)
+![空间复杂度分析思维导图](https://cdn.jsdelivr.net/gh/Hjjjkh/blog_images/space-complexity-mindmap.png)
+*思维导图：总结了本文的核心分析方法*
 
 至此，我们已经系统地学习了时间和空间复杂度的分析方法。这是整个算法学习的基石。从下一篇文章开始，我们将进入算法世界的核心——**数据结构**，首先从最基础的**数组和链表**开始。
 

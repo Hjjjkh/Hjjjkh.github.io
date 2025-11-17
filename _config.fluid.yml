@@ -34,6 +34,11 @@ custom_head: |
   <link rel="preconnect" href="//lib.baomitu.com" crossorigin>
   <link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin>
 
+  <!-- APlayer & MetingJS for Music Player -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
 # 浏览器标签页中的标题分隔符，效果：文章名 - 站点名
 # Title separator in browser tab, eg: article - site
 tab_title_separator: " - "
@@ -67,21 +72,21 @@ code:
     # 实现高亮的库，对应下面的设置
     # Highlight library
     # Options: highlightjs | prismjs
-    lib: "highlightjs"
+    lib: "prismjs"
 
     highlightjs:
       # 在链接中挑选 style 填入
       # Select a style in the link
       # See: https://highlightjs.org/demo/
-      style: "Github Gist"
-      style_dark: "Monokai Sublime"
+      style: "github"
+      style_dark: "github-dark"
 
     prismjs:
       # 在下方链接页面右侧的圆形按钮挑选 style 填入，也可以直接填入 css 链接
       # Select the style button on the right side of the link page, you can also set the CSS link
       # See: https://prismjs.com/
-      style: "default"
-      style_dark: "tomorrow night"
+      style: "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-solarizedlight.min.css"
+      style_dark: "https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-dracula.css"
 
       # 设为 true 高亮将本地静态生成（但只支持部分 prismjs 插件），设为 false 高亮将在浏览器通过 js 生成
       # If true, it will be generated locally (but some prismjs plugins are not supported). If false, it will be generated via JS in the browser
@@ -244,6 +249,7 @@ font:
 # 指定自定义 .js 文件路径，支持列表；路径是相对 source 目录，如 /js/custom.js 对应存放目录 source/js/custom.js
 # Specify the path of your custom js file, support list. The path is relative to the source directory, such as `/js/custom.js` corresponding to the directory `source/js/custom.js`
 custom_js:
+  - /js/custom.js
 
 # 指定自定义 .css 文件路径，用法和 custom_js 相同
 # The usage is the same as custom_js
@@ -382,6 +388,11 @@ navbar:
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
     - { name: "算法专栏", link: "/algorithm-series/", icon: "iconfont icon-book" }
+    - { name: "应用", key: "apps", icon: "iconfont icon-app",
+        children: [
+          { name: "学习导航", link: "/apps/" }
+        ]
+      }
     - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
     - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
     - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
@@ -771,11 +782,11 @@ post:
   # 评论插件
   # Comment plugin
   comments:
-    enable: false
+    enable: true
     # 指定的插件，需要同时设置对应插件的必要参数
     # The specified plugin needs to set the necessary parameters at the same time
     # Options: utterances | disqus | gitalk | valine | waline | changyan | livere | remark42 | twikoo | cusdis | giscus | discuss
-    type: disqus
+    type: giscus
 
 
 #---------------------------
@@ -916,16 +927,16 @@ cusdis:
 # Based on GitHub Discussions, similar to Utterances
 # See: https://giscus.app/
 giscus:
-  repo:
-  repo-id:
-  category:
-  category-id:
-  theme-light: light
-  theme-dark: dark
+  repo: Hjjjkh/Hjjjkh.github.io
+  repo-id: R_kgDOQM2gOQ
+  category: Announcements
+  category-id: DIC_kwDOQM2gOc4Cx1VU
+  theme-light: preferred_color_scheme
+  theme-dark: preferred_color_scheme
   mapping: pathname
   reactions-enabled: 1
   emit-metadata: 0
-  input-position: top
+  input-position: bottom
   lang: zh-CN
 
 # Discuss
