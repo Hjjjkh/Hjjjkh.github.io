@@ -83,6 +83,9 @@ importers:
       nunjucks:
         specifier: ^3.2.4
         version: 3.2.4(chokidar@3.6.0)
+      prism-themes:
+        specifier: ^1.9.0
+        version: 1.9.0
 
 packages:
 
@@ -1550,6 +1553,9 @@ packages:
   pretty-hrtime@1.0.3:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
+
+  prism-themes@1.9.0:
+    resolution: {integrity: sha512-tX2AYsehKDw1EORwBps+WhBFKc2kxfoFpQAjxBndbZKr4fRmMkv47XN0BghC/K1qwodB1otbe4oF23vUTFDokw==}
 
   prismjs@1.30.0:
     resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
@@ -3745,6 +3751,8 @@ snapshots:
   preserve@0.2.0: {}
 
   pretty-hrtime@1.0.3: {}
+
+  prism-themes@1.9.0: {}
 
   prismjs@1.30.0: {}
 
