@@ -31,11 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
       aplayer.style.right = 'auto';
       aplayer.style.top = 'auto';
 
-      var playerBody = aplayer.querySelector('.aplayer-body');
-
-      playerBody.addEventListener('mousedown', function(e) {
-        // Prevent dragging when clicking on buttons or progress bar
-        if (e.target.tagName === 'BUTTON' || e.target.classList.contains('aplayer-bar-wrap')) {
+      // Use the entire player as the drag handle for simplicity
+      aplayer.addEventListener('mousedown', function(e) {
+        // Prevent dragging when clicking on interactive elements
+        if (e.target.closest('.aplayer-list') || e.target.closest('.aplayer-bar-wrap') || e.target.closest('.aplayer-button')) {
           return;
         }
         isDragging = true;
@@ -43,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         offsetY = e.clientY - aplayer.getBoundingClientRect().top;
         aplayer.style.transition = 'none';
         aplayer.style.cursor = 'grabbing';
+        aplayer.classList.add('dragging');
       });
 
       document.addEventListener('mousemove', function(e) {
@@ -62,16 +62,27 @@ document.addEventListener('DOMContentLoaded', function() {
           isDragging = false;
           aplayer.style.transition = 'all 0.3s ease';
           aplayer.style.cursor = 'grab';
+          aplayer.classList.remove('dragging');
 
           var screenWidth = window.innerWidth;
+          var screenHeight = window.innerHeight;
           var playerWidth = aplayer.offsetWidth;
-          var finalLeft = aplayer.getBoundingClientRect().left;
+          var playerHeight = aplayer.offsetHeight;
+          var rect = aplayer.getBoundingClientRect();
 
           // Snap to the nearest edge (left or right)
-          if (finalLeft + playerWidth / 2 > screenWidth / 2) {
+          if (rect.left + playerWidth / 2 > screenWidth / 2) {
             aplayer.style.left = (screenWidth - playerWidth - 15) + 'px';
           } else {
             aplayer.style.left = '15px';
+          }
+
+          // Ensure player stays within viewport vertically
+          var currentTop = rect.top;
+          if (currentTop < 15) {
+            aplayer.style.top = '15px';
+          } else if (currentTop + playerHeight > screenHeight - 15) {
+            aplayer.style.top = (screenHeight - playerHeight - 15) + 'px';
           }
         }
       });
