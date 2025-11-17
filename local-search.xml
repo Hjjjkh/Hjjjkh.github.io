@@ -552,11 +552,11 @@
       
       <tag>算法进阶</tag>
       
-      <tag>分治算法</tag>
-      
       <tag>FFT</tag>
       
       <tag>快速傅里叶变换</tag>
+      
+      <tag>分治算法</tag>
       
       <tag>多项式</tag>
       
@@ -781,9 +781,9 @@
       
       <tag>递归</tag>
       
-      <tag>归并排序</tag>
-      
       <tag>快速排序</tag>
+      
+      <tag>归并排序</tag>
       
       <tag>算法思想</tag>
       
@@ -993,11 +993,11 @@
       
       <tag>算法</tag>
       
+      <tag>分治</tag>
+      
       <tag>归并排序</tag>
       
       <tag>Merge Sort</tag>
-      
-      <tag>分治</tag>
       
       <tag>稳定排序</tag>
       
@@ -1061,11 +1061,11 @@
       
       <tag>算法</tag>
       
-      <tag>分治</tag>
-      
       <tag>快速排序</tag>
       
       <tag>Quick Sort</tag>
+      
+      <tag>分治</tag>
       
       <tag>O(n log n)</tag>
       
