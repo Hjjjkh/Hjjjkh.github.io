@@ -178,11 +178,11 @@
       
       <tag>最短路径</tag>
       
-      <tag>动态规划</tag>
-      
       <tag>Bellman-Ford算法</tag>
       
       <tag>Floyd-Warshall算法</tag>
+      
+      <tag>动态规划</tag>
       
       <tag>负权环</tag>
       
@@ -217,11 +217,11 @@
       
       <tag>最短路径</tag>
       
+      <tag>动态规划</tag>
+      
       <tag>Dijkstra算法</tag>
       
       <tag>SPFA算法</tag>
-      
-      <tag>动态规划</tag>
       
     </tags>
     
@@ -287,9 +287,9 @@
     
     <tags>
       
-      <tag>数据结构</tag>
-      
       <tag>算法基础</tag>
+      
+      <tag>数据结构</tag>
       
       <tag>DFS</tag>
       
