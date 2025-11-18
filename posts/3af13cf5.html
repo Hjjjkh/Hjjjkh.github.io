@@ -1,7 +1,445 @@
-<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="auto"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png"><link rel="icon" href="/img/favicon.png"><link rel="canonical" href="https://Hjjjkh.github.io/posts/3af13cf5.html"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"><meta name="theme-color" content="#2f4154"><meta name="author" content="李国强"><meta name="keywords" content="Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强"><meta name="description" content="Manacher 算法是求解最长回文子串问题的终极武器，它巧妙地解决了奇偶长度回文串的差异，并利用回文的对称性实现了线性时间复杂度。本文将从“马拉车”的直观比喻入手，为你深入剖析其核心思想——臂长数组和对称性利用，并通过详尽的图示、动画式案例和 Python 实现，助你彻底掌握这一精妙的字符串算法。"><meta property="og:type" content="article"><meta property="og:title" content="Part 6.4：Manacher 回文算法"><meta property="og:url" content="https://hjjjkh.github.io/posts/3af13cf5"><meta property="og:site_name" content="李国强的技术博客"><meta property="og:description" content="Manacher 算法是求解最长回文子串问题的终极武器，它巧妙地解决了奇偶长度回文串的差异，并利用回文的对称性实现了线性时间复杂度。本文将从“马拉车”的直观比喻入手，为你深入剖析其核心思想——臂长数组和对称性利用，并通过详尽的图示、动画式案例和 Python 实现，助你彻底掌握这一精妙的字符串算法。"><meta property="og:locale" content="zh_CN"><meta property="article:published_time" content="2025-11-15T17:00:00.000Z"><meta property="article:modified_time" content="2025-11-17T04:17:04.865Z"><meta property="article:author" content="李国强"><meta property="article:tag" content="算法基础"><meta property="article:tag" content="字符串"><meta property="article:tag" content="Manacher"><meta property="article:tag" content="回文串"><meta property="article:tag" content="最长回文子串"><meta name="twitter:card" content="summary_large_image"><meta name="referrer" content="no-referrer-when-downgrade"><link rel="dns-prefetch" href="//lib.baomitu.com"><link rel="dns-prefetch" href="//busuanzi.ibruce.info"><link rel="dns-prefetch" href="//registry.npmmirror.com"><link rel="preconnect" href="//lib.baomitu.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><link rel="stylesheet" id="prism-theme-light" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-solarizedlight.min.css" disabled><link rel="stylesheet" id="prism-theme-dark" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css" disabled><title>Part 6.4：Manacher 回文算法 - 李国强的技术博客</title><link rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css"><link rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css"><link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css"><link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css"><link rel="stylesheet" href="/css/main.css"><link id="highlight-css" rel="stylesheet" href="/css/highlight.css"><link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css"><link rel="stylesheet" href="/css/custom.css"><script id="fluid-configs">var Fluid=window.Fluid||{};Fluid.ctx=Object.assign({},Fluid.ctx);var dntVal,CONFIG={hostname:"hjjjkh.github.io",root:"/",version:"1.9.8",typing:{enable:!0,typeSpeed:50,cursorChar:"_",loop:!1,scope:[]},anchorjs:{enable:!0,element:"h1,h2,h3,h4,h5,h6",placement:"left",visible:"hover",icon:""},progressbar:{enable:!0,height_px:3,color:"#0366d6",options:{showSpinner:!1,trickleSpeed:100}},code_language:{enable:!0,default:"TEXT"},copy_btn:!0,image_caption:{enable:!0},image_zoom:{enable:!0,img_url_replace:["",""]},toc:{enable:!0,placement:"right",headingSelector:"h1,h2,h3,h4,h5,h6",collapseDepth:0},lazyload:{enable:!0,loading_img:"/img/loading.gif",onlypost:!1,offset_factor:2},web_analytics:{enable:!1,follow_dnt:!0,baidu:null,google:{measurement_id:null},tencent:{sid:null,cid:null},leancloud:{app_id:null,app_key:null,server_url:null,path:"window.location.pathname",ignore_local:!1},umami:{src:null,website_id:null,domains:null,start_time:"2024-01-01T00:00:00.000Z",token:null,api_server:null}},search_path:"/local-search.xml",include_content_in_search:!0};CONFIG.web_analytics.follow_dnt&&(dntVal=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,Fluid.ctx.dnt=dntVal&&(dntVal.startsWith("1")||dntVal.startsWith("yes")||dntVal.startsWith("on")))</script><script src="/js/utils.js"></script><script src="/js/color-schema.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="header-inner" style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/"><strong>李国强的技术博客</strong> </a><button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/" target="_self"><i class="iconfont icon-home-fill"></i> <span>首页</span></a></li><li class="nav-item"><a class="nav-link" href="/algorithm-series/" target="_self"><i class="iconfont icon-book"></i> <span>算法专栏</span></a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="iconfont icon-app"></i> <span>应用</span></a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="/apps/" target="_self"><span>学习导航</span> </a><a class="dropdown-item" href="/tools/" target="_self"><span>在线工具</span></a></div></li><li class="nav-item"><a class="nav-link" href="/archives/" target="_self"><i class="iconfont icon-archive-fill"></i> <span>归档</span></a></li><li class="nav-item"><a class="nav-link" href="/categories/" target="_self"><i class="iconfont icon-category-fill"></i> <span>分类</span></a></li><li class="nav-item"><a class="nav-link" href="/tags/" target="_self"><i class="iconfont icon-tags-fill"></i> <span>标签</span></a></li><li class="nav-item"><a class="nav-link" href="/about/" target="_self"><i class="iconfont icon-user-fill"></i> <span>关于</span></a></li><li class="nav-item"><a class="nav-link" href="/links/" target="_self"><i class="iconfont icon-link-fill"></i> <span>友链</span></a></li><li class="nav-item" id="search-btn"><a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search"><i class="iconfont icon-search"></i></a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle"><i class="iconfont icon-dark" id="color-toggle-icon"></i></a></li></ul></div></div></nav><div id="banner" class="banner" parallax="true" style="background:url(/img/default.png) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="banner-text text-center fade-in-up"><div class="h2"><span id="subtitle" data-typed-text="Part 6.4：Manacher 回文算法"></span></div><div class="mt-3"><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2025-11-16 01:00" pubdate>2025年11月16日 凌晨</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 2.9k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 25 分钟 </span><span id="busuanzi_container_page_pv" style="display:none"><i class="iconfont icon-eye" aria-hidden="true"></i> <span id="busuanzi_value_page_pv"></span> 次</span></div></div></div></div></div></div></header><main><div class="container-fluid nopadding-x"><div class="row nomargin-x"><div class="side-col d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-x-md"><div class="container nopadding-x-md" id="board-ctn"><div id="board"><article class="post-content mx-auto"><h1 id="seo-header">Part 6.4：Manacher 回文算法</h1><p id="updated-time" class="note note-info">本文最后更新于 2025年11月17日 中午</p><div class="markdown-body"><h2 id="引言：寻找最美的“对称”"><a href="#引言：寻找最美的“对称”" class="headerlink" title="引言：寻找最美的“对称”"></a>引言：寻找最美的“对称”</h2><p>回文串（Palindrome），即正读和反读都一样的字符串，如 <code>&quot;level&quot;</code>、<code>&quot;racecar&quot;</code>，在字符串世界中拥有一种独特的美感。一个经典的算法问题便是：<strong>给定一个字符串，找到其中最长的回文子串</strong>。</p><p>例如，对于字符串 <code>&quot;babad&quot;</code>，最长的回文子串是 <code>&quot;bab&quot;</code>（<code>&quot;aba&quot;</code> 也是一个答案）。对于 <code>&quot;cbbd&quot;</code>，最长的回文子串是 <code>&quot;bb&quot;</code>。</p><p>解决这个问题，有几种常见的思路：</p><ol><li><strong>暴力枚举</strong>：枚举所有可能的子串，然后判断每个子串是否是回文。时间复杂度为 <code>O(n³)</code>，效率极低。</li><li><strong>中心扩展法</strong>：遍历每个字符（或两个字符的间隙），以其为中心向两边扩展，直到不再是回文为止。这种方法需要分别处理奇数长度（如 <code>aba</code>）和偶数长度（如 <code>abba</code>）的回文串，虽然可以优化到 <code>O(n²)</code>，但处理起来稍显繁琐。</li><li><strong>动态规划</strong>：<code>dp[i][j]</code> 表示子串 <code>s[i...j]</code> 是否是回文。<code>dp[i][j] = (s[i] == s[j]) and dp[i+1][j-1]</code>。时间复杂度和空间复杂度都是 <code>O(n²)</code>。</li></ol><p>当 <code>n</code> 达到 <code>10^5</code> 或 <code>10^6</code> 级别时，<code>O(n²)</code> 的算法都会超时。有没有一种线性时间复杂度的解法呢？</p><p>答案是肯定的，这就是 <strong>Manacher 算法</strong>（由 Glenn Manacher 在 1975 年发明）。这个算法被国内网友戏称为“马拉车”算法，它以一种极其精妙的方式，统一了奇偶回文串的处理，并利用回文串的对称性，将时间复杂度优化到了惊人的 **O(n)**。</p><p><strong>为什么 Manacher 算法如此重要？</strong></p><ul><li><strong>面试价值</strong>：Manacher 算法是字符串算法中的“皇冠上的明珠”，是面试中考察候选人思维严谨性和代码实现能力的顶级难题。能完整、正确地写出 Manacher，足以证明你对字符串算法的深刻理解。</li><li><strong>理论价值</strong>：它展示了如何通过巧妙的预处理和信息复用，将一个看似需要 <code>O(n²)</code> 比较的问题，转化为线性时间的问题，是算法优化思想的典范。</li></ul><p>本文将带你一步步拆解这个精妙的算法，让你彻底理解“马拉车”是如何在线性时间内“跑”完全程的。</p><h2 id="背景知识：统一奇偶回文串"><a href="#背景知识：统一奇偶回文串" class="headerlink" title="背景知识：统一奇偶回文串"></a>背景知识：统一奇偶回文串</h2><p>Manacher 算法的第一个天才之处，就是通过<strong>插入特殊字符</strong>的方式，将所有回文串（无论奇偶）都统一为奇数长度的回文串。</p><p><strong>方法</strong>：在一个字符串的每个字符之间以及首尾都插入一个不会出现的特殊字符，例如 <code>#</code>。</p><ul><li><code>&quot;aba&quot;</code> -&gt; <code>&quot;#a#b#a#&quot;</code></li><li><code>&quot;abba&quot;</code> -&gt; <code>&quot;#a#b#b#a#&quot;</code></li></ul><p><strong>好处</strong>：</p><ol><li><strong>统一处理</strong>：在新字符串中，任何回文子串的长度都是奇数，其中心要么是一个原字符，要么是一个 <code>#</code>。</li><li><strong>半径与长度的换算</strong>：在新字符串中，以某个字符为中心的回文子串的半径 <code>r</code>（包含中心），其在原字符串中对应的回文子串长度就是 <code>r-1</code>。<ul><li><code>#a#b#a#</code> 的中心是 <code>b</code>，半径是 4 (<code>#b#a#</code>)，原串 <code>aba</code> 长度为 <code>3 = 4-1</code>。</li><li><code>#a#b#b#a#</code> 的中心是 <code>b</code> 和 <code>b</code> 之间的 <code>#</code>，半径是 5 (<code>#b#b#a#</code>)，原串 <code>abba</code> 长度为 <code>4 = 5-1</code>。</li></ul></li></ol><h2 id="详细算法原理"><a href="#详细算法原理" class="headerlink" title="详细算法原理"></a>详细算法原理</h2><p>Manacher 算法的核心思想与 Z-Algorithm 类似：<strong>维护一个当前找到的、右边界最靠右的回文子串，并利用这个回文子串的对称性来加速计算后续位置的回文半径。</strong></p><h3 id="1-核心数据结构：臂长数组-p"><a href="#1-核心数据结构：臂长数组-p" class="headerlink" title="1. 核心数据结构：臂长数组 p"></a>1. 核心数据结构：臂长数组 <code>p</code></h3><ul><li><strong>状态定义</strong>：<code>p[i]</code> 表示在新字符串 <code>T</code> 中，以 <code>T[i]</code> 为中心的最长回文子串的<strong>臂长</strong>（即半径减一）。<ul><li>例如，对于 <code>T = &quot;#a#b#a#&quot;</code>，以 <code>T[3] = &#39;b&#39;</code> 为中心的最长回文子串是 <code>&quot;#a#b#a#&quot;</code>，其半径为 4，所以臂长 <code>p[3] = 3</code>。</li></ul></li></ul><p>我们的目标就是在线性时间内计算出整个 <code>p</code> 数组。<code>max(p)</code> 就是最长回文子串的臂长，从而可以得到其长度。</p><h3 id="2-算法的“直觉”：利用对称性"><a href="#2-算法的“直觉”：利用对称性" class="headerlink" title="2. 算法的“直觉”：利用对称性"></a>2. 算法的“直觉”：利用对称性</h3><p>算法维护两个变量：</p><ul><li><code>max_right</code>：当前所有已发现的回文子串中，右边界能到达的最远位置。</li><li><code>center</code>：与 <code>max_right</code> 对应的那个回文子串的中心位置。</li></ul><p>当我们计算 <code>p[i]</code> 时，如果 <code>i</code> 在 <code>max_right</code> 的左边（即 <code>i &lt; max_right</code>），那么我们就可以利用对称性。</p><blockquote><p><strong>图示：利用对称性</strong></p><figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">T: ... [ ... (i_mirror) ... | ... (i) ... ] ...
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  
+    <link rel="canonical" href="https://Hjjjkh.github.io/posts/3af13cf5.html"/>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="李国强">
+  <meta name="keywords" content="Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强">
+  
+    <meta name="description" content="Manacher 算法是求解最长回文子串问题的终极武器，它巧妙地解决了奇偶长度回文串的差异，并利用回文的对称性实现了线性时间复杂度。本文将从“马拉车”的直观比喻入手，为你深入剖析其核心思想——臂长数组和对称性利用，并通过详尽的图示、动画式案例和 Python 实现，助你彻底掌握这一精妙的字符串算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Part 6.4：Manacher 回文算法">
+<meta property="og:url" content="https://hjjjkh.github.io/posts/3af13cf5">
+<meta property="og:site_name" content="李国强的技术博客">
+<meta property="og:description" content="Manacher 算法是求解最长回文子串问题的终极武器，它巧妙地解决了奇偶长度回文串的差异，并利用回文的对称性实现了线性时间复杂度。本文将从“马拉车”的直观比喻入手，为你深入剖析其核心思想——臂长数组和对称性利用，并通过详尽的图示、动画式案例和 Python 实现，助你彻底掌握这一精妙的字符串算法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-15T17:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-17T04:17:04.865Z">
+<meta property="article:author" content="李国强">
+<meta property="article:tag" content="算法基础">
+<meta property="article:tag" content="字符串">
+<meta property="article:tag" content="Manacher">
+<meta property="article:tag" content="回文串">
+<meta property="article:tag" content="最长回文子串">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+
+  
+  <title>Part 6.4：Manacher 回文算法 - 李国强的技术博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"hjjjkh.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>李国强的技术博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/algorithm-series/" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>算法专栏</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-app"></i>
+                <span>应用</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/apps/" target="_self">
+                    
+                    <span>学习导航</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tools/" target="_self">
+                    
+                    <span>在线工具</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Part 6.4：Manacher 回文算法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-16 01:00" pubdate>
+          2025年11月16日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Part 6.4：Manacher 回文算法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="引言：寻找最美的“对称”"><a href="#引言：寻找最美的“对称”" class="headerlink" title="引言：寻找最美的“对称”"></a>引言：寻找最美的“对称”</h2><p>回文串（Palindrome），即正读和反读都一样的字符串，如 <code>&quot;level&quot;</code>、<code>&quot;racecar&quot;</code>，在字符串世界中拥有一种独特的美感。一个经典的算法问题便是：<strong>给定一个字符串，找到其中最长的回文子串</strong>。</p>
+<p>例如，对于字符串 <code>&quot;babad&quot;</code>，最长的回文子串是 <code>&quot;bab&quot;</code>（<code>&quot;aba&quot;</code> 也是一个答案）。对于 <code>&quot;cbbd&quot;</code>，最长的回文子串是 <code>&quot;bb&quot;</code>。</p>
+<p>解决这个问题，有几种常见的思路：</p>
+<ol>
+<li><strong>暴力枚举</strong>：枚举所有可能的子串，然后判断每个子串是否是回文。时间复杂度为 <code>O(n³)</code>，效率极低。</li>
+<li><strong>中心扩展法</strong>：遍历每个字符（或两个字符的间隙），以其为中心向两边扩展，直到不再是回文为止。这种方法需要分别处理奇数长度（如 <code>aba</code>）和偶数长度（如 <code>abba</code>）的回文串，虽然可以优化到 <code>O(n²)</code>，但处理起来稍显繁琐。</li>
+<li><strong>动态规划</strong>：<code>dp[i][j]</code> 表示子串 <code>s[i...j]</code> 是否是回文。<code>dp[i][j] = (s[i] == s[j]) and dp[i+1][j-1]</code>。时间复杂度和空间复杂度都是 <code>O(n²)</code>。</li>
+</ol>
+<p>当 <code>n</code> 达到 <code>10^5</code> 或 <code>10^6</code> 级别时，<code>O(n²)</code> 的算法都会超时。有没有一种线性时间复杂度的解法呢？</p>
+<p>答案是肯定的，这就是 <strong>Manacher 算法</strong>（由 Glenn Manacher 在 1975 年发明）。这个算法被国内网友戏称为“马拉车”算法，它以一种极其精妙的方式，统一了奇偶回文串的处理，并利用回文串的对称性，将时间复杂度优化到了惊人的 **O(n)**。</p>
+<p><strong>为什么 Manacher 算法如此重要？</strong></p>
+<ul>
+<li><strong>面试价值</strong>：Manacher 算法是字符串算法中的“皇冠上的明珠”，是面试中考察候选人思维严谨性和代码实现能力的顶级难题。能完整、正确地写出 Manacher，足以证明你对字符串算法的深刻理解。</li>
+<li><strong>理论价值</strong>：它展示了如何通过巧妙的预处理和信息复用，将一个看似需要 <code>O(n²)</code> 比较的问题，转化为线性时间的问题，是算法优化思想的典范。</li>
+</ul>
+<p>本文将带你一步步拆解这个精妙的算法，让你彻底理解“马拉车”是如何在线性时间内“跑”完全程的。</p>
+<h2 id="背景知识：统一奇偶回文串"><a href="#背景知识：统一奇偶回文串" class="headerlink" title="背景知识：统一奇偶回文串"></a>背景知识：统一奇偶回文串</h2><p>Manacher 算法的第一个天才之处，就是通过<strong>插入特殊字符</strong>的方式，将所有回文串（无论奇偶）都统一为奇数长度的回文串。</p>
+<p><strong>方法</strong>：在一个字符串的每个字符之间以及首尾都插入一个不会出现的特殊字符，例如 <code>#</code>。</p>
+<ul>
+<li><code>&quot;aba&quot;</code>  -&gt;  <code>&quot;#a#b#a#&quot;</code></li>
+<li><code>&quot;abba&quot;</code> -&gt;  <code>&quot;#a#b#b#a#&quot;</code></li>
+</ul>
+<p><strong>好处</strong>：</p>
+<ol>
+<li><strong>统一处理</strong>：在新字符串中，任何回文子串的长度都是奇数，其中心要么是一个原字符，要么是一个 <code>#</code>。</li>
+<li><strong>半径与长度的换算</strong>：在新字符串中，以某个字符为中心的回文子串的半径 <code>r</code>（包含中心），其在原字符串中对应的回文子串长度就是 <code>r-1</code>。<ul>
+<li><code>#a#b#a#</code> 的中心是 <code>b</code>，半径是 4 (<code>#b#a#</code>)，原串 <code>aba</code> 长度为 <code>3 = 4-1</code>。</li>
+<li><code>#a#b#b#a#</code> 的中心是 <code>b</code> 和 <code>b</code> 之间的 <code>#</code>，半径是 5 (<code>#b#b#a#</code>)，原串 <code>abba</code> 长度为 <code>4 = 5-1</code>。</li>
+</ul>
+</li>
+</ol>
+<h2 id="详细算法原理"><a href="#详细算法原理" class="headerlink" title="详细算法原理"></a>详细算法原理</h2><p>Manacher 算法的核心思想与 Z-Algorithm 类似：<strong>维护一个当前找到的、右边界最靠右的回文子串，并利用这个回文子串的对称性来加速计算后续位置的回文半径。</strong></p>
+<h3 id="1-核心数据结构：臂长数组-p"><a href="#1-核心数据结构：臂长数组-p" class="headerlink" title="1. 核心数据结构：臂长数组 p"></a>1. 核心数据结构：臂长数组 <code>p</code></h3><ul>
+<li><strong>状态定义</strong>：<code>p[i]</code> 表示在新字符串 <code>T</code> 中，以 <code>T[i]</code> 为中心的最长回文子串的<strong>臂长</strong>（即半径减一）。<ul>
+<li>例如，对于 <code>T = &quot;#a#b#a#&quot;</code>，以 <code>T[3] = &#39;b&#39;</code> 为中心的最长回文子串是 <code>&quot;#a#b#a#&quot;</code>，其半径为 4，所以臂长 <code>p[3] = 3</code>。</li>
+</ul>
+</li>
+</ul>
+<p>我们的目标就是在线性时间内计算出整个 <code>p</code> 数组。<code>max(p)</code> 就是最长回文子串的臂长，从而可以得到其长度。</p>
+<h3 id="2-算法的“直觉”：利用对称性"><a href="#2-算法的“直觉”：利用对称性" class="headerlink" title="2. 算法的“直觉”：利用对称性"></a>2. 算法的“直觉”：利用对称性</h3><p>算法维护两个变量：</p>
+<ul>
+<li><code>max_right</code>：当前所有已发现的回文子串中，右边界能到达的最远位置。</li>
+<li><code>center</code>：与 <code>max_right</code> 对应的那个回文子串的中心位置。</li>
+</ul>
+<p>当我们计算 <code>p[i]</code> 时，如果 <code>i</code> 在 <code>max_right</code> 的左边（即 <code>i &lt; max_right</code>），那么我们就可以利用对称性。</p>
+<blockquote>
+<p><strong>图示：利用对称性</strong></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">T: ... [ ... (i_mirror) ... | ... (i) ... ] ...
             ^               ^               ^
-            L             center            R &#x3D; max_right</code></pre></div></figure></blockquote><ul><li><code>i_mirror</code> 是 <code>i</code> 关于中心 <code>center</code> 的对称点，<code>i_mirror = 2 * center - i</code>。</li><li>我们已经计算过 <code>p[i_mirror]</code>，即以 <code>i_mirror</code> 为中心的回文臂长。</li><li>由于 <code>[L, R]</code> 这个大回文串的对称性，以 <code>i</code> 为中心的回文串，在一定程度上会和以 <code>i_mirror</code> 为中心的回文串表现出相同的性质。</li></ul><h3 id="3-严谨原理：两种情况的分析"><a href="#3-严谨原理：两种情况的分析" class="headerlink" title="3. 严谨原理：两种情况的分析"></a>3. 严谨原理：两种情况的分析</h3><p>对于 <code>i &lt; max_right</code> 的情况，令 <code>i_mirror = 2 * center - i</code>。</p><p><strong>Case 1: <code>p[i_mirror] &lt; max_right - i</code></strong></p><p>以 <code>i_mirror</code> 为中心的回文串<strong>完全被</strong> <code>[L, R]</code> 这个大回文串所包含。由于对称性，以 <code>i</code> 为中心的回文串的臂长也必然等于 <code>p[i_mirror]</code>。</p><p><strong><code>p[i] = p[i_mirror]</code></strong></p><blockquote><p><strong>图示：Case 1</strong></p><figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">T: ... [ ... ( ... ) ... | ... ( ... ) ... ] ...
-            i_mirror          center            i</code></pre></div></figure><p><code>i_mirror</code> 的回文区域完全在大回文区域内部，<code>i</code> 的回文区域也一样。</p></blockquote><p><strong>Case 2: <code>p[i_mirror] &gt;= max_right - i</code></strong></p><p>以 <code>i_mirror</code> 为中心的回文串的左边界<strong>超出了或等于</strong> <code>L</code>。由于对称性，我们只能保证以 <code>i</code> 为中心的回文串的臂长<strong>至少</strong>是 <code>max_right - i</code>。它<strong>可能还会更长</strong>！</p><p>所以，我们不能直接令 <code>p[i] = p[i_mirror]</code>。但我们有了一个很好的起点：</p><ol><li>先令 <code>p[i] = max_right - i</code>。</li><li>然后从 <code>max_right + 1</code> 的位置开始，继续向两边暴力扩展，直到遇到不匹配的字符或边界。</li><li>在扩展后，<code>max_right</code> 必然会被更新，同时更新 <code>center</code>。</li></ol><p>如果 <code>i &gt;= max_right</code>，我们没有任何信息可以利用，只能从 <code>i</code> 开始暴力扩展，计算 <code>p[i]</code>，并尝试更新 <code>max_right</code> 和 <code>center</code>。</p><p>通过这种方式，<code>max_right</code> 指针永远只会向右移动，永不回退，从而保证了整个算法的线性时间复杂度。</p><h2 id="步骤分解-Step-by-step"><a href="#步骤分解-Step-by-step" class="headerlink" title="步骤分解 (Step-by-step)"></a>步骤分解 (Step-by-step)</h2><ol><li><strong>预处理字符串</strong>：将原字符串 <code>s</code> 转换为新字符串 <code>t</code>，插入 <code>#</code>。</li><li><strong>初始化</strong>：创建臂长数组 <code>p</code>，<code>center = 0</code>, <code>max_right = 0</code>。</li><li><strong>主循环</strong>：<code>i</code> 从 <code>1</code> 到 <code>len(t)-1</code>。</li><li><strong>利用对称性</strong>：<br>a. 如果 <code>i &lt; max_right</code>，<code>p[i] = min(p[2*center - i], max_right - i)</code>。<br>b. 否则，<code>p[i] = 0</code> (从头开始扩展)。</li><li><strong>暴力扩展</strong>：以 <code>i</code> 为中心，<code>p[i]</code> 为初始臂长，向两边扩展：<code>while t[i - 1 - p[i]] == t[i + 1 + p[i]]</code>，<code>p[i]++</code>。（注意边界检查）</li><li>**更新 <code>max_right</code>**：如果 <code>i + p[i] &gt; max_right</code>，则更新 <code>max_right = i + p[i]</code> 和 <code>center = i</code>。</li><li><strong>找到最大臂长</strong>：遍历 <code>p</code> 数组，找到最大的臂长 <code>max_len</code> 和其对应的中心 <code>center_idx</code>。</li><li><strong>计算结果</strong>：最长回文子串的长度是 <code>max_len</code>，其在原字符串中的起始位置可以通过 <code>center_idx</code> 和 <code>max_len</code> 计算得出。</li></ol><h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def manacher(s: str) -&gt; str:
+            L             center            R &#x3D; max_right</code></pre></div></figure>
+</blockquote>
+<ul>
+<li><code>i_mirror</code> 是 <code>i</code> 关于中心 <code>center</code> 的对称点，<code>i_mirror = 2 * center - i</code>。</li>
+<li>我们已经计算过 <code>p[i_mirror]</code>，即以 <code>i_mirror</code> 为中心的回文臂长。</li>
+<li>由于 <code>[L, R]</code> 这个大回文串的对称性，以 <code>i</code> 为中心的回文串，在一定程度上会和以 <code>i_mirror</code> 为中心的回文串表现出相同的性质。</li>
+</ul>
+<h3 id="3-严谨原理：两种情况的分析"><a href="#3-严谨原理：两种情况的分析" class="headerlink" title="3. 严谨原理：两种情况的分析"></a>3. 严谨原理：两种情况的分析</h3><p>对于 <code>i &lt; max_right</code> 的情况，令 <code>i_mirror = 2 * center - i</code>。</p>
+<p><strong>Case 1: <code>p[i_mirror] &lt; max_right - i</code></strong></p>
+<p>以 <code>i_mirror</code> 为中心的回文串<strong>完全被</strong> <code>[L, R]</code> 这个大回文串所包含。由于对称性，以 <code>i</code> 为中心的回文串的臂长也必然等于 <code>p[i_mirror]</code>。</p>
+<p><strong><code>p[i] = p[i_mirror]</code></strong></p>
+<blockquote>
+<p><strong>图示：Case 1</strong></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">T: ... [ ... ( ... ) ... | ... ( ... ) ... ] ...
+            i_mirror          center            i</code></pre></div></figure>
+<p><code>i_mirror</code> 的回文区域完全在大回文区域内部，<code>i</code> 的回文区域也一样。</p>
+</blockquote>
+<p><strong>Case 2: <code>p[i_mirror] &gt;= max_right - i</code></strong></p>
+<p>以 <code>i_mirror</code> 为中心的回文串的左边界<strong>超出了或等于</strong> <code>L</code>。由于对称性，我们只能保证以 <code>i</code> 为中心的回文串的臂长<strong>至少</strong>是 <code>max_right - i</code>。它<strong>可能还会更长</strong>！</p>
+<p>所以，我们不能直接令 <code>p[i] = p[i_mirror]</code>。但我们有了一个很好的起点：</p>
+<ol>
+<li>先令 <code>p[i] = max_right - i</code>。</li>
+<li>然后从 <code>max_right + 1</code> 的位置开始，继续向两边暴力扩展，直到遇到不匹配的字符或边界。</li>
+<li>在扩展后，<code>max_right</code> 必然会被更新，同时更新 <code>center</code>。</li>
+</ol>
+<p>如果 <code>i &gt;= max_right</code>，我们没有任何信息可以利用，只能从 <code>i</code> 开始暴力扩展，计算 <code>p[i]</code>，并尝试更新 <code>max_right</code> 和 <code>center</code>。</p>
+<p>通过这种方式，<code>max_right</code> 指针永远只会向右移动，永不回退，从而保证了整个算法的线性时间复杂度。</p>
+<h2 id="步骤分解-Step-by-step"><a href="#步骤分解-Step-by-step" class="headerlink" title="步骤分解 (Step-by-step)"></a>步骤分解 (Step-by-step)</h2><ol>
+<li><strong>预处理字符串</strong>：将原字符串 <code>s</code> 转换为新字符串 <code>t</code>，插入 <code>#</code>。</li>
+<li><strong>初始化</strong>：创建臂长数组 <code>p</code>，<code>center = 0</code>, <code>max_right = 0</code>。</li>
+<li><strong>主循环</strong>：<code>i</code> 从 <code>1</code> 到 <code>len(t)-1</code>。</li>
+<li><strong>利用对称性</strong>：<br>a.  如果 <code>i &lt; max_right</code>，<code>p[i] = min(p[2*center - i], max_right - i)</code>。<br>b.  否则，<code>p[i] = 0</code> (从头开始扩展)。</li>
+<li><strong>暴力扩展</strong>：以 <code>i</code> 为中心，<code>p[i]</code> 为初始臂长，向两边扩展：<code>while t[i - 1 - p[i]] == t[i + 1 + p[i]]</code>，<code>p[i]++</code>。（注意边界检查）</li>
+<li>**更新 <code>max_right</code>**：如果 <code>i + p[i] &gt; max_right</code>，则更新 <code>max_right = i + p[i]</code> 和 <code>center = i</code>。</li>
+<li><strong>找到最大臂长</strong>：遍历 <code>p</code> 数组，找到最大的臂长 <code>max_len</code> 和其对应的中心 <code>center_idx</code>。</li>
+<li><strong>计算结果</strong>：最长回文子串的长度是 <code>max_len</code>，其在原字符串中的起始位置可以通过 <code>center_idx</code> 和 <code>max_len</code> 计算得出。</li>
+</ol>
+<h2 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h2><figure><div class="code-wrapper"><pre class="line-numbers language-python" data-language="python"><code class="language-python">def manacher(s: str) -&gt; str:
     &quot;&quot;&quot;使用 Manacher 算法找到最长回文子串&quot;&quot;&quot;
     if not s:
         return &quot;&quot;
@@ -58,36 +496,404 @@ s3 &#x3D; &quot;abacdfgdcaba&quot;
 
 print(f&quot;&#39;&#123;s1&#125;&#39; 的最长回文子串是: &#123;manacher(s1)&#125;&quot;) # bab
 print(f&quot;&#39;&#123;s2&#125;&#39; 的最长回文子串是: &#123;manacher(s2)&#125;&quot;) # bb
-print(f&quot;&#39;&#123;s3&#125;&#39; 的最长回文子串是: &#123;manacher(s3)&#125;&quot;) # aba</code></pre></div></figure><h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><ul><li><strong>时间复杂度</strong>: <code>O(n)</code>。<ul><li>主循环 <code>for i</code> 遍历 <code>n</code> 次。</li><li>核心在于 <code>while</code> 循环（暴力扩展）。看似有多重循环，但和 Z-Algorithm 一样，可以通过<strong>均摊分析</strong>证明其线性。关键在于 <code>max_right</code> 指针，它只会单调向右移动，永不回退。<code>while</code> 循环中的每一次成功比较，都会使 <code>max_right</code> 向右移动一位。<code>max_right</code> 最多从 0 移动到 <code>n-1</code>。因此，所有 <code>while</code> 循环的总执行次数是 <code>O(n)</code> 的。</li><li>总时间复杂度为 <code>O(n) + O(n) = O(n)</code>。</li></ul></li><li><strong>空间复杂度</strong>: <code>O(n)</code>。<ul><li>我们需要一个 <code>t</code> 数组来存储预处理后的字符串，长度约为 <code>2n</code>。</li><li>我们需要一个 <code>p</code> 数组来存储臂长，长度约为 <code>2n</code>。</li><li>总空间复杂度为 <code>O(n)</code>。</li></ul></li></ul><h2 id="优势-劣势-易错点"><a href="#优势-劣势-易错点" class="headerlink" title="优势 &#x2F; 劣势 &#x2F; 易错点"></a>优势 &#x2F; 劣势 &#x2F; 易错点</h2><h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ol><li><strong>线性时间</strong>：这是解决最长回文子串问题的最优时间复杂度。</li><li><strong>统一处理奇偶</strong>：通过插入特殊字符，巧妙地避免了分情况讨论。</li></ol><h3 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h3><ol><li><strong>理解成本极高</strong>：算法的逻辑，特别是利用对称性的部分，非常精妙和抽象，是学习的一大难点。</li><li><strong>代码实现复杂</strong>：边界条件多，索引换算容易出错。</li></ol><h3 id="易错点"><a href="#易错点" class="headerlink" title="易错点"></a>易错点</h3><ol><li><strong>字符串预处理</strong>：忘记在首尾添加 <code>#</code>。</li><li><strong>臂长与半径</strong>：混淆 <code>p[i]</code> 是臂长（半径-1）还是半径。</li><li><strong>索引计算</strong>：<code>i_mirror</code> 的计算、暴力扩展时的 <code>a</code> 和 <code>b</code> 的边界、以及最后从 <code>result_center</code> 和 <code>max_len</code> 换算回原字符串起始位置的公式，都容易出错。</li><li><strong><code>p[i]</code> 初始值的确定</strong>：在 <code>i &lt; max_right</code> 时，<code>p[i]</code> 的初始值是 <code>min(p[i_mirror], max_right - i)</code>，而不是直接等于 <code>p[i_mirror]</code>，这是因为 <code>i_mirror</code> 的回文串可能超出了大回文串的范围。</li></ol><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Manacher 算法是字符串处理领域一个里程碑式的算法。它将一个看似需要 <code>O(n²)</code> 比较的问题，通过巧妙的预处理和对“回文对称性”这一核心性质的极致利用，压缩到了线性时间。它不仅是一个高效的工具，更是一场精彩的思维体操。</p><h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>核心思想</strong>：维护一个右边界最远的回文串 <code>[center, max_right]</code>，并利用其对称性来加速计算后续位置的臂长。<br>✅ <strong>预处理技巧</strong>：插入特殊字符 <code>#</code>，将所有回文串统一为奇数长度处理。<br>✅ <strong>核心数据</strong>：臂长数组 <code>p[i]</code>，表示以 <code>i</code> 为中心的最长回文臂长。<br>✅ <strong>关键转移</strong>：当 <code>i &lt; max_right</code> 时，<code>p[i]</code> 的初始值可以由其对称点 <code>p[i_mirror]</code> 推导得出。<br>✅ <strong>复杂度</strong>：时间 <code>O(n)</code>，空间 <code>O(n)</code>。</p><p>掌握了 Manacher，你不仅能解决最长回文子串问题，更能深刻体会到算法设计中，如何通过挖掘问题内在的结构和对称性，来实现惊人的效率提升。在下一篇文章中，我们将学习另一个强大的字符串匹配工具——<strong>字符串哈希</strong>。</p></div><hr><div><div class="post-metas my-3"><div class="post-meta mr-3 d-flex align-items-center"><i class="iconfont icon-category"></i> <span class="category-chains"><span class="category-chain"><a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a> <span>></span> <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a></span></span></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="print-no-link">#算法基础</a> <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="print-no-link">#字符串</a> <a href="/tags/Manacher/" class="print-no-link">#Manacher</a> <a href="/tags/%E5%9B%9E%E6%96%87%E4%B8%B2/" class="print-no-link">#回文串</a> <a href="/tags/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/" class="print-no-link">#最长回文子串</a></div></div><div class="license-box my-3"><div class="license-title"><div>Part 6.4：Manacher 回文算法</div><div>https://hjjjkh.github.io/posts/3af13cf5</div></div><div class="license-meta"><div class="license-meta-item"><div>作者</div><div>李国强</div></div><div class="license-meta-item license-meta-date"><div>发布于</div><div>2025年11月16日</div></div><div class="license-meta-item"><div>许可协议</div><div><a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><span class="hint--top hint--rounded" aria-label="BY - 署名"><i class="iconfont icon-cc-by"></i> </span></a><a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><span class="hint--top hint--rounded" aria-label="NC - 非商业性使用"><i class="iconfont icon-cc-nc"></i> </span></a><a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><span class="hint--top hint--rounded" aria-label="SA - 相同方式共享"><i class="iconfont icon-cc-sa"></i></span></a></div></div></div><div class="license-icon iconfont"></div></div><div class="post-prevnext my-3"><article class="post-prev col-6"><a href="/posts/626958a2" title="Part 7.3：随机化算法——当运气成为一种力量"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Part 7.3：随机化算法——当运气成为一种力量</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/posts/62cad954" title="Part 7.2：分治算法——帝国的统治智慧与归并排序"><span class="hidden-mobile">Part 7.2：分治算法——帝国的统治智慧与归并排序</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article id="comments" lazyload><div id="giscus" class="giscus"></div><script type="text/javascript">Fluid.utils.loadComments('#giscus', function() {
-        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"preferred_color_scheme","theme-dark":"preferred_color_scheme","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
-        var attributes = {};
-        for (let option in options) {
-          if (!option.startsWith('theme-')) {
-            var key = option.startsWith('data-') ? option : 'data-' + option;
-            attributes[key] = options[option];
-          }
+print(f&quot;&#39;&#123;s3&#125;&#39; 的最长回文子串是: &#123;manacher(s3)&#125;&quot;) # aba</code></pre></div></figure>
+
+<h2 id="复杂度推导过程"><a href="#复杂度推导过程" class="headerlink" title="复杂度推导过程"></a>复杂度推导过程</h2><ul>
+<li><strong>时间复杂度</strong>: <code>O(n)</code>。<ul>
+<li>主循环 <code>for i</code> 遍历 <code>n</code> 次。</li>
+<li>核心在于 <code>while</code> 循环（暴力扩展）。看似有多重循环，但和 Z-Algorithm 一样，可以通过<strong>均摊分析</strong>证明其线性。关键在于 <code>max_right</code> 指针，它只会单调向右移动，永不回退。<code>while</code> 循环中的每一次成功比较，都会使 <code>max_right</code> 向右移动一位。<code>max_right</code> 最多从 0 移动到 <code>n-1</code>。因此，所有 <code>while</code> 循环的总执行次数是 <code>O(n)</code> 的。</li>
+<li>总时间复杂度为 <code>O(n) + O(n) = O(n)</code>。</li>
+</ul>
+</li>
+<li><strong>空间复杂度</strong>: <code>O(n)</code>。<ul>
+<li>我们需要一个 <code>t</code> 数组来存储预处理后的字符串，长度约为 <code>2n</code>。</li>
+<li>我们需要一个 <code>p</code> 数组来存储臂长，长度约为 <code>2n</code>。</li>
+<li>总空间复杂度为 <code>O(n)</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="优势-劣势-易错点"><a href="#优势-劣势-易错点" class="headerlink" title="优势 &#x2F; 劣势 &#x2F; 易错点"></a>优势 &#x2F; 劣势 &#x2F; 易错点</h2><h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ol>
+<li><strong>线性时间</strong>：这是解决最长回文子串问题的最优时间复杂度。</li>
+<li><strong>统一处理奇偶</strong>：通过插入特殊字符，巧妙地避免了分情况讨论。</li>
+</ol>
+<h3 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h3><ol>
+<li><strong>理解成本极高</strong>：算法的逻辑，特别是利用对称性的部分，非常精妙和抽象，是学习的一大难点。</li>
+<li><strong>代码实现复杂</strong>：边界条件多，索引换算容易出错。</li>
+</ol>
+<h3 id="易错点"><a href="#易错点" class="headerlink" title="易错点"></a>易错点</h3><ol>
+<li><strong>字符串预处理</strong>：忘记在首尾添加 <code>#</code>。</li>
+<li><strong>臂长与半径</strong>：混淆 <code>p[i]</code> 是臂长（半径-1）还是半径。</li>
+<li><strong>索引计算</strong>：<code>i_mirror</code> 的计算、暴力扩展时的 <code>a</code> 和 <code>b</code> 的边界、以及最后从 <code>result_center</code> 和 <code>max_len</code> 换算回原字符串起始位置的公式，都容易出错。</li>
+<li><strong><code>p[i]</code> 初始值的确定</strong>：在 <code>i &lt; max_right</code> 时，<code>p[i]</code> 的初始值是 <code>min(p[i_mirror], max_right - i)</code>，而不是直接等于 <code>p[i_mirror]</code>，这是因为 <code>i_mirror</code> 的回文串可能超出了大回文串的范围。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Manacher 算法是字符串处理领域一个里程碑式的算法。它将一个看似需要 <code>O(n²)</code> 比较的问题，通过巧妙的预处理和对“回文对称性”这一核心性质的极致利用，压缩到了线性时间。它不仅是一个高效的工具，更是一场精彩的思维体操。</p>
+<h3 id="本文核心要点"><a href="#本文核心要点" class="headerlink" title="本文核心要点"></a>本文核心要点</h3><p>✅ <strong>核心思想</strong>：维护一个右边界最远的回文串 <code>[center, max_right]</code>，并利用其对称性来加速计算后续位置的臂长。<br>✅ <strong>预处理技巧</strong>：插入特殊字符 <code>#</code>，将所有回文串统一为奇数长度处理。<br>✅ <strong>核心数据</strong>：臂长数组 <code>p[i]</code>，表示以 <code>i</code> 为中心的最长回文臂长。<br>✅ <strong>关键转移</strong>：当 <code>i &lt; max_right</code> 时，<code>p[i]</code> 的初始值可以由其对称点 <code>p[i_mirror]</code> 推导得出。<br>✅ <strong>复杂度</strong>：时间 <code>O(n)</code>，空间 <code>O(n)</code>。</p>
+<p>掌握了 Manacher，你不仅能解决最长回文子串问题，更能深刻体会到算法设计中，如何通过挖掘问题内在的结构和对称性，来实现惊人的效率提升。在下一篇文章中，我们将学习另一个强大的字符串匹配工具——<strong>字符串哈希</strong>。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/" class="category-chain-item">大学算法全体系</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%AE%97%E6%B3%95%E5%85%A8%E4%BD%93%E7%B3%BB/Part-6%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" class="category-chain-item">Part 6：字符串算法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="print-no-link">#算法基础</a>
+      
+        <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="print-no-link">#字符串</a>
+      
+        <a href="/tags/Manacher/" class="print-no-link">#Manacher</a>
+      
+        <a href="/tags/%E5%9B%9E%E6%96%87%E4%B8%B2/" class="print-no-link">#回文串</a>
+      
+        <a href="/tags/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/" class="print-no-link">#最长回文子串</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Part 6.4：Manacher 回文算法</div>
+      <div>https://hjjjkh.github.io/posts/3af13cf5</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>李国强</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/626958a2" title="Part 7.3：随机化算法——当运气成为一种力量">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Part 7.3：随机化算法——当运气成为一种力量</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/62cad954" title="Part 7.2：分治算法——帝国的统治智慧与归并排序">
+                        <span class="hidden-mobile">Part 7.2：分治算法——帝国的统治智慧与归并排序</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+<i class="iconfont icon-love"></i>
+<a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
         }
-        var light = 'preferred_color_scheme';
-        var dark = 'preferred_color_scheme';
-        window.GiscusThemeLight = light;
-        window.GiscusThemeDark = dark;
-        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
-        for (let attribute in attributes) {
-          var value = attributes[attribute];
-          if (value === undefined || value === null || value === '') {
-            delete attributes[attribute];
-          }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
         }
-        var s = document.createElement('script');
-        s.setAttribute('src', 'https://giscus.app/client.js');
-        s.setAttribute('crossorigin', 'anonymous');
-        for (let attribute in attributes) {
-          s.setAttribute(attribute, attributes[attribute]);
-        }
-        var ss = document.getElementsByTagName('script');
-        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-        e.parentNode.insertBefore(s, e.nextSibling);
-      });</script><noscript>Please enable JavaScript to view the comments</noscript></article></article></div></div></div><div class="side-col d-none d-lg-block col-lg-2"><aside class="sidebar" style="margin-left:-1rem"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i> <span>目录</span></p><div class="toc-body" id="toc-body"></div></div></aside></div></div></div><a id="scroll-top-button" aria-label="TOP" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div></main><footer><div class="footer-inner"><div class="footer-content"><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div><div class="statistics"><span id="busuanzi_container_site_pv" style="display:none">总访问量 <span id="busuanzi_value_site_pv"></span> 次 </span><span id="busuanzi_container_site_uv" style="display:none">总访客数 <span id="busuanzi_value_site_uv"></span> 人</span></div></div></footer><script src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js"></script><link rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css"><script>NProgress.configure({showSpinner:!1,trickleSpeed:100}),NProgress.start(),window.addEventListener("load",function(){NProgress.done()})</script><script src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js"></script><script src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js"></script><script src="/js/events.js"></script><script src="/js/plugins.js"></script><script src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js"></script><script>!function(t){var e=Fluid.plugins.typing,i=t.getElementById("subtitle");i&&e&&e(i.getAttribute("data-typed-text"))}((window,document))</script><script src="/js/img-lazyload.js"></script><script>Fluid.utils.createScript("https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js",function(){var t,o=jQuery("#toc");0!==o.length&&window.tocbot&&(t=jQuery("#board-ctn").offset().top,window.tocbot.init(Object.assign({tocSelector:"#toc-body",contentSelector:".markdown-body",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",scrollSmooth:!0,includeTitleTags:!0,headingsOffset:-t},CONFIG.toc)),0<o.find(".toc-list-item").length&&o.css("visibility","visible"),Fluid.events.registerRefreshCallback(function(){if("tocbot"in window){tocbot.refresh();var t=jQuery("#toc");if(0===t.length||!tocbot)return;0<t.find(".toc-list-item").length&&t.css("visibility","visible")}}))})</script><script src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js"></script><script src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script><script src="https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js"></script><script>Fluid.plugins.codeWidget()</script><script>Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+      }
+    });
+  });
+</script>
+
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
     window.anchors.options = {
       placement: CONFIG.anchorjs.placement,
       visible  : CONFIG.anchorjs.visible
@@ -119,4 +925,41 @@ print(f&quot;&#39;&#123;s3&#125;&#39; 的最长回文子串是: &#123;manacher(s
         anchors.add(res.join(', '));
       }
     });
-  });</script><script>Fluid.utils.createScript("https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js",function(){Fluid.plugins.fancyBox()})</script><script>Fluid.plugins.imageCaption()</script><script src="/js/local-search.js"></script><script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="/js/custom.js"></script><script src="/js/boot.js"></script><noscript><div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div></noscript></body></html>
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
