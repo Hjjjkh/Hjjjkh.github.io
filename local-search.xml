@@ -287,9 +287,9 @@
     
     <tags>
       
-      <tag>算法基础</tag>
-      
       <tag>数据结构</tag>
+      
+      <tag>算法基础</tag>
       
       <tag>DFS</tag>
       
@@ -1419,11 +1419,11 @@
       
       <tag>数据结构</tag>
       
-      <tag>树的遍历</tag>
-      
       <tag>栈</tag>
       
       <tag>队列</tag>
+      
+      <tag>树的遍历</tag>
       
       <tag>DFS</tag>
       
@@ -1699,13 +1699,13 @@
     
     <tags>
       
-      <tag>复杂度分析</tag>
-      
-      <tag>Big O</tag>
+      <tag>空间复杂度</tag>
       
       <tag>算法基础</tag>
       
-      <tag>空间复杂度</tag>
+      <tag>复杂度分析</tag>
+      
+      <tag>Big O</tag>
       
       <tag>原地算法</tag>
       
@@ -1773,11 +1773,11 @@
       
       <tag>时间复杂度</tag>
       
+      <tag>算法基础</tag>
+      
       <tag>复杂度分析</tag>
       
       <tag>Big O</tag>
-      
-      <tag>算法基础</tag>
       
       <tag>主定理</tag>
       
@@ -1808,13 +1808,13 @@
       
       <tag>算法</tag>
       
-      <tag>时间复杂度</tag>
-      
-      <tag>算法基础</tag>
-      
       <tag>复杂度</tag>
       
+      <tag>时间复杂度</tag>
+      
       <tag>空间复杂度</tag>
+      
+      <tag>算法基础</tag>
       
     </tags>
     
