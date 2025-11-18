@@ -135,3 +135,11 @@ html[data-user-color-scheme='dark'] .aplayer .aplayer-list li:hover {
 html[data-user-color-scheme='dark'] .aplayer .aplayer-list::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/*
+ * 强制移除代码块在夜间模式下的文本阴影（白色重影问题修复）
+ */
+html[data-user-color-scheme='dark'] code[class*="language-"],
+html[data-user-color-scheme='dark'] pre[class*="language-"] {
+  text-shadow: none !important;
+}
