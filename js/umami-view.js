@@ -69,7 +69,10 @@ async function siteStats() {
 // 获取页面浏览量
 async function pageStats(path) {
   try {
-    const response = await fetch(`${request_url}?${params}&url=${path}`, request_header);
+    const response = await fetch(
+      `${request_url}?${params}&url=${path}`,
+      request_header,
+    );
     const data = await response.json();
     const pageViews = data.pageviews.value;
 
