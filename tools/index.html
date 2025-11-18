@@ -30,8 +30,8 @@
 <meta property="og:site_name" content="李国强的技术博客">
 <meta property="og:description" content=".tool-container {   max-width: 1200px;   margin: 0 auto;   padding: 20px;   font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif; }  .tool-card {">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-11-17T08:08:46.197Z">
-<meta property="article:modified_time" content="2025-11-17T08:08:46.197Z">
+<meta property="article:published_time" content="2025-11-18T09:50:13.142Z">
+<meta property="article:modified_time" content="2025-11-18T09:50:13.142Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="Java, 数据结构, 算法, 后端开发, 编程学习, Spring Boot, 技术博客, 李国强">
 <meta name="twitter:card" content="summary_large_image">
@@ -293,7 +293,8 @@
                 
 
 <article class="page-content">
-  <style>
+  
+<style>
 .tool-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -409,32 +410,31 @@
   <div class="tool-card">
     <h2>时间戳转换</h2>
 
-<figure><div class="code-wrapper"><pre class="language-none"><code class="language-none">&lt;div class=&quot;current-timestamp&quot;&gt;
-    &lt;div class=&quot;current-timestamp-label&quot;&gt;当前 Unix 时间戳 (秒)&lt;/div&gt;
-    &lt;div id=&quot;current-timestamp-value&quot; class=&quot;current-timestamp-value&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;
+    <div class="current-timestamp">
+        <div class="current-timestamp-label">当前 Unix 时间戳 (秒)</div>
+        <div id="current-timestamp-value" class="current-timestamp-value"></div>
+    </div>
 
-&lt;div class=&quot;tool-group&quot;&gt;
-  &lt;label for=&quot;timestamp-input&quot;&gt;Unix 时间戳 (秒或毫秒)&lt;/label&gt;
-  &lt;input type=&quot;text&quot; id=&quot;timestamp-input&quot; class=&quot;tool-input&quot; placeholder=&quot;例如: 1672531200&quot;&gt;
-&lt;/div&gt;
-&lt;div class=&quot;tool-buttons&quot;&gt;
-  &lt;button id=&quot;ts-to-date-btn&quot; class=&quot;tool-button&quot;&gt;转换为日期&lt;/button&gt;
-&lt;/div&gt;
-&lt;div id=&quot;ts-to-date-result&quot; class=&quot;tool-result&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;
+    <div class="tool-group">
+      <label for="timestamp-input">Unix 时间戳 (秒或毫秒)</label>
+      <input type="text" id="timestamp-input" class="tool-input" placeholder="例如: 1672531200">
+    </div>
+    <div class="tool-buttons">
+      <button id="ts-to-date-btn" class="tool-button">转换为日期</button>
+    </div>
+    <div id="ts-to-date-result" class="tool-result" style="display: none;"></div>
 
-&lt;hr style=&quot;margin: 2.5rem 0;&quot;&gt;
+    <hr style="margin: 2.5rem 0;">
 
-&lt;div class=&quot;tool-group&quot;&gt;
-  &lt;label for=&quot;date-input&quot;&gt;日期和时间&lt;/label&gt;
-  &lt;input type=&quot;text&quot; id=&quot;date-input&quot; class=&quot;tool-input&quot; placeholder=&quot;例如: 2023-01-01 08:00:00&quot;&gt;
-&lt;/div&gt;
-&lt;div class=&quot;tool-buttons&quot;&gt;
-  &lt;button id=&quot;date-to-ts-btn&quot; class=&quot;tool-button&quot;&gt;转换为时间戳&lt;/button&gt;
-  &lt;button id=&quot;set-current-time-btn&quot; class=&quot;tool-button&quot;&gt;填充当前时间&lt;/button&gt;
-&lt;/div&gt;
-&lt;div id=&quot;date-to-ts-result&quot; class=&quot;tool-result&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;
-</code></pre></div></figure>
+    <div class="tool-group">
+      <label for="date-input">日期和时间</label>
+      <input type="text" id="date-input" class="tool-input" placeholder="例如: 2023-01-01 08:00:00">
+    </div>
+    <div class="tool-buttons">
+      <button id="date-to-ts-btn" class="tool-button">转换为时间戳</button>
+      <button id="set-current-time-btn" class="tool-button">填充当前时间</button>
+    </div>
+    <div id="date-to-ts-result" class="tool-result" style="display: none;"></div>
   </div>
 
 </div>
