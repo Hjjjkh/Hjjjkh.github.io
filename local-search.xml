@@ -178,11 +178,11 @@
       
       <tag>最短路径</tag>
       
-      <tag>动态规划</tag>
-      
       <tag>Bellman-Ford算法</tag>
       
       <tag>Floyd-Warshall算法</tag>
+      
+      <tag>动态规划</tag>
       
       <tag>负权环</tag>
       
@@ -213,15 +213,15 @@
       
       <tag>图论</tag>
       
+      <tag>贪心算法</tag>
+      
       <tag>最短路径</tag>
+      
+      <tag>动态规划</tag>
       
       <tag>Dijkstra算法</tag>
       
       <tag>SPFA算法</tag>
-      
-      <tag>贪心算法</tag>
-      
-      <tag>动态规划</tag>
       
     </tags>
     
@@ -250,8 +250,6 @@
       
       <tag>图论</tag>
       
-      <tag>贪心算法</tag>
-      
       <tag>最小生成树</tag>
       
       <tag>MST</tag>
@@ -259,6 +257,8 @@
       <tag>Kruskal</tag>
       
       <tag>Prim</tag>
+      
+      <tag>贪心算法</tag>
       
       <tag>算法进阶</tag>
       

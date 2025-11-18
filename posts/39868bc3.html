@@ -34,11 +34,11 @@
 <meta property="article:modified_time" content="2025-11-17T04:17:04.843Z">
 <meta property="article:author" content="李国强">
 <meta property="article:tag" content="图论">
-<meta property="article:tag" content="贪心算法">
 <meta property="article:tag" content="最小生成树">
 <meta property="article:tag" content="MST">
 <meta property="article:tag" content="Kruskal">
 <meta property="article:tag" content="Prim">
+<meta property="article:tag" content="贪心算法">
 <meta property="article:tag" content="算法进阶">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -568,8 +568,6 @@ print(f&quot;Prim&#39;s MST Edges: &#123;mst&#125;&quot;) # [(5, 0, 3), (4, 3, 2
       
         <a href="/tags/%E5%9B%BE%E8%AE%BA/" class="print-no-link">#图论</a>
       
-        <a href="/tags/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" class="print-no-link">#贪心算法</a>
-      
         <a href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" class="print-no-link">#最小生成树</a>
       
         <a href="/tags/MST/" class="print-no-link">#MST</a>
@@ -577,6 +575,8 @@ print(f&quot;Prim&#39;s MST Edges: &#123;mst&#125;&quot;) # [(5, 0, 3), (4, 3, 2
         <a href="/tags/Kruskal/" class="print-no-link">#Kruskal</a>
       
         <a href="/tags/Prim/" class="print-no-link">#Prim</a>
+      
+        <a href="/tags/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" class="print-no-link">#贪心算法</a>
       
         <a href="/tags/%E7%AE%97%E6%B3%95%E8%BF%9B%E9%98%B6/" class="print-no-link">#算法进阶</a>
       
@@ -661,6 +661,41 @@ print(f&quot;Prim&#39;s MST Edges: &#123;mst&#125;&quot;) # [(5, 0, 3), (4, 3, 2
   
     <article id="comments" lazyload>
       
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Hjjjkh/Hjjjkh.github.io","repo-id":"R_kgDOQM2gOQ","category":"Announcements","category-id":"DIC_kwDOQM2gOc4Cx1VU","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
 
     </article>
   
