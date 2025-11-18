@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://hjjjkh.github.io/apps/nav-loader</loc>
+    
+    <lastmod>2025-11-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://hjjjkh.github.io/posts/2b8a6ba5</loc>
     
     <lastmod>2025-11-17</lastmod>
