@@ -136,10 +136,123 @@ html[data-user-color-scheme='dark'] .aplayer .aplayer-list::-webkit-scrollbar-th
   background: rgba(255, 255, 255, 0.2);
 }
 
-/*
- * 强制移除代码块在夜间模式下的文本阴影（白色重影问题修复）
- */
+/* ========================================
+   代码块夜间模式终极修复
+   ======================================== */
+
+/* 基础样式 */
 html[data-user-color-scheme='dark'] code[class*="language-"],
 html[data-user-color-scheme='dark'] pre[class*="language-"] {
-  text-shadow: none !important;
+	color: #ccc;
+	background: none;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+  text-shadow: none !important; /* 强制移除重影 */
+}
+
+/* 代码块 */
+html[data-user-color-scheme='dark'] pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border-radius: 0.3em;
+}
+
+html[data-user-color-scheme='dark'] :not(pre) > code[class*="language-"],
+html[data-user-color-scheme='dark'] pre[class*="language-"] {
+	background: #2d2d2d;
+}
+
+/* 行内代码 */
+html[data-user-color-scheme='dark'] :not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+html[data-user-color-scheme='dark'] .token.comment,
+html[data-user-color-scheme='dark'] .token.block-comment,
+html[data-user-color-scheme='dark'] .token.prolog,
+html[data-user-color-scheme='dark'] .token.doctype,
+html[data-user-color-scheme='dark'] .token.cdata {
+	color: #999;
+}
+
+html[data-user-color-scheme='dark'] .token.punctuation {
+	color: #ccc;
+}
+
+html[data-user-color-scheme='dark'] .token.tag,
+html[data-user-color-scheme='dark'] .token.attr-name,
+html[data-user-color-scheme='dark'] .token.namespace,
+html[data-user-color-scheme='dark'] .token.deleted {
+	color: #e2777a;
+}
+
+html[data-user-color-scheme='dark'] .token.function-name {
+	color: #6196cc;
+}
+
+html[data-user-color-scheme='dark'] .token.boolean,
+html[data-user-color-scheme='dark'] .token.number,
+html[data-user-color-scheme='dark'] .token.function {
+	color: #f08d49;
+}
+
+html[data-user-color-scheme='dark'] .token.property,
+html[data-user-color-scheme='dark'] .token.class-name,
+html[data-user-color-scheme='dark'] .token.constant,
+html[data-user-color-scheme='dark'] .token.symbol {
+	color: #f8c555;
+}
+
+html[data-user-color-scheme='dark'] .token.selector,
+html[data-user-color-scheme='dark'] .token.important,
+html[data-user-color-scheme='dark'] .token.atrule,
+html[data-user-color-scheme='dark'] .token.keyword,
+html[data-user-color-scheme='dark'] .token.builtin {
+	color: #cc99cd;
+}
+
+html[data-user-color-scheme='dark'] .token.string,
+html[data-user-color-scheme='dark'] .token.char,
+html[data-user-color-scheme='dark'] .token.attr-value,
+html[data-user-color-scheme='dark'] .token.regex,
+html[data-user-color-scheme='dark'] .token.variable {
+	color: #7ec699;
+}
+
+html[data-user-color-scheme='dark'] .token.operator,
+html[data-user-color-scheme='dark'] .token.entity,
+html[data-user-color-scheme='dark'] .token.url {
+	color: #67cdcc;
+}
+
+html[data-user-color-scheme='dark'] .token.important,
+html[data-user-color-scheme='dark'] .token.bold {
+	font-weight: bold;
+}
+html[data-user-color-scheme='dark'] .token.italic {
+	font-style: italic;
+}
+
+html[data-user-color-scheme='dark'] .token.entity {
+	cursor: help;
+}
+
+html[data-user-color-scheme='dark'] .token.inserted {
+	color: green;
 }
