@@ -12,7 +12,7 @@
     "version": "7.3.0"
   },
   "dependencies": {
-    "@adobe/css-tools": "^4.4.4",
+    "@adobe/css-tools": "^4.5.0",
     "hexo": "^7.0.0",
     "hexo-abbrlink": "^2.2.1",
     "hexo-cli": "^4.3.2",
